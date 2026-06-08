@@ -11,11 +11,12 @@ const related = getRelatedCalculators('kpr', 3);
 
 const faqs = [
   { question: 'Bagaimana rumus menghitung cicilan KPR yang benar?', answer: 'Cicilan KPR menggunakan rumus <strong>anuitas</strong>: M = P × (i × (1+i)<sup>n</sup>) / ((1+i)<sup>n</sup> - 1). Cicilan bulanan tetap sama tiap bulan, tapi komposisi bunga vs pokok berubah — di awal lebih banyak bunga, di akhir lebih banyak pokok.' },
-  { question: 'Berapa DP minimum KPR di Indonesia?', answer: 'Sesuai aturan BI: <strong>rumah pertama DP min 10%</strong> (LTV maks 90%), <strong>rumah kedua 20%</strong>, <strong>rumah ketiga+ 30%</strong>. Bank biasanya minta lebih tinggi. Idealnya siapkan DP <strong>30%</strong> untuk cicilan ringan.' },
-  { question: 'Tenor KPR berapa tahun yang paling ideal?', answer: '<strong>5-10 thn</strong>: cicilan besar, total bunga kecil. <strong>15-20 thn</strong>: paling populer, balance bagus. <strong>25-30 thn</strong>: cicilan kecil tapi total bunga 2-3× pokok. Tips: pilih tenor terpanjang yang kamu mampu, lalu lunasi dipercepat saat dapat bonus.' },
-  { question: 'Apa bedanya bunga fixed dan floating?', answer: '<strong>Fixed</strong>: bunga tetap selama periode tertentu (1-5 thn pertama). Predictable. <strong>Floating</strong>: bunga mengikuti BI Rate, bisa naik/turun setiap 3-6 bulan. Banyak bank menawarkan kombinasi: fixed dulu, lalu floating. WASPADA bunga "promo" 3% fixed 1 tahun!' },
-  { question: 'Mengapa inflasi mempengaruhi bunga KPR?', answer: 'Bunga KPR dipengaruhi <strong>BI Rate</strong>, yang naik saat inflasi tinggi untuk menjaga daya beli Rupiah (Fisher Equation). Saat inflasi tinggi (>5%), BI Rate naik, bank juga naikkan bunga KPR. Mode Inflasi kami simulasikan dampak skenario inflasi terhadap cicilan untuk perencanaan jangka panjang.' },
+  { question: 'Apa beda bunga fixed dan floating? Mana yang harus saya pilih?', answer: '<strong>Fixed</strong>: bunga TETAP selama periode tertentu (biasanya 1-5 tahun pertama). Predictable, aman dari kenaikan BI Rate.<br><br><strong>Floating</strong>: bunga mengikuti BI Rate, bisa naik/turun setiap 3-6 bulan. Berisiko tapi bisa lebih murah saat bunga turun.<br><br><strong>Combo (Fixed+Floating)</strong>: Bank Indonesia umumnya pakai sistem ini. Misal: Fixed 5% selama 3 tahun, lalu Floating ~9-11% sisa tenor. Mode ini PALING REALISTIS untuk simulasi KPR di Indonesia.' },
+  { question: 'Pelunasan dipercepat, untung gak sih?', answer: 'SANGAT UNTUNG! Misal: KPR Rp 640jt, tenor 15 thn, bunga 7.5%. Cicilan Rp 5.93jt/bln. Total bunga: Rp 426jt.<br><br>Kalau di tahun ke-3 kamu lunasi extra Rp 100 juta:<br>• Tenor jadi 11 tahun (lebih cepat 4 tahun!)<br>• Hemat total bunga: Rp 145 juta!<br><br>Tips: gunakan bonus tahunan, THR, atau dapat warisan untuk lunasi sebagian. Bank wajib terima pelunasan dipercepat sesuai POJK.' },
+  { question: 'Apa saja biaya KPR di luar cicilan?', answer: 'Biaya yang HARUS disiapkan saat KPR (di luar DP):<br>• <strong>BPHTB</strong>: 5% dari (harga - NJOPTKP)<br>• <strong>AJB (Akta Jual Beli)</strong>: 1% dari harga<br>• <strong>BBN (Balik Nama Sertifikat)</strong>: 2% dari harga<br>• <strong>Provisi Bank</strong>: 1% dari pokok pinjaman<br>• <strong>Biaya Notaris</strong>: Rp 2-5 juta<br>• <strong>Appraisal/Survey</strong>: Rp 500rb-2jt<br>• <strong>Administrasi Bank</strong>: Rp 250rb-1jt<br>• <strong>Asuransi KPR Life + Property</strong>: 0.3-0.5%/thn dari pokok<br><br>Total biaya awal biasanya 5-7% dari harga rumah. Untuk rumah Rp 800jt, siapkan Rp 40-56 juta DI LUAR DP.' },
+  { question: 'Mengapa inflasi mempengaruhi bunga KPR?', answer: 'Bunga KPR dipengaruhi <strong>BI Rate</strong>, yang naik saat inflasi tinggi untuk menjaga daya beli Rupiah (Fisher Equation). Saat inflasi tinggi (>5%), BI Rate naik, bank juga naikkan bunga KPR floating. Mode Inflasi kami simulasikan dampak skenario inflasi terhadap cicilan untuk perencanaan jangka panjang.' },
   { question: 'Berapa cicilan KPR yang aman dari gaji?', answer: 'Aturan emas: <strong>cicilan KPR maksimal 30% dari gaji bulanan</strong> (Debt-to-Income Ratio max 30%). Bank approve sampai 40%, tapi itu zona berisiko. Sisakan margin untuk pajak (PBB), maintenance, asuransi, dan dana darurat 6 bulan cicilan.' },
+  { question: 'Bank mana yang punya bunga KPR paling murah?', answer: 'Bunga KPR fluktuatif per bulan. Pada 2026, kisaran bunga fixed 1-3 tahun di bank besar Indonesia: BCA (~5.25%), Mandiri (~5.50%), BNI (~5.99%), BRI (~6.25%), CIMB Niaga (~5.49%). Untuk KPR Subsidi (FLPP) di BTN: bunga flat 5% selama 20 tahun. CEK LANGSUNG ke website bank untuk angka terbaru karena bunga sering berubah.' },
 ];
 
 const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '/#tools' }, { label: calc.shortTitle }];
@@ -47,10 +48,14 @@ const jsonLd = {
             <i class="ti ti-home" aria-hidden="true"></i>
             {calc.categoryLabel}
           </div>
-          <h1 class="calc-hero-title">{calc.h1}</h1>
-          <p class="calc-hero-sub">{calc.introText}</p>
+          <h1 class="calc-hero-title">Kalkulator KPR Indonesia 2026 — Premium</h1>
+          <p class="calc-hero-sub">{calc.introText} Sekarang dilengkapi <strong>simulasi bunga fixed+floating, pelunasan dipercepat, biaya KPR lengkap, visual charts, dan perbandingan 6 bank besar Indonesia</strong>.</p>
           <ul class="calc-hero-benefits">
-            {calc.benefits.map(b => <li><i class="ti ti-check"></i> {b}</li>)}
+            <li><i class="ti ti-check"></i> Bunga fixed+floating realistis</li>
+            <li><i class="ti ti-check"></i> Simulasi pelunasan dipercepat</li>
+            <li><i class="ti ti-check"></i> Biaya KPR lengkap (BPHTB, AJB, dll)</li>
+            <li><i class="ti ti-check"></i> Visual charts (donut + line)</li>
+            <li><i class="ti ti-check"></i> Bandingkan 6 bank Indonesia</li>
           </ul>
         </div>
         <div class="calc-hero-illust">
@@ -79,8 +84,8 @@ const jsonLd = {
         <div class="calc-card-hdr">
           <div class="calc-card-hdr-ic"><i class="ti ti-home-dollar"></i></div>
           <div>
-            <h2 class="calc-card-title">Kalkulator KPR Anuitas</h2>
-            <p class="calc-card-sub">Isi data → klik "Hitung Sekarang" → export hasil</p>
+            <h2 class="calc-card-title">Kalkulator KPR Premium</h2>
+            <p class="calc-card-sub">Anuitas + Combo Fixed-Floating + Pelunasan Dipercepat + Charts + Bank Compare</p>
           </div>
         </div>
 
@@ -139,7 +144,84 @@ const jsonLd = {
               </div>
             </div>
 
-            {/* ─── INFLATION TOGGLE ─── */}
+            {/* ─── FEATURE 1: COMBO BUNGA FIXED + FLOATING ─── */}
+            <div class="combo-bunga-box" id="comboBox">
+              <label class="combo-bunga-toggle">
+                <input type="checkbox" id="comboToggle" />
+                <span>🎯 Aktifkan Bunga Combo (Fixed → Floating)</span>
+              </label>
+              <div class="combo-bunga-options">
+                <p class="combo-note">
+                  <strong>Skenario realistis bank Indonesia:</strong> Bunga FIXED untuk beberapa tahun pertama, lalu FLOATING mengikuti BI Rate.
+                </p>
+                <div class="combo-bunga-grid">
+                  <div class="field">
+                    <label for="bungaFixed">Bunga Fixed (%)</label>
+                    <div class="input-wrap">
+                      <input type="number" id="bungaFixed" class="has-suffix" value="5" step="0.1" min="0" />
+                      <span class="input-suffix">%</span>
+                    </div>
+                  </div>
+                  <div class="field">
+                    <label for="durasiFixed">Selama (tahun)</label>
+                    <select id="durasiFixed">
+                      <option value="1">1 tahun</option>
+                      <option value="2">2 tahun</option>
+                      <option value="3" selected>3 tahun</option>
+                      <option value="5">5 tahun</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="combo-bunga-grid">
+                  <div class="field" style="grid-column:1 / -1">
+                    <label for="bungaFloating">Estimasi Bunga Floating (%)</label>
+                    <div class="input-wrap">
+                      <input type="number" id="bungaFloating" class="has-suffix" value="10" step="0.1" min="0" />
+                      <span class="input-suffix">%</span>
+                    </div>
+                  </div>
+                </div>
+                <p class="combo-note" style="margin-top:10px">
+                  💡 <strong>Tip realistis</strong>: Bunga floating sering naik 4-6% di atas fixed. Hitung skenario terburuk.
+                </p>
+              </div>
+            </div>
+
+            {/* ─── FEATURE 2: PREPAYMENT (PELUNASAN DIPERCEPAT) ─── */}
+            <div class="prepayment-box" id="prepayBox">
+              <label class="prepayment-toggle">
+                <input type="checkbox" id="prepayToggle" />
+                <span>💸 Aktifkan Pelunasan Dipercepat</span>
+              </label>
+              <div class="prepayment-options">
+                <p class="combo-note" style="color:#065F46">
+                  Punya bonus/THR/warisan? Lunasi sebagian KPR untuk hemat bunga besar!
+                </p>
+                <div class="prepayment-row">
+                  <div class="field">
+                    <label for="prepayAmount">Pelunasan (Rp)</label>
+                    <div class="input-wrap">
+                      <span class="input-prefix">Rp</span>
+                      <input type="text" id="prepayAmount" class="has-prefix" value="100.000.000" inputmode="numeric" />
+                    </div>
+                  </div>
+                  <div class="field">
+                    <label for="prepayYear">Di Tahun Ke-</label>
+                    <select id="prepayYear">
+                      <option value="1">Tahun 1</option>
+                      <option value="2">Tahun 2</option>
+                      <option value="3" selected>Tahun 3</option>
+                      <option value="4">Tahun 4</option>
+                      <option value="5">Tahun 5</option>
+                      <option value="7">Tahun 7</option>
+                      <option value="10">Tahun 10</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* ─── FEATURE 3: INFLASI MODE (existing) ─── */}
             <div class="inflation-box" id="inflationBox">
               <label class="inflation-toggle">
                 <input type="checkbox" id="inflasiToggle" />
@@ -154,7 +236,7 @@ const jsonLd = {
                   <option value="krisis">⚠️ Krisis (7.5%) — Skenario terburuk</option>
                 </select>
                 <p class="inflation-note">
-                  <strong>Cara kerja:</strong> Saat inflasi naik, BI Rate naik → bunga KPR naik. Mode ini auto-adjust suku bunga sesuai skenario inflasi (Fisher Equation).
+                  Saat inflasi naik, BI Rate naik → bunga KPR naik. Mode ini auto-adjust suku bunga sesuai skenario inflasi (Fisher Equation).
                 </p>
               </div>
             </div>
@@ -172,16 +254,14 @@ const jsonLd = {
 
           {/* ─── OUTPUT PANEL ─── */}
           <div class="calc-output">
-            {/* Placeholder before calculation */}
             <div class="result-placeholder" id="placeholder">
               <i class="ti ti-calculator result-placeholder-icon"></i>
               <div class="result-placeholder-title">Hasil akan muncul di sini</div>
               <div class="result-placeholder-desc">
-                Isi data di sebelah kiri, lalu klik tombol <strong>"Hitung Sekarang"</strong> untuk simulasi cicilan KPR.
+                Isi data di sebelah kiri, lalu klik tombol <strong>"Hitung Sekarang"</strong> untuk simulasi cicilan KPR lengkap dengan charts.
               </div>
             </div>
 
-            {/* Results wrapper (hidden until calc) */}
             <div class="result-wrapper" id="results">
               <div class="result-main">
                 <div class="result-label">Cicilan Per Bulan</div>
@@ -210,6 +290,43 @@ const jsonLd = {
                 </div>
               </div>
 
+              {/* COMBO BUNGA RESULT (only shown if combo active) */}
+              <div class="combo-bunga-box" id="comboResult" style="display:none">
+                <h4 style="font-size:13px;font-weight:700;color:#1E40AF;margin:0 0 10px;display:flex;align-items:center;gap:6px">
+                  <i class="ti ti-arrow-bar-up"></i> Cicilan Bertingkat (Fixed → Floating)
+                </h4>
+                <table style="width:100%;font-size:12.5px;border-collapse:collapse;color:#1E3A8A">
+                  <tr><td style="padding:5px 0">Cicilan periode Fixed</td><td style="text-align:right;font-weight:700" id="cicilanFixedShow">-</td></tr>
+                  <tr><td style="padding:5px 0">Cicilan periode Floating</td><td style="text-align:right;font-weight:700" id="cicilanFloatingShow">-</td></tr>
+                  <tr style="border-top:1px dashed #2563EB"><td style="padding:8px 0;font-weight:700">Selisih Cicilan</td><td style="text-align:right;font-weight:800;color:#1E40AF" id="selisihCicilan">-</td></tr>
+                </table>
+                <p class="combo-note" style="margin-top:8px">⚠️ Pastikan kamu mampu cicilan FLOATING (yang lebih tinggi) sebelum ambil KPR.</p>
+              </div>
+
+              {/* PREPAYMENT RESULT (only shown if prepay active) */}
+              <div class="prepayment-result" id="prepayResultBox" style="display:none">
+                <h4 style="font-size:13px;font-weight:700;color:#065F46;margin:0 0 10px;display:flex;align-items:center;gap:6px">
+                  <i class="ti ti-discount"></i> Hasil Pelunasan Dipercepat
+                </h4>
+                <div class="pr-row">
+                  <span>Tenor SEBELUM pelunasan</span>
+                  <span id="tenorBefore">-</span>
+                </div>
+                <div class="pr-row">
+                  <span>Tenor SETELAH pelunasan</span>
+                  <span id="tenorAfter">-</span>
+                </div>
+                <div class="pr-row">
+                  <span>Hemat Waktu</span>
+                  <span id="hematWaktu" style="color:#065F46;font-weight:700">-</span>
+                </div>
+                <div class="pr-row highlight">
+                  <span>💰 Hemat Total Bunga</span>
+                  <span id="hematBunga">-</span>
+                </div>
+              </div>
+
+              {/* KELAYAKAN VS GAJI */}
               <div class="kelayakan-box" id="kelayakanBox">
                 <div class="kelayakan-hdr">
                   <i class="ti ti-shield-check"></i>
@@ -218,8 +335,58 @@ const jsonLd = {
                 <div id="kelayakanBody"></div>
               </div>
 
-              {/* Advanced Section */}
-              <div class="adv-section" id="advTenor">
+              {/* FEATURE 4: VISUAL CHARTS */}
+              <div class="chart-section" id="chartSection" style="display:none">
+                <h4><i class="ti ti-chart-pie"></i> Visualisasi Data</h4>
+                <div class="chart-grid">
+                  <div class="chart-wrap">
+                    <h5>🍩 Komposisi Total Bayar</h5>
+                    <div class="chart-canvas-wrap">
+                      <canvas id="donutChart"></canvas>
+                    </div>
+                  </div>
+                  <div class="chart-wrap">
+                    <h5>📉 Sisa Pinjaman per Tahun</h5>
+                    <div class="chart-canvas-wrap">
+                      <canvas id="lineChart"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* FEATURE 5: BANK COMPARISON */}
+              <div class="adv-section">
+                <div class="adv-toggle">
+                  <span><i class="ti ti-building-bank"></i>&nbsp; Bandingkan 6 Bank Indonesia</span>
+                  <i class="ti ti-chevron-down chev"></i>
+                </div>
+                <div class="adv-content">
+                  <div id="bankCompareBody" class="bank-compare-box"></div>
+                  <p class="bank-disclaimer">
+                    ⚠️ <strong>Disclaimer</strong>: Data bunga adalah <em>indikatif</em> per Juni 2026 berdasarkan publikasi terbuka. Bunga riil bisa berbeda tergantung profil debitur (gaji, BI Checking, durasi kerja). <strong>Selalu cek langsung ke bank</strong> untuk angka final yang berlaku.
+                  </p>
+                </div>
+              </div>
+
+              {/* BIAYA KPR LENGKAP */}
+              <div class="adv-section">
+                <div class="adv-toggle">
+                  <span><i class="ti ti-receipt"></i>&nbsp; Biaya KPR Lengkap (di luar DP)</span>
+                  <i class="ti ti-chevron-down chev"></i>
+                </div>
+                <div class="adv-content">
+                  <div class="biaya-detail-box">
+                    <h4><i class="ti ti-file-invoice"></i> Estimasi Biaya yang Harus Disiapkan</h4>
+                    <ul class="biaya-detail-list" id="biayaList"></ul>
+                  </div>
+                  <p class="bank-disclaimer">
+                    💡 Biaya ini DI LUAR DP. Biasanya 5-7% dari harga rumah. Bank kadang memasukkan beberapa biaya ini ke pokok pinjaman (top-up), tapi pastikan tanya dengan jelas.
+                  </p>
+                </div>
+              </div>
+
+              {/* TENOR COMPARISON */}
+              <div class="adv-section">
                 <div class="adv-toggle">
                   <span><i class="ti ti-chart-bar"></i>&nbsp; Bandingkan Semua Tenor</span>
                   <i class="ti ti-chevron-down chev"></i>
@@ -234,7 +401,8 @@ const jsonLd = {
                 </div>
               </div>
 
-              <div class="adv-section" id="advAmort">
+              {/* AMORTISASI */}
+              <div class="adv-section">
                 <div class="adv-toggle">
                   <span><i class="ti ti-table"></i>&nbsp; Tabel Amortisasi Per Tahun</span>
                   <i class="ti ti-chevron-down chev"></i>
@@ -249,6 +417,7 @@ const jsonLd = {
                 </div>
               </div>
 
+              {/* INFLASI COMPARE (if active) */}
               <div class="adv-section" id="advInflasi" style="display:none">
                 <div class="adv-toggle">
                   <span><i class="ti ti-trending-up"></i>&nbsp; Dampak Inflasi terhadap Bunga & Cicilan</span>
@@ -308,19 +477,28 @@ const jsonLd = {
         </ul>
       </div>
 
+      <h3>5 Fitur Premium KPR Calculator</h3>
+      <ol class="tips-list">
+        <li><strong>🎯 Combo Bunga Fixed+Floating</strong> — Simulasi realistis sistem KPR Indonesia: bunga fixed beberapa tahun, lalu floating mengikuti BI Rate.</li>
+        <li><strong>💸 Pelunasan Dipercepat</strong> — Lihat dampak menggunakan bonus/THR untuk lunasi sebagian KPR. Bisa hemat puluhan hingga ratusan juta bunga!</li>
+        <li><strong>📋 Biaya KPR Lengkap</strong> — Detail BPHTB, AJB, BBN, provisi, notaris, asuransi. Biasanya 5-7% dari harga rumah.</li>
+        <li><strong>📊 Visual Charts</strong> — Donut komposisi total bayar + line grafik sisa pinjaman per tahun. Visual lebih mudah dipahami.</li>
+        <li><strong>🏦 Bank Comparison</strong> — Bandingkan cicilan KPR dengan 6 bank besar Indonesia secara instan.</li>
+      </ol>
+
       <h3>Tips Pintar Sebelum Ambil KPR</h3>
       <ol class="tips-list">
         <li><strong>DTI Maksimum 30%</strong> — Cicilan maksimal 30% gaji. Bank approve sampai 40% tapi berisiko.</li>
         <li><strong>Bandingkan 3+ Bank</strong> — Selisih bunga 1% bisa hemat puluhan juta untuk tenor 20 tahun.</li>
-        <li><strong>Waspada Bunga Promo</strong> — "Bunga 3% fixed 1 tahun" lalu floating jadi 10-12%. Hitung skenario terburuk.</li>
+        <li><strong>Waspada Bunga Promo</strong> — "Bunga 3% fixed 1 tahun" lalu floating jadi 10-12%. Hitung skenario terburuk dengan mode Combo.</li>
         <li><strong>DP Minimal 20-30%</strong> — Semakin besar DP, semakin kecil bunga total.</li>
-        <li><strong>Pertimbangkan Mode Inflasi</strong> — Inflasi tinggi = BI Rate naik = bunga floating naik. Siapkan dana extra.</li>
-        <li><strong>Pelunasan Dipercepat</strong> — Saat dapat bonus, lunasi sebagian untuk hemat bunga.</li>
+        <li><strong>Siapkan Dana Biaya Awal</strong> — 5-7% dari harga rumah untuk BPHTB, AJB, BBN, provisi, dll.</li>
+        <li><strong>Pelunasan Dipercepat</strong> — Saat dapat bonus, lunasi sebagian untuk hemat puluhan-ratusan juta bunga.</li>
       </ol>
 
       <div class="cta-box">
-        <h3>Coba Kalkulator KPR Sekarang</h3>
-        <p>Geser ke atas, isi data rumah impianmu, dan klik "Hitung Sekarang" untuk simulasi lengkap.</p>
+        <h3>Coba Kalkulator KPR Premium Sekarang</h3>
+        <p>Geser ke atas, isi data rumah impianmu, dan klik "Hitung Sekarang" untuk simulasi lengkap dengan visual charts dan perbandingan bank.</p>
       </div>
     </div>
   </section>
@@ -344,9 +522,8 @@ const jsonLd = {
 
 <script is:inline>
   (function() {
-    // Wait for HC utility to load
     function ready(fn) {
-      if (window.HC && window.html2canvas) fn();
+      if (window.HC && window.html2canvas && window.Chart) fn();
       else setTimeout(() => ready(fn), 100);
     }
 
@@ -355,28 +532,33 @@ const jsonLd = {
       const els = {
         harga: $('hargaRumah'), dp: $('dpPersen'), bunga: $('bunga'),
         tenor: $('tenor'), gaji: $('gajiCheck'),
+        // Combo
+        comboToggle: $('comboToggle'), comboBox: $('comboBox'),
+        bungaFixed: $('bungaFixed'), durasiFixed: $('durasiFixed'), bungaFloating: $('bungaFloating'),
+        // Prepay
+        prepayToggle: $('prepayToggle'), prepayBox: $('prepayBox'),
+        prepayAmount: $('prepayAmount'), prepayYear: $('prepayYear'),
+        // Inflasi
         inflasiToggle: $('inflasiToggle'), inflasiSkenario: $('inflasiSkenario'),
         inflasiBox: $('inflationBox'), advInflasi: $('advInflasi'),
       };
 
-      // Format Rupiah inputs in real-time (just formatting, not calculating)
-      [els.harga, els.gaji].forEach(el => el.addEventListener('input', HC.fmtInput));
+      // Real-time Rp formatter
+      [els.harga, els.gaji, els.prepayAmount].forEach(el => el.addEventListener('input', HC.fmtInput));
 
       // DP quick buttons
       document.querySelectorAll('.quick-btns button').forEach(btn => {
         btn.addEventListener('click', () => { els.dp.value = btn.dataset.dp; });
       });
 
-      // Inflation toggle
-      els.inflasiToggle.addEventListener('change', () => {
-        els.inflasiBox.classList.toggle('active', els.inflasiToggle.checked);
-      });
+      // Toggle handlers
+      els.comboToggle.addEventListener('change', () => els.comboBox.classList.toggle('active', els.comboToggle.checked));
+      els.prepayToggle.addEventListener('change', () => els.prepayBox.classList.toggle('active', els.prepayToggle.checked));
+      els.inflasiToggle.addEventListener('change', () => els.inflasiBox.classList.toggle('active', els.inflasiToggle.checked));
 
-      // Advanced section toggle (delegated)
+      // Adv section toggle
       document.querySelectorAll('.adv-toggle').forEach(toggle => {
-        toggle.addEventListener('click', () => {
-          toggle.parentElement.classList.toggle('open');
-        });
+        toggle.addEventListener('click', () => toggle.parentElement.classList.toggle('open'));
       });
 
       // Anuitas formula
@@ -386,28 +568,225 @@ const jsonLd = {
         return p * (i * r) / (r - 1);
       }
 
-      // Build amortization data
+      // Build amortization
       function buildAmort(pokok, bungaTahun, tahunTotal, cicilan) {
         const bunga = bungaTahun / 100 / 12;
         let saldo = pokok;
         const rows = [];
         for (let t = 1; t <= tahunTotal; t++) {
-          let pokokTahun = 0, bungaTahun = 0;
+          let pokokT = 0, bungaT = 0;
           for (let m = 1; m <= 12; m++) {
             const bgn = saldo * bunga;
             const pkk = cicilan - bgn;
-            pokokTahun += pkk;
-            bungaTahun += bgn;
+            pokokT += pkk;
+            bungaT += bgn;
             saldo -= pkk;
           }
-          rows.push({ tahun: t, pokok: pokokTahun, bunga: bungaTahun, sisa: Math.max(0, saldo) });
+          rows.push({ tahun: t, pokok: pokokT, bunga: bungaT, sisa: Math.max(0, saldo) });
         }
         return rows;
       }
 
-      let lastCalc = null; // Store last calc result for export
+      // Calculate combo bunga (fixed + floating)
+      function calcCombo(pokok, bungaFixed, durasiFixedTahun, bungaFloating, tenorTahun) {
+        const totalBulan = tenorTahun * 12;
+        const bulanFixed = durasiFixedTahun * 12;
+        const bulanFloating = totalBulan - bulanFixed;
 
-      // MAIN CALCULATION FUNCTION
+        // Cicilan fixed (asumsi: cicilan dihitung ulang setelah periode fixed)
+        // Tahap 1: Hitung cicilan asumsi semua tenor pakai fixed
+        const cicFixed = ann(pokok, bungaFixed / 100 / 12, totalBulan);
+        // Hitung sisa pokok setelah periode fixed
+        let saldoAfterFixed = pokok;
+        for (let m = 0; m < bulanFixed; m++) {
+          const bgn = saldoAfterFixed * (bungaFixed / 100 / 12);
+          saldoAfterFixed -= (cicFixed - bgn);
+        }
+        // Tahap 2: Hitung cicilan baru dengan bunga floating untuk sisa tenor
+        const cicFloating = ann(saldoAfterFixed, bungaFloating / 100 / 12, bulanFloating);
+
+        // Total bayar
+        const totalFixed = cicFixed * bulanFixed;
+        const totalFloating = cicFloating * bulanFloating;
+        const totalBayar = totalFixed + totalFloating;
+        const totalBunga = totalBayar - pokok;
+
+        return {
+          cicilanFixed: cicFixed,
+          cicilanFloating: cicFloating,
+          totalBunga,
+          totalBayar,
+          saldoAfterFixed,
+          bulanFixed,
+          bulanFloating,
+        };
+      }
+
+      // Calculate prepayment impact
+      function calcPrepay(pokok, bungaTahun, tenorTahun, cicilan, prepayAmt, prepayYear) {
+        const bungaBulan = bungaTahun / 100 / 12;
+        let saldo = pokok;
+        const prepayMonth = prepayYear * 12;
+        let actualBulan = 0;
+        let totalBungaBaru = 0;
+
+        // Loop sampai saldo habis
+        for (let m = 1; m <= 360; m++) { // max 30 tahun
+          if (saldo <= 0.01) break;
+
+          const bgn = saldo * bungaBulan;
+          let pkk = cicilan - bgn;
+
+          // Apply prepayment at specified month
+          if (m === prepayMonth) {
+            pkk += prepayAmt; // tambah ke pokok yang dibayar
+          }
+
+          // If overpay, cap at remaining balance
+          if (pkk > saldo) {
+            totalBungaBaru += bgn;
+            saldo = 0;
+            actualBulan = m;
+            break;
+          }
+
+          totalBungaBaru += bgn;
+          saldo -= pkk;
+          actualBulan = m;
+        }
+
+        return {
+          tenorBaruBulan: actualBulan,
+          tenorBaruTahun: actualBulan / 12,
+          totalBungaBaru,
+        };
+      }
+
+      // 6 Bank Indonesia data (June 2026 indicative)
+      const BANK_DATA = [
+        { name: 'BCA', rate: 5.25, label: 'Fixed 3 tahun pertama' },
+        { name: 'Mandiri', rate: 5.50, label: 'Fixed 5 tahun pertama' },
+        { name: 'BNI', rate: 5.99, label: 'Fixed 1 tahun pertama' },
+        { name: 'BRI', rate: 6.25, label: 'Fixed 3 tahun pertama' },
+        { name: 'CIMB Niaga', rate: 5.49, label: 'Fixed 2 tahun pertama' },
+        { name: 'BTN (Subsidi FLPP)', rate: 5.00, label: 'Flat 20 tahun (rumah subsidi max Rp 168jt)' },
+      ];
+
+      // Chart instances
+      let donutChart = null;
+      let lineChart = null;
+
+      function renderDonut(dp, pokok, bunga) {
+        const ctx = $('donutChart').getContext('2d');
+        if (donutChart) donutChart.destroy();
+        donutChart = new Chart(ctx, {
+          type: 'doughnut',
+          data: {
+            labels: ['DP', 'Pokok Pinjaman', 'Total Bunga'],
+            datasets: [{
+              data: [dp, pokok, bunga],
+              backgroundColor: ['#10B981', '#2563EB', '#DC2626'],
+              borderColor: '#fff',
+              borderWidth: 2,
+            }],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '60%',
+            plugins: {
+              legend: { position: 'bottom', labels: { font: { size: 11 }, padding: 8 } },
+              tooltip: {
+                callbacks: {
+                  label: (ctx) => `${ctx.label}: Rp ${ctx.parsed.toLocaleString('id-ID')}`,
+                },
+              },
+            },
+          },
+        });
+      }
+
+      function renderLine(amortRows, prepayInfo) {
+        const ctx = $('lineChart').getContext('2d');
+        if (lineChart) lineChart.destroy();
+        const labels = amortRows.map(r => `Thn ${r.tahun}`);
+        const dataNormal = amortRows.map(r => r.sisa);
+
+        const datasets = [{
+          label: 'Sisa Pinjaman (Normal)',
+          data: dataNormal,
+          borderColor: '#2563EB',
+          backgroundColor: 'rgba(37,99,235,.1)',
+          borderWidth: 2,
+          tension: .25,
+          fill: true,
+        }];
+
+        // If prepayment data exists, add overlay line
+        if (prepayInfo) {
+          datasets.push({
+            label: 'Sisa (Dengan Pelunasan Dipercepat)',
+            data: prepayInfo.sisaPerTahun,
+            borderColor: '#10B981',
+            backgroundColor: 'rgba(16,185,129,.05)',
+            borderWidth: 2,
+            borderDash: [5, 5],
+            tension: .25,
+            fill: false,
+          });
+        }
+
+        lineChart = new Chart(ctx, {
+          type: 'line',
+          data: { labels, datasets },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { position: 'bottom', labels: { font: { size: 10 }, padding: 6 } },
+              tooltip: {
+                callbacks: {
+                  label: (ctx) => `${ctx.dataset.label}: Rp ${(ctx.parsed.y / 1e6).toFixed(0)}jt`,
+                },
+              },
+            },
+            scales: {
+              y: {
+                ticks: { callback: (val) => 'Rp ' + (val / 1e6).toFixed(0) + 'jt', font: { size: 10 } },
+              },
+              x: { ticks: { font: { size: 9 } } },
+            },
+          },
+        });
+      }
+
+      // Build prepayment amort for chart overlay
+      function buildPrepayAmortYearly(pokok, bungaTahun, tenorTahun, cicilan, prepayAmt, prepayYear) {
+        const bungaBulan = bungaTahun / 100 / 12;
+        let saldo = pokok;
+        const prepayMonth = prepayYear * 12;
+        const sisaPerTahun = [];
+
+        for (let t = 1; t <= tenorTahun; t++) {
+          for (let m = 1; m <= 12; m++) {
+            const monthGlobal = (t - 1) * 12 + m;
+            if (saldo <= 0.01) {
+              saldo = 0;
+              break;
+            }
+            const bgn = saldo * bungaBulan;
+            let pkk = cicilan - bgn;
+            if (monthGlobal === prepayMonth) pkk += prepayAmt;
+            if (pkk > saldo) { saldo = 0; break; }
+            saldo -= pkk;
+          }
+          sisaPerTahun.push(Math.max(0, saldo));
+        }
+        return { sisaPerTahun };
+      }
+
+      let lastCalc = null;
+
       function hitung() {
         const harga = HC.parseRp(els.harga.value);
         const dpPct = parseFloat(els.dp.value) || 0;
@@ -417,7 +796,7 @@ const jsonLd = {
 
         if (harga === 0) { HC.toast('Masukkan harga rumah dulu', 'error'); return; }
 
-        // Apply inflation adjustment
+        // FEATURE 3: Inflation adjustment
         const useInflasi = els.inflasiToggle.checked;
         let bungaOriginal = bunga;
         let skenario = null;
@@ -430,19 +809,70 @@ const jsonLd = {
         const pokok = harga - dpAmt;
         const bungaBulanan = bunga / 100 / 12;
         const totalBulan = tenor * 12;
-        const cicilan = ann(pokok, bungaBulanan, totalBulan);
-        const totalBunga = cicilan * totalBulan - pokok;
-        const totalBayar = dpAmt + cicilan * totalBulan;
 
-        // Display
+        // FEATURE 1: Combo Bunga
+        const useCombo = els.comboToggle.checked;
+        let comboData = null;
+        let cicilan, totalBunga, totalBayar;
+
+        if (useCombo) {
+          const bFixed = parseFloat(els.bungaFixed.value) || 5;
+          const dFixed = parseInt(els.durasiFixed.value) || 3;
+          const bFloating = parseFloat(els.bungaFloating.value) || 10;
+          comboData = calcCombo(pokok, bFixed, dFixed, bFloating, tenor);
+          cicilan = comboData.cicilanFixed; // Display as primary cicilan
+          totalBunga = comboData.totalBunga;
+          totalBayar = dpAmt + comboData.totalBayar;
+
+          // Show combo result
+          $('comboResult').style.display = '';
+          $('cicilanFixedShow').textContent = `${HC.fmt(comboData.cicilanFixed)} (${dFixed} thn, bunga ${bFixed}%)`;
+          $('cicilanFloatingShow').textContent = `${HC.fmt(comboData.cicilanFloating)} (sisa ${tenor - dFixed} thn, bunga ${bFloating}%)`;
+          $('selisihCicilan').textContent = `+${HC.fmt(comboData.cicilanFloating - comboData.cicilanFixed)} per bulan`;
+        } else {
+          cicilan = ann(pokok, bungaBulanan, totalBulan);
+          totalBunga = cicilan * totalBulan - pokok;
+          totalBayar = dpAmt + cicilan * totalBulan;
+          $('comboResult').style.display = 'none';
+        }
+
+        // Display main results
         $('cicilanBulan').textContent = HC.fmt(cicilan);
-        $('metaInfo').textContent = `${tenor} tahun · Bunga ${bunga.toFixed(2)}%${useInflasi ? ' (inflasi-adjusted)' : ''}`;
+        const metaText = useCombo
+          ? `Combo: ${parseFloat(els.bungaFixed.value)}% fixed → ${parseFloat(els.bungaFloating.value)}% floating, ${tenor} thn`
+          : `${tenor} tahun · Bunga ${bunga.toFixed(2)}%${useInflasi ? ' (inflasi-adjusted)' : ''}`;
+        $('metaInfo').textContent = metaText;
         $('totalDP').textContent = HC.fmt(dpAmt);
         $('pokokPinjaman').textContent = HC.fmt(pokok);
         $('totalBunga').textContent = HC.fmt(totalBunga);
         $('totalBayar').textContent = HC.fmt(totalBayar);
 
-        // Kelayakan check
+        // FEATURE 2: Prepayment
+        const usePrepay = els.prepayToggle.checked;
+        let prepayResult = null;
+        let prepayAmortChart = null;
+        if (usePrepay) {
+          const pAmt = HC.parseRp(els.prepayAmount.value);
+          const pYear = parseInt(els.prepayYear.value);
+          if (pAmt > 0 && pAmt < pokok) {
+            prepayResult = calcPrepay(pokok, bunga, tenor, cicilan, pAmt, pYear);
+            const hematBunga = totalBunga - prepayResult.totalBungaBaru;
+            const tenorBaruTahun = prepayResult.tenorBaruTahun;
+            const hematBulan = totalBulan - prepayResult.tenorBaruBulan;
+            $('prepayResultBox').style.display = '';
+            $('tenorBefore').textContent = `${tenor} tahun (${totalBulan} bulan)`;
+            $('tenorAfter').textContent = `${tenorBaruTahun.toFixed(1)} tahun (${prepayResult.tenorBaruBulan} bulan)`;
+            $('hematWaktu').textContent = `${(hematBulan / 12).toFixed(1)} tahun (${hematBulan} bulan)`;
+            $('hematBunga').textContent = HC.fmt(hematBunga);
+            prepayAmortChart = buildPrepayAmortYearly(pokok, bunga, tenor, cicilan, pAmt, pYear);
+          } else {
+            $('prepayResultBox').style.display = 'none';
+          }
+        } else {
+          $('prepayResultBox').style.display = 'none';
+        }
+
+        // Kelayakan vs gaji
         const $kb = $('kelayakanBody');
         if (gaji > 0) {
           const ratio = (cicilan / gaji) * 100;
@@ -455,6 +885,55 @@ const jsonLd = {
           $kb.innerHTML = '<p style="font-size:12px;color:var(--text-mute);padding:8px 0">Isi "Gaji Bulanan" untuk cek kelayakan otomatis</p>';
         }
 
+        // FEATURE 4: VISUAL CHARTS
+        $('chartSection').style.display = '';
+        renderDonut(dpAmt, pokok, totalBunga);
+        const amort = buildAmort(pokok, bunga, tenor, cicilan);
+        renderLine(amort, prepayAmortChart);
+
+        // FEATURE 5: BANK COMPARISON
+        const bankHtml = BANK_DATA.map(b => {
+          const c = ann(pokok, b.rate / 100 / 12, totalBulan);
+          const total = c * totalBulan + dpAmt;
+          const isActive = Math.abs(b.rate - bungaOriginal) < 0.3;
+          return `
+            <div class="bank-card ${isActive ? 'active' : ''}">
+              <div class="bank-info">
+                <div class="bank-name">🏦 ${b.name}</div>
+                <div class="bank-rate">${b.rate}% · ${b.label}</div>
+              </div>
+              <div class="bank-result">
+                <div class="bank-cicilan">${HC.fmt(c)}</div>
+                <div class="bank-total">Total ${HC.fmt(total).replace('Rp ', 'Rp ')}</div>
+              </div>
+            </div>
+          `;
+        }).join('');
+        $('bankCompareBody').innerHTML = bankHtml;
+
+        // FEATURE 3: BIAYA KPR LENGKAP
+        const bphtb = Math.max(0, (harga - 60000000)) * 0.05; // BPHTB 5% setelah NJOPTKP 60jt
+        const ajb = harga * 0.01;
+        const bbn = harga * 0.02;
+        const provisi = pokok * 0.01;
+        const notaris = harga > 500000000 ? 5000000 : 3000000;
+        const appraisal = harga > 1000000000 ? 2000000 : 800000;
+        const admin = 500000;
+        const asuransiThn1 = pokok * 0.005; // estimate
+        const totalBiaya = bphtb + ajb + bbn + provisi + notaris + appraisal + admin + asuransiThn1;
+
+        $('biayaList').innerHTML = `
+          <li><span class="label">BPHTB (5% dari harga - NJOPTKP 60jt)</span><span class="value">${HC.fmt(bphtb)}</span></li>
+          <li><span class="label">AJB / Akta Jual Beli (1%)</span><span class="value">${HC.fmt(ajb)}</span></li>
+          <li><span class="label">BBN / Balik Nama (2%)</span><span class="value">${HC.fmt(bbn)}</span></li>
+          <li><span class="label">Provisi Bank (1% dari pokok)</span><span class="value">${HC.fmt(provisi)}</span></li>
+          <li><span class="label">Biaya Notaris</span><span class="value">${HC.fmt(notaris)}</span></li>
+          <li><span class="label">Appraisal / Survey Bank</span><span class="value">${HC.fmt(appraisal)}</span></li>
+          <li><span class="label">Administrasi Bank</span><span class="value">${HC.fmt(admin)}</span></li>
+          <li><span class="label">Asuransi KPR Tahun Pertama (0.5%)</span><span class="value">${HC.fmt(asuransiThn1)}</span></li>
+          <li><span class="label">📦 TOTAL BIAYA AWAL (di luar DP)</span><span class="value">${HC.fmt(totalBiaya)}</span></li>
+        `;
+
         // Tenor comparison
         const tenorComp = [5, 10, 15, 20, 25, 30];
         $('tenorCompareBody').innerHTML = tenorComp.map(t => {
@@ -465,7 +944,6 @@ const jsonLd = {
         }).join('');
 
         // Amortization
-        const amort = buildAmort(pokok, bunga, tenor, cicilan);
         $('amortBody').innerHTML = amort.map(r =>
           `<tr><td>Tahun ${r.tahun}</td><td class="right">${HC.fmt(r.pokok)}</td><td class="right" style="color:var(--red)">${HC.fmt(r.bunga)}</td><td class="right">${HC.fmt(r.sisa)}</td></tr>`
         ).join('');
@@ -485,22 +963,20 @@ const jsonLd = {
           els.advInflasi.style.display = 'none';
         }
 
-        // Save for export
         lastCalc = {
           harga, dpPct, dpAmt, pokok, bunga, bungaOriginal, tenor, gaji,
           cicilan, totalBunga, totalBayar, useInflasi, skenario,
+          useCombo, comboData, usePrepay, prepayResult,
+          totalBiaya, bphtb, ajb, bbn, provisi,
           ratio: gaji > 0 ? (cicilan / gaji) * 100 : 0,
         };
 
-        // Show results
         $('placeholder').style.display = 'none';
         $('results').classList.add('show');
         $('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-
-        HC.toast('Berhasil dihitung!');
+        HC.toast('Berhasil dihitung! 🎉');
       }
 
-      // Reset form
       function reset() {
         els.harga.value = '800.000.000';
         els.dp.value = '20';
@@ -509,8 +985,14 @@ const jsonLd = {
         els.gaji.value = '15.000.000';
         els.inflasiToggle.checked = false;
         els.inflasiBox.classList.remove('active');
+        els.comboToggle.checked = false;
+        els.comboBox.classList.remove('active');
+        els.prepayToggle.checked = false;
+        els.prepayBox.classList.remove('active');
         $('placeholder').style.display = '';
         $('results').classList.remove('show');
+        if (donutChart) { donutChart.destroy(); donutChart = null; }
+        if (lineChart) { lineChart.destroy(); lineChart = null; }
         lastCalc = null;
         HC.toast('Form direset', 'info');
       }
@@ -520,36 +1002,43 @@ const jsonLd = {
         const c = lastCalc;
         let insight = '';
         if (c.gaji > 0) {
-          if (c.ratio <= 30) insight = `Cicilan ${c.ratio.toFixed(1)}% dari gaji — SANGAT AMAN. Masih ada ruang untuk maintenance & dana darurat.`;
-          else if (c.ratio <= 40) insight = `Cicilan ${c.ratio.toFixed(1)}% dari gaji — CUKUP BERAT. Siapkan dana darurat 6 bulan cicilan.`;
-          else insight = `Cicilan ${c.ratio.toFixed(1)}% dari gaji — TERLALU BERAT. Pertimbangkan tambah DP atau perpanjang tenor.`;
+          if (c.ratio <= 30) insight = `Cicilan ${c.ratio.toFixed(1)}% dari gaji — AMAN. ${c.usePrepay && c.prepayResult ? `Pelunasan dipercepat hemat ${HC.fmt(c.totalBunga - c.prepayResult.totalBungaBaru)} bunga!` : 'Pertimbangkan pelunasan dipercepat saat dapat bonus.'}`;
+          else if (c.ratio <= 40) insight = `Cicilan ${c.ratio.toFixed(1)}% dari gaji — BERAT. Siapkan dana darurat 6 bulan cicilan + waspada combo floating.`;
+          else insight = `Cicilan ${c.ratio.toFixed(1)}% dari gaji — BERAT BANGET. Pertimbangkan tambah DP atau cari rumah lebih murah.`;
         } else {
-          insight = `Bunga total ${HC.fmtPct(c.totalBunga / c.pokok * 100, 0)} dari pokok pinjaman. Tenor ${c.tenor} tahun.`;
+          insight = `Bunga total ${HC.fmtPct(c.totalBunga / c.pokok * 100, 0)} dari pokok. Biaya awal (di luar DP): ${HC.fmt(c.totalBiaya)}.`;
         }
 
         const inputs = [
           { label: '🏠 Harga Rumah', value: HC.fmt(c.harga) },
           { label: '💰 DP', value: `${c.dpPct}% (${HC.fmt(c.dpAmt)})` },
-          { label: '📊 Suku Bunga', value: `${c.bunga.toFixed(2)}%${c.useInflasi ? ' (inflasi-adjusted)' : ''}` },
-          { label: '📅 Tenor', value: `${c.tenor} tahun (${c.tenor * 12} bulan)` },
+          { label: '📊 Suku Bunga', value: c.useCombo ? `Combo: ${parseFloat(els.bungaFixed.value)}%→${parseFloat(els.bungaFloating.value)}%` : `${c.bunga.toFixed(2)}%${c.useInflasi ? ' (inflasi)' : ''}` },
+          { label: '📅 Tenor', value: `${c.tenor} tahun` },
         ];
         if (c.gaji > 0) inputs.push({ label: '💵 Gaji Bulanan', value: HC.fmt(c.gaji) });
-        if (c.useInflasi) inputs.push({ label: '🔥 Skenario Inflasi', value: c.skenario.charAt(0).toUpperCase() + c.skenario.slice(1) });
+        if (c.usePrepay && c.prepayResult) inputs.push({ label: '💸 Pelunasan Dipercepat', value: `${HC.fmt(HC.parseRp(els.prepayAmount.value))} di thn ${els.prepayYear.value}` });
 
         const results = [
           { label: 'Cicilan/Bulan', value: HC.fmt(c.cicilan), highlight: true },
           { label: 'Pokok Pinjaman', value: HC.fmt(c.pokok) },
           { label: 'Total Bunga', value: HC.fmt(c.totalBunga) },
           { label: 'Total Bayar', value: HC.fmt(c.totalBayar), highlight: true },
+          { label: 'Biaya Awal (BPHTB+AJB+dll)', value: HC.fmt(c.totalBiaya) },
         ];
+        if (c.usePrepay && c.prepayResult) {
+          results.push({ label: 'Hemat Bunga (Prepay)', value: HC.fmt(c.totalBunga - c.prepayResult.totalBungaBaru), highlight: true });
+        }
+        if (c.useCombo && c.comboData) {
+          results.push({ label: 'Cicilan Floating Period', value: HC.fmt(c.comboData.cicilanFloating) });
+        }
 
         return HC.buildReportCard({
-          title: '🏠 Simulasi KPR Anuitas',
+          title: '🏠 Simulasi KPR Premium',
           color: '#2563EB',
           color2: '#1E40AF',
           heroLabel: 'Cicilan Per Bulan',
           heroValue: HC.fmt(c.cicilan),
-          heroSubtext: `${c.tenor} tahun · Bunga ${c.bunga.toFixed(2)}%`,
+          heroSubtext: c.useCombo ? `Combo Fixed→Floating · ${c.tenor} tahun` : `${c.tenor} tahun · Bunga ${c.bunga.toFixed(2)}%`,
           inputs, results, insight,
           slug: 'kpr',
         });
@@ -558,15 +1047,21 @@ const jsonLd = {
       function summaryText() {
         if (!lastCalc) return '';
         const c = lastCalc;
-        return `🏠 *Simulasi KPR - HitungCerdas*\n\n` +
-               `Harga Rumah: ${HC.fmt(c.harga)}\n` +
-               `DP ${c.dpPct}%: ${HC.fmt(c.dpAmt)}\n` +
-               `Bunga: ${c.bunga.toFixed(2)}%${c.useInflasi ? ' (inflasi-adjusted)' : ''}\n` +
-               `Tenor: ${c.tenor} tahun\n\n` +
-               `💰 *Cicilan/Bulan: ${HC.fmt(c.cicilan)}*\n` +
-               `📊 Total Bunga: ${HC.fmt(c.totalBunga)}\n` +
-               `💵 Total Bayar: ${HC.fmt(c.totalBayar)}\n\n` +
-               `Hitung sendiri di: https://hitungcerdas.net/kalkulator/kpr`;
+        let txt = `🏠 *Simulasi KPR Premium - HitungCerdas*\n\n`;
+        txt += `Harga Rumah: ${HC.fmt(c.harga)}\nDP ${c.dpPct}%: ${HC.fmt(c.dpAmt)}\n`;
+        txt += c.useCombo ? `Bunga: Combo Fixed→Floating\n` : `Bunga: ${c.bunga.toFixed(2)}%${c.useInflasi ? ' (inflasi)' : ''}\n`;
+        txt += `Tenor: ${c.tenor} tahun\n\n`;
+        txt += `💰 *Cicilan/Bulan: ${HC.fmt(c.cicilan)}*\n`;
+        txt += `📊 Total Bunga: ${HC.fmt(c.totalBunga)}\n`;
+        txt += `💵 Total Bayar: ${HC.fmt(c.totalBayar)}\n`;
+        txt += `📋 Biaya Awal Lain: ${HC.fmt(c.totalBiaya)}\n`;
+        if (c.usePrepay && c.prepayResult) {
+          txt += `\n💸 *Pelunasan Dipercepat:*\n`;
+          txt += `Hemat Bunga: ${HC.fmt(c.totalBunga - c.prepayResult.totalBungaBaru)}\n`;
+          txt += `Hemat Waktu: ${((c.tenor * 12 - c.prepayResult.tenorBaruBulan) / 12).toFixed(1)} tahun\n`;
+        }
+        txt += `\nHitung sendiri di: https://hitungcerdas.net/kalkulator/kpr`;
+        return txt;
       }
 
       // Event listeners
@@ -576,7 +1071,7 @@ const jsonLd = {
       $('exportImg').addEventListener('click', () => {
         const card = buildReport();
         if (!card) { HC.toast('Hitung dulu sebelum export', 'error'); return; }
-        HC.exportToImage(card, 'kpr-' + Date.now());
+        HC.exportToImage(card, 'kpr-premium-' + Date.now());
       });
 
       $('exportWa').addEventListener('click', () => {

@@ -10,10 +10,12 @@ const calc = getCalculatorBySlug('kredit-mobil')!;
 const related = getRelatedCalculators('kredit-mobil', 3);
 
 const faqs = [
+  { question: 'Apa itu TCO (Total Cost of Ownership) mobil?', answer: 'TCO mobil = total biaya kepemilikan mobil per bulan, bukan cuma cicilan. Komponen: cicilan + bensin + tol + parkir + servis berkala + pajak STNK + asuransi all-risk + cuci. Untuk mobil Rp 280 juta dengan cicilan Rp 5.5 juta, TCO bulanan bisa Rp 9-11 juta. Aturan: TCO MAKSIMAL 40% gaji.' },
   { question: 'Berapa DP minimum kredit mobil di Indonesia?', answer: 'DP minimum kredit mobil per OJK: <strong>20-30% dari OTR</strong>. Showroom sering promo "DP 15%" dengan syarat bunga lebih tinggi. Idealnya DP <strong>30%+</strong> agar bunga total tidak membengkak.' },
-  { question: 'Bunga kredit mobil di Indonesia berapa?', answer: 'Bunga flat kredit mobil <strong>5-9% per tahun</strong> (Maybank Finance, ACC, BCA Finance, Mandiri Tunas Finance, Astra Credit). Lebih rendah dari motor karena nominal lebih besar. Bunga 6% flat ≈ Bunga anuitas 11-12% efektif.' },
-  { question: 'Berapa total biaya kepemilikan mobil per bulan?', answer: 'Selain cicilan, biaya kepemilikan mobil per bulan: <strong>Bensin</strong> Rp 1-2jt, <strong>Tol/parkir</strong> Rp 300-500rb, <strong>Servis berkala</strong> Rp 250-500rb, <strong>Asuransi All Risk</strong> Rp 500rb-1jt/bln (~3% nilai mobil/thn), <strong>Pajak STNK</strong> Rp 200rb/bln. Total: <strong>+50-100% dari cicilan</strong>.' },
-  { question: 'Beli mobil baru atau bekas yang lebih untung?', answer: '<strong>Mobil baru</strong>: Garansi 3-5 tahun, fitur lengkap, depresiasi 20-25% di tahun pertama. <strong>Mobil bekas</strong> (3-5 thn): Harga 50-70% mobil baru, depresiasi sudah jeda, tapi risiko biaya servis lebih tinggi. <strong>Tip</strong>: Beli bekas 2-3 tahun dari pemilik pertama yang terawat — sweet spot value.' },
+  { question: 'Bunga kredit mobil di Indonesia berapa?', answer: 'Bunga flat kredit mobil <strong>5-9% per tahun</strong> (Maybank Finance, ACC, BCA Finance, Mandiri Tunas Finance, Astra Credit). Lebih rendah dari motor karena nominal lebih besar.' },
+  { question: 'Berapa total biaya kepemilikan mobil per bulan?', answer: 'Selain cicilan, TCO bulanan mobil: <strong>Bensin</strong> Rp 1.5-3 juta (tergantung jarak), <strong>Tol/parkir</strong> Rp 300-700rb, <strong>Servis berkala</strong> Rp 300-500rb, <strong>Asuransi All Risk</strong> Rp 600rb-1jt/bln (~3% nilai mobil/thn), <strong>Pajak STNK</strong> Rp 200-400rb/bln, <strong>Cuci</strong> Rp 100rb. Total: TCO biasanya <strong>1.5-2× cicilan</strong>.' },
+  { question: 'Mobil listrik (EV) lebih hemat?', answer: 'YA, jangka panjang sangat hemat: (1) <strong>Bensin</strong>: EV cuma ~Rp 500rb-1jt/bln (charging) vs ICE Rp 2-3jt/bln. (2) <strong>Insentif PPN 1%</strong> dari pemerintah (bukan 11%), hemat puluhan juta saat beli. (3) <strong>Servis lebih murah</strong>: tidak ada oli mesin, tune-up jarang. (4) <strong>Tidak kena ganjil-genap</strong> di Jakarta. Cocok untuk komuter urban yang charging di rumah malam.' },
+  { question: 'Beli mobil baru atau bekas yang lebih untung?', answer: '<strong>Mobil baru</strong>: Garansi 3-5 tahun, fitur lengkap, depresiasi 20-25% di tahun pertama. <strong>Mobil bekas</strong> (3-5 thn): Harga 50-70% mobil baru, depresiasi sudah jeda, tapi risiko biaya servis lebih tinggi. <strong>Sweet spot</strong>: bekas 2-3 tahun dari pemilik pertama yang terawat.' },
 ];
 
 const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '/#tools' }, { label: calc.shortTitle }];
@@ -26,9 +28,16 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       <div class="calc-hero-grid">
         <div class="calc-hero-text">
           <div class="calc-hero-tag" style="background:#CFFAFE;color:#155E75"><i class="ti ti-car"></i> {calc.categoryLabel}</div>
-          <h1 class="calc-hero-title">{calc.h1}</h1>
-          <p class="calc-hero-sub">{calc.introText}</p>
-          <ul class="calc-hero-benefits">{calc.benefits.map(b => <li><i class="ti ti-check"></i> {b}</li>)}</ul>
+          <h1 class="calc-hero-title">Kalkulator Kredit Mobil + TCO Lengkap 2026</h1>
+          <p class="calc-hero-sub">{calc.introText} Dilengkapi <strong>TCO (Total Cost of Ownership)</strong> akurat: bensin, tol, parkir, servis, pajak STNK, asuransi all-risk, dan biaya bulanan lengkap.</p>
+          <ul class="calc-hero-benefits">
+            <li><i class="ti ti-check"></i> Cicilan bunga flat akurat</li>
+            <li><i class="ti ti-check"></i> TCO bulanan komprehensif</li>
+            <li><i class="ti ti-check"></i> 5 tipe mobil (LCGC, MPV, SUV, EV, Premium)</li>
+            <li><i class="ti ti-check"></i> 4 profil pemakaian (Weekender → Heavy User)</li>
+            <li><i class="ti ti-check"></i> Bandingkan EV vs Bensin</li>
+            <li><i class="ti ti-check"></i> Mode skenario inflasi</li>
+          </ul>
         </div>
         <div class="calc-hero-illust">
           <svg viewBox="0 0 200 200" fill="none">
@@ -50,7 +59,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       <div class="calc-card">
         <div class="calc-card-hdr">
           <div class="calc-card-hdr-ic" style="background:linear-gradient(135deg,#0891B2 0%,#155E75 100%)"><i class="ti ti-car"></i></div>
-          <div><h2 class="calc-card-title">Kalkulator Kredit Mobil</h2><p class="calc-card-sub">Bunga flat leasing dengan mode inflasi & TCO</p></div>
+          <div><h2 class="calc-card-title">Kalkulator Kredit Mobil + TCO</h2><p class="calc-card-sub">Cicilan + Biaya Bulanan Lengkap (Bensin/Tol/Servis/Asuransi)</p></div>
         </div>
 
         <div class="calc-grid">
@@ -81,6 +90,41 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
                 <option value="72">72 bulan (6 tahun)</option>
               </select></div>
 
+            {/* ─── TCO PROFILE SELECTORS ─── */}
+            <div class="tco-profile-box">
+              <label>🚗 Tipe Mobil</label>
+              <select id="mobilType">
+                <option value="lcgc">LCGC (Ayla/Calya/Brio/Sigra)</option>
+                <option value="mpv" selected>MPV / City Car (Avanza/Xpander/Ertiga/Mobilio)</option>
+                <option value="suv">SUV (HR-V/Rush/Fortuner/Pajero)</option>
+                <option value="premium">Premium (Innova Zenix/Alphard/Camry)</option>
+                <option value="ev">⚡ Mobil Listrik (Wuling Air/Ioniq/BYD/Atto 3)</option>
+              </select>
+              <p class="hint-text">Tipe mobil menentukan konsumsi BBM, biaya servis & pajak</p>
+            </div>
+
+            <div class="tco-profile-box">
+              <label>📍 Profil Pemakaian</label>
+              <select id="usageProfile">
+                <option value="weekender">Weekender (≤1000 km/bln) — Weekend trip family</option>
+                <option value="komuter" selected>Komuter (~1500 km/bln) — Kerja PP + weekend</option>
+                <option value="aktif">Aktif (~2500 km/bln) — Sales / sering perjalanan</option>
+                <option value="berat">Berat (≥4000 km/bln) — Rental / driver online</option>
+              </select>
+              <p class="hint-text">Profil ini auto-adjust bensin, tol, dan parkir di TCO</p>
+            </div>
+
+            <div class="tco-profile-box">
+              <label>🛣️ Wilayah Pemakaian</label>
+              <select id="wilayah">
+                <option value="jakarta">DKI Jakarta (Tol mahal, parkir mall)</option>
+                <option value="surabaya">Surabaya / Bandung</option>
+                <option value="lainnya" selected>Kota lain Indonesia</option>
+              </select>
+              <p class="hint-text">Pengaruh besar di biaya tol & parkir</p>
+            </div>
+
+            {/* ─── INFLATION TOGGLE ─── */}
             <div class="inflation-box" id="inflationBox">
               <label class="inflation-toggle">
                 <input type="checkbox" id="inflasiToggle" />
@@ -94,7 +138,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
                   <option value="tinggi">📈 Tinggi (5.0%)</option>
                   <option value="krisis">⚠️ Krisis (7.5%)</option>
                 </select>
-                <p class="inflation-note">Tenor mobil panjang (5-6 thn), risiko bunga naik tinggi karena inflasi. Mode ini simulasikan dampak skenario inflasi.</p>
+                <p class="inflation-note">Tenor mobil panjang (5-6 thn), risiko bunga naik tinggi karena inflasi.</p>
               </div>
             </div>
 
@@ -107,8 +151,8 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
           <div class="calc-output">
             <div class="result-placeholder" id="placeholder">
               <i class="ti ti-car result-placeholder-icon"></i>
-              <div class="result-placeholder-title">Cicilan mobil akan muncul di sini</div>
-              <div class="result-placeholder-desc">Isi data mobil, klik <strong>"Hitung Sekarang"</strong>.</div>
+              <div class="result-placeholder-title">Cicilan + TCO Mobil akan muncul di sini</div>
+              <div class="result-placeholder-desc">Isi data mobil, klik <strong>"Hitung Sekarang"</strong> untuk simulasi cicilan + TCO bulanan komprehensif.</div>
             </div>
 
             <div class="result-wrapper" id="results">
@@ -125,11 +169,14 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
                 <div class="result-item"><div class="result-item-label">Total Bayar</div><div class="result-item-value result-strong" id="totalBayar">Rp 0</div></div>
               </div>
 
-              <div class="kelayakan-box">
-                <div class="kelayakan-hdr"><i class="ti ti-shield-check"></i><span>Total Cost of Ownership (TCO)</span></div>
-                <div id="tcoBody"></div>
+              {/* ─── TCO BOX ─── */}
+              <div class="tco-box">
+                <h4><i class="ti ti-receipt-2"></i> Total Cost of Ownership (TCO) Bulanan</h4>
+                <ul class="tco-list" id="tcoList"></ul>
+                <div id="tcoWarning"></div>
               </div>
 
+              {/* TENOR COMPARISON */}
               <div class="adv-section">
                 <div class="adv-toggle"><span><i class="ti ti-chart-bar"></i>&nbsp; Bandingkan Semua Tenor</span><i class="ti ti-chevron-down chev"></i></div>
                 <div class="adv-content">
@@ -140,6 +187,19 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
                 </div>
               </div>
 
+              {/* COMPARE MOBIL TYPES */}
+              <div class="adv-section">
+                <div class="adv-toggle"><span><i class="ti ti-arrows-right-left"></i>&nbsp; Bandingkan TCO 5 Tipe Mobil</span><i class="ti ti-chevron-down chev"></i></div>
+                <div class="adv-content">
+                  <table class="compare-table">
+                    <thead><tr><th>Tipe Mobil</th><th class="right">Bensin/Bln</th><th class="right">TCO Total/Bln</th></tr></thead>
+                    <tbody id="mobilCompareBody"></tbody>
+                  </table>
+                  <p class="bank-disclaimer">⚡ <strong>Mobil listrik (EV)</strong> untuk komuter urban yang charging di rumah malam paling hemat. Plus insentif PPN 1% pemerintah Indonesia! Tapi pastikan rute kamu ada stasiun pengisian (SPKLU).</p>
+                </div>
+              </div>
+
+              {/* INFLASI COMPARE */}
               <div class="adv-section" id="advInflasi" style="display:none">
                 <div class="adv-toggle"><span><i class="ti ti-trending-up"></i>&nbsp; Dampak Inflasi terhadap Bunga</span><i class="ti ti-chevron-down chev"></i></div>
                 <div class="adv-content">
@@ -165,14 +225,40 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
 
   <section class="content-section">
     <div class="wrap-text">
-      <h2>Strategi Pintar Beli Mobil dengan Kredit</h2>
-      <p>Mobil bukan hanya tentang cicilan bulanan. <strong>Total Cost of Ownership (TCO)</strong> = cicilan + bensin + asuransi + servis + pajak. TCO biasanya <strong>1,5-2× cicilan</strong>. Untuk mobil Rp 280jt cicilan Rp 6,5jt/bln, TCO bisa Rp 10-13jt/bln. Pastikan TCO maksimal <strong>40% gaji</strong>.</p>
-      <div class="cta-box"><h3>Coba Kalkulator Kredit Mobil</h3><p>Hitung cicilan + TCO total, lihat dampak inflasi terhadap bunga, klik "Hitung Sekarang".</p></div>
+      <h2>Strategi Pintar Beli Mobil: Mind the TCO!</h2>
+      <p>Mobil bukan hanya tentang cicilan bulanan. <strong>Total Cost of Ownership (TCO)</strong> = cicilan + bensin + tol + parkir + servis + asuransi + pajak. TCO biasanya <strong>1.5-2× cicilan</strong>. Untuk mobil Rp 280jt cicilan Rp 6,5jt/bln, TCO bisa Rp 10-13jt/bln. Pastikan TCO maksimal <strong>40% gaji</strong>.</p>
+
+      <h3>Komponen TCO Mobil per Bulan</h3>
+      <ul class="info-list">
+        <li>🏦 <strong>Cicilan</strong> — Pokok + bunga flat</li>
+        <li>⛽ <strong>Bensin / Listrik</strong> — Tergantung mobil & profil pemakaian (Rp 500rb-3jt)</li>
+        <li>🛣️ <strong>Tol & parkir</strong> — Khusus DKI Jakarta bisa Rp 700rb/bln</li>
+        <li>🔧 <strong>Servis berkala</strong> — Rp 300-500rb/bulan (oli, filter, periodic 10rb km)</li>
+        <li>📄 <strong>Pajak STNK + BBN</strong> — 2-3% nilai mobil/tahun</li>
+        <li>🛡️ <strong>Asuransi All-Risk</strong> — 2.5-3.5% nilai mobil/tahun</li>
+        <li>🧽 <strong>Cuci salon</strong> — Rp 100-150rb/bulan</li>
+        <li>🚨 <strong>Dana darurat servis</strong> — Rp 200rb/bulan (untuk masalah tak terduga)</li>
+      </ul>
+
+      <h3>Tips Cerdas Sebelum Ambil Kredit Mobil</h3>
+      <ol class="tips-list">
+        <li><strong>Hitung TCO, bukan cicilan</strong> — TCO maksimal 40% gaji. Cicilan saja maksimal 25%.</li>
+        <li><strong>Pertimbangkan EV untuk komuter urban</strong> — Insentif PPN 1% + bensin hemat 70%.</li>
+        <li><strong>Mobil baru depresiasi 20-25% di tahun 1</strong> — Beli mobil bekas 2-3 thn lebih value-for-money.</li>
+        <li><strong>Asuransi All-Risk wajib untuk mobil kredit</strong> — Bank biasanya minta. Premi sekitar 2.5-3.5% nilai mobil.</li>
+        <li><strong>Bayar pajak STNK on time</strong> — Telat = denda 25%/tahun + bisa di-tilang.</li>
+        <li><strong>Servis berkala 10rb km</strong> — Lebih murah daripada turun mesin (Rp 5-15 juta).</li>
+      </ol>
+
+      <div class="cta-box">
+        <h3>Hitung TCO Mobilmu Sekarang</h3>
+        <p>Pilih tipe mobil, profil pemakaian, dan wilayah — klik "Hitung Sekarang" untuk lihat biaya bulanan KOMPLIT (bukan cuma cicilan).</p>
+      </div>
     </div>
   </section>
 
   <AdSlot format="horizontal" />
-  <FAQ title="Pertanyaan Seputar Kredit Mobil" items={faqs} />
+  <FAQ title="Pertanyaan Seputar Kredit Mobil & TCO" items={faqs} />
 
   <section class="section"><div class="wrap">
     <div class="section-hdr"><div class="section-eyebrow">Kalkulator Lainnya</div><h2 class="section-title">Hitung Juga yang Lain</h2></div>
@@ -186,6 +272,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
     ready(() => {
       const $ = id => document.getElementById(id);
       const els = { harga: $('harga'), dp: $('dp'), bunga: $('bunga'), tenor: $('tenor'),
+                    mobilType: $('mobilType'), usageProfile: $('usageProfile'), wilayah: $('wilayah'),
                     inflasiToggle: $('inflasiToggle'), inflasiSkenario: $('inflasiSkenario'),
                     inflasiBox: $('inflationBox'), advInflasi: $('advInflasi') };
       [els.harga].forEach(el => el.addEventListener('input', HC.fmtInput));
@@ -198,6 +285,72 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         return { cicilan: (pokok + totalBunga) / totalBulan, totalBunga };
       }
 
+      // TCO data per mobil type
+      const MOBIL_TYPE_DATA = {
+        lcgc:    { kmpl: 16, servisBulan: 250000, pajakRate: 0.018, asuransiRate: 0.025, label: 'LCGC' },
+        mpv:     { kmpl: 13, servisBulan: 350000, pajakRate: 0.02,  asuransiRate: 0.030, label: 'MPV / City Car' },
+        suv:     { kmpl: 10, servisBulan: 450000, pajakRate: 0.022, asuransiRate: 0.032, label: 'SUV' },
+        premium: { kmpl: 8,  servisBulan: 700000, pajakRate: 0.025, asuransiRate: 0.035, label: 'Premium' },
+        ev:      { kmpl: 0,  servisBulan: 250000, pajakRate: 0.005, asuransiRate: 0.025, label: 'Mobil Listrik', isElectric: true, kwhPerKm: 0.18 }, // 0.18 kWh/km
+      };
+
+      const USAGE_PROFILE = {
+        weekender: { kmBulan: 800,  label: 'Weekender (≤1000 km/bln)' },
+        komuter:   { kmBulan: 1500, label: 'Komuter (~1500 km/bln)' },
+        aktif:     { kmBulan: 2500, label: 'Aktif (~2500 km/bln)' },
+        berat:     { kmBulan: 4000, label: 'Berat (≥4000 km/bln)' },
+      };
+
+      const WILAYAH = {
+        jakarta:  { tolParkirBulan: 700000, label: 'DKI Jakarta' },
+        surabaya: { tolParkirBulan: 350000, label: 'Surabaya / Bandung' },
+        lainnya:  { tolParkirBulan: 200000, label: 'Kota lain Indonesia' },
+      };
+
+      const BBM_PRICE = 13000; // Pertamax
+      const LISTRIK_PRICE = 1500; // PLN R-1
+
+      function calcTCO(harga, mobilTypeKey, usageProfileKey, wilayahKey, cicilanBulan) {
+        const mobil = MOBIL_TYPE_DATA[mobilTypeKey];
+        const usage = USAGE_PROFILE[usageProfileKey];
+        const wil = WILAYAH[wilayahKey];
+        const kmBulan = usage.kmBulan;
+
+        let bensinBulan = 0, bensinLabel = '';
+        if (mobil.isElectric) {
+          const kwhBulan = kmBulan * mobil.kwhPerKm;
+          bensinBulan = kwhBulan * LISTRIK_PRICE;
+          bensinLabel = `${kwhBulan.toFixed(0)} kWh × Rp ${LISTRIK_PRICE.toLocaleString('id-ID')}/kWh`;
+        } else {
+          const literBulan = kmBulan / mobil.kmpl;
+          bensinBulan = literBulan * BBM_PRICE;
+          bensinLabel = `${literBulan.toFixed(0)} L × Rp ${BBM_PRICE.toLocaleString('id-ID')}/L (${mobil.kmpl} km/L)`;
+        }
+
+        const pajakBulan = harga * mobil.pajakRate / 12;
+        const asuransiBulan = harga * mobil.asuransiRate / 12;
+        const tolParkirBulan = wil.tolParkirBulan * (kmBulan / 1500); // scale by usage
+        const servisBulan = mobil.servisBulan;
+        const cuciBulan = 120000;
+        const danaDarurat = 200000;
+
+        const totalTCO = cicilanBulan + bensinBulan + servisBulan + pajakBulan + asuransiBulan + tolParkirBulan + cuciBulan + danaDarurat;
+
+        return {
+          cicilan: cicilanBulan,
+          bensin: bensinBulan,
+          bensinLabel,
+          servis: servisBulan,
+          pajak: pajakBulan,
+          asuransi: asuransiBulan,
+          tolParkir: tolParkirBulan,
+          cuci: cuciBulan,
+          danaDarurat,
+          totalTCO,
+          isElectric: mobil.isElectric,
+        };
+      }
+
       let lastCalc = null;
 
       function hitung() {
@@ -205,6 +358,10 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         const dpPct = parseFloat(els.dp.value) || 0;
         let bunga = parseFloat(els.bunga.value) || 0;
         const tenor = parseInt(els.tenor.value);
+        const mobilTypeKey = els.mobilType.value;
+        const usageKey = els.usageProfile.value;
+        const wilayahKey = els.wilayah.value;
+
         if (harga === 0) { HC.toast('Masukkan harga mobil dulu', 'error'); return; }
 
         const useInflasi = els.inflasiToggle.checked;
@@ -212,19 +369,14 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         if (useInflasi) { skenario = els.inflasiSkenario.value; bunga = HC.adjustInterestRate(bunga, skenario); }
 
         const dpAmt = harga * (dpPct / 100);
-        const bbn = harga * 0.10; // BBN ~10% harga
-        const asuransiThn1 = harga * 0.025; // Asuransi all-risk thn 1
+        const bbn = harga * 0.10;
+        const asuransiThn1 = harga * 0.025;
         const biayaAwal = dpAmt + bbn + asuransiThn1;
         const pokok = harga - dpAmt;
         const { cicilan, totalBunga } = flat(pokok, bunga, tenor);
         const totalBayar = biayaAwal + cicilan * tenor;
 
-        // TCO calculation
-        const bensinBulan = 1500000;
-        const servisBulan = 350000;
-        const pajakBulan = 200000;
-        const tolParkir = 400000;
-        const tcoBulan = cicilan + bensinBulan + servisBulan + pajakBulan + tolParkir;
+        const tco = calcTCO(harga, mobilTypeKey, usageKey, wilayahKey, cicilan);
 
         $('cicilan').textContent = HC.fmt(cicilan);
         $('metaInfo').textContent = `${tenor} bulan · Bunga flat ${bunga.toFixed(2)}%${useInflasi ? ' (inflasi-adjusted)' : ''}`;
@@ -233,23 +385,103 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         $('totalBunga').textContent = HC.fmt(totalBunga);
         $('totalBayar').textContent = HC.fmt(totalBayar);
 
-        $('tcoBody').innerHTML = `
-          <table style="width:100%;font-size:12.5px;border-collapse:collapse">
-            <tr><td style="padding:4px 0">Cicilan/Bulan</td><td style="text-align:right;font-weight:600">${HC.fmt(cicilan)}</td></tr>
-            <tr><td style="padding:4px 0">Bensin (~estimasi)</td><td style="text-align:right;font-weight:600">${HC.fmt(bensinBulan)}</td></tr>
-            <tr><td style="padding:4px 0">Servis berkala</td><td style="text-align:right;font-weight:600">${HC.fmt(servisBulan)}</td></tr>
-            <tr><td style="padding:4px 0">Pajak STNK + asuransi</td><td style="text-align:right;font-weight:600">${HC.fmt(pajakBulan)}</td></tr>
-            <tr><td style="padding:4px 0">Tol & parkir</td><td style="text-align:right;font-weight:600">${HC.fmt(tolParkir)}</td></tr>
-            <tr style="border-top:1px solid var(--border)"><td style="padding:8px 0;font-weight:700">TCO Total/Bulan</td><td style="text-align:right;font-weight:800;color:var(--blue-dark)">${HC.fmt(tcoBulan)}</td></tr>
-          </table>
-          <p class="ks-note">💡 TCO sebaiknya maksimal <strong>40% gaji</strong> agar finansial tetap sehat.</p>`;
+        // TCO display
+        const electricBadge = tco.isElectric ? '⚡' : '⛽';
+        $('tcoList').innerHTML = `
+          <li class="tco-cicilan">
+            <span class="ico">🏦</span>
+            <span class="lbl">Cicilan Kredit
+              <span class="lbl-hint">${tenor} bulan, bunga ${bunga.toFixed(2)}% flat</span>
+            </span>
+            <span class="val">${HC.fmt(tco.cicilan)}</span>
+          </li>
+          <li>
+            <span class="ico">${electricBadge}</span>
+            <span class="lbl">${tco.isElectric ? 'Listrik (charging)' : 'Bensin (Pertamax)'}
+              <span class="lbl-hint">${tco.bensinLabel}</span>
+            </span>
+            <span class="val">${HC.fmt(tco.bensin)}</span>
+          </li>
+          <li>
+            <span class="ico">🔧</span>
+            <span class="lbl">Servis berkala
+              <span class="lbl-hint">Oli, filter, tune-up (10rb km)</span>
+            </span>
+            <span class="val">${HC.fmt(tco.servis)}</span>
+          </li>
+          <li>
+            <span class="ico">🛣️</span>
+            <span class="lbl">Tol & parkir
+              <span class="lbl-hint">${WILAYAH[wilayahKey].label}, scaled by usage</span>
+            </span>
+            <span class="val">${HC.fmt(tco.tolParkir)}</span>
+          </li>
+          <li>
+            <span class="ico">📄</span>
+            <span class="lbl">Pajak STNK
+              <span class="lbl-hint">${HC.fmt(tco.pajak * 12)}/tahun ÷ 12</span>
+            </span>
+            <span class="val">${HC.fmt(tco.pajak)}</span>
+          </li>
+          <li>
+            <span class="ico">🛡️</span>
+            <span class="lbl">Asuransi All-Risk
+              <span class="lbl-hint">${HC.fmt(tco.asuransi * 12)}/tahun (~${(MOBIL_TYPE_DATA[mobilTypeKey].asuransiRate * 100).toFixed(1)}% nilai)</span>
+            </span>
+            <span class="val">${HC.fmt(tco.asuransi)}</span>
+          </li>
+          <li>
+            <span class="ico">🧽</span>
+            <span class="lbl">Cuci salon
+              <span class="lbl-hint">Cuci 2× sebulan + salon kuartalan</span>
+            </span>
+            <span class="val">${HC.fmt(tco.cuci)}</span>
+          </li>
+          <li>
+            <span class="ico">🚨</span>
+            <span class="lbl">Dana darurat servis
+              <span class="lbl-hint">Untuk masalah tak terduga (ganti aki, dll)</span>
+            </span>
+            <span class="val">${HC.fmt(tco.danaDarurat)}</span>
+          </li>
+          <li class="tco-total">
+            <span class="ico">💸</span>
+            <span class="lbl">TCO TOTAL per Bulan</span>
+            <span class="val">${HC.fmt(tco.totalTCO)}</span>
+          </li>
+        `;
 
+        // TCO warning - assume avg gaji Rp 12 juta (industri profesional)
+        const minGaji = tco.totalTCO * 2.5; // TCO max 40% gaji
+        let warningHtml = '';
+        if (tco.isElectric) {
+          const hematPotensi = (tco.totalTCO * 0.15); // estimate hemat 15% jika compared to ICE
+          warningHtml = `<div class="tco-warning safe">⚡ <strong>EV Smart Choice!</strong> Mobil listrik hemat bensin 70%, insentif PPN 1% (bukan 11%), tidak kena ganjil-genap. Cocok untuk komuter urban yang charging di rumah malam.</div>`;
+        } else if (tco.totalTCO > 10000000) {
+          warningHtml = `<div class="tco-warning">⚠️ <strong>TCO ${HC.fmt(tco.totalTCO)}/bulan sangat besar.</strong> Pastikan gaji minimal ${HC.fmt(minGaji)} agar TCO mobil tidak lebih dari 40% gaji. Pertimbangkan mobil lebih kecil atau bekas.</div>`;
+        } else if (tco.totalTCO > 6000000) {
+          warningHtml = `<div class="tco-warning">💡 <strong>TCO ${HC.fmt(tco.totalTCO)}/bulan cukup besar.</strong> Pastikan gaji minimal ${HC.fmt(minGaji)}. Siapkan dana darurat 6 bulan TCO.</div>`;
+        } else {
+          warningHtml = `<div class="tco-warning safe">✅ TCO terjangkau ${HC.fmt(tco.totalTCO)}/bulan. Tetap sisihkan dana darurat 6 bulan TCO.</div>`;
+        }
+        $('tcoWarning').innerHTML = warningHtml;
+
+        // Tenor comparison
         const tenorOpts = [12, 24, 36, 48, 60, 72];
         $('tenorBody').innerHTML = tenorOpts.map(t => {
           const { cicilan: c, totalBunga: tb } = flat(pokok, bunga, t);
           return `<tr class="${t === tenor ? 'active' : ''}"><td>${t} bln</td><td class="right">${HC.fmt(c)}</td><td class="right">${HC.fmt(tb)}</td><td class="right">${HC.fmt(c * t + biayaAwal)}</td></tr>`;
         }).join('');
 
+        // Compare mobil types
+        const types = ['lcgc', 'mpv', 'suv', 'premium', 'ev'];
+        $('mobilCompareBody').innerHTML = types.map(t => {
+          const tcoAlt = calcTCO(harga, t, usageKey, wilayahKey, cicilan);
+          const lbl = MOBIL_TYPE_DATA[t].label + (t === 'ev' ? ' ⚡' : '');
+          return `<tr class="${t === mobilTypeKey ? 'active' : ''}"><td>${lbl}</td><td class="right">${HC.fmt(tcoAlt.bensin)}</td><td class="right" style="font-weight:700">${HC.fmt(tcoAlt.totalTCO)}</td></tr>`;
+        }).join('');
+
+        // Inflation comparison
         if (useInflasi) {
           els.advInflasi.style.display = '';
           const scenarios = ['rendah', 'normal', 'tinggi', 'krisis'];
@@ -263,16 +495,21 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
           els.advInflasi.style.display = 'none';
         }
 
-        lastCalc = { harga, dpPct, dpAmt, biayaAwal, pokok, bunga, bungaOriginal, tenor, cicilan, totalBunga, totalBayar, tcoBulan, useInflasi, skenario };
+        lastCalc = { harga, dpPct, dpAmt, biayaAwal, pokok, bunga, bungaOriginal, tenor, cicilan, totalBunga, totalBayar,
+                     mobilTypeKey, mobilTypeLabel: MOBIL_TYPE_DATA[mobilTypeKey].label,
+                     usageKey, usageLabel: USAGE_PROFILE[usageKey].label,
+                     wilayahKey, wilayahLabel: WILAYAH[wilayahKey].label,
+                     tco, useInflasi, skenario };
         $('placeholder').style.display = 'none';
         $('results').classList.add('show');
         $('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        HC.toast('Cicilan mobil berhasil dihitung!');
+        HC.toast('Cicilan + TCO Mobil berhasil dihitung!');
       }
 
       function reset() {
         els.harga.value = '280.000.000'; els.dp.value = '25'; els.bunga.value = '7';
-        els.tenor.value = '36'; els.inflasiToggle.checked = false; els.inflasiBox.classList.remove('active');
+        els.tenor.value = '36'; els.mobilType.value = 'mpv'; els.usageProfile.value = 'komuter';
+        els.wilayah.value = 'lainnya'; els.inflasiToggle.checked = false; els.inflasiBox.classList.remove('active');
         $('placeholder').style.display = ''; $('results').classList.remove('show');
         lastCalc = null; HC.toast('Form direset', 'info');
       }
@@ -280,30 +517,36 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       function buildReport() {
         if (!lastCalc) return null;
         const c = lastCalc;
-        const insight = `TCO bulanan (cicilan + bensin + maintenance) ~${HC.fmt(c.tcoBulan)}. Pastikan TCO maksimal 40% dari gaji bulanan untuk kesehatan finansial.`;
+        const insight = c.tco.isElectric
+          ? `⚡ Mobil listrik HEMAT! Bensin cuma ${HC.fmt(c.tco.bensin)}/bln vs Rp 2-3jt mobil bensin. Plus insentif PPN 1% + bebas ganjil-genap.`
+          : `TCO total ${HC.fmt(c.tco.totalTCO)}/bln. Cicilan cuma ${((c.tco.cicilan / c.tco.totalTCO) * 100).toFixed(0)}% dari TCO. Pastikan gaji minimal ${HC.fmt(c.tco.totalTCO * 2.5)} (TCO max 40% gaji).`;
 
         const inputs = [
           { label: '🚗 Harga OTR', value: HC.fmt(c.harga) },
           { label: '💰 DP', value: `${c.dpPct}% (${HC.fmt(c.dpAmt)})` },
-          { label: '📊 Bunga Flat', value: `${c.bunga.toFixed(2)}%${c.useInflasi ? ' (inflasi-adjusted)' : ''}` },
+          { label: '📊 Bunga Flat', value: `${c.bunga.toFixed(2)}%${c.useInflasi ? ' (inflasi)' : ''}` },
           { label: '📅 Tenor', value: `${c.tenor} bulan (${(c.tenor / 12).toFixed(1)} thn)` },
+          { label: '🚗 Tipe Mobil', value: c.mobilTypeLabel },
+          { label: '📍 Profil', value: c.usageLabel },
+          { label: '🏙️ Wilayah', value: c.wilayahLabel },
         ];
-        if (c.useInflasi) inputs.push({ label: '🔥 Skenario Inflasi', value: c.skenario.charAt(0).toUpperCase() + c.skenario.slice(1) });
 
         return HC.buildReportCard({
-          title: '🚗 Simulasi Kredit Mobil',
+          title: '🚗 Kredit Mobil + TCO Lengkap',
           color: '#0891B2', color2: '#155E75',
-          heroLabel: 'Cicilan Per Bulan',
-          heroValue: HC.fmt(c.cicilan),
-          heroSubtext: `${c.tenor} bulan · TCO estimasi ${HC.fmt(c.tcoBulan)}/bln`,
+          heroLabel: 'TCO Total per Bulan',
+          heroValue: HC.fmt(c.tco.totalTCO),
+          heroSubtext: `Cicilan ${HC.fmt(c.cicilan)} + biaya kepemilikan ${HC.fmt(c.tco.totalTCO - c.cicilan)}`,
           inputs,
           results: [
-            { label: 'Cicilan/Bulan', value: HC.fmt(c.cicilan), highlight: true },
-            { label: 'TCO Bulanan', value: HC.fmt(c.tcoBulan), highlight: true },
-            { label: 'Biaya Awal (DP+BBN+asuransi)', value: HC.fmt(c.biayaAwal) },
-            { label: 'Pokok Pinjaman', value: HC.fmt(c.pokok) },
-            { label: 'Total Bunga', value: HC.fmt(c.totalBunga) },
-            { label: 'Total Bayar', value: HC.fmt(c.totalBayar) },
+            { label: 'TCO Total/Bulan', value: HC.fmt(c.tco.totalTCO), highlight: true },
+            { label: 'Cicilan/Bulan', value: HC.fmt(c.tco.cicilan) },
+            { label: `${c.tco.isElectric ? 'Listrik' : 'Bensin'}/Bulan`, value: HC.fmt(c.tco.bensin) },
+            { label: 'Tol + Parkir', value: HC.fmt(c.tco.tolParkir) },
+            { label: 'Servis + Cuci', value: HC.fmt(c.tco.servis + c.tco.cuci) },
+            { label: 'Pajak + Asuransi', value: HC.fmt(c.tco.pajak + c.tco.asuransi) },
+            { label: 'Biaya Awal (DP+BBN+asuransi thn1)', value: HC.fmt(c.biayaAwal) },
+            { label: 'Total Bayar Cicilan', value: HC.fmt(c.totalBayar), highlight: true },
           ],
           insight, slug: 'kredit-mobil',
         });
@@ -312,12 +555,25 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       function summaryText() {
         if (!lastCalc) return '';
         const c = lastCalc;
-        return `🚗 *Simulasi Kredit Mobil - HitungCerdas*\n\nHarga: ${HC.fmt(c.harga)}\nDP ${c.dpPct}%: ${HC.fmt(c.dpAmt)}\nBunga flat: ${c.bunga.toFixed(2)}%\nTenor: ${c.tenor} bulan\n\n💰 *Cicilan: ${HC.fmt(c.cicilan)}/bulan*\n📊 TCO estimasi: ${HC.fmt(c.tcoBulan)}/bulan\n💵 Total Bayar: ${HC.fmt(c.totalBayar)}\n\nHitung: https://hitungcerdas.net/kalkulator/kredit-mobil`;
+        return `🚗 *Kredit Mobil + TCO - HitungCerdas*\n\n` +
+               `Mobil: ${c.mobilTypeLabel}\nHarga: ${HC.fmt(c.harga)}\nDP ${c.dpPct}%: ${HC.fmt(c.dpAmt)}\nTenor: ${c.tenor} bulan\nProfil: ${c.usageLabel}\nWilayah: ${c.wilayahLabel}\n\n` +
+               `💰 *Cicilan: ${HC.fmt(c.cicilan)}/bulan*\n\n` +
+               `📊 *TCO Bulanan Lengkap:*\n` +
+               `🏦 Cicilan: ${HC.fmt(c.tco.cicilan)}\n` +
+               `${c.tco.isElectric ? '⚡' : '⛽'} ${c.tco.isElectric ? 'Listrik' : 'Bensin'}: ${HC.fmt(c.tco.bensin)}\n` +
+               `🔧 Servis: ${HC.fmt(c.tco.servis)}\n` +
+               `🛣️ Tol+parkir: ${HC.fmt(c.tco.tolParkir)}\n` +
+               `📄 Pajak: ${HC.fmt(c.tco.pajak)}\n` +
+               `🛡️ Asuransi: ${HC.fmt(c.tco.asuransi)}\n` +
+               `🧽 Cuci+darurat: ${HC.fmt(c.tco.cuci + c.tco.danaDarurat)}\n\n` +
+               `💸 *TCO TOTAL: ${HC.fmt(c.tco.totalTCO)}/bulan*\n` +
+               `⚠️ Gaji minimal: ${HC.fmt(c.tco.totalTCO * 2.5)}\n\n` +
+               `Hitung: https://hitungcerdas.net/kalkulator/kredit-mobil`;
       }
 
       $('btnHitung').addEventListener('click', hitung);
       $('btnReset').addEventListener('click', reset);
-      $('exportImg').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToImage(c, 'kredit-mobil-' + Date.now()); });
+      $('exportImg').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToImage(c, 'kredit-mobil-tco-' + Date.now()); });
       $('exportWa').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.shareWhatsApp(c, summaryText(), 'kredit-mobil'); });
       $('exportPdf').addEventListener('click', () => { if (!lastCalc) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToPDF(); });
       $('exportCopy').addEventListener('click', () => { if (!lastCalc) { HC.toast('Hitung dulu', 'error'); return; } HC.copyText(summaryText(), 'Tersalin!'); });

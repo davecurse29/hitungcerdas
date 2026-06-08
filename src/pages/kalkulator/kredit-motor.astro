@@ -10,10 +10,12 @@ const calc = getCalculatorBySlug('kredit-motor')!;
 const related = getRelatedCalculators('kredit-motor', 3);
 
 const faqs = [
+  { question: 'Apa itu TCO (Total Cost of Ownership) motor?', answer: 'TCO motor = total biaya kepemilikan motor per bulan, BUKAN hanya cicilan. Komponen TCO: cicilan + bensin + servis berkala + pajak STNK + asuransi + perawatan + helm/jas hujan (depresiasi). Cicilan biasanya cuma 60-70% dari TCO. Untuk motor harga Rp 25 juta dengan cicilan Rp 800rb, TCO bulanan bisa Rp 1.2-1.5 juta.' },
   { question: 'Berapa DP minimum kredit motor di Indonesia?', answer: 'DP minimum kredit motor sesuai OJK: <strong>10-15% dari OTR</strong>. Promo dealer sering 0% DP dengan syarat tertentu (cicilan jadi lebih besar atau bunga lebih tinggi). Idealnya DP <strong>30%+</strong> untuk cicilan ringan.' },
   { question: 'Bunga kredit motor di Indonesia berapa?', answer: '<strong>Bunga flat</strong> 8-15% per tahun (Adira, FIF, BAF, MCF). Bunga flat = bunga dihitung dari pokok awal, total konsisten setiap bulan. Berbeda dengan KPR yang anuitas. Flat 8% ≈ Anuitas 14-15% (efektif).' },
+  { question: 'Berapa biaya bensin motor matic per bulan?', answer: 'Asumsi 1 liter Pertamax untuk 35-45 km (motor matic). Untuk komuter 30 km/hari × 26 hari = 780 km/bulan, butuh ~20 liter, Rp 280rb. Untuk pemakaian harian biasa: Rp 200-350rb/bulan. Motor sport lebih boros: Rp 350-500rb. Motor listrik paling hemat: Rp 50-80rb (listrik PLN).' },
   { question: 'Mengapa inflasi mempengaruhi bunga kredit motor?', answer: 'Saat inflasi tinggi, <strong>BI Rate naik</strong>, biaya dana leasing/multifinance juga naik. Otomatis bunga kredit motor naik. Mode Inflasi kami simulasikan dampak skenario inflasi terhadap bunga & cicilan untuk perencanaan jangka panjang.' },
-  { question: 'Apa biaya tambahan beli motor kredit?', answer: 'Selain cicilan: <strong>(1) BBN/Pajak</strong> ~Rp 200-500rb, <strong>(2) Asuransi TLO</strong> Rp 200-400rb/thn, <strong>(3) Servis berkala</strong> Rp 200rb/bulan, <strong>(4) Bensin</strong> Rp 200-500rb/bulan, <strong>(5) Kelengkapan</strong> (helm, jaket, dll).' },
+  { question: 'Apa biaya tersembunyi beli motor kredit?', answer: 'Selain cicilan: <strong>(1) BBN/Pajak</strong> ~Rp 200-500rb di awal, <strong>(2) STNK tahunan</strong> Rp 250-500rb/tahun, <strong>(3) Asuransi TLO</strong> Rp 400-600rb/tahun, <strong>(4) Servis berkala</strong> Rp 100-200rb/bulan (rutin), <strong>(5) Bensin</strong> Rp 200-500rb/bulan, <strong>(6) Helm + jas hujan + perlengkapan</strong> awal Rp 500rb-1jt + depresiasi ~Rp 20rb/bln.' },
 ];
 
 const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '/#tools' }, { label: calc.shortTitle }];
@@ -26,9 +28,15 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       <div class="calc-hero-grid">
         <div class="calc-hero-text">
           <div class="calc-hero-tag" style="background:#EDE9FE;color:#5B21B6"><i class="ti ti-motorbike"></i> {calc.categoryLabel}</div>
-          <h1 class="calc-hero-title">{calc.h1}</h1>
-          <p class="calc-hero-sub">{calc.introText}</p>
-          <ul class="calc-hero-benefits">{calc.benefits.map(b => <li><i class="ti ti-check"></i> {b}</li>)}</ul>
+          <h1 class="calc-hero-title">Kalkulator Kredit Motor + TCO Lengkap 2026</h1>
+          <p class="calc-hero-sub">{calc.introText} Sekarang dengan <strong>TCO (Total Cost of Ownership)</strong> lengkap: bensin, servis, pajak, asuransi, perawatan, dan depresiasi perlengkapan.</p>
+          <ul class="calc-hero-benefits">
+            <li><i class="ti ti-check"></i> Cicilan bunga flat akurat</li>
+            <li><i class="ti ti-check"></i> TCO bulanan lengkap (cicilan + bensin + servis + dll)</li>
+            <li><i class="ti ti-check"></i> Profile pemakaian (Komuter / Harian / Touring)</li>
+            <li><i class="ti ti-check"></i> Bandingkan motor bensin vs listrik</li>
+            <li><i class="ti ti-check"></i> Mode skenario inflasi (Fisher Equation)</li>
+          </ul>
         </div>
         <div class="calc-hero-illust">
           <svg viewBox="0 0 200 200" fill="none">
@@ -50,7 +58,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       <div class="calc-card">
         <div class="calc-card-hdr">
           <div class="calc-card-hdr-ic" style="background:linear-gradient(135deg,#7C3AED 0%,#5B21B6 100%)"><i class="ti ti-motorbike"></i></div>
-          <div><h2 class="calc-card-title">Kalkulator Kredit Motor</h2><p class="calc-card-sub">Bunga flat dealer/leasing dengan mode inflasi</p></div>
+          <div><h2 class="calc-card-title">Kalkulator Kredit Motor + TCO</h2><p class="calc-card-sub">Cicilan + Biaya Pemilikan Lengkap per Bulan</p></div>
         </div>
 
         <div class="calc-grid">
@@ -80,6 +88,30 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
                 <option value="60">60 bulan (5 tahun)</option>
               </select></div>
 
+            {/* ─── TCO PROFILE SELECTOR ─── */}
+            <div class="tco-profile-box">
+              <label>🏍️ Tipe Motor</label>
+              <select id="motorType">
+                <option value="matic">Matic (Beat/Scoopy/Mio/NMAX)</option>
+                <option value="bebek">Bebek (Revo/Supra/Vega)</option>
+                <option value="sport">Sport (CBR/R15/Ninja)</option>
+                <option value="listrik">⚡ Motor Listrik (BeAT EM1/Alva/Polytron)</option>
+              </select>
+              <p class="hint-text">Tipe motor menentukan konsumsi BBM & biaya servis</p>
+            </div>
+
+            <div class="tco-profile-box">
+              <label>📍 Profil Pemakaian</label>
+              <select id="usageProfile">
+                <option value="ringan">Ringan (≤500 km/bln) — Anak kos / weekend rider</option>
+                <option value="komuter" selected>Komuter (~800 km/bln) — Kerja PP harian</option>
+                <option value="aktif">Aktif (~1500 km/bln) — Ojol part-time / sales</option>
+                <option value="berat">Berat (≥2500 km/bln) — Ojol full-time / kurir</option>
+              </select>
+              <p class="hint-text">Profil ini auto-adjust biaya bensin & servis di TCO</p>
+            </div>
+
+            {/* ─── INFLATION TOGGLE ─── */}
             <div class="inflation-box" id="inflationBox">
               <label class="inflation-toggle">
                 <input type="checkbox" id="inflasiToggle" />
@@ -93,7 +125,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
                   <option value="tinggi">📈 Tinggi (5.0%)</option>
                   <option value="krisis">⚠️ Krisis (7.5%)</option>
                 </select>
-                <p class="inflation-note">Inflasi tinggi → BI Rate naik → bunga kredit motor naik. Mode ini auto-adjust suku bunga.</p>
+                <p class="inflation-note">Inflasi tinggi → BI Rate naik → bunga kredit motor naik.</p>
               </div>
             </div>
 
@@ -106,8 +138,8 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
           <div class="calc-output">
             <div class="result-placeholder" id="placeholder">
               <i class="ti ti-motorbike result-placeholder-icon"></i>
-              <div class="result-placeholder-title">Cicilan motor akan muncul di sini</div>
-              <div class="result-placeholder-desc">Isi data motor, klik <strong>"Hitung Sekarang"</strong>.</div>
+              <div class="result-placeholder-title">Cicilan + TCO Motor akan muncul di sini</div>
+              <div class="result-placeholder-desc">Isi data motor, klik <strong>"Hitung Sekarang"</strong> untuk simulasi cicilan + TCO bulanan lengkap.</div>
             </div>
 
             <div class="result-wrapper" id="results">
@@ -124,6 +156,14 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
                 <div class="result-item"><div class="result-item-label">Total Bayar</div><div class="result-item-value result-strong" id="totalBayar">Rp 0</div></div>
               </div>
 
+              {/* ─── TCO BOX ─── */}
+              <div class="tco-box">
+                <h4><i class="ti ti-receipt-2"></i> Total Cost of Ownership (TCO) Bulanan</h4>
+                <ul class="tco-list" id="tcoList"></ul>
+                <div id="tcoWarning"></div>
+              </div>
+
+              {/* TENOR COMPARISON */}
               <div class="adv-section">
                 <div class="adv-toggle"><span><i class="ti ti-chart-bar"></i>&nbsp; Bandingkan Semua Tenor</span><i class="ti ti-chevron-down chev"></i></div>
                 <div class="adv-content">
@@ -134,6 +174,19 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
                 </div>
               </div>
 
+              {/* COMPARE MOTOR TYPES */}
+              <div class="adv-section">
+                <div class="adv-toggle"><span><i class="ti ti-arrows-right-left"></i>&nbsp; Bandingkan TCO 4 Tipe Motor</span><i class="ti ti-chevron-down chev"></i></div>
+                <div class="adv-content">
+                  <table class="compare-table">
+                    <thead><tr><th>Tipe Motor</th><th class="right">Bensin/Bln</th><th class="right">Servis/Bln</th><th class="right">TCO Total/Bln</th></tr></thead>
+                    <tbody id="motorCompareBody"></tbody>
+                  </table>
+                  <p class="bank-disclaimer">⚡ <strong>Motor listrik PALING HEMAT</strong> untuk pemakaian harian. Bensin Rp 50-80rb/bln vs motor bensin Rp 300-500rb/bln. Plus subsidi pemerintah Rp 7 juta saat pembelian!</p>
+                </div>
+              </div>
+
+              {/* INFLASI COMPARE */}
               <div class="adv-section" id="advInflasi" style="display:none">
                 <div class="adv-toggle"><span><i class="ti ti-trending-up"></i>&nbsp; Dampak Inflasi terhadap Bunga</span><i class="ti ti-chevron-down chev"></i></div>
                 <div class="adv-content">
@@ -159,14 +212,39 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
 
   <section class="content-section">
     <div class="wrap-text">
-      <h2>Cara Menghitung Kredit Motor (Bunga Flat)</h2>
-      <p>Beda dengan KPR yang pakai anuitas, kredit motor di Indonesia umumnya pakai <strong>bunga flat</strong>: bunga dihitung dari pokok awal sepanjang tenor. Rumusnya: <strong>Cicilan = (Pokok + (Pokok × Bunga × Tenor tahun)) / Total Bulan</strong>.</p>
-      <div class="cta-box"><h3>Coba Kalkulator Kredit Motor</h3><p>Isi data motor, aktifkan mode inflasi untuk simulasi worst-case, klik "Hitung Sekarang".</p></div>
+      <h2>TCO Motor — Lebih dari Sekedar Cicilan!</h2>
+      <p>Banyak orang beli motor kredit lihat cuma cicilan: "Cuma Rp 800rb/bulan, enteng nih!" Padahal <strong>TCO (Total Cost of Ownership)</strong> motor sebenarnya 1.5-2× cicilan. Untuk Honda Scoopy Rp 25 juta dengan cicilan Rp 800rb, TCO bulanan bisa Rp 1.2-1.5 juta tergantung pemakaian.</p>
+
+      <h3>Komponen TCO Motor</h3>
+      <ul class="info-list">
+        <li>🏦 <strong>Cicilan</strong> — Pokok + bunga flat</li>
+        <li>⛽ <strong>Bensin</strong> — Tergantung jenis motor & profil pemakaian</li>
+        <li>🔧 <strong>Servis berkala</strong> — Rp 100-200rb/bulan (oli, filter, dll)</li>
+        <li>📄 <strong>Pajak STNK tahunan</strong> — Rp 250-500rb/tahun</li>
+        <li>🛡️ <strong>Asuransi TLO</strong> — Rp 400-600rb/tahun (recommended)</li>
+        <li>🪖 <strong>Helm + jas hujan + sarung tangan</strong> — Depresiasi ~Rp 20rb/bln</li>
+        <li>🧽 <strong>Cuci & perawatan</strong> — Rp 40-80rb/bulan</li>
+      </ul>
+
+      <h3>Tips Hemat TCO Motor</h3>
+      <ol class="tips-list">
+        <li><strong>Pilih matic untuk kota</strong> — Konsumsi BBM 35-45 km/L, paling efisien untuk komuter.</li>
+        <li><strong>Pertimbangkan motor listrik</strong> — Pemerintah kasih subsidi Rp 7 juta. Bensin hemat 80%!</li>
+        <li><strong>Servis tepat waktu</strong> — Servis berkala 5000 km, lebih murah daripada turun mesin.</li>
+        <li><strong>Bayar pajak STNK on time</strong> — Telat = denda 25% per tahun.</li>
+        <li><strong>Pakai BBM yang direkomendasikan</strong> — Motor injection wajib Pertamax (RON 92+). Premium bikin mesin cepat rusak.</li>
+        <li><strong>Asuransi TLO worth it</strong> — Rp 500rb/tahun ngeganti motor hilang Rp 25 juta!</li>
+      </ol>
+
+      <div class="cta-box">
+        <h3>Hitung TCO Motormu Sekarang</h3>
+        <p>Geser ke atas, pilih tipe motor & profil pemakaian, klik "Hitung Sekarang" untuk lihat biaya kepemilikan total per bulan.</p>
+      </div>
     </div>
   </section>
 
   <AdSlot format="horizontal" />
-  <FAQ title="Pertanyaan Seputar Kredit Motor" items={faqs} />
+  <FAQ title="Pertanyaan Seputar Kredit Motor & TCO" items={faqs} />
 
   <section class="section"><div class="wrap">
     <div class="section-hdr"><div class="section-eyebrow">Kalkulator Lainnya</div><h2 class="section-title">Hitung Juga yang Lain</h2></div>
@@ -180,6 +258,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
     ready(() => {
       const $ = id => document.getElementById(id);
       const els = { harga: $('harga'), dp: $('dp'), bunga: $('bunga'), tenor: $('tenor'),
+                    motorType: $('motorType'), usageProfile: $('usageProfile'),
                     inflasiToggle: $('inflasiToggle'), inflasiSkenario: $('inflasiSkenario'),
                     inflasiBox: $('inflationBox'), advInflasi: $('advInflasi') };
       [els.harga].forEach(el => el.addEventListener('input', HC.fmtInput));
@@ -193,6 +272,67 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         return { cicilan: (pokok + totalBunga) / totalBulan, totalBunga };
       }
 
+      // TCO data per motor type & usage profile
+      // BBM consumption: km per liter
+      const MOTOR_TYPE_DATA = {
+        matic:   { kmpl: 40, servisBulan: 130000, label: 'Matic' },
+        bebek:   { kmpl: 50, servisBulan: 100000, label: 'Bebek' },
+        sport:   { kmpl: 30, servisBulan: 180000, label: 'Sport' },
+        listrik: { kmpl: 0,  servisBulan: 80000,  label: 'Motor Listrik', isElectric: true, kwhPerKm: 0.025 }, // 0.025 kWh/km, tarif PLN ~Rp 1500/kWh
+      };
+
+      const USAGE_PROFILE = {
+        ringan:  { kmBulan: 400, label: 'Ringan (≤500 km/bln)' },
+        komuter: { kmBulan: 800, label: 'Komuter (~800 km/bln)' },
+        aktif:   { kmBulan: 1500, label: 'Aktif (~1500 km/bln)' },
+        berat:   { kmBulan: 2500, label: 'Berat (≥2500 km/bln)' },
+      };
+
+      const BBM_PRICE = 13000; // Pertamax 2026 estimasi
+      const LISTRIK_PRICE = 1500; // Tarif PLN R-1 per kWh
+
+      function calcTCO(harga, motorTypeKey, usageProfileKey, cicilanBulan) {
+        const motor = MOTOR_TYPE_DATA[motorTypeKey];
+        const usage = USAGE_PROFILE[usageProfileKey];
+        const kmBulan = usage.kmBulan;
+
+        let bensinBulan = 0;
+        let bensinLabel = '';
+        if (motor.isElectric) {
+          // Listrik
+          const kwhBulan = kmBulan * motor.kwhPerKm;
+          bensinBulan = kwhBulan * LISTRIK_PRICE;
+          bensinLabel = `${kwhBulan.toFixed(0)} kWh × Rp ${LISTRIK_PRICE.toLocaleString('id-ID')}/kWh`;
+        } else {
+          // Bensin
+          const literBulan = kmBulan / motor.kmpl;
+          bensinBulan = literBulan * BBM_PRICE;
+          bensinLabel = `${literBulan.toFixed(1)} L × Rp ${BBM_PRICE.toLocaleString('id-ID')}/L (${motor.kmpl} km/L)`;
+        }
+
+        // Other costs
+        const pajakBulan = harga * 0.02 / 12; // 2% nilai motor per tahun
+        const asuransiBulan = harga * 0.025 / 12; // 2.5% nilai per tahun (TLO)
+        const cuciBulan = 60000;
+        const perlengkapanBulan = 20000; // depresiasi helm, jas hujan, sarung tangan
+        const servisBulan = motor.servisBulan;
+
+        const totalTCO = cicilanBulan + bensinBulan + servisBulan + pajakBulan + asuransiBulan + cuciBulan + perlengkapanBulan;
+
+        return {
+          cicilan: cicilanBulan,
+          bensin: bensinBulan,
+          bensinLabel,
+          servis: servisBulan,
+          pajak: pajakBulan,
+          asuransi: asuransiBulan,
+          cuci: cuciBulan,
+          perlengkapan: perlengkapanBulan,
+          totalTCO,
+          isElectric: motor.isElectric,
+        };
+      }
+
       let lastCalc = null;
 
       function hitung() {
@@ -200,8 +340,12 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         const dpPct = parseFloat(els.dp.value) || 0;
         let bunga = parseFloat(els.bunga.value) || 0;
         const tenor = parseInt(els.tenor.value);
+        const motorTypeKey = els.motorType.value;
+        const usageKey = els.usageProfile.value;
+
         if (harga === 0) { HC.toast('Masukkan harga motor dulu', 'error'); return; }
 
+        // Inflation
         const useInflasi = els.inflasiToggle.checked;
         let bungaOriginal = bunga, skenario = null;
         if (useInflasi) {
@@ -214,6 +358,10 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         const { cicilan, totalBunga } = flat(pokok, bunga, tenor);
         const totalBayar = dpAmt + cicilan * tenor;
 
+        // Calculate TCO
+        const tco = calcTCO(harga, motorTypeKey, usageKey, cicilan);
+
+        // Display main results
         $('cicilan').textContent = HC.fmt(cicilan);
         $('metaInfo').textContent = `${tenor} bulan · Bunga flat ${bunga.toFixed(2)}%${useInflasi ? ' (inflasi-adjusted)' : ''}`;
         $('dpAmt').textContent = `${HC.fmt(dpAmt)} (${dpPct}%)`;
@@ -221,12 +369,93 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         $('totalBunga').textContent = HC.fmt(totalBunga);
         $('totalBayar').textContent = HC.fmt(totalBayar);
 
+        // Display TCO
+        const electricBadge = tco.isElectric ? '⚡' : '⛽';
+        $('tcoList').innerHTML = `
+          <li class="tco-cicilan">
+            <span class="ico">🏦</span>
+            <span class="lbl">Cicilan Kredit
+              <span class="lbl-hint">${tenor} bulan, bunga ${bunga.toFixed(2)}%</span>
+            </span>
+            <span class="val">${HC.fmt(tco.cicilan)}</span>
+          </li>
+          <li>
+            <span class="ico">${electricBadge}</span>
+            <span class="lbl">${tco.isElectric ? 'Listrik (charging)' : 'Bensin'}
+              <span class="lbl-hint">${tco.bensinLabel}</span>
+            </span>
+            <span class="val">${HC.fmt(tco.bensin)}</span>
+          </li>
+          <li>
+            <span class="ico">🔧</span>
+            <span class="lbl">Servis berkala
+              <span class="lbl-hint">Oli, filter, periodic check</span>
+            </span>
+            <span class="val">${HC.fmt(tco.servis)}</span>
+          </li>
+          <li>
+            <span class="ico">📄</span>
+            <span class="lbl">Pajak STNK
+              <span class="lbl-hint">${HC.fmt(tco.pajak * 12)}/tahun ÷ 12</span>
+            </span>
+            <span class="val">${HC.fmt(tco.pajak)}</span>
+          </li>
+          <li>
+            <span class="ico">🛡️</span>
+            <span class="lbl">Asuransi TLO
+              <span class="lbl-hint">${HC.fmt(tco.asuransi * 12)}/tahun ÷ 12</span>
+            </span>
+            <span class="val">${HC.fmt(tco.asuransi)}</span>
+          </li>
+          <li>
+            <span class="ico">🧽</span>
+            <span class="lbl">Cuci & perawatan
+              <span class="lbl-hint">Cuci motor 2× sebulan</span>
+            </span>
+            <span class="val">${HC.fmt(tco.cuci)}</span>
+          </li>
+          <li>
+            <span class="ico">🪖</span>
+            <span class="lbl">Helm + jas hujan
+              <span class="lbl-hint">Depresiasi perlengkapan</span>
+            </span>
+            <span class="val">${HC.fmt(tco.perlengkapan)}</span>
+          </li>
+          <li class="tco-total">
+            <span class="ico">💸</span>
+            <span class="lbl">TCO TOTAL per Bulan</span>
+            <span class="val">${HC.fmt(tco.totalTCO)}</span>
+          </li>
+        `;
+
+        // TCO Warning vs Gaji
+        const tcoRatio = (tco.totalTCO / 4000000) * 100; // benchmark UMR 4jt
+        let warningHtml = '';
+        if (tco.isElectric) {
+          warningHtml = `<div class="tco-warning safe">⚡ <strong>HEMAT!</strong> Motor listrik bisa hemat ${HC.fmt(150000)} - ${HC.fmt(300000)} per bulan dibanding motor bensin. Plus subsidi pemerintah Rp 7 juta saat beli!</div>`;
+        } else if (tco.totalTCO > 2000000) {
+          warningHtml = `<div class="tco-warning">⚠️ <strong>TCO ${HC.fmt(tco.totalTCO)}/bulan cukup besar.</strong> Pastikan gaji minimal ${HC.fmt(tco.totalTCO * 4)} agar TCO motor tidak lebih dari 25% gaji.</div>`;
+        } else {
+          warningHtml = `<div class="tco-warning safe">✅ TCO terjangkau. Tetap sisihkan dana darurat 6 bulan TCO untuk masalah tak terduga.</div>`;
+        }
+        $('tcoWarning').innerHTML = warningHtml;
+
+        // Tenor comparison
         const tenorOpts = [12, 24, 36, 48, 60];
         $('tenorBody').innerHTML = tenorOpts.map(t => {
           const { cicilan: c, totalBunga: tb } = flat(pokok, bunga, t);
           return `<tr class="${t === tenor ? 'active' : ''}"><td>${t} bln</td><td class="right">${HC.fmt(c)}</td><td class="right">${HC.fmt(tb)}</td><td class="right">${HC.fmt(c * t + dpAmt)}</td></tr>`;
         }).join('');
 
+        // Compare motor types
+        const types = ['matic', 'bebek', 'sport', 'listrik'];
+        $('motorCompareBody').innerHTML = types.map(t => {
+          const tcoAlt = calcTCO(harga, t, usageKey, cicilan);
+          const lbl = MOTOR_TYPE_DATA[t].label + (t === 'listrik' ? ' ⚡' : '');
+          return `<tr class="${t === motorTypeKey ? 'active' : ''}"><td>${lbl}</td><td class="right">${HC.fmt(tcoAlt.bensin)}</td><td class="right">${HC.fmt(tcoAlt.servis)}</td><td class="right" style="font-weight:700">${HC.fmt(tcoAlt.totalTCO)}</td></tr>`;
+        }).join('');
+
+        // Inflation comparison
         if (useInflasi) {
           els.advInflasi.style.display = '';
           const scenarios = ['rendah', 'normal', 'tinggi', 'krisis'];
@@ -240,16 +469,19 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
           els.advInflasi.style.display = 'none';
         }
 
-        lastCalc = { harga, dpPct, dpAmt, pokok, bunga, bungaOriginal, tenor, cicilan, totalBunga, totalBayar, useInflasi, skenario };
+        lastCalc = { harga, dpPct, dpAmt, pokok, bunga, bungaOriginal, tenor, cicilan, totalBunga, totalBayar,
+                     motorTypeKey, motorTypeLabel: MOTOR_TYPE_DATA[motorTypeKey].label,
+                     usageKey, usageLabel: USAGE_PROFILE[usageKey].label, tco, useInflasi, skenario };
         $('placeholder').style.display = 'none';
         $('results').classList.add('show');
         $('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        HC.toast('Cicilan motor berhasil dihitung!');
+        HC.toast('Cicilan + TCO Motor berhasil dihitung!');
       }
 
       function reset() {
         els.harga.value = '25.000.000'; els.dp.value = '20'; els.bunga.value = '11';
-        els.tenor.value = '36'; els.inflasiToggle.checked = false; els.inflasiBox.classList.remove('active');
+        els.tenor.value = '36'; els.motorType.value = 'matic'; els.usageProfile.value = 'komuter';
+        els.inflasiToggle.checked = false; els.inflasiBox.classList.remove('active');
         $('placeholder').style.display = ''; $('results').classList.remove('show');
         lastCalc = null; HC.toast('Form direset', 'info');
       }
@@ -257,29 +489,33 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       function buildReport() {
         if (!lastCalc) return null;
         const c = lastCalc;
-        const insight = `Total bunga ${HC.fmt(c.totalBunga)} = ${((c.totalBunga / c.pokok) * 100).toFixed(0)}% dari pokok. ${c.tenor <= 24 ? 'Tenor pendek, bunga ringan.' : 'Tenor panjang, bunga total bertambah. Pertimbangkan tambah DP.'}`;
+        const insight = c.tco.isElectric
+          ? `⚡ Motor listrik HEMAT! Bensin cuma ${HC.fmt(c.tco.bensin)}/bln vs Rp 300-500rb motor bensin. Plus subsidi pemerintah Rp 7 juta saat beli.`
+          : `TCO total ${HC.fmt(c.tco.totalTCO)}/bln. Cicilan cuma ${((c.tco.cicilan / c.tco.totalTCO) * 100).toFixed(0)}% dari TCO — sisanya untuk bensin, servis, pajak, asuransi.`;
 
         const inputs = [
           { label: '🏍️ Harga OTR', value: HC.fmt(c.harga) },
           { label: '💰 DP', value: `${c.dpPct}% (${HC.fmt(c.dpAmt)})` },
-          { label: '📊 Bunga Flat', value: `${c.bunga.toFixed(2)}%${c.useInflasi ? ' (inflasi-adjusted)' : ''}` },
+          { label: '📊 Bunga Flat', value: `${c.bunga.toFixed(2)}%${c.useInflasi ? ' (inflasi)' : ''}` },
           { label: '📅 Tenor', value: `${c.tenor} bulan` },
+          { label: '🏍️ Tipe Motor', value: c.motorTypeLabel },
+          { label: '📍 Profil Pemakaian', value: c.usageLabel },
         ];
-        if (c.useInflasi) inputs.push({ label: '🔥 Skenario Inflasi', value: c.skenario.charAt(0).toUpperCase() + c.skenario.slice(1) });
 
         return HC.buildReportCard({
-          title: '🏍️ Simulasi Kredit Motor',
+          title: '🏍️ Kredit Motor + TCO Lengkap',
           color: '#7C3AED', color2: '#5B21B6',
-          heroLabel: 'Cicilan Per Bulan',
-          heroValue: HC.fmt(c.cicilan),
-          heroSubtext: `${c.tenor} bulan · Bunga flat ${c.bunga.toFixed(2)}%`,
+          heroLabel: 'TCO Total per Bulan',
+          heroValue: HC.fmt(c.tco.totalTCO),
+          heroSubtext: `Cicilan ${HC.fmt(c.cicilan)} + biaya pemilikan ${HC.fmt(c.tco.totalTCO - c.cicilan)}`,
           inputs,
           results: [
-            { label: 'Cicilan/Bulan', value: HC.fmt(c.cicilan), highlight: true },
-            { label: 'DP', value: HC.fmt(c.dpAmt) },
-            { label: 'Pokok Pinjaman', value: HC.fmt(c.pokok) },
-            { label: 'Total Bunga', value: HC.fmt(c.totalBunga) },
-            { label: 'Total Bayar', value: HC.fmt(c.totalBayar), highlight: true },
+            { label: 'TCO Total/Bulan', value: HC.fmt(c.tco.totalTCO), highlight: true },
+            { label: 'Cicilan/Bulan', value: HC.fmt(c.tco.cicilan) },
+            { label: `${c.tco.isElectric ? 'Listrik' : 'Bensin'}/Bulan`, value: HC.fmt(c.tco.bensin) },
+            { label: 'Servis Berkala', value: HC.fmt(c.tco.servis) },
+            { label: 'Pajak + Asuransi', value: HC.fmt(c.tco.pajak + c.tco.asuransi) },
+            { label: 'Total Bayar Cicilan', value: HC.fmt(c.totalBayar), highlight: true },
           ],
           insight, slug: 'kredit-motor',
         });
@@ -288,12 +524,23 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       function summaryText() {
         if (!lastCalc) return '';
         const c = lastCalc;
-        return `🏍️ *Simulasi Kredit Motor - HitungCerdas*\n\nHarga: ${HC.fmt(c.harga)}\nDP ${c.dpPct}%: ${HC.fmt(c.dpAmt)}\nBunga flat: ${c.bunga.toFixed(2)}%\nTenor: ${c.tenor} bulan\n\n💰 *Cicilan: ${HC.fmt(c.cicilan)}/bulan*\n📊 Total Bunga: ${HC.fmt(c.totalBunga)}\n💵 Total Bayar: ${HC.fmt(c.totalBayar)}\n\nHitung: https://hitungcerdas.net/kalkulator/kredit-motor`;
+        return `🏍️ *Kredit Motor + TCO - HitungCerdas*\n\n` +
+               `Motor: ${c.motorTypeLabel}\nHarga: ${HC.fmt(c.harga)}\nDP ${c.dpPct}%: ${HC.fmt(c.dpAmt)}\nTenor: ${c.tenor} bulan\nProfil: ${c.usageLabel}\n\n` +
+               `💰 *Cicilan: ${HC.fmt(c.cicilan)}/bulan*\n\n` +
+               `📊 *TCO Bulanan Lengkap:*\n` +
+               `🏦 Cicilan: ${HC.fmt(c.tco.cicilan)}\n` +
+               `${c.tco.isElectric ? '⚡' : '⛽'} ${c.tco.isElectric ? 'Listrik' : 'Bensin'}: ${HC.fmt(c.tco.bensin)}\n` +
+               `🔧 Servis: ${HC.fmt(c.tco.servis)}\n` +
+               `📄 Pajak: ${HC.fmt(c.tco.pajak)}\n` +
+               `🛡️ Asuransi: ${HC.fmt(c.tco.asuransi)}\n` +
+               `🧽 Cuci+perawatan: ${HC.fmt(c.tco.cuci + c.tco.perlengkapan)}\n\n` +
+               `💸 *TCO TOTAL: ${HC.fmt(c.tco.totalTCO)}/bulan*\n\n` +
+               `Hitung: https://hitungcerdas.net/kalkulator/kredit-motor`;
       }
 
       $('btnHitung').addEventListener('click', hitung);
       $('btnReset').addEventListener('click', reset);
-      $('exportImg').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToImage(c, 'kredit-motor-' + Date.now()); });
+      $('exportImg').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToImage(c, 'kredit-motor-tco-' + Date.now()); });
       $('exportWa').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.shareWhatsApp(c, summaryText(), 'kredit-motor'); });
       $('exportPdf').addEventListener('click', () => { if (!lastCalc) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToPDF(); });
       $('exportCopy').addEventListener('click', () => { if (!lastCalc) { HC.toast('Hitung dulu', 'error'); return; } HC.copyText(summaryText(), 'Tersalin!'); });
