@@ -1,0 +1,253 @@
+---
+// Footer dengan link groups lengkap untuk SEO & navigasi
+import { CALCULATORS } from '../data/calculators';
+
+const keuanganLinks = CALCULATORS.filter(c => c.category === 'keuangan');
+const bisnisLinks = CALCULATORS.filter(c => c.category === 'bisnis');
+const islamiLinks = CALCULATORS.filter(c => c.category === 'islami');
+
+const year = new Date().getFullYear();
+---
+
+<footer role="contentinfo">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo">
+        <div class="logo-ic">HC</div>
+        <div class="logo-text">Hitung<span>Cerdas</span></div>
+      </div>
+      <p class="footer-tagline">
+        Pusat kalkulator keuangan, bisnis, dan islami online gratis untuk masyarakat Indonesia.
+        Hitung lebih cepat, putuskan lebih cerdas.
+      </p>
+      <div class="footer-disclaimer-box">
+        <i class="ti ti-alert-circle"></i>
+        <div>
+          Semua hasil perhitungan bersifat <strong>estimasi</strong> dan bukan nasihat keuangan,
+          pajak, atau investasi profesional.
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-col">
+      <h4>Kalkulator Keuangan</h4>
+      <ul>
+        {keuanganLinks.map(c => (
+          <li><a href={`/kalkulator/${c.slug}`}>{c.shortTitle}</a></li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4>Kalkulator Bisnis</h4>
+      <ul>
+        {bisnisLinks.map(c => (
+          <li><a href={`/kalkulator/${c.slug}`}>{c.shortTitle}</a></li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4>Kalkulator Islami</h4>
+      <ul>
+        {islamiLinks.map(c => (
+          <li><a href={`/kalkulator/${c.slug}`}>{c.shortTitle}</a></li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4>Lainnya</h4>
+      <ul>
+        <li><a href="/blog">Blog & Artikel</a></li>
+        <li><a href="/tentang">Tentang Kami</a></li>
+        <li><a href="/kontak">Kontak</a></li>
+        <li>
+          <a href="https://www.cuanpertama.my.id" target="_blank" rel="noopener">
+            🛒 Toko Cuan Pertama
+          </a>
+        </li>
+        <li><a href="/legal/syarat">Syarat & Ketentuan</a></li>
+        <li><a href="/legal/disclaimer">Disclaimer</a></li>
+        <li><a href="/legal/privasi">Kebijakan Privasi</a></li>
+        <li><a href="/legal/legal">Legal & Ketentuan</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="footer-bot-left">
+      © {year} HitungCerdas. Semua hak dilindungi. Made with 💚 in Indonesia.
+    </div>
+    <div class="footer-bot-right">
+      <a href="/legal/syarat">Syarat</a>
+      <a href="/legal/disclaimer">Disclaimer</a>
+      <a href="/legal/privasi">Privasi</a>
+      <a href="/legal/legal">Legal</a>
+      <a href="/kontak">Kontak</a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  footer {
+    background: var(--navy);
+    color: rgba(255, 255, 255, .7);
+    padding: 48px 0 20px;
+    margin-top: 48px;
+  }
+
+  .footer-grid {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr 1fr 1fr;
+    gap: 28px;
+    margin-bottom: 32px;
+  }
+
+  .footer-brand .logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .footer-brand .logo-ic {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-soft) 100%);
+    color: var(--navy);
+    font-weight: 800;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--ff-display);
+  }
+
+  .footer-brand .logo-text {
+    font-family: var(--ff-display);
+    font-size: 20px;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -.025em;
+  }
+
+  .footer-brand .logo-text span {
+    color: var(--gold-soft);
+  }
+
+  .footer-tagline {
+    font-size: 13px;
+    color: rgba(255, 255, 255, .55);
+    line-height: 1.65;
+    margin-bottom: 14px;
+    max-width: 280px;
+  }
+
+  .footer-disclaimer-box {
+    background: rgba(255, 255, 255, .05);
+    border: 1px solid rgba(255, 255, 255, .1);
+    border-radius: 8px;
+    padding: 11px 14px;
+    font-size: 11px;
+    color: rgba(255, 255, 255, .5);
+    line-height: 1.55;
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+  }
+
+  .footer-disclaimer-box i {
+    color: var(--gold-soft);
+    font-size: 14px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .footer-disclaimer-box strong {
+    color: #fff;
+  }
+
+  .footer-col h4 {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--gold-soft);
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    font-family: var(--ff-display);
+  }
+
+  .footer-col li {
+    margin-bottom: 9px;
+  }
+
+  .footer-col a {
+    font-size: 13px;
+    color: rgba(255, 255, 255, .6);
+    transition: color .15s;
+    text-decoration: none;
+    line-height: 1.4;
+    display: inline-block;
+  }
+
+  .footer-col a:hover {
+    color: #fff;
+  }
+
+  .footer-bottom {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 0 20px;
+    border-top: 1px solid rgba(255, 255, 255, .1);
+    padding-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .footer-bot-left {
+    font-size: 12px;
+    color: rgba(255, 255, 255, .4);
+  }
+
+  .footer-bot-right {
+    display: flex;
+    gap: 14px;
+  }
+
+  .footer-bot-right a {
+    font-size: 12px;
+    color: rgba(255, 255, 255, .4);
+    transition: color .15s;
+    text-decoration: none;
+  }
+
+  .footer-bot-right a:hover {
+    color: var(--gold-soft);
+  }
+
+  /* ── Mobile ── */
+  @media (max-width: 1024px) {
+    .footer-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .footer-grid {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+    .footer-tagline {
+      max-width: 100%;
+    }
+  }
+</style>

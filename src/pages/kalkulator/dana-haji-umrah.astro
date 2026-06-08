@@ -1,0 +1,247 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import FAQ from '../../components/FAQ.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import CalculatorCard from '../../components/CalculatorCard.astro';
+import { getCalculatorBySlug, getRelatedCalculators } from '../../data/calculators';
+
+const calc = getCalculatorBySlug('dana-haji-umrah')!;
+const related = getRelatedCalculators('dana-haji-umrah', 3);
+
+const faqs = [
+  { question: 'Biaya haji & umrah 2026?', answer: 'Umrah Reguler Rp 25-30jt, Umrah Plus Rp 40-55jt, Haji Reguler Rp 70-100jt (antrian 15-30 thn), Haji Plus Rp 250-350jt (antrian 5-10 thn), Haji Furoda Rp 400-500jt (tanpa antrian).' },
+  { question: 'Antrian haji reguler?', answer: 'Jakarta/Jabar/Jateng 25-30 thn. Jatim 28-32 thn. Sulsel 35-40 thn (terlama). Papua 12-15 thn (tercepat). Setoran awal Rp 25jt untuk masuk antrian.' },
+  { question: 'Strategi nabung?', answer: 'Tabungan Haji Bank Syariah (BSI, Muamalat), Reksadana Syariah (6-8%/thn), Sukuk Negara (SBSN 5-7%), Emas/LM. Hindari riba dan saham individual.' },
+  { question: 'Bedanya Reguler/Plus/Furoda?', answer: '<strong>Reguler</strong>: termurah, antrian 15-40thn. <strong>Plus</strong>: antrian 5-10thn, Rp 250-350jt. <strong>Furoda</strong>: TANPA antrian, visa undangan Saudi, Rp 400-500jt.' },
+  { question: 'Aman nabung via travel?', answer: 'WASPADA First Travel/Abu Tours! Pilih travel berlisensi PPIU/PIHK Kemenag (simpu.kemenag.go.id). Jangan setor 100% di awal. Cek lisensi & asuransi.' },
+];
+
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '/#tools' }, { label: calc.shortTitle }];
+---
+
+<Layout title={calc.title} description={calc.metaDescription} keywords={calc.keywords} canonical={`https://hitungcerdas.net/kalkulator/${calc.slug}`}>
+  <section class="calc-hero" style="--cat-color:#6D28D9;--cat-color2:#5B21B6">
+    <div class="wrap">
+      <Breadcrumb items={bcItems} />
+      <div class="calc-hero-grid">
+        <div class="calc-hero-text">
+          <div class="calc-hero-tag" style="background:#EDE9FE;color:#5B21B6"><i class="ti ti-building-mosque"></i> {calc.categoryLabel}</div>
+          <h1 class="calc-hero-title">{calc.h1}</h1>
+          <p class="calc-hero-sub">{calc.introText}</p>
+          <ul class="calc-hero-benefits">{calc.benefits.map(b => <li><i class="ti ti-check"></i> {b}</li>)}</ul>
+        </div>
+        <div class="calc-hero-illust">
+          <svg viewBox="0 0 200 200" fill="none">
+            <circle cx="100" cy="100" r="85" fill="rgba(255,255,255,.08)"/>
+            <path d="M50 150L50 100L100 60L150 100L150 150L50 150Z" fill="#FFF" stroke="#FBBF24" stroke-width="2.5" stroke-linejoin="round"/>
+            <rect x="85" y="115" width="30" height="35" fill="#6D28D9"/>
+            <circle cx="100" cy="60" r="8" fill="#FBBF24"/>
+            <path d="M100 50L100 70M90 60L110 60" stroke="#FFF" stroke-width="2.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+
+  <section class="calc-section">
+    <div class="wrap">
+      <div class="calc-card">
+        <div class="calc-card-hdr">
+          <div class="calc-card-hdr-ic" style="background:linear-gradient(135deg,#6D28D9 0%,#5B21B6 100%)"><i class="ti ti-building-mosque"></i></div>
+          <div><h2 class="calc-card-title">Kalkulator Dana Haji & Umrah</h2><p class="calc-card-sub">Compound interest syariah + inflasi tahunan</p></div>
+        </div>
+
+        <div class="calc-grid">
+          <div class="calc-input">
+            <div class="field"><label>Jenis Perjalanan</label>
+              <select id="jenis">
+                <option value="27000000">Umrah Reguler (~Rp 27jt)</option>
+                <option value="45000000">Umrah Plus (~Rp 45jt)</option>
+                <option value="85000000" selected>Haji Reguler (~Rp 85jt)</option>
+                <option value="300000000">Haji Plus (~Rp 300jt)</option>
+                <option value="450000000">Haji Furoda (~Rp 450jt)</option>
+              </select></div>
+            <div class="field"><label>Biaya Custom Saat Ini</label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="biayaCustom" class="has-prefix" value="85.000.000" inputmode="numeric" /></div></div>
+            <div class="field"><label>Target Tahun Berangkat</label>
+              <select id="targetTahun">
+                <option value="2">2 tahun lagi</option><option value="3">3 tahun lagi</option>
+                <option value="5" selected>5 tahun lagi</option><option value="7">7 tahun lagi</option>
+                <option value="10">10 tahun lagi</option><option value="15">15 tahun lagi</option>
+                <option value="20">20 tahun lagi</option>
+              </select></div>
+            <div class="field"><label>Jumlah Orang</label>
+              <input type="number" id="orang" value="1" min="1" max="10" /></div>
+            <div class="field"><label>Tabungan Awal</label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="tabunganAwal" class="has-prefix" placeholder="0" inputmode="numeric" /></div></div>
+            <div class="field"><label>Return Investasi Syariah/Tahun</label>
+              <div class="input-wrap"><input type="number" id="returnInv" class="has-suffix" value="6" step="0.5" /><span class="input-suffix">%</span></div>
+              <p class="field-hint">Reksadana syariah/sukuk: 5-8%/thn</p></div>
+            <div class="field"><label>Inflasi Biaya/Tahun</label>
+              <div class="input-wrap"><input type="number" id="inflasi" class="has-suffix" value="5" step="0.5" /><span class="input-suffix">%</span></div></div>
+
+            <div class="calc-action-bar">
+              <button type="button" class="btn-hitung" id="btnHitung"><i class="ti ti-calculator"></i> Hitung Sekarang</button>
+              <button type="button" class="btn-reset" id="btnReset"><i class="ti ti-refresh"></i> Reset</button>
+            </div>
+          </div>
+
+          <div class="calc-output">
+            <div class="result-placeholder" id="placeholder">
+              <i class="ti ti-building-mosque result-placeholder-icon"></i>
+              <div class="result-placeholder-title">Hasil akan muncul di sini</div>
+              <div class="result-placeholder-desc">Pilih jenis & target tahun, lalu klik <strong>"Hitung Sekarang"</strong>.</div>
+            </div>
+
+            <div class="result-wrapper" id="results">
+              <div class="result-main">
+                <div class="result-label">Nabung per Bulan</div>
+                <div class="result-value" id="perBulan">Rp 0</div>
+                <div class="result-meta"><i class="ti ti-info-circle"></i> <span id="perHari">Per hari: Rp 0</span></div>
+              </div>
+
+              <div class="result-grid">
+                <div class="result-item"><div class="result-item-label">Target Biaya (Inflasi)</div><div class="result-item-value result-warn" id="targetBiaya">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">Total × Orang</div><div class="result-item-value" id="totalBiaya">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">Tabungan + Bunga</div><div class="result-item-value result-good" id="tabSekarang">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">Kekurangan</div><div class="result-item-value" id="kekurangan">Rp 0</div></div>
+              </div>
+
+              <div class="kelayakan-box">
+                <div class="kelayakan-hdr"><i class="ti ti-building-bank"></i> <span>Tabungan Haji Resmi</span></div>
+                <div style="font-size:12.5px;line-height:1.8;color:var(--text-soft)">
+                  <div>🕌 <strong>BSI</strong> — Tabungan Haji & Umrah</div>
+                  <div>🌙 <strong>Muamalat</strong> — Tabungan Haji</div>
+                  <div>📊 <strong>Reksadana Syariah</strong> — Manulife, Schroders</div>
+                  <div>📋 <strong>Sukuk Negara</strong> — SR, ST, ORI Syariah</div>
+                  <div>🏛️ <strong>Kemenag</strong> — haji.kemenag.go.id</div>
+                </div>
+              </div>
+
+              <div class="export-row">
+                <button class="export-btn img" id="exportImg"><i class="ti ti-photo-down"></i><span>Save Image</span></button>
+                <button class="export-btn wa" id="exportWa"><i class="ti ti-brand-whatsapp"></i><span>Share WA</span></button>
+                <button class="export-btn pdf" id="exportPdf"><i class="ti ti-printer"></i><span>Print/PDF</span></button>
+                <button class="export-btn copy" id="exportCopy"><i class="ti ti-copy"></i><span>Copy Teks</span></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="content-section">
+    <div class="wrap-text">
+      <h2>Persiapkan Tanah Suci dari Sekarang</h2>
+      <p>Haji rukun Islam kelima, wajib bagi yang mampu (istita'ah). Kunci utama: mulai nabung sedini mungkin. Strategi: gabung tabungan haji syariah + reksadana syariah/sukuk untuk mengalahkan inflasi 5-7%/thn.</p>
+      <div class="cta-box"><h3>Mulai Wujudkan Mimpi Berhaji</h3><p>Hitung target nabung per bulan dengan compound interest syariah.</p></div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+  <FAQ items={faqs} />
+
+  <section class="section"><div class="wrap">
+    <div class="section-hdr"><div class="section-eyebrow">Kalkulator Lainnya</div><h2 class="section-title">Hitung Juga yang Lain</h2></div>
+    <div class="related-grid">{related.map(c => <CalculatorCard calc={c} />)}</div>
+  </div></section>
+</Layout>
+
+<script is:inline>
+  (function() {
+    function ready(fn) { if (window.HC && window.html2canvas) fn(); else setTimeout(() => ready(fn), 100); }
+    ready(() => {
+      const $ = id => document.getElementById(id);
+      const els = { jenis: $('jenis'), custom: $('biayaCustom'), tt: $('targetTahun'), o: $('orang'),
+                    ta: $('tabunganAwal'), r: $('returnInv'), inf: $('inflasi') };
+      els.jenis.addEventListener('change', () => { els.custom.value = parseInt(els.jenis.value).toLocaleString('id-ID'); });
+      [els.custom, els.ta].forEach(el => el.addEventListener('input', HC.fmtInput));
+
+      let lastCalc = null;
+
+      function hitung() {
+        const biaya = HC.parseRp(els.custom.value);
+        const tt = parseInt(els.tt.value), orang = parseInt(els.o.value) || 1;
+        const ta = HC.parseRp(els.ta.value);
+        const r = parseFloat(els.r.value) / 100 / 12 || 0;
+        const inf = parseFloat(els.inf.value) / 100 || 0.05;
+        if (biaya === 0) { HC.toast('Masukkan biaya', 'error'); return; }
+
+        const targetPerOrang = biaya * Math.pow(1 + inf, tt);
+        const totalBiaya = targetPerOrang * orang;
+        const months = tt * 12;
+        const fvSaving = ta * Math.pow(1 + r, months);
+        const remaining = Math.max(0, totalBiaya - fvSaving);
+        const perBulan = r === 0 ? remaining / months : remaining * r / (Math.pow(1 + r, months) - 1);
+        const perHari = perBulan / 30;
+
+        $('perBulan').textContent = HC.fmt(perBulan);
+        $('perHari').textContent = `Per hari: ${HC.fmt(perHari)}`;
+        $('targetBiaya').textContent = HC.fmt(targetPerOrang);
+        $('totalBiaya').textContent = HC.fmt(totalBiaya);
+        $('tabSekarang').textContent = HC.fmt(fvSaving);
+        $('kekurangan').textContent = HC.fmt(remaining);
+
+        lastCalc = { biaya, tt, orang, ta, returnPct: parseFloat(els.r.value), inf: inf * 100,
+                     targetPerOrang, totalBiaya, fvSaving, remaining, perBulan, perHari,
+                     jenisLabel: els.jenis.options[els.jenis.selectedIndex].text };
+        $('placeholder').style.display = 'none';
+        $('results').classList.add('show');
+        $('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        HC.toast('Berhasil dihitung!');
+      }
+
+      function reset() {
+        els.jenis.value = '85000000'; els.custom.value = '85.000.000'; els.tt.value = '5';
+        els.o.value = '1'; els.ta.value = ''; els.r.value = '6'; els.inf.value = '5';
+        $('placeholder').style.display = ''; $('results').classList.remove('show');
+        lastCalc = null; HC.toast('Form direset', 'info');
+      }
+
+      function buildReport() {
+        if (!lastCalc) return null;
+        const c = lastCalc;
+        return HC.buildReportCard({
+          title: '🕋 Dana Haji & Umrah', color: '#6D28D9', color2: '#5B21B6',
+          heroLabel: 'Nabung per Bulan', heroValue: HC.fmt(c.perBulan),
+          heroSubtext: `Target ${c.tt} tahun · ${c.orang} orang · Return ${c.returnPct}%`,
+          inputs: [
+            { label: '🕌 Jenis', value: c.jenisLabel },
+            { label: '📅 Target Tahun', value: c.tt + ' tahun' },
+            { label: '👥 Jumlah Orang', value: c.orang + ' orang' },
+            { label: '💰 Tabungan Awal', value: HC.fmt(c.ta) },
+            { label: '📊 Return', value: c.returnPct + '%/thn' },
+            { label: '📈 Inflasi', value: c.inf + '%/thn' },
+          ],
+          results: [
+            { label: 'Target Biaya/Orang', value: HC.fmt(c.targetPerOrang), highlight: true },
+            { label: 'Total × Orang', value: HC.fmt(c.totalBiaya) },
+            { label: 'Tabungan + Bunga', value: HC.fmt(c.fvSaving) },
+            { label: 'Kekurangan', value: HC.fmt(c.remaining) },
+            { label: 'Nabung/Bulan', value: HC.fmt(c.perBulan), highlight: true },
+            { label: 'Nabung/Hari', value: HC.fmt(c.perHari) },
+          ],
+          insight: `Setup auto-debet ke Tabungan Haji BSI/Muamalat + reksadana syariah. Untuk haji reguler, segera daftar antrian (setoran Rp 25jt) di BPS BPIH.`,
+          slug: 'dana-haji-umrah',
+        });
+      }
+
+      function summaryText() {
+        if (!lastCalc) return '';
+        const c = lastCalc;
+        return `🕋 *Dana Haji & Umrah - HitungCerdas*\n\n${c.jenisLabel}\nTarget: ${c.tt} tahun lagi\nTotal: ${HC.fmt(c.totalBiaya)}\n\n💰 *Nabung: ${HC.fmt(c.perBulan)}/bln*\n\nHitung: https://hitungcerdas.net/kalkulator/dana-haji-umrah`;
+      }
+
+      $('btnHitung').addEventListener('click', hitung);
+      $('btnReset').addEventListener('click', reset);
+      $('exportImg').addEventListener('click', () => { const r = buildReport(); if (r) HC.exportToImage(r, 'dana-haji-' + Date.now()); else HC.toast('Hitung dulu', 'error'); });
+      $('exportWa').addEventListener('click', () => { const r = buildReport(); if (r) HC.shareWhatsApp(r, summaryText(), 'dana-haji-umrah'); else HC.toast('Hitung dulu', 'error'); });
+      $('exportPdf').addEventListener('click', () => { if (lastCalc) HC.exportToPDF(); else HC.toast('Hitung dulu', 'error'); });
+      $('exportCopy').addEventListener('click', () => { if (lastCalc) HC.copyText(summaryText(), 'Tersalin!'); else HC.toast('Hitung dulu', 'error'); });
+    });
+  })();
+</script>

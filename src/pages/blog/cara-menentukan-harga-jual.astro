@@ -1,0 +1,124 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import AdSlot from '../../components/AdSlot.astro';
+
+const today = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'Cara Menentukan Harga Jual' }];
+---
+
+<Layout
+  title="Cara Menentukan Harga Jual Produk UMKM agar Tetap Untung — Panduan Lengkap"
+  description="Panduan menentukan harga jual produk UMKM: rumus HPP, target margin sehat, fee marketplace Shopee/Tokopedia, dan strategi pricing kompetitif."
+  keywords={['cara menentukan harga jual', 'harga jual produk umkm', 'pricing umkm', 'margin produk']}
+  canonical="https://hitungcerdas.net/blog/cara-menentukan-harga-jual"
+  ogType="article"
+>
+  <section class="article-hero" style="--cat-color:#EC4899;--cat-color2:#9D174D">
+    <div class="wrap">
+      <Breadcrumb items={bcItems} />
+      <div class="article-tag">UMKM & BISNIS</div>
+      <h1>Cara Menentukan Harga Jual Produk UMKM agar Tetap Untung</h1>
+      <div class="article-meta">
+        <span><i class="ti ti-calendar"></i> {today}</span>
+        <span><i class="ti ti-clock"></i> 6 menit baca</span>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+
+  <article class="content-section">
+    <div class="wrap-text">
+      <p class="lead">
+        Banyak UMKM gulung tikar bukan karena tidak laris, tapi karena <strong>salah menentukan
+        harga jual</strong>. Margin terlalu tipis, tidak hitung fee marketplace, atau lupa biaya
+        operasional. Mari pelajari cara pricing yang benar untuk produkmu.
+      </p>
+
+      <h2>1. Hitung HPP (Harga Pokok Produksi) Lengkap</h2>
+      <p>HPP adalah <strong>total biaya untuk produksi 1 unit produk</strong>:</p>
+      <ul class="info-list">
+        <li><strong>Bahan Baku/Modal</strong> (50-70% HPP)</li>
+        <li><strong>Packaging</strong> (5-15% HPP)</li>
+        <li><strong>Tenaga Kerja</strong> (jika ada, alokasi per unit)</li>
+        <li><strong>Biaya Operasional</strong> (listrik, sewa, internet — alokasi per unit)</li>
+      </ul>
+
+      <h2>2. Tentukan Target Margin</h2>
+      <p>Benchmark margin per industri:</p>
+      <ul class="info-list">
+        <li><strong>Fashion ritel</strong>: 30-50%</li>
+        <li><strong>Kuliner/F&B</strong>: 40-60% (food cost 30-35%)</li>
+        <li><strong>Beauty/skincare</strong>: 50-70%</li>
+        <li><strong>Handmade/craft</strong>: 100-300%</li>
+        <li><strong>Digital product</strong>: 70-90%</li>
+        <li><strong>Jasa profesional</strong>: 50-80%</li>
+      </ul>
+
+      <h2>3. Hitung Fee Marketplace</h2>
+      <ul class="info-list">
+        <li><strong>Shopee</strong>: 4-5% (Free Shipping), 1.5-3% (regular)</li>
+        <li><strong>Tokopedia</strong>: 4-8% (TopAds), 1-2% (regular)</li>
+        <li><strong>TikTok Shop</strong>: 1-3%</li>
+        <li><strong>Lazada</strong>: 4-6%</li>
+      </ul>
+      <p>Plus iklan jika pakai ads (2-15% dari penjualan).</p>
+
+      <h2>4. Rumus Harga Jual</h2>
+      <div class="formula-box">
+        <p class="formula"><strong>Harga Jual = (HPP + Margin) ÷ (1 - Fee%)</strong></p>
+        <ul>
+          <li><strong>HPP</strong> = Total biaya produksi per unit</li>
+          <li><strong>Margin</strong> = Target keuntungan (Rp)</li>
+          <li><strong>Fee%</strong> = Fee marketplace dalam desimal (5% = 0.05)</li>
+        </ul>
+      </div>
+
+      <h2>5. Contoh Perhitungan</h2>
+      <p>Bisnis hijab dengan:</p>
+      <ul class="info-list">
+        <li>Bahan: Rp 15.000</li>
+        <li>Packaging: Rp 2.000</li>
+        <li>Operasional: Rp 3.000</li>
+        <li>HPP Total: <strong>Rp 20.000</strong></li>
+        <li>Target margin 40%: Rp 20.000 × 40% = Rp 8.000</li>
+        <li>Subtotal: Rp 28.000</li>
+        <li>Fee Shopee 5%: Rp 28.000 ÷ 0.95 = <strong>Rp 29.500</strong></li>
+      </ul>
+      <p>
+        Jual di Shopee Rp 29.500 → Profit bersih: Rp 29.500 - Rp 20.000 - Rp 1.500 (fee) = <strong>Rp 8.000/unit</strong>.
+      </p>
+
+      <h2>6. Tips Pricing yang Cerdas</h2>
+      <ol class="tips-list">
+        <li><strong>Test 3 Harga</strong> — A/B test harga rendah/sedang/tinggi untuk lihat conversion.</li>
+        <li><strong>Pricing Psikologis</strong> — Rp 29.900 lebih menarik dari Rp 30.000.</li>
+        <li><strong>Bundling</strong> — 1 produk Rp 30rb vs paket 3 produk Rp 80rb (lebih untung).</li>
+        <li><strong>Premium Pricing</strong> — Jangan tergoda diskon perang. Build brand quality.</li>
+        <li><strong>Hindari Diskon Selalu</strong> — Customer akan tunggu diskon, harga normal jadi "mahal".</li>
+      </ol>
+
+      <div class="cta-box">
+        <h3>Hitung Harga Jual Produkmu</h3>
+        <p>Gunakan kalkulator harga jual HitungCerdas untuk tentukan pricing optimal otomatis.</p>
+        <p style="margin-top:14px"><a href="/kalkulator/harga-jual" class="btn btn-pri"><i class="ti ti-calculator"></i> Kalkulator Harga Jual</a></p>
+      </div>
+    </div>
+  </article>
+
+  <AdSlot format="horizontal" />
+</Layout>
+
+<style>
+  .article-hero { background: linear-gradient(135deg, var(--cat-color) 0%, var(--cat-color2) 100%); color: #fff; padding: 20px 0 48px; }
+  .article-hero :global(.breadcrumb-item), .article-hero :global(.breadcrumb-item a) { color: rgba(255, 255, 255, .7); }
+  .article-hero :global(.breadcrumb-item a:hover) { color: var(--gold-soft); }
+  .article-hero :global(.breadcrumb-item span) { color: #fff; }
+  .article-hero :global(.breadcrumb-item i) { color: rgba(255, 255, 255, .4); }
+  .article-tag { display: inline-block; font-size: 11px; font-weight: 700; color: var(--gold-soft); letter-spacing: .1em; text-transform: uppercase; margin: 16px 0 12px; }
+  .article-hero h1 { color: #fff; font-size: clamp(26px, 3.8vw, 42px); margin: 0 0 20px; max-width: 800px; line-height: 1.2; }
+  .article-meta { display: flex; gap: 20px; color: rgba(255, 255, 255, .75); font-size: 13px; flex-wrap: wrap; }
+  .article-meta span { display: inline-flex; align-items: center; gap: 6px; }
+  .lead { font-size: 17px !important; line-height: 1.7 !important; color: var(--text) !important; padding: 20px 24px; background: var(--bg-soft); border-radius: 12px; border-left: 4px solid #EC4899; margin-bottom: 24px !important; }
+</style>

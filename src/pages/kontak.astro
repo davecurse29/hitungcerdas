@@ -1,0 +1,157 @@
+---
+import Layout from '../layouts/Layout.astro';
+import AdSlot from '../components/AdSlot.astro';
+---
+
+<Layout
+  title="Kontak — HitungCerdas Pusat Kalkulator Indonesia"
+  description="Hubungi tim HitungCerdas untuk feedback, saran fitur baru, partnership, atau pertanyaan lainnya."
+  canonical="https://hitungcerdas.net/kontak"
+>
+  <section class="page-hero" style="--cat-color:#2563EB;--cat-color2:#1E40AF">
+    <div class="wrap">
+      <h1>Hubungi Kami</h1>
+      <p>Punya feedback, saran, atau pertanyaan? Kami senang mendengarmu!</p>
+    </div>
+  </section>
+
+  <section class="content-section">
+    <div class="wrap-text">
+      <h2>Cara Menghubungi HitungCerdas</h2>
+      <p>
+        Kami selalu terbuka untuk masukan dari pengguna agar HitungCerdas terus berkembang dan
+        lebih bermanfaat. Pilih saluran yang paling nyaman untukmu:
+      </p>
+
+      <div class="contact-grid">
+        <a href="mailto:hitungcerdas.id@gmail.com" class="contact-card">
+          <div class="contact-ic" style="background:#DBEAFE;color:#2563EB"><i class="ti ti-mail"></i></div>
+          <div>
+            <h3>Email</h3>
+            <p>hitungcerdas.id@gmail.com</p>
+            <span class="contact-meta">Untuk feedback, partnership, dan pertanyaan formal</span>
+          </div>
+        </a>
+
+        <a href="https://www.instagram.com/hitungcerdas/" target="_blank" rel="noopener" class="contact-card">
+          <div class="contact-ic" style="background:#FCE7F3;color:#EC4899"><i class="ti ti-brand-instagram"></i></div>
+          <div>
+            <h3>Instagram</h3>
+            <p>@hitungcerdas</p>
+            <span class="contact-meta">DM untuk pertanyaan cepat & update fitur</span>
+          </div>
+        </a>
+
+        <a href="https://www.facebook.com/hitungcerdas/" target="_blank" rel="noopener" class="contact-card">
+          <div class="contact-ic" style="background:#DBEAFE;color:#2563EB"><i class="ti ti-brand-facebook"></i></div>
+          <div>
+            <h3>Facebook</h3>
+            <p>HitungCerdas</p>
+            <span class="contact-meta">Follow page kami untuk update artikel terbaru</span>
+          </div>
+        </a>
+
+        <a href="https://www.cuanpertama.my.id" target="_blank" rel="noopener" class="contact-card">
+          <div class="contact-ic" style="background:#FEF3C7;color:#B45309"><i class="ti ti-building-store"></i></div>
+          <div>
+            <h3>Toko Cuan Pertama</h3>
+            <p>cuanpertama.my.id</p>
+            <span class="contact-meta">Bisnis e-commerce dari tim kami</span>
+          </div>
+        </a>
+      </div>
+
+      <h2>Apa yang Bisa Kami Bantu?</h2>
+      <ul class="info-list">
+        <li><strong>Bug & Error Report</strong>: Menemukan tools yang error atau hasil yang aneh? Kabarkan kami!</li>
+        <li><strong>Saran Fitur Baru</strong>: Ingin kalkulator tertentu yang belum ada? Beritahu kami.</li>
+        <li><strong>Partnership</strong>: Bekerja sama untuk konten edukasi, iklan terhormat, atau kolaborasi lain.</li>
+        <li><strong>Press & Media</strong>: Untuk wawancara, pemberitaan, atau guest article.</li>
+        <li><strong>Klarifikasi Konten</strong>: Jika ada artikel atau hasil kalkulator yang perlu klarifikasi.</li>
+      </ul>
+
+      <div class="cta-box">
+        <h3>Bukan Bantuan Profesional</h3>
+        <p>
+          HitungCerdas adalah platform edukasi. Untuk konsultasi finansial profesional (pajak,
+          investasi, KPR), hubungi konsultan berlisensi. Untuk masalah ibadah/syariah, konsultasi
+          dengan ulama atau lembaga zakat resmi. Untuk konsultasi hukum waris, hubungi pengadilan agama.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+</Layout>
+
+<style>
+  .page-hero {
+    background: linear-gradient(135deg, var(--cat-color, var(--navy)) 0%, var(--cat-color2, var(--navy-2)) 100%);
+    color: #fff;
+    padding: 56px 0;
+    text-align: center;
+  }
+  .page-hero h1 { color: #fff; margin-bottom: 12px; }
+  .page-hero p { color: rgba(255, 255, 255, .85); font-size: 16px; max-width: 600px; margin: 0 auto; }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 28px 0;
+  }
+
+  .contact-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    text-decoration: none;
+    color: inherit;
+    transition: var(--tx);
+  }
+
+  .contact-card:hover {
+    border-color: var(--blue);
+    box-shadow: var(--shadow);
+    transform: translateY(-1px);
+  }
+
+  .contact-ic {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+
+  .contact-card h3 {
+    font-size: 15px;
+    margin: 0 0 4px;
+    color: var(--navy);
+    font-family: var(--ff-display);
+  }
+
+  .contact-card p {
+    font-size: 14px;
+    color: var(--text);
+    font-weight: 600;
+    margin: 0 0 4px;
+  }
+
+  .contact-meta {
+    font-size: 12px;
+    color: var(--text-mute);
+    line-height: 1.4;
+  }
+
+  @media (max-width: 600px) {
+    .contact-grid { grid-template-columns: 1fr; }
+  }
+</style>

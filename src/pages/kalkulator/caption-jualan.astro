@@ -1,0 +1,454 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import FAQ from '../../components/FAQ.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import CalculatorCard from '../../components/CalculatorCard.astro';
+import { getCalculatorBySlug, getRelatedCalculators } from '../../data/calculators';
+
+const calc = getCalculatorBySlug('caption-jualan')!;
+const related = getRelatedCalculators('caption-jualan', 3);
+
+const faqs = [
+  { question: 'Apa struktur caption jualan yang efektif?', answer: 'Formula klasik <strong>AIDA</strong>:<br>1. <strong>Attention (Hook)</strong>: 1-2 baris pertama harus eye-catching<br>2. <strong>Interest</strong>: Jelaskan manfaat produk untuk customer<br>3. <strong>Desire</strong>: Buat customer ingin punya (testimoni, before-after)<br>4. <strong>Action (CTA)</strong>: Ajakan jelas - "Order sekarang", "DM untuk diskon"<br><br>Plus hashtag relevan di akhir (5-15 hashtag).' },
+  { question: 'Berapa panjang caption Instagram yang ideal?', answer: 'Tergantung platform:<br>• <strong>Instagram</strong>: 138-150 karakter (yang muncul sebelum "more"). Total max 2200 karakter.<br>• <strong>TikTok</strong>: 80-150 karakter (singkat, hook kuat). Max 150 karakter.<br>• <strong>Facebook</strong>: 40-80 karakter dapat engagement terbaik.<br>• <strong>WhatsApp Status</strong>: 50-100 karakter.<br>• <strong>Marketplace deskripsi</strong>: 200-500 karakter (Shopee/Tokopedia).' },
+  { question: 'Berapa hashtag yang ideal untuk Instagram?', answer: 'Aturan emas Instagram 2026:<br>• <strong>5-15 hashtag</strong> per post (sweet spot reach maksimal)<br>• Campur <strong>broad (#fashion)</strong>, <strong>medium (#fashionjakarta)</strong>, <strong>niche (#fashionbumilkekinian)</strong><br>• <strong>Hindari banned hashtag</strong><br>• <strong>Lokasi spesifik</strong> seperti #jakarta #surabaya untuk audiens lokal<br>• <strong>Rotasi hashtag</strong> setiap post' },
+  { question: 'Apa beda caption hard-sell vs soft-sell?', answer: '<strong>Hard-sell</strong> (langsung jualan): Cocok untuk flash sale, diskon, promo. Konversi tinggi tapi rentan spam.<br><br><strong>Soft-sell</strong> (storytelling): Cocok untuk build brand. Engagement lebih tinggi, trust naik.<br><br>Mix 70% soft-sell + 30% hard-sell ideal.' },
+  { question: 'Bagaimana cara bikin caption viral?', answer: 'Tips: 1. Hook controversial. 2. Pakai data/angka mengejutkan. 3. Storytelling personal. 4. List-based. 5. Reply comment dalam 1 jam. 6. Posting prime time 11-13.00 atau 19-21.00 WIB. 7. CTA "save this post".' },
+];
+
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '/#tools' }, { label: calc.shortTitle }];
+---
+
+<Layout title={calc.title} description={calc.metaDescription} keywords={calc.keywords} canonical={`https://hitungcerdas.net/kalkulator/${calc.slug}`}>
+  <section class="calc-hero" style="--cat-color:#F43F5E;--cat-color2:#9F1239">
+    <div class="wrap">
+      <Breadcrumb items={bcItems} />
+      <div class="calc-hero-grid">
+        <div class="calc-hero-text">
+          <div class="calc-hero-tag" style="background:#FFE4E6;color:#9F1239"><i class="ti ti-message-2"></i> {calc.categoryLabel}</div>
+          <h1 class="calc-hero-title">{calc.h1}</h1>
+          <p class="calc-hero-sub">{calc.introText}</p>
+          <ul class="calc-hero-benefits">{calc.benefits.map(b => <li><i class="ti ti-check"></i> {b}</li>)}</ul>
+        </div>
+        <div class="calc-hero-illust">
+          <svg viewBox="0 0 200 200" fill="none">
+            <circle cx="100" cy="100" r="85" fill="rgba(255,255,255,.08)"/>
+            <rect x="55" y="45" width="90" height="100" rx="12" fill="#FFF" stroke="#FBBF24" stroke-width="2.5"/>
+            <rect x="65" y="60" width="70" height="6" rx="2" fill="#0A2540"/>
+            <rect x="65" y="75" width="50" height="3" rx="1" fill="#94A3B8"/>
+            <rect x="65" y="85" width="65" height="3" rx="1" fill="#94A3B8"/>
+            <rect x="65" y="95" width="40" height="3" rx="1" fill="#94A3B8"/>
+            <circle cx="80" cy="115" r="6" fill="#F43F5E"/>
+            <circle cx="100" cy="115" r="6" fill="#F43F5E" opacity=".7"/>
+            <circle cx="120" cy="115" r="6" fill="#F43F5E" opacity=".4"/>
+            <path d="M120 165L130 175L155 150" stroke="#FBBF24" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+
+  <section class="calc-section">
+    <div class="wrap">
+      <div class="calc-card">
+        <div class="calc-card-hdr">
+          <div class="calc-card-hdr-ic" style="background:linear-gradient(135deg,#F43F5E,#9F1239)"><i class="ti ti-sparkles"></i></div>
+          <div>
+            <h2 class="calc-card-title">Caption Jualan Generator</h2>
+            <p class="calc-card-sub">Isi data produk → klik "Generate" → dapat 5 variasi caption</p>
+          </div>
+        </div>
+
+        <div class="calc-grid">
+          <div class="calc-input">
+            <div class="field">
+              <label for="produk">Nama Produk *</label>
+              <input type="text" id="produk" placeholder="Hijab Voal Premium, Tas Kulit Asli, dll" />
+            </div>
+
+            <div class="field">
+              <label for="kategori">Kategori Produk</label>
+              <select id="kategori">
+                <option value="fashion">👗 Fashion / Pakaian</option>
+                <option value="hijab">🧕 Hijab / Muslim Wear</option>
+                <option value="kuliner">🍲 Kuliner / F&B</option>
+                <option value="kosmetik">💄 Kosmetik / Skincare</option>
+                <option value="elektronik">📱 Elektronik / Gadget</option>
+                <option value="aksesoris">💍 Aksesoris / Jewelry</option>
+                <option value="rumah">🏠 Peralatan Rumah</option>
+                <option value="anak">👶 Produk Anak / Bayi</option>
+                <option value="kesehatan">💊 Kesehatan / Herbal</option>
+                <option value="jasa">💼 Jasa / Service</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="harga">Harga Produk <span class="hint">(opsional)</span></label>
+              <div class="input-wrap">
+                <span class="input-prefix">Rp</span>
+                <input type="text" id="harga" class="has-prefix" placeholder="150.000" inputmode="numeric" />
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="keunggulan">Keunggulan Produk <span class="hint">(opsional, max 3)</span></label>
+              <textarea id="keunggulan" rows="2" placeholder="Material premium, tahan lama, garansi 1 tahun..."></textarea>
+            </div>
+
+            <div class="field">
+              <label for="targetMarket">Target Market</label>
+              <select id="targetMarket">
+                <option value="muslimah">👩 Muslimah 20-35 tahun</option>
+                <option value="ibu_muda">🤱 Ibu muda 25-35 tahun</option>
+                <option value="genz">💁 Gen Z 16-25 tahun</option>
+                <option value="milenial">🧑 Milenial 25-40 tahun</option>
+                <option value="profesional">👨‍💼 Profesional 30-45 tahun</option>
+                <option value="keluarga">👨‍👩‍👧 Keluarga umum</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="platform">Platform Utama</label>
+              <select id="platform">
+                <option value="instagram">📷 Instagram (138-150 char hook)</option>
+                <option value="tiktok">🎵 TikTok (80-150 char)</option>
+                <option value="facebook">📘 Facebook (40-80 char)</option>
+                <option value="whatsapp">💬 WhatsApp Status (50-100 char)</option>
+                <option value="shopee">🛒 Shopee/Tokopedia (200-500 char)</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="gaya">Gaya Caption</label>
+              <select id="gaya">
+                <option value="campur">🔀 Campur (3 soft + 2 hard sell)</option>
+                <option value="softsell">📖 Soft-sell (storytelling)</option>
+                <option value="hardsell">⚡ Hard-sell (langsung promo)</option>
+                <option value="lucu">😂 Lucu/Relatable</option>
+                <option value="islami">☪️ Islami/Religi</option>
+                <option value="testimoni">⭐ Testimoni-style</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="cta">Call-to-Action Utama</label>
+              <select id="cta">
+                <option value="dm">📩 DM untuk order</option>
+                <option value="link">🔗 Tap link di bio</option>
+                <option value="wa">💬 Chat WhatsApp</option>
+                <option value="marketplace">🛒 Cek Shopee/Tokopedia</option>
+                <option value="diskon">🎁 Klaim diskon hari ini</option>
+              </select>
+            </div>
+
+            <div class="calc-action-bar">
+              <button type="button" class="btn-hitung" id="btnHitung" style="background:linear-gradient(135deg,#F43F5E,#9F1239);box-shadow:0 6px 16px rgba(244,63,94,.22)">
+                <i class="ti ti-sparkles"></i> Generate 5 Caption
+              </button>
+              <button type="button" class="btn-reset" id="btnReset">
+                <i class="ti ti-refresh"></i> Reset
+              </button>
+            </div>
+          </div>
+
+          <div class="calc-output">
+            <div class="result-placeholder" id="placeholder">
+              <i class="ti ti-sparkles result-placeholder-icon"></i>
+              <div class="result-placeholder-title">5 Variasi Caption akan muncul di sini</div>
+              <div class="result-placeholder-desc">
+                Isi data produk di sebelah kiri, lalu klik <strong>"Generate 5 Caption"</strong> untuk dapat 5 variasi caption viral siap pakai.
+              </div>
+            </div>
+
+            <div class="result-wrapper" id="results">
+              <div class="result-main" style="background:linear-gradient(135deg,#F43F5E15,#9F123920);border:1px solid #F43F5E40">
+                <div class="result-label" style="color:#9F1239">5 Variasi Caption Siap Pakai</div>
+                <div class="result-value" style="font-size:24px;color:#9F1239" id="captionMeta">Caption + 12 Hashtag</div>
+                <div class="result-meta"><span><i class="ti ti-info-circle"></i> Copy yang paling cocok, edit sesuai brand voice kamu</span></div>
+              </div>
+
+              <div id="captionsContainer" style="display:flex;flex-direction:column;gap:14px"></div>
+
+              <div class="export-row">
+                <button type="button" class="export-btn img" id="exportImg">
+                  <i class="ti ti-photo-down"></i><span>Save Image</span>
+                </button>
+                <button type="button" class="export-btn wa" id="exportWa">
+                  <i class="ti ti-brand-whatsapp"></i><span>Share WA</span>
+                </button>
+                <button type="button" class="export-btn pdf" id="exportPdf">
+                  <i class="ti ti-printer"></i><span>Print/PDF</span>
+                </button>
+                <button type="button" class="export-btn copy" id="exportCopyAll">
+                  <i class="ti ti-copy"></i><span>Copy Semua</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="content-section">
+    <div class="wrap-text">
+      <h2>Cara Pakai Caption Jualan Generator</h2>
+      <ol class="tips-list">
+        <li><strong>Isi nama produk dengan jelas</strong> — Hindari nama generik. Contoh bagus: "Hijab Voal Premium Sakura" daripada "Hijab".</li>
+        <li><strong>Pilih kategori spesifik</strong> — Caption fashion berbeda dengan kuliner. Hashtag dan vocabulary disesuaikan.</li>
+        <li><strong>Cantumkan keunggulan</strong> — 2-3 keunggulan terkuat akan masuk caption sebagai value proposition.</li>
+        <li><strong>Pilih target market tepat</strong> — Bahasa caption Gen Z beda dengan ibu muda. Generator menyesuaikan tone.</li>
+        <li><strong>Sesuaikan platform</strong> — Caption Instagram, TikTok, Shopee punya format & panjang berbeda.</li>
+        <li><strong>Generate beberapa kali</strong> — Klik tombol berulang untuk dapat ide segar setiap kali.</li>
+      </ol>
+      <div class="cta-box">
+        <h3>Tips Pakai Caption Generator</h3>
+        <p>Hasil dari generator adalah <strong>starting point</strong>. Edit sesuai brand voice kamu, tambahkan personal touch, dan jangan lupa hashtag lokal seperti #jakarta #surabaya untuk audiens daerah spesifik.</p>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+  <FAQ title="Tips Caption Jualan" items={faqs} />
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-hdr">
+        <div class="section-eyebrow">Tools Bisnis Lainnya</div>
+        <h2 class="section-title">Bantu Bisnismu Naik</h2>
+      </div>
+      <div class="related-grid">{related.map(c => <CalculatorCard calc={c} />)}</div>
+    </div>
+  </section>
+</Layout>
+
+<script is:inline>
+  (function() {
+    function ready(fn) {
+      if (window.HC && window.html2canvas) fn();
+      else setTimeout(() => ready(fn), 100);
+    }
+
+    ready(() => {
+      const $ = id => document.getElementById(id);
+      const els = {
+        produk: $('produk'), kategori: $('kategori'), harga: $('harga'),
+        keunggulan: $('keunggulan'), targetMarket: $('targetMarket'),
+        platform: $('platform'), gaya: $('gaya'), cta: $('cta'),
+      };
+
+      els.harga.addEventListener('input', HC.fmtInput);
+
+      // Hashtag bank per kategori
+      const HASHTAGS = {
+        fashion: ['#fashionindo', '#ootdindo', '#fashioncewek', '#bajumurahmeriah', '#jualanonline', '#fashionjakarta', '#fashionsurabaya', '#fashionbandung', '#bajuhits', '#fashionstyle'],
+        hijab: ['#hijabindo', '#hijabsyari', '#hijabcantik', '#hijabsegiempat', '#hijabterbaru', '#hijabmurah', '#muslimahindonesia', '#hijabootd', '#hijabstyle', '#jualhijab'],
+        kuliner: ['#kulinerindo', '#kulinerjakarta', '#foodgram', '#makananenak', '#kulinerseru', '#jajananhits', '#wisatakuliner', '#anakkost', '#kulinerhalal', '#frozenfood'],
+        kosmetik: ['#skincareindo', '#kosmetikmurah', '#beautyindonesia', '#makeupcantik', '#glowingskin', '#skincareroutine', '#kosmetikhalal', '#bebasjerawat', '#lipstickmurah', '#skincarejourney'],
+        elektronik: ['#gadgetindo', '#elektronikmurah', '#hpmurah', '#aksesorishp', '#powerbank', '#earphone', '#smartwatchindo', '#gadgetkeren', '#techindonesia', '#elektronikjakarta'],
+        aksesoris: ['#aksesoriscantik', '#anting2', '#kalungcantik', '#gelang', '#aksesorishijab', '#bros', '#aksesoriscewek', '#perhiasan', '#cincin', '#tasimport'],
+        rumah: ['#perlengkapanrumah', '#dekorrumah', '#homedecorindo', '#alatdapur', '#sprai', '#peralatanrumah', '#furniture', '#rumahminimalis', '#interiorrumah', '#tipsrumah'],
+        anak: ['#perlengkapanbayi', '#bajubayi', '#mainananak', '#bayilucu', '#ibudananak', '#parentinginstagram', '#tipsibudananak', '#anakindonesia', '#perlengkapananak', '#breastfeedingmom'],
+        kesehatan: ['#herbalindonesia', '#suplemenkesehatan', '#hidupsehat', '#dietsehat', '#vitaminmurah', '#herbalalami', '#tipskesehatan', '#kesehatankeluarga', '#imunitastubuh', '#stayhealthy'],
+        jasa: ['#jasaindonesia', '#jasamurah', '#freelanceindonesia', '#promojasa', '#openrequest', '#jasaprofesional', '#bisnisonline', '#umkmindonesia', '#wirausahaindonesia', '#peluangbisnis'],
+      };
+
+      const COMMON_HASHTAGS = ['#trustedseller', '#shopeeindo', '#tokopedia', '#jualanonlinemurah', '#promomurah'];
+
+      const CTA_TEXT = {
+        dm: 'DM sekarang untuk order! 📩',
+        link: 'Tap link di bio buat pesan! 🔗',
+        wa: 'WA admin di profil ya! 💬',
+        marketplace: 'Cek Shopee/Tokopedia kami! 🛒',
+        diskon: 'Klaim diskon spesial hari ini! 🎁',
+      };
+
+      // Generate captions
+      function pickRandom(arr, n) {
+        const shuffled = [...arr].sort(() => 0.5 - Math.random());
+        return shuffled.slice(0, n);
+      }
+
+      function generateCaptions(data) {
+        const { produk, kategori, harga, keunggulan, targetMarket, platform, gaya, cta } = data;
+        const hashtags = pickRandom([...HASHTAGS[kategori], ...COMMON_HASHTAGS], 12).join(' ');
+        const ctaText = CTA_TEXT[cta];
+        const hargaText = harga > 0 ? `Cuma Rp ${harga.toLocaleString('id-ID')}` : 'Harga special!';
+        const keunggulanArr = keunggulan ? keunggulan.split(/[,.]/).map(s => s.trim()).filter(Boolean).slice(0, 3) : [];
+
+        const platformIntro = {
+          instagram: 'INSTAGRAM',
+          tiktok: 'TIKTOK',
+          facebook: 'FACEBOOK',
+          whatsapp: 'WHATSAPP',
+          shopee: 'SHOPEE/TOKOPEDIA',
+        };
+
+        // 5 caption templates
+        const captions = [];
+
+        // 1. Hook + Storytelling (soft sell)
+        captions.push({
+          type: '📖 Storytelling',
+          text: `Pernah ngerasa kesulitan cari ${produk.toLowerCase()} yang bener-bener berkualitas?\n\nKami juga ngerasain hal yang sama, makanya kami hadirkan ${produk} buat kamu yang ${targetMarket === 'muslimah' ? 'pengen tampil syari & stylish' : targetMarket === 'genz' ? 'pengen tampil beda' : 'butuh yang terpercaya'}.\n\n${keunggulanArr.length ? '✨ ' + keunggulanArr.join('\n✨ ') + '\n\n' : ''}${hargaText}\n\n${ctaText}\n\n${hashtags}`,
+        });
+
+        // 2. Problem-Solution (hard sell)
+        captions.push({
+          type: '⚡ Problem-Solution',
+          text: `STOP! Jangan beli ${produk.toLowerCase()} sembarangan! 🛑\n\nBanyak yang ngecewain karena: \n❌ Bahan murahan\n❌ Tidak tahan lama\n❌ Beda dengan foto\n\nDi kami beda! ✨\n${keunggulanArr.length ? keunggulanArr.map(k => `✅ ${k}`).join('\n') + '\n' : '✅ Quality premium\n✅ Original 100%\n✅ Garansi puas\n'}\n${hargaText} aja!\n\n${ctaText}\n\n${hashtags}`,
+        });
+
+        // 3. List-based (educational + sell)
+        captions.push({
+          type: '📋 List-Based',
+          text: `5 Alasan Kenapa ${produk} Kami Worth It:\n\n1️⃣ ${keunggulanArr[0] || 'Material premium quality'}\n2️⃣ ${keunggulanArr[1] || 'Tahan lama bertahun-tahun'}\n3️⃣ ${keunggulanArr[2] || 'Trusted by 1000+ customer'}\n4️⃣ Fast response & friendly admin\n5️⃣ ${hargaText} (worth banget!)\n\n${ctaText}\n\n${hashtags}`,
+        });
+
+        // 4. Testimoni-style
+        captions.push({
+          type: '⭐ Testimoni-Style',
+          text: `"Akhirnya nemu ${produk} yang sesuai ekspektasi! Worth it banget" - Sis Maya, ${targetMarket === 'muslimah' ? 'Jakarta' : 'Bandung'} ⭐⭐⭐⭐⭐\n\n${produk} kami udah dipercaya 1000+ customer di seluruh Indonesia! 🇮🇩\n\n${keunggulanArr.length ? '🌟 ' + keunggulanArr.join('\n🌟 ') + '\n\n' : ''}${hargaText}\n\nSiap nyusul jadi customer berikutnya? ${ctaText}\n\n${hashtags}`,
+        });
+
+        // 5. Urgency / FOMO (hard sell)
+        captions.push({
+          type: '🔥 Urgency/FOMO',
+          text: `⏰ FLASH SALE 24 JAM!\n\n${produk} ${gaya === 'islami' ? 'berkah & berkualitas' : 'best seller kami'} ${hargaText}!\n\nStok terbatas, banyak yang udah re-order karena puas:\n${keunggulanArr.length ? keunggulanArr.map(k => `🔥 ${k}`).join('\n') : '🔥 Material premium\n🔥 Hasil maksimal\n🔥 Garansi puas'}\n\nJangan sampai kehabisan! ${ctaText}\n\n${hashtags}`,
+        });
+
+        return captions;
+      }
+
+      let lastCaptions = null;
+      let lastData = null;
+
+      function hitung() {
+        const produk = els.produk.value.trim();
+        if (!produk) { HC.toast('Isi nama produk dulu', 'error'); return; }
+
+        const data = {
+          produk,
+          kategori: els.kategori.value,
+          harga: HC.parseRp(els.harga.value),
+          keunggulan: els.keunggulan.value.trim(),
+          targetMarket: els.targetMarket.value,
+          platform: els.platform.value,
+          gaya: els.gaya.value,
+          cta: els.cta.value,
+        };
+
+        const captions = generateCaptions(data);
+        lastCaptions = captions;
+        lastData = data;
+
+        // Display captions
+        $('captionsContainer').innerHTML = captions.map((c, i) => `
+          <div style="background:#fff;border:1px solid var(--border);border-radius:14px;padding:16px;box-shadow:var(--shadow-sm)">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;padding-bottom:8px;border-bottom:1px dashed var(--border)">
+              <div style="font-size:13px;font-weight:700;color:#9F1239">${c.type}</div>
+              <button type="button" data-idx="${i}" class="cap-copy" style="background:#FFE4E6;color:#9F1239;border:none;padding:6px 12px;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:4px">
+                <i class="ti ti-copy"></i> Copy
+              </button>
+            </div>
+            <div style="font-size:13px;color:var(--text);line-height:1.6;white-space:pre-wrap">${c.text}</div>
+          </div>
+        `).join('');
+
+        // Add copy listeners
+        document.querySelectorAll('.cap-copy').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const idx = parseInt(btn.dataset.idx);
+            HC.copyText(lastCaptions[idx].text, 'Caption tersalin!');
+          });
+        });
+
+        $('captionMeta').textContent = `${captions.length} variasi caption + 12 hashtag`;
+        $('placeholder').style.display = 'none';
+        $('results').classList.add('show');
+        $('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        HC.toast(`${captions.length} caption berhasil di-generate!`);
+      }
+
+      function reset() {
+        els.produk.value = '';
+        els.harga.value = '';
+        els.keunggulan.value = '';
+        els.kategori.value = 'fashion';
+        els.targetMarket.value = 'muslimah';
+        els.platform.value = 'instagram';
+        els.gaya.value = 'campur';
+        els.cta.value = 'dm';
+        $('placeholder').style.display = '';
+        $('results').classList.remove('show');
+        lastCaptions = null;
+        lastData = null;
+        HC.toast('Form direset', 'info');
+      }
+
+      function buildReport() {
+        if (!lastCaptions || !lastData) return null;
+
+        const inputs = [
+          { label: '📦 Produk', value: lastData.produk },
+          { label: '🏷️ Kategori', value: lastData.kategori.charAt(0).toUpperCase() + lastData.kategori.slice(1) },
+          { label: '🎯 Target Market', value: lastData.targetMarket.replace(/_/g, ' ') },
+          { label: '📱 Platform', value: lastData.platform.charAt(0).toUpperCase() + lastData.platform.slice(1) },
+        ];
+
+        // Show first 2 captions in report card (others available in text/copy)
+        const results = lastCaptions.slice(0, 4).map(c => ({
+          label: c.type,
+          value: c.text.substring(0, 80) + '...',
+        }));
+
+        return HC.buildReportCard({
+          title: '✨ Caption Jualan - 5 Variasi',
+          color: '#F43F5E',
+          color2: '#9F1239',
+          heroLabel: 'Produk',
+          heroValue: lastData.produk,
+          heroSubtext: `${lastCaptions.length} variasi caption siap copy-paste`,
+          inputs, results,
+          insight: 'Caption terbaik adalah yang sesuai brand voice. Edit sebelum posting, tambahkan personal touch & hashtag lokal.',
+          slug: 'caption-jualan',
+        });
+      }
+
+      function summaryText() {
+        if (!lastCaptions || !lastData) return '';
+        let txt = `✨ *Caption Jualan - ${lastData.produk}*\n\n`;
+        lastCaptions.forEach((c, i) => {
+          txt += `*${i + 1}. ${c.type}*\n${c.text}\n\n${'─'.repeat(20)}\n\n`;
+        });
+        txt += `Generate caption lainnya di: https://hitungcerdas.net/kalkulator/caption-jualan`;
+        return txt;
+      }
+
+      $('btnHitung').addEventListener('click', hitung);
+      $('btnReset').addEventListener('click', reset);
+
+      $('exportImg').addEventListener('click', () => {
+        const card = buildReport();
+        if (!card) { HC.toast('Generate dulu', 'error'); return; }
+        HC.exportToImage(card, 'caption-' + Date.now());
+      });
+      $('exportWa').addEventListener('click', () => {
+        if (!lastCaptions) { HC.toast('Generate dulu', 'error'); return; }
+        // For WA, text is more useful than image for captions
+        window.open('https://wa.me/?text=' + encodeURIComponent(summaryText()), '_blank');
+      });
+      $('exportPdf').addEventListener('click', () => {
+        if (!lastCaptions) { HC.toast('Generate dulu', 'error'); return; }
+        HC.exportToPDF();
+      });
+      $('exportCopyAll').addEventListener('click', () => {
+        if (!lastCaptions) { HC.toast('Generate dulu', 'error'); return; }
+        HC.copyText(summaryText(), 'Semua caption tersalin!');
+      });
+    });
+  })();
+</script>

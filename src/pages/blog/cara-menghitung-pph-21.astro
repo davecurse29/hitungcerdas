@@ -1,0 +1,123 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import AdSlot from '../../components/AdSlot.astro';
+
+const today = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'Cara Menghitung PPh 21' }];
+---
+
+<Layout
+  title="Cara Menghitung PPh 21 Karyawan Sesuai UU HPP 2022 — Tarif Progresif & PTKP"
+  description="Panduan lengkap menghitung PPh 21 karyawan sesuai UU HPP 2022: 5 lapisan tarif progresif, PTKP terbaru, biaya jabatan, BPJS, contoh perhitungan."
+  keywords={['cara menghitung pph 21', 'pph 21 karyawan', 'uu hpp 2022', 'ptkp terbaru', 'pajak gaji']}
+  canonical="https://hitungcerdas.net/blog/cara-menghitung-pph-21"
+  ogType="article"
+>
+  <section class="article-hero" style="--cat-color:#DC2626;--cat-color2:#991B1B">
+    <div class="wrap">
+      <Breadcrumb items={bcItems} />
+      <div class="article-tag">PANDUAN PAJAK</div>
+      <h1>Cara Menghitung PPh 21 Karyawan Sesuai UU HPP 2022</h1>
+      <div class="article-meta">
+        <span><i class="ti ti-calendar"></i> {today}</span>
+        <span><i class="ti ti-clock"></i> 7 menit baca</span>
+        <span><i class="ti ti-user"></i> Tim HitungCerdas</span>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+
+  <article class="content-section">
+    <div class="wrap-text">
+      <p class="lead">
+        Sejak UU HPP 2022 disahkan, tarif PPh 21 berubah dari 4 lapisan menjadi 5 lapisan progresif
+        (5% - 35%). Untuk karyawan dengan gaji Rp 10 juta + tunjangan Rp 2 juta + THR Rp 10 juta,
+        PPh 21 setahun adalah <strong>~Rp 5,4 juta</strong>. Mari kita bedah cara hitungnya.
+      </p>
+
+      <h2>1. Tarif PPh 21 Sesuai UU HPP 2022</h2>
+      <div class="formula-box">
+        <ul>
+          <li><strong>Lapisan 1</strong>: PKP 0 - Rp 60 juta → <strong>5%</strong></li>
+          <li><strong>Lapisan 2</strong>: PKP Rp 60-250 juta → <strong>15%</strong></li>
+          <li><strong>Lapisan 3</strong>: PKP Rp 250-500 juta → <strong>25%</strong></li>
+          <li><strong>Lapisan 4</strong>: PKP Rp 500jt - 5 miliar → <strong>30%</strong></li>
+          <li><strong>Lapisan 5</strong>: PKP di atas 5 miliar → <strong>35%</strong></li>
+        </ul>
+      </div>
+
+      <h2>2. PTKP (Penghasilan Tidak Kena Pajak) Terbaru</h2>
+      <ul class="info-list">
+        <li><strong>TK/0</strong> (Lajang): Rp 54.000.000/thn</li>
+        <li><strong>K/0</strong> (Menikah, no anak): Rp 58.500.000/thn</li>
+        <li><strong>K/1</strong> (Menikah, 1 anak): Rp 63.000.000/thn</li>
+        <li><strong>K/2</strong> (Menikah, 2 anak): Rp 67.500.000/thn</li>
+        <li><strong>K/3</strong> (Menikah, 3 anak): Rp 72.000.000/thn</li>
+      </ul>
+
+      <h2>3. Langkah Menghitung PPh 21</h2>
+      <ol class="tips-list">
+        <li><strong>Hitung Penghasilan Bruto Setahun</strong> = (Gaji + Tunjangan) × 12 + THR + Bonus</li>
+        <li><strong>Kurangi Biaya Jabatan</strong> = 5% × bruto (max Rp 6 juta/thn)</li>
+        <li><strong>Kurangi BPJS Karyawan</strong> = JHT 2% + JP 1% + Kesehatan 1%</li>
+        <li><strong>Penghasilan Neto Setahun</strong></li>
+        <li><strong>Kurangi PTKP</strong> sesuai status keluarga</li>
+        <li><strong>Hasilnya = PKP</strong> (Penghasilan Kena Pajak)</li>
+        <li><strong>Kalikan Tarif Progresif</strong> per lapisan</li>
+        <li><strong>Total PPh 21 setahun</strong>, dibagi 12 = PPh per bulan</li>
+      </ol>
+
+      <h2>4. Contoh: Gaji Rp 10 juta, Status K/0</h2>
+      <ul class="info-list">
+        <li>Gaji setahun: 10jt × 12 = Rp 120.000.000</li>
+        <li>+ Tunjangan: 2jt × 12 = Rp 24.000.000</li>
+        <li>+ THR: Rp 10.000.000</li>
+        <li><strong>Bruto setahun</strong>: Rp 154.000.000</li>
+        <li>- Biaya jabatan (max): Rp 6.000.000</li>
+        <li>- BPJS karyawan: ~Rp 4.800.000</li>
+        <li><strong>Neto setahun</strong>: Rp 143.200.000</li>
+        <li>- PTKP K/0: Rp 58.500.000</li>
+        <li><strong>PKP</strong>: Rp 84.700.000</li>
+      </ul>
+      <p>Tarif progresif:</p>
+      <ul class="info-list">
+        <li>Lapisan 1 (0-60jt) × 5%: Rp 3.000.000</li>
+        <li>Lapisan 2 (60-84,7jt) × 15%: Rp 3.705.000</li>
+        <li><strong>Total PPh 21 setahun</strong>: Rp 6.705.000</li>
+        <li><strong>PPh 21 per bulan</strong>: ~Rp 558.000</li>
+      </ul>
+
+      <h2>5. Tips Legal Mengurangi PPh 21</h2>
+      <ol class="tips-list">
+        <li><strong>Maksimalkan PTKP</strong> — Update status jika menikah/punya anak.</li>
+        <li><strong>Bayar Zakat via Lembaga Resmi</strong> — Bisa kurangi PKP sesuai PMK 254/2010.</li>
+        <li><strong>Maksimalkan BPJS</strong> — Iuran JHT karyawan pengurang bruto.</li>
+        <li><strong>Negosiasi Komponen Gaji</strong> — Tunjangan tetap vs reimburse berbeda perpajakannya.</li>
+        <li><strong>Lapor SPT dengan Benar</strong> — Pastikan semua pengurang sah tercatat.</li>
+      </ol>
+
+      <div class="cta-box">
+        <h3>Hitung PPh 21 Kamu Sekarang</h3>
+        <p>Gunakan kalkulator PPh 21 HitungCerdas untuk hitung otomatis pajak bulananmu.</p>
+        <p style="margin-top:14px"><a href="/kalkulator/pph-21" class="btn btn-pri"><i class="ti ti-calculator"></i> Kalkulator PPh 21</a></p>
+      </div>
+    </div>
+  </article>
+
+  <AdSlot format="horizontal" />
+</Layout>
+
+<style>
+  .article-hero { background: linear-gradient(135deg, var(--cat-color) 0%, var(--cat-color2) 100%); color: #fff; padding: 20px 0 48px; }
+  .article-hero :global(.breadcrumb-item), .article-hero :global(.breadcrumb-item a) { color: rgba(255, 255, 255, .7); }
+  .article-hero :global(.breadcrumb-item a:hover) { color: var(--gold-soft); }
+  .article-hero :global(.breadcrumb-item span) { color: #fff; }
+  .article-hero :global(.breadcrumb-item i) { color: rgba(255, 255, 255, .4); }
+  .article-tag { display: inline-block; font-size: 11px; font-weight: 700; color: var(--gold-soft); letter-spacing: .1em; text-transform: uppercase; margin: 16px 0 12px; }
+  .article-hero h1 { color: #fff; font-size: clamp(26px, 3.8vw, 42px); margin: 0 0 20px; max-width: 800px; line-height: 1.2; }
+  .article-meta { display: flex; gap: 20px; color: rgba(255, 255, 255, .75); font-size: 13px; flex-wrap: wrap; }
+  .article-meta span { display: inline-flex; align-items: center; gap: 6px; }
+  .lead { font-size: 17px !important; line-height: 1.7 !important; color: var(--text) !important; padding: 20px 24px; background: var(--bg-soft); border-radius: 12px; border-left: 4px solid var(--red); margin-bottom: 24px !important; }
+</style>

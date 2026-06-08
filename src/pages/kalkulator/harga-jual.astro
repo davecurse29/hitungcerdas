@@ -1,0 +1,290 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import FAQ from '../../components/FAQ.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import CalculatorCard from '../../components/CalculatorCard.astro';
+import { getCalculatorBySlug, getRelatedCalculators } from '../../data/calculators';
+
+const calc = getCalculatorBySlug('harga-jual')!;
+const related = getRelatedCalculators('harga-jual', 3);
+
+const faqs = [
+  { question: 'Bagaimana cara menentukan harga jual yang benar?', answer: 'Rumus dasar: <strong>Harga Jual = HPP + Profit Margin + Fee Marketplace</strong>. Atau: <strong>Harga Jual = (HPP + Margin Rp) ÷ (1 - Fee%)</strong>. Pastikan harga di atas kompetitor minus 5-10% sebagai cushion.' },
+  { question: 'Berapa target margin yang sehat untuk UMKM?', answer: 'Benchmark per industri: <strong>Fashion ritel</strong> 30-50%, <strong>F&B/kuliner</strong> 40-60%, <strong>Beauty/skincare</strong> 50-70%, <strong>Handmade/craft</strong> 100-300%, <strong>Digital/SaaS</strong> 70-90%, <strong>Jasa profesional</strong> 50-80%, <strong>Grocery/retail</strong> 5-15% (high volume).' },
+  { question: 'Berapa fee marketplace di Indonesia?', answer: 'Estimasi fee 2026: <strong>Shopee</strong> 4-5% (Free Shipping) / 1,5-3% reguler. <strong>Tokopedia</strong> 4-8% (TopAds) / 1-2% reguler. <strong>TikTok Shop</strong> 1-3%. <strong>Lazada</strong> 4-6%. Belum termasuk biaya iklan/ads 2-15% dari penjualan.' },
+  { question: 'Apa beda margin dan markup?', answer: '<strong>Margin</strong> = Profit ÷ Harga Jual × 100%. <strong>Markup</strong> = Profit ÷ HPP × 100%. Untuk profit Rp 20: HPP Rp 80, Harga Rp 100 → Margin 20%, Markup 25%. Margin SELALU lebih kecil dari markup untuk profit yang sama. Banyak UMKM bilang "margin 50%" padahal yang dimaksud markup 50% (= margin 33%).' },
+];
+
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '/#tools' }, { label: calc.shortTitle }];
+---
+
+<Layout title={calc.title} description={calc.metaDescription} keywords={calc.keywords} canonical={`https://hitungcerdas.net/kalkulator/${calc.slug}`}>
+  <section class="calc-hero" style="--cat-color:#EC4899;--cat-color2:#9D174D">
+    <div class="wrap">
+      <Breadcrumb items={bcItems} />
+      <div class="calc-hero-grid">
+        <div class="calc-hero-text">
+          <div class="calc-hero-tag" style="background:#FCE7F3;color:#9D174D"><i class="ti ti-tag"></i> {calc.categoryLabel}</div>
+          <h1 class="calc-hero-title">{calc.h1}</h1>
+          <p class="calc-hero-sub">{calc.introText}</p>
+          <ul class="calc-hero-benefits">{calc.benefits.map(b => <li><i class="ti ti-check"></i> {b}</li>)}</ul>
+        </div>
+        <div class="calc-hero-illust">
+          <svg viewBox="0 0 200 200" fill="none">
+            <circle cx="100" cy="100" r="85" fill="rgba(255,255,255,.08)"/>
+            <path d="M70 50L150 50L150 130L100 180L50 130L50 100L70 50Z" fill="#FFF" stroke="#FBBF24" stroke-width="2"/>
+            <circle cx="120" cy="80" r="10" fill="#FBBF24"/>
+            <text x="100" y="135" text-anchor="middle" font-size="22" font-weight="900" fill="#9D174D" font-family="Inter">Rp</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+
+  <section class="calc-section">
+    <div class="wrap">
+      <div class="calc-card">
+        <div class="calc-card-hdr">
+          <div class="calc-card-hdr-ic" style="background:linear-gradient(135deg,#EC4899 0%,#9D174D 100%)"><i class="ti ti-tag"></i></div>
+          <div><h2 class="calc-card-title">Kalkulator Harga Jual UMKM</h2><p class="calc-card-sub">HPP + Margin + Fee Marketplace</p></div>
+        </div>
+
+        <div class="calc-grid">
+          <div class="calc-input">
+            <div class="field"><label>Modal/Bahan Baku per Unit</label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span>
+                <input type="text" id="modal" class="has-prefix" value="15.000" inputmode="numeric" /></div></div>
+
+            <div class="field"><label>Packaging per Unit</label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span>
+                <input type="text" id="packaging" class="has-prefix" value="2.000" inputmode="numeric" /></div></div>
+
+            <div class="field"><label>Biaya Operasional per Unit <span class="hint">(listrik, sewa, gaji alokasi)</span></label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span>
+                <input type="text" id="opex" class="has-prefix" value="3.000" inputmode="numeric" /></div></div>
+
+            <div class="field"><label>Target Margin Profit</label>
+              <div class="input-wrap"><input type="number" id="margin" class="has-suffix" value="40" step="5" min="0" max="500" /><span class="input-suffix">%</span></div>
+              <div class="quick-btns">
+                <button type="button" data-m="20">20%</button>
+                <button type="button" data-m="30">30%</button>
+                <button type="button" data-m="40">40%</button>
+                <button type="button" data-m="60">60%</button>
+                <button type="button" data-m="100">100%</button>
+              </div></div>
+
+            <div class="field"><label>Fee Marketplace</label>
+              <select id="marketplace">
+                <option value="0">Direct sale (tanpa marketplace)</option>
+                <option value="5" selected>Shopee Free Shipping (~5%)</option>
+                <option value="2.5">Shopee Regular (~2.5%)</option>
+                <option value="6">Tokopedia TopAds (~6%)</option>
+                <option value="1.5">Tokopedia Regular (~1.5%)</option>
+                <option value="2">TikTok Shop (~2%)</option>
+                <option value="5">Lazada (~5%)</option>
+              </select></div>
+
+            <div class="field"><label>Estimasi Volume Penjualan per Bulan <span class="hint">(opsional, untuk proyeksi)</span></label>
+              <input type="number" id="volume" value="100" min="0" /></div>
+
+            <div class="calc-action-bar">
+              <button type="button" class="btn-hitung" id="btnHitung"><i class="ti ti-calculator"></i> Hitung Sekarang</button>
+              <button type="button" class="btn-reset" id="btnReset"><i class="ti ti-refresh"></i> Reset</button>
+            </div>
+          </div>
+
+          <div class="calc-output">
+            <div class="result-placeholder" id="placeholder">
+              <i class="ti ti-tag result-placeholder-icon"></i>
+              <div class="result-placeholder-title">Harga jual akan muncul di sini</div>
+              <div class="result-placeholder-desc">Isi HPP & margin target, klik <strong>"Hitung Sekarang"</strong>.</div>
+            </div>
+
+            <div class="result-wrapper" id="results">
+              <div class="result-main">
+                <div class="result-label">Harga Jual Optimal</div>
+                <div class="result-value" id="hargaJual">Rp 0</div>
+                <div class="result-meta"><i class="ti ti-info-circle"></i> <span id="metaInfo">Profit per unit</span></div>
+              </div>
+
+              <div class="result-grid">
+                <div class="result-item"><div class="result-item-label">HPP Total</div><div class="result-item-value" id="hppTotal">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">Profit/Unit</div><div class="result-item-value result-strong" id="profitUnit">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">Fee Marketplace</div><div class="result-item-value result-warn" id="feeAmt">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">Margin Real</div><div class="result-item-value" id="marginReal">0%</div></div>
+              </div>
+
+              <div class="adv-section">
+                <div class="adv-toggle"><span><i class="ti ti-chart-bar"></i>&nbsp; Bandingkan Berbagai Margin</span><i class="ti ti-chevron-down chev"></i></div>
+                <div class="adv-content">
+                  <table class="compare-table">
+                    <thead><tr><th>Target Margin</th><th class="right">Harga Jual</th><th class="right">Profit/Unit</th></tr></thead>
+                    <tbody id="marginBody"></tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div class="adv-section">
+                <div class="adv-toggle"><span><i class="ti ti-cash"></i>&nbsp; Proyeksi Bulanan</span><i class="ti ti-chevron-down chev"></i></div>
+                <div class="adv-content">
+                  <table class="compare-table">
+                    <thead><tr><th>Volume/Bulan</th><th class="right">Omzet</th><th class="right">Profit Bersih</th></tr></thead>
+                    <tbody id="proyeksiBody"></tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div class="export-row">
+                <button type="button" class="export-btn img" id="exportImg"><i class="ti ti-photo-down"></i><span>Save Image</span></button>
+                <button type="button" class="export-btn wa" id="exportWa"><i class="ti ti-brand-whatsapp"></i><span>Share WA</span></button>
+                <button type="button" class="export-btn pdf" id="exportPdf"><i class="ti ti-printer"></i><span>Print/PDF</span></button>
+                <button type="button" class="export-btn copy" id="exportCopy"><i class="ti ti-copy"></i><span>Copy Teks</span></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="content-section">
+    <div class="wrap-text">
+      <h2>Strategi Pricing UMKM yang Cerdas</h2>
+      <p>Salah pricing = bisnis gulung tikar. Banyak UMKM laris tapi rugi karena tidak hitung <strong>fee marketplace + biaya operasional</strong>. Rumus: <strong>Harga Jual = (HPP + Margin Rp) ÷ (1 - Fee%)</strong>. Untuk HPP Rp 20rb, target profit Rp 8rb, fee Shopee 5% → Harga Jual = Rp 29.500.</p>
+      <div class="cta-box"><h3>Hitung Pricing Optimal Produkmu</h3><p>Isi HPP, target margin, marketplace tujuan, klik "Hitung Sekarang" untuk analisa lengkap.</p></div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+  <FAQ title="Pertanyaan Seputar Harga Jual" items={faqs} />
+
+  <section class="section"><div class="wrap">
+    <div class="section-hdr"><div class="section-eyebrow">Kalkulator Lainnya</div><h2 class="section-title">Hitung Juga yang Lain</h2></div>
+    <div class="related-grid">{related.map(c => <CalculatorCard calc={c} />)}</div>
+  </div></section>
+</Layout>
+
+<script is:inline>
+  (function() {
+    function ready(fn) { if (window.HC && window.html2canvas) fn(); else setTimeout(() => ready(fn), 100); }
+    ready(() => {
+      const $ = id => document.getElementById(id);
+      const els = { modal: $('modal'), pack: $('packaging'), opex: $('opex'),
+                    margin: $('margin'), mp: $('marketplace'), vol: $('volume') };
+      [els.modal, els.pack, els.opex].forEach(el => el.addEventListener('input', HC.fmtInput));
+      document.querySelectorAll('.quick-btns button').forEach(btn => btn.addEventListener('click', () => { els.margin.value = btn.dataset.m; }));
+      document.querySelectorAll('.adv-toggle').forEach(t => t.addEventListener('click', () => t.parentElement.classList.toggle('open')));
+
+      function calcHarga(hpp, marginPct, feePct) {
+        const profit = hpp * (marginPct / 100);
+        const subtotal = hpp + profit;
+        const harga = subtotal / (1 - feePct / 100);
+        const fee = harga * feePct / 100;
+        return { harga, profit, fee, profitNet: harga - hpp - fee };
+      }
+
+      let lastCalc = null;
+
+      function hitung() {
+        const modal = HC.parseRp(els.modal.value);
+        const pack = HC.parseRp(els.pack.value);
+        const opex = HC.parseRp(els.opex.value);
+        const marginPct = parseFloat(els.margin.value) || 0;
+        const feePct = parseFloat(els.mp.value) || 0;
+        const vol = parseInt(els.vol.value) || 0;
+
+        const hpp = modal + pack + opex;
+        if (hpp === 0) { HC.toast('Masukkan modal/HPP dulu', 'error'); return; }
+
+        const { harga, profit, fee, profitNet } = calcHarga(hpp, marginPct, feePct);
+        const marginReal = (profitNet / harga) * 100;
+
+        // Round to nearest 100/500 for psychological pricing
+        const hargaRounded = Math.ceil(harga / 100) * 100;
+
+        $('hargaJual').textContent = HC.fmt(hargaRounded);
+        $('metaInfo').textContent = `Profit/unit: ${HC.fmt(profitNet)} (${marginReal.toFixed(1)}% margin real)`;
+        $('hppTotal').textContent = HC.fmt(hpp);
+        $('profitUnit').textContent = HC.fmt(profitNet);
+        $('feeAmt').textContent = HC.fmt(fee);
+        $('marginReal').textContent = marginReal.toFixed(1) + '%';
+
+        const marginComp = [20, 30, 40, 60, 100, 150];
+        $('marginBody').innerHTML = marginComp.map(m => {
+          const r = calcHarga(hpp, m, feePct);
+          return `<tr class="${m === marginPct ? 'active' : ''}"><td>Margin ${m}%</td><td class="right">${HC.fmt(Math.ceil(r.harga / 100) * 100)}</td><td class="right" style="color:var(--green-dark);font-weight:700">${HC.fmt(r.profitNet)}</td></tr>`;
+        }).join('');
+
+        const volumes = [50, 100, 250, 500, 1000];
+        $('proyeksiBody').innerHTML = volumes.map(v => {
+          const omzet = hargaRounded * v;
+          const profit = profitNet * v;
+          return `<tr class="${v === vol ? 'active' : ''}"><td>${v} unit</td><td class="right">${HC.fmt(omzet)}</td><td class="right" style="color:var(--green-dark);font-weight:700">${HC.fmt(profit)}</td></tr>`;
+        }).join('');
+
+        lastCalc = { modal, pack, opex, hpp, marginPct, feePct, harga: hargaRounded, profitNet, fee, marginReal, vol,
+                     mpLabel: els.mp.options[els.mp.selectedIndex].text };
+        $('placeholder').style.display = 'none';
+        $('results').classList.add('show');
+        $('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        HC.toast('Harga jual berhasil dihitung!');
+      }
+
+      function reset() {
+        els.modal.value = '15.000'; els.pack.value = '2.000'; els.opex.value = '3.000';
+        els.margin.value = '40'; els.mp.value = '5'; els.vol.value = '100';
+        $('placeholder').style.display = ''; $('results').classList.remove('show');
+        lastCalc = null; HC.toast('Form direset', 'info');
+      }
+
+      function buildReport() {
+        if (!lastCalc) return null;
+        const c = lastCalc;
+        const profitBulan = c.vol ? c.profitNet * c.vol : 0;
+        const insight = c.marginReal >= 30
+          ? `Margin real ${c.marginReal.toFixed(1)}% — SEHAT! ${c.vol ? `Proyeksi profit ${HC.fmt(profitBulan)}/bulan dengan volume ${c.vol} unit.` : ''}`
+          : `Margin real ${c.marginReal.toFixed(1)}% — TIPIS. Pertimbangkan naikkan margin atau cari supplier lebih murah.`;
+
+        return HC.buildReportCard({
+          title: '🏷️ Penentuan Harga Jual UMKM',
+          color: '#EC4899', color2: '#9D174D',
+          heroLabel: 'Harga Jual Optimal',
+          heroValue: HC.fmt(c.harga),
+          heroSubtext: `Profit ${HC.fmt(c.profitNet)}/unit · Margin real ${c.marginReal.toFixed(1)}%`,
+          inputs: [
+            { label: '🥫 Modal/Bahan', value: HC.fmt(c.modal) },
+            { label: '📦 Packaging', value: HC.fmt(c.pack) },
+            { label: '⚡ Operasional', value: HC.fmt(c.opex) },
+            { label: '🎯 Target Margin', value: `${c.marginPct}%` },
+            { label: '🛒 Marketplace', value: c.mpLabel },
+          ],
+          results: [
+            { label: 'Harga Jual', value: HC.fmt(c.harga), highlight: true },
+            { label: 'HPP Total', value: HC.fmt(c.hpp) },
+            { label: 'Profit per Unit', value: HC.fmt(c.profitNet), highlight: true },
+            { label: 'Fee Marketplace', value: HC.fmt(c.fee) },
+            { label: 'Margin Real', value: `${c.marginReal.toFixed(1)}%` },
+            { label: `Profit ${c.vol} unit/bln`, value: HC.fmt(profitBulan) },
+          ],
+          insight, slug: 'harga-jual',
+        });
+      }
+
+      function summaryText() {
+        if (!lastCalc) return '';
+        const c = lastCalc;
+        return `🏷️ *Harga Jual UMKM - HitungCerdas*\n\nHPP: ${HC.fmt(c.hpp)}\nMargin target: ${c.marginPct}%\nFee: ${c.mpLabel}\n\n💰 *Harga Jual: ${HC.fmt(c.harga)}*\n📊 Profit/Unit: ${HC.fmt(c.profitNet)} (${c.marginReal.toFixed(1)}%)\n💵 Profit ${c.vol} unit: ${HC.fmt(c.profitNet * c.vol)}/bln\n\nHitung: https://hitungcerdas.net/kalkulator/harga-jual`;
+      }
+
+      $('btnHitung').addEventListener('click', hitung);
+      $('btnReset').addEventListener('click', reset);
+      $('exportImg').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToImage(c, 'harga-jual-' + Date.now()); });
+      $('exportWa').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.shareWhatsApp(c, summaryText(), 'harga-jual'); });
+      $('exportPdf').addEventListener('click', () => { if (!lastCalc) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToPDF(); });
+      $('exportCopy').addEventListener('click', () => { if (!lastCalc) { HC.toast('Hitung dulu', 'error'); return; } HC.copyText(summaryText(), 'Tersalin!'); });
+    });
+  })();
+</script>

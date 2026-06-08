@@ -1,0 +1,132 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import AdSlot from '../../components/AdSlot.astro';
+
+const today = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'Compound Interest' }];
+---
+
+<Layout
+  title="Kekuatan Compound Interest dalam Investasi Jangka Panjang — Panduan"
+  description="Pahami compound interest (bunga berbunga), instrumen investasi di Indonesia, dan strategi Dollar Cost Averaging (DCA) untuk wealth building."
+  keywords={['compound interest', 'bunga berbunga', 'investasi jangka panjang', 'dca', 'reksadana']}
+  canonical="https://hitungcerdas.net/blog/cara-menghitung-investasi"
+  ogType="article"
+>
+  <section class="article-hero" style="--cat-color:#0891B2;--cat-color2:#155E75">
+    <div class="wrap">
+      <Breadcrumb items={bcItems} />
+      <div class="article-tag">INVESTASI</div>
+      <h1>Kekuatan Compound Interest dalam Investasi Jangka Panjang</h1>
+      <div class="article-meta">
+        <span><i class="ti ti-calendar"></i> {today}</span>
+        <span><i class="ti ti-clock"></i> 6 menit baca</span>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+
+  <article class="content-section">
+    <div class="wrap-text">
+      <p class="lead">
+        Einstein bilang compound interest adalah "keajaiban dunia kedelapan". Investasi Rp 1 juta
+        dengan return 10%/thn selama 30 tahun jadi <strong>Rp 17,4 juta</strong> — bukan Rp 4 juta.
+        Selisih datang dari bunga atas bunga. Mari pelajari kekuatannya.
+      </p>
+
+      <h2>1. Apa Itu Compound Interest?</h2>
+      <p>
+        <strong>Compound interest</strong> (bunga berbunga) = bunga dihitung dari pokok awal +
+        bunga sebelumnya. Berbeda dengan <strong>simple interest</strong> yang hanya dari pokok.
+      </p>
+      <p>
+        Contoh: Investasi Rp 10 juta, return 10%/tahun.
+      </p>
+      <ul class="info-list">
+        <li><strong>Tahun 1</strong>: Rp 10jt × 1.10 = Rp 11jt</li>
+        <li><strong>Tahun 2</strong>: Rp 11jt × 1.10 = Rp 12,1jt (bukan Rp 12jt!)</li>
+        <li><strong>Tahun 5</strong>: Rp 16,1jt</li>
+        <li><strong>Tahun 10</strong>: Rp 25,9jt</li>
+        <li><strong>Tahun 20</strong>: Rp 67,3jt</li>
+        <li><strong>Tahun 30</strong>: Rp 174,5jt — <em>17× lipat</em>!</li>
+      </ul>
+
+      <h2>2. Rumus Compound Interest</h2>
+      <div class="formula-box">
+        <p class="formula"><strong>FV = PV × (1 + r)^n</strong></p>
+        <ul>
+          <li><strong>FV</strong> = Future Value (nilai masa depan)</li>
+          <li><strong>PV</strong> = Present Value (modal sekarang)</li>
+          <li><strong>r</strong> = return per periode (desimal)</li>
+          <li><strong>n</strong> = jumlah periode</li>
+        </ul>
+      </div>
+
+      <h2>3. Mulai Sedini Mungkin</h2>
+      <p>
+        Kuncinya: <strong>waktu</strong>. Investor A nabung Rp 500rb/bulan mulai usia 25 tahun.
+        Investor B nabung Rp 500rb/bulan mulai usia 35 tahun. Keduanya stop di usia 60. Asumsi
+        return 10%/tahun:
+      </p>
+      <ul class="info-list">
+        <li><strong>Investor A</strong> (35 tahun nabung): Rp 1,9 miliar</li>
+        <li><strong>Investor B</strong> (25 tahun nabung): Rp 660 juta</li>
+        <li><strong>Selisih</strong>: Rp 1,2 miliar hanya karena mulai 10 tahun lebih awal!</li>
+      </ul>
+
+      <h2>4. Instrumen Investasi di Indonesia</h2>
+      <ul class="info-list">
+        <li><strong>Deposito</strong>: 3-5%/thn, paling aman</li>
+        <li><strong>Obligasi Negara (ORI/SBR)</strong>: 5-7%/thn, dijamin negara</li>
+        <li><strong>Reksadana Pasar Uang</strong>: 4-6%/thn</li>
+        <li><strong>Reksadana Campuran</strong>: 7-10%/thn</li>
+        <li><strong>Reksadana Saham/Saham</strong>: 12-15%/thn (volatile)</li>
+        <li><strong>Emas</strong>: 8-10%/thn (10 tahun rata-rata)</li>
+      </ul>
+
+      <h2>5. Dollar Cost Averaging (DCA)</h2>
+      <p>
+        <strong>DCA</strong> = strategi investasi rutin (bulanan) dengan nominal tetap, tanpa peduli
+        harga sedang tinggi atau rendah. Saat harga turun, dapat lebih banyak unit. Saat harga
+        naik, dapat lebih sedikit unit.
+      </p>
+      <p>
+        <strong>Hasilnya</strong>: rata-rata harga beli lebih baik dari "market timing", dan emosi
+        tidak ikut campur. Cocok untuk pemula dan investor sibuk.
+      </p>
+
+      <h2>6. Tips Investasi Cerdas</h2>
+      <ol class="tips-list">
+        <li><strong>Lunasi Hutang Tinggi Dulu</strong> — KTA, paylater, kartu kredit (bunga 18-36%).</li>
+        <li><strong>Siapkan Dana Darurat</strong> — 3-6 bulan biaya hidup di deposito/tabungan.</li>
+        <li><strong>Diversifikasi</strong> — Jangan all-in di satu instrumen.</li>
+        <li><strong>Konsisten & Sabar</strong> — Compound butuh waktu 5-10 tahun untuk nyata terasa.</li>
+        <li><strong>Auto-Debet</strong> — Set & forget. Hindari godaan menghabiskan duit.</li>
+        <li><strong>Reinvest Dividen</strong> — Maksimalkan compound effect.</li>
+      </ol>
+
+      <div class="cta-box">
+        <h3>Hitung Proyeksi Investasimu</h3>
+        <p>Gunakan kalkulator investasi HitungCerdas untuk lihat compound interest dengan top-up bulanan.</p>
+        <p style="margin-top:14px"><a href="/kalkulator/investasi" class="btn btn-pri"><i class="ti ti-calculator"></i> Kalkulator Investasi</a></p>
+      </div>
+    </div>
+  </article>
+
+  <AdSlot format="horizontal" />
+</Layout>
+
+<style>
+  .article-hero { background: linear-gradient(135deg, var(--cat-color) 0%, var(--cat-color2) 100%); color: #fff; padding: 20px 0 48px; }
+  .article-hero :global(.breadcrumb-item), .article-hero :global(.breadcrumb-item a) { color: rgba(255, 255, 255, .7); }
+  .article-hero :global(.breadcrumb-item a:hover) { color: var(--gold-soft); }
+  .article-hero :global(.breadcrumb-item span) { color: #fff; }
+  .article-hero :global(.breadcrumb-item i) { color: rgba(255, 255, 255, .4); }
+  .article-tag { display: inline-block; font-size: 11px; font-weight: 700; color: var(--gold-soft); letter-spacing: .1em; text-transform: uppercase; margin: 16px 0 12px; }
+  .article-hero h1 { color: #fff; font-size: clamp(26px, 3.8vw, 42px); margin: 0 0 20px; max-width: 800px; line-height: 1.2; }
+  .article-meta { display: flex; gap: 20px; color: rgba(255, 255, 255, .75); font-size: 13px; flex-wrap: wrap; }
+  .article-meta span { display: inline-flex; align-items: center; gap: 6px; }
+  .lead { font-size: 17px !important; line-height: 1.7 !important; color: var(--text) !important; padding: 20px 24px; background: var(--bg-soft); border-radius: 12px; border-left: 4px solid #0891B2; margin-bottom: 24px !important; }
+</style>

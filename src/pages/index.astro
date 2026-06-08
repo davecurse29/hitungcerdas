@@ -1,516 +1,893 @@
 ---
-// src/pages/index.astro
-// Homepage HitungCerdas
+// Homepage HitungCerdas — Premium design
 import Layout from '../layouts/Layout.astro';
+import CalculatorCard from '../components/CalculatorCard.astro';
+import AdSlot from '../components/AdSlot.astro';
+import FAQ from '../components/FAQ.astro';
+import { CALCULATORS, CATEGORIES } from '../data/calculators';
 
-const calculators = {
-  keuangan: [
-    { slug: 'kalkulator-kpr', name: 'Kalkulator KPR', desc: 'Hitung cicilan, total bunga, dan simulasi tenor KPR rumah impianmu.', icon: '🏠', color: 'blue', tag: 'FINANCE' },
-    { slug: 'kalkulator-pph-21', name: 'Kalkulator PPh 21', desc: 'Hitung pajak penghasilan karyawan otomatis berdasarkan PTKP terbaru.', icon: '📋', color: 'red', tag: 'PAJAK' },
-    { slug: 'kalkulator-gaji-bersih', name: 'Kalkulator Gaji Bersih', desc: 'Tahu pasti berapa take-home pay setelah BPJS, pajak, dan potongan lainnya.', icon: '💼', color: 'green', tag: 'FINANCE' },
-    { slug: 'simulasi-kredit-motor', name: 'Simulasi Kredit Motor', desc: 'Cek estimasi cicilan kredit motor dengan berbagai tenor dari 12-48 bulan.', icon: '🏍️', color: 'yellow', tag: 'KREDIT' },
-    { slug: 'simulasi-kredit-mobil', name: 'Simulasi Kredit Mobil', desc: 'Hitung cicilan kredit mobil lengkap dengan estimasi biaya awal dan asuransi.', icon: '🚗', color: 'purple', tag: 'KREDIT' },
-    { slug: 'kalkulator-investasi', name: 'Kalkulator Investasi', desc: 'Proyeksi pertumbuhan investasi dengan compound interest dan top-up bulanan.', icon: '📈', color: 'teal', tag: 'INVESTASI' },
-  ],
-  bisnis: [
-    { slug: 'invoice-generator', name: 'Invoice Generator', desc: 'Bikin invoice profesional siap kirim ke klien dalam hitungan menit.', icon: '📄', color: 'blue', tag: 'BISNIS' },
-    { slug: 'kalkulator-harga-jual', name: 'Kalkulator Harga Jual', desc: 'Tentukan harga jual produk yang menguntungkan dengan mempertimbangkan semua biaya.', icon: '🏷️', color: 'pink', tag: 'UMKM' },
-    { slug: 'kalkulator-margin', name: 'Kalkulator Margin', desc: 'Cek margin profit, markup, dan persentase keuntungan dari penjualan produkmu.', icon: '📊', color: 'green', tag: 'UMKM' },
-    { slug: 'nama-bisnis-generator', name: 'Nama Bisnis Generator', desc: 'Dapatkan 20 ide nama bisnis yang catchy sesuai jenis usaha dan target market.', icon: '🏪', color: 'purple', tag: 'BISNIS' },
-    { slug: 'caption-jualan-generator', name: 'Caption Jualan Generator', desc: 'Generate 5 variasi caption jualan menarik untuk Instagram, TikTok, dan marketplace.', icon: '📱', color: 'pink', tag: 'MARKETING' },
-  ],
-  islami: [
-    { slug: 'zakat-fitrah', name: 'Zakat Fitrah', desc: 'Hitung zakat fitrah keluarga dengan harga beras terbaru 2026.', icon: '🌙', color: 'green', tag: 'ZAKAT' },
-    { slug: 'zakat-penghasilan', name: 'Zakat Penghasilan', desc: 'Cek wajib zakat dari gaji bulanan kamu. 2,5% dari penghasilan jika capai nisab.', icon: '💰', color: 'teal', tag: 'ZAKAT' },
-    { slug: 'zakat-mal', name: 'Zakat Mal (Harta)', desc: 'Hitung zakat dari total harta: tabungan, emas, perak, investasi. Nisab 85 gr emas.', icon: '🪙', color: 'yellow', tag: 'ZAKAT' },
-    { slug: 'kalkulator-fidyah', name: 'Kalkulator Fidyah', desc: 'Hitung fidyah pengganti puasa untuk ibu hamil, menyusui, lansia, atau yang sakit.', icon: '🍚', color: 'purple', tag: 'IBADAH' },
-    { slug: 'warisan-faraidh', name: 'Warisan Islam (Faraidh)', desc: 'Hitung pembagian warisan sesuai hukum Islam: ahli waris, bagian, dan jumlah.', icon: '📜', color: 'red', tag: 'FARAIDH' },
-    { slug: 'dana-qurban', name: 'Dana Qurban', desc: 'Rencanakan tabungan untuk qurban kambing atau sapi. Berapa nabung per bulan?', icon: '🐑', color: 'green', tag: 'QURBAN' },
-    { slug: 'dana-haji-umrah', name: 'Dana Haji & Umrah', desc: 'Hitung tabungan bulanan untuk haji reguler, haji plus, atau umrah.', icon: '🕌', color: 'purple', tag: 'IBADAH' },
-  ],
-};
+const homepageTitle = 'HitungCerdas — 18 Kalkulator Keuangan, Bisnis & Islami Online Gratis Indonesia';
+const homepageDesc = '18 kalkulator gratis tanpa login: KPR, PPh 21, gaji bersih, investasi, invoice, harga jual, zakat fitrah, mal, fidyah, warisan faraidh, dana qurban, haji & umrah. Hitung instan, mobile-friendly.';
 
-const totalCalculators = calculators.keuangan.length + calculators.bisnis.length + calculators.islami.length;
+const faqs = [
+  {
+    question: 'Apakah HitungCerdas benar-benar gratis?',
+    answer: 'Ya, semua tools di HitungCerdas <strong>100% gratis</strong> dan tidak memerlukan login atau registrasi. Kami didukung oleh iklan Google AdSense untuk menjaga platform tetap dapat diakses semua orang.',
+  },
+  {
+    question: 'Apakah hasil perhitungan akurat?',
+    answer: 'Semua perhitungan menggunakan rumus standar yang sama dengan yang dipakai industri (UU HPP untuk PPh 21, formula KPR anuitas, dll). Namun, hasilnya bersifat <strong>estimasi</strong> — angka final dari bank, kantor pajak, atau platform tergantung kebijakan masing-masing institusi.',
+  },
+  {
+    question: 'Apakah data yang saya masukkan aman?',
+    answer: 'Sangat aman. Semua perhitungan dilakukan langsung di browser kamu (<strong>client-side</strong>). Tidak ada data yang dikirim atau disimpan di server kami. Begitu kamu menutup halaman, data hilang sepenuhnya.',
+  },
+  {
+    question: 'Bisakah saya pakai di HP?',
+    answer: 'Tentu! HitungCerdas didesain <strong>mobile-first</strong>. Semua tools terlihat baik dan mudah dipakai di layar HP, tablet, maupun laptop. Tidak perlu instal aplikasi apa pun.',
+  },
+  {
+    question: 'Apakah hasil kalkulator bisa dijadikan acuan resmi?',
+    answer: 'Hasil perhitungan bersifat <strong>estimasi dan edukasi</strong>. Untuk keputusan keuangan penting (seperti pengajuan KPR, pelaporan pajak, atau investasi besar), selalu konsultasikan dengan profesional terkait — bank, konsultan pajak, atau perencana keuangan berlisensi.',
+  },
+];
 
 const articles = [
-  { slug: 'cara-menghitung-cicilan-kpr-yang-benar-2026', category: 'PANDUAN KPR', title: 'Cara Menghitung Cicilan KPR yang Benar di 2026', readTime: 5, color: 'blue' },
-  { slug: 'cara-menghitung-pph-21-karyawan', category: 'PANDUAN PAJAK', title: 'Cara Menghitung PPh 21 Karyawan Sesuai Aturan Terbaru', readTime: 7, color: 'red' },
-  { slug: 'cara-menghitung-gaji-bersih-karyawan', category: 'GAJI & PENGHASILAN', title: 'Cara Menghitung Gaji Bersih Karyawan dengan Mudah', readTime: 4, color: 'green' },
-  { slug: 'cara-menentukan-harga-jual-produk', category: 'UMKM', title: 'Cara Menentukan Harga Jual Produk agar Tetap Untung', readTime: 6, color: 'pink' },
+  { slug: 'cara-menghitung-kpr', title: 'Cara Menghitung Cicilan KPR yang Benar di 2026', category: 'PANDUAN KPR', readTime: '5 min', color: '#2563EB', color2: '#1E40AF' },
+  { slug: 'cara-menghitung-pph-21', title: 'Cara Menghitung PPh 21 Karyawan Sesuai Aturan Terbaru', category: 'PANDUAN PAJAK', readTime: '7 min', color: '#DC2626', color2: '#991B1B' },
+  { slug: 'cara-menghitung-gaji-bersih', title: 'Cara Menghitung Gaji Bersih Karyawan dengan Mudah', category: 'GAJI & PENGHASILAN', readTime: '4 min', color: '#059669', color2: '#047857' },
+  { slug: 'cara-menentukan-harga-jual', title: 'Cara Menentukan Harga Jual Produk agar Tetap Untung', category: 'UMKM', readTime: '6 min', color: '#EC4899', color2: '#9D174D' },
 ];
 ---
 
 <Layout
-  title="HitungCerdas — 18 Kalkulator Keuangan, Bisnis & Islami Online Gratis"
-  description="Pusat kalkulator online Indonesia: hitung cicilan KPR, pajak, gaji, investasi, invoice, harga jual, margin, zakat, fidyah, warisan faraidh, dan dana haji & umrah — gratis tanpa daftar."
+  title={homepageTitle}
+  description={homepageDesc}
+  keywords={['kalkulator keuangan', 'kalkulator bisnis', 'kalkulator islami', 'kalkulator KPR', 'kalkulator PPh 21', 'kalkulator gaji bersih', 'kalkulator zakat', 'kalkulator investasi', 'hitung kpr online', 'hitung pajak online']}
 >
+  {/* ═══════════════ HERO ═══════════════ */}
+  <section class="hero" id="beranda">
+    <div class="hero-particles" aria-hidden="true">
+      {Array.from({ length: 9 }).map((_, i) => <span class={`particle p-${i + 1}`}></span>)}
+    </div>
 
-  <section class="hero">
-    <div class="container hero-inner">
+    <div class="hero-wrap">
+      {/* Hero illustration (desktop only) */}
+      <svg class="hero-illust" viewBox="0 0 340 340" fill="none" aria-hidden="true">
+        <circle cx="170" cy="170" r="140" fill="url(#hg1)" opacity=".6" />
+        <circle cx="170" cy="170" r="100" fill="url(#hg2)" opacity=".4" />
+        <defs>
+          <radialGradient id="hg1" cx="50%" cy="50%">
+            <stop offset="0%" stop-color="#FCD34D" stop-opacity=".4" />
+            <stop offset="100%" stop-color="#F59E0B" stop-opacity="0" />
+          </radialGradient>
+          <radialGradient id="hg2" cx="50%" cy="50%">
+            <stop offset="0%" stop-color="#FFFFFF" stop-opacity=".25" />
+            <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0" />
+          </radialGradient>
+        </defs>
+
+        {/* Calculator center */}
+        <g class="float-1">
+          <rect x="115" y="100" width="110" height="150" rx="14" fill="#FFFFFF" stroke="#13335C" stroke-width="2" />
+          <rect x="125" y="112" width="90" height="32" rx="6" fill="#0A2540" />
+          <text x="207" y="135" text-anchor="end" font-size="18" font-weight="800" fill="#FCD34D" font-family="Inter,sans-serif">8,420</text>
+          <text x="135" y="128" font-size="9" font-weight="600" fill="rgba(255,255,255,.5)" font-family="Inter,sans-serif">RESULT</text>
+          <rect x="125" y="152" width="20" height="20" rx="4" fill="#F1F5F9" />
+          <rect x="150" y="152" width="20" height="20" rx="4" fill="#F1F5F9" />
+          <rect x="175" y="152" width="20" height="20" rx="4" fill="#F1F5F9" />
+          <rect x="200" y="152" width="15" height="20" rx="4" fill="#F59E0B" />
+          <rect x="125" y="177" width="20" height="20" rx="4" fill="#F1F5F9" />
+          <rect x="150" y="177" width="20" height="20" rx="4" fill="#F1F5F9" />
+          <rect x="175" y="177" width="20" height="20" rx="4" fill="#F1F5F9" />
+          <rect x="200" y="177" width="15" height="20" rx="4" fill="#F59E0B" />
+          <rect x="125" y="202" width="20" height="20" rx="4" fill="#F1F5F9" />
+          <rect x="150" y="202" width="20" height="20" rx="4" fill="#F1F5F9" />
+          <rect x="175" y="202" width="20" height="20" rx="4" fill="#F1F5F9" />
+          <rect x="200" y="202" width="15" height="20" rx="4" fill="#F59E0B" />
+          <rect x="125" y="227" width="45" height="16" rx="4" fill="#059669" />
+          <rect x="175" y="227" width="20" height="16" rx="4" fill="#F1F5F9" />
+          <rect x="200" y="227" width="15" height="16" rx="4" fill="#F59E0B" />
+        </g>
+
+        {/* Spinning coin top-right */}
+        <g class="float-2" transform="translate(245 60)">
+          <circle class="spin-coin" cx="0" cy="0" r="22" fill="#F59E0B" stroke="#B45309" stroke-width="2" />
+          <text x="0" y="6" text-anchor="middle" font-size="14" font-weight="900" fill="#FFFFFF" font-family="Inter,sans-serif">Rp</text>
+        </g>
+
+        {/* Chart card top-left */}
+        <g class="float-3" transform="translate(40 80)">
+          <rect x="0" y="0" width="80" height="60" rx="10" fill="#FFFFFF" stroke="#13335C" stroke-width="2" />
+          <text x="10" y="16" font-size="8" font-weight="700" fill="#475569" font-family="Inter,sans-serif">PROFIT</text>
+          <path d="M10 50L25 35L40 42L55 25L70 18" stroke="#059669" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+          <circle cx="70" cy="18" r="3" fill="#059669" />
+        </g>
+
+        {/* House bottom-left */}
+        <g class="float-4" transform="translate(45 230)">
+          <path d="M0 22L20 6L40 22" stroke="#2563EB" stroke-width="2.5" stroke-linejoin="round" fill="#DBEAFE" />
+          <rect x="6" y="22" width="28" height="22" fill="#FFFFFF" stroke="#2563EB" stroke-width="2" />
+          <rect x="16" y="30" width="8" height="14" fill="#2563EB" />
+        </g>
+
+        {/* Coin stack bottom-right */}
+        <g class="float-2" transform="translate(245 230)">
+          <ellipse cx="0" cy="38" rx="26" ry="6" fill="#B45309" />
+          <rect x="-26" y="28" width="52" height="10" fill="#F59E0B" />
+          <ellipse cx="0" cy="28" rx="26" ry="6" fill="#FCD34D" stroke="#B45309" stroke-width="1.5" />
+          <ellipse cx="0" cy="14" rx="26" ry="6" fill="#F59E0B" />
+          <rect x="-26" y="4" width="52" height="10" fill="#F59E0B" />
+          <ellipse cx="0" cy="4" rx="26" ry="6" fill="#FCD34D" stroke="#B45309" stroke-width="1.5" />
+          <text x="0" y="8" text-anchor="middle" font-size="10" font-weight="900" fill="#B45309" font-family="Inter,sans-serif">Rp</text>
+        </g>
+      </svg>
+
       <div class="hero-content">
-        <span class="hero-badge">
+        <div class="badge">
           <span class="dot"></span>
-          {totalCalculators} kalkulator gratis · Keuangan · Bisnis · Islami
-        </span>
-        <h1 class="hero-title">
-          Pusat Kalkulator <em>Keuangan, Bisnis & Islami</em> Online Gratis
+          18 kalkulator gratis · Keuangan · Bisnis · Islami
+        </div>
+
+        <h1>
+          Pusat Kalkulator <span class="hl">Keuangan, Bisnis &amp; Islami</span>
+          <br />Online Gratis
         </h1>
+
         <p class="hero-sub">
           Hitung cicilan KPR, pajak, gaji, investasi, invoice, harga jual, margin, zakat, fidyah,
-          warisan faraidh, dan dana haji & umrah — dalam satu website gratis, mudah di HP.
+          warisan faraidh, dan dana haji &amp; umrah — dalam satu website gratis, mudah di HP.
         </p>
-        <div class="hero-actions">
-          <a href="#tools" class="btn-primary">📊 Coba Kalkulator</a>
-          <a href="#tools" class="btn-secondary">Lihat Semua Tools</a>
+
+        <div class="hero-btns">
+          <a href="#tools" class="btn btn-pri">
+            <i class="ti ti-calculator" aria-hidden="true"></i>
+            Coba Kalkulator
+          </a>
+          <a href="#tools" class="btn btn-sec">
+            <i class="ti ti-grid-dots" aria-hidden="true"></i>
+            Lihat Semua Tools
+          </a>
         </div>
-        <div class="hero-features">
-          <span>✓ Gratis selamanya</span>
-          <span>✓ Tanpa login</span>
-          <span>✓ Hasil instan</span>
-          <span>✓ Mobile-friendly</span>
+
+        <div class="hero-feats">
+          <div class="feat"><i class="ti ti-check"></i> Gratis selamanya</div>
+          <div class="feat"><i class="ti ti-check"></i> Tanpa login</div>
+          <div class="feat"><i class="ti ti-check"></i> Hasil instan</div>
+          <div class="feat"><i class="ti ti-check"></i> Mobile-friendly</div>
+          <div class="feat"><i class="ti ti-check"></i> Format Rupiah</div>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="tools" id="tools">
-    <div class="container">
-      <div class="section-head">
-        <span class="eyebrow">{totalCalculators} KALKULATOR GRATIS</span>
-        <h2>Pilih Kalkulator yang <em>Kamu Butuhkan</em></h2>
-        <p>{totalCalculators} kalkulator gratis untuk keuangan, bisnis, dan kebutuhan Islami.</p>
+  {/* ═══════════════ SEARCH BAR ═══════════════ */}
+  <div class="search-wrap">
+    <div class="search-box">
+      <div class="search-ic">
+        <i class="ti ti-search" aria-hidden="true"></i>
+      </div>
+      <input
+        type="text"
+        class="search-input"
+        id="searchInput"
+        placeholder="Cari kalkulator keuangan, bisnis, atau islami..."
+        autocomplete="off"
+      />
+      <button class="search-btn" id="searchBtn">Cari</button>
+    </div>
+    <div class="search-results" id="searchResults"></div>
+  </div>
+
+  <AdSlot format="horizontal" className="mt-ad" />
+
+  {/* ═══════════════ TOOLS GRID ═══════════════ */}
+  <section class="section" id="tools">
+    <div class="wrap">
+      <div class="section-hdr">
+        <div class="section-eyebrow">18 Kalkulator Gratis</div>
+        <h2 class="section-title">Pilih Kalkulator yang Kamu Butuhkan</h2>
+        <p class="section-desc">
+          18 kalkulator gratis untuk keuangan, bisnis, dan kebutuhan Islami — dirancang sederhana
+          untuk karyawan, UMKM, freelancer, hingga keluarga Muslim Indonesia.
+        </p>
       </div>
 
-      <div class="tabs">
-        <button class="tab active" data-cat="all">Semua Tools</button>
-        <button class="tab" data-cat="keuangan">Keuangan</button>
-        <button class="tab" data-cat="bisnis">Bisnis</button>
-        <button class="tab" data-cat="islami">Islami</button>
+      <div class="cat-tabs" role="tablist">
+        <button class="cat-tab active" data-cat="semua">Semua Tools</button>
+        <button class="cat-tab" data-cat="keuangan">Kalkulator Keuangan</button>
+        <button class="cat-tab" data-cat="bisnis">Kalkulator Bisnis & Tools</button>
+        <button class="cat-tab" data-cat="islami">Kalkulator Islami</button>
       </div>
 
-      <div class="cards-grid" id="cards-grid">
-        {[...calculators.keuangan, ...calculators.bisnis, ...calculators.islami].map((calc) => {
-          const cat = calculators.keuangan.includes(calc) ? 'keuangan' :
-                      calculators.bisnis.includes(calc) ? 'bisnis' : 'islami';
-          return (
-            <a href={`/${calc.slug}`} class={`card card-${calc.color}`} data-cat={cat}>
-              <div class="card-head">
-                <div class={`card-icon icon-${calc.color}`}>
-                  <span>{calc.icon}</span>
-                </div>
-                <span class={`card-tag tag-${calc.color}`}>{calc.tag}</span>
-              </div>
-              <h3>{calc.name}</h3>
-              <p>{calc.desc}</p>
-              <span class="card-cta">Gunakan →</span>
-            </a>
-          );
-        })}
+      <div class="tool-grid">
+        {CALCULATORS.map(calc => <CalculatorCard calc={calc} />)}
       </div>
     </div>
   </section>
 
-  <section class="why">
-    <div class="container">
-      <div class="section-head">
-        <span class="eyebrow">KENAPA KAMI</span>
-        <h2>Kenapa Pakai <em>HitungCerdas?</em></h2>
+  <AdSlot format="rectangle" />
+
+  {/* ═══════════════ BENEFITS ═══════════════ */}
+  <section class="section benefits-bg">
+    <div class="wrap">
+      <div class="section-hdr">
+        <div class="section-eyebrow">Kenapa Kami</div>
+        <h2 class="section-title">Kenapa Pakai HitungCerdas?</h2>
+        <p class="section-desc">
+          Dibangun untuk pengguna Indonesia dengan fokus pada kecepatan, kemudahan, dan akurasi hasil.
+        </p>
       </div>
-      <div class="why-grid">
-        <div class="why-card">
-          <div class="why-icon">⚡</div>
-          <h4>Cepat & Praktis</h4>
-          <p>Hasil tampil instan begitu kamu mengetik input. Tidak perlu submit form.</p>
+
+      <div class="benefits-grid">
+        <div class="benefit-card reveal">
+          <div class="benefit-ic" style="background:#DBEAFE;color:#2563EB">
+            <svg viewBox="0 0 40 40" fill="none">
+              <path d="M22 4L8 22H18L16 36L32 16H22L24 4Z" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+            </svg>
+          </div>
+          <h3 class="benefit-title">Cepat & Praktis</h3>
+          <p class="benefit-desc">Hasil tampil instan begitu kamu mengetik input. Tidak perlu submit form atau loading lama.</p>
         </div>
-        <div class="why-card">
-          <div class="why-icon">😊</div>
-          <h4>Mudah Dipahami</h4>
-          <p>Hasil ditampilkan dengan visual yang jelas. Cocok untuk pengguna awam.</p>
+
+        <div class="benefit-card reveal">
+          <div class="benefit-ic" style="background:#D1FAE5;color:#059669">
+            <svg viewBox="0 0 40 40" fill="none">
+              <circle cx="20" cy="20" r="15" fill="currentColor" fill-opacity=".18" stroke="currentColor" stroke-width="2" />
+              <circle cx="14" cy="17" r="1.8" fill="currentColor" />
+              <circle cx="26" cy="17" r="1.8" fill="currentColor" />
+              <path d="M13 24C13 24 15 28 20 28C25 28 27 24 27 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none" />
+            </svg>
+          </div>
+          <h3 class="benefit-title">Mudah Dipahami</h3>
+          <p class="benefit-desc">Hasil ditampilkan dengan visual yang jelas. Cocok untuk pengguna awam yang tidak suka angka.</p>
         </div>
-        <div class="why-card">
-          <div class="why-icon">👥</div>
-          <h4>Cocok untuk Semua</h4>
-          <p>Karyawan, freelancer, UMKM, pebisnis online — tools yang relevan untuk semua profesi.</p>
+
+        <div class="benefit-card reveal">
+          <div class="benefit-ic" style="background:#FEF3C7;color:#F59E0B">
+            <svg viewBox="0 0 40 40" fill="none">
+              <circle cx="13" cy="13" r="5" fill="currentColor" fill-opacity=".5" stroke="currentColor" stroke-width="2" />
+              <circle cx="27" cy="13" r="5" fill="currentColor" fill-opacity=".5" stroke="currentColor" stroke-width="2" />
+              <path d="M5 32C5 26 8 22 13 22C18 22 21 26 21 32" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none" />
+              <path d="M19 32C19 26 22 22 27 22C32 22 35 26 35 32" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="currentColor" fill-opacity=".15" />
+            </svg>
+          </div>
+          <h3 class="benefit-title">Cocok untuk Semua</h3>
+          <p class="benefit-desc">Karyawan, freelancer, UMKM, pebisnis online — tools yang relevan untuk semua profesi.</p>
         </div>
-        <div class="why-card">
-          <div class="why-icon">🎁</div>
-          <h4>Gratis Tanpa Login</h4>
-          <p>Tidak ada batasan, tidak perlu daftar, tidak perlu password. Langsung pakai.</p>
+
+        <div class="benefit-card reveal">
+          <div class="benefit-ic" style="background:#FCE7F3;color:#EC4899">
+            <svg viewBox="0 0 40 40" fill="none">
+              <rect x="8" y="14" width="24" height="20" rx="2" fill="currentColor" fill-opacity=".15" stroke="currentColor" stroke-width="2" />
+              <path d="M8 14L8 12C8 10.9 8.9 10 10 10H30C31.1 10 32 10.9 32 12V14" stroke="currentColor" stroke-width="2" />
+              <line x1="20" y1="14" x2="20" y2="34" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              <path d="M20 14C18 9 14 9 14 12C14 14 16 14 20 14Z" fill="currentColor" />
+              <path d="M20 14C22 9 26 9 26 12C26 14 24 14 20 14Z" fill="currentColor" />
+            </svg>
+          </div>
+          <h3 class="benefit-title">Gratis Tanpa Login</h3>
+          <p class="benefit-desc">Tidak ada batasan, tidak perlu daftar, tidak perlu password. Langsung pakai.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="articles">
-    <div class="container">
-      <div class="section-head">
-        <span class="eyebrow">EDUKASI</span>
-        <h2>Artikel & <em>Panduan</em></h2>
-        <p>Pelajari konsep keuangan dan bisnis dasar dengan bahasa yang mudah dipahami.</p>
+  {/* ═══════════════ ARTICLES ═══════════════ */}
+  <section class="section" id="blog">
+    <div class="wrap">
+      <div class="section-hdr">
+        <div class="section-eyebrow">Edukasi</div>
+        <h2 class="section-title">Artikel & Panduan</h2>
+        <p class="section-desc">
+          Pelajari konsep keuangan dan bisnis dasar dengan bahasa yang mudah dipahami.
+        </p>
       </div>
-      <div class="articles-grid">
-        {articles.map((article) => (
-          <a href={`/blog/${article.slug}`} class={`article-card`}>
-            <div class={`article-thumb thumb-${article.color}`}>
-              <span>📄</span>
+
+      <div class="art-grid">
+        {articles.map(art => (
+          <a href={`/blog/${art.slug}`} class="art-card reveal" style={`--art-color:${art.color};--art-color2:${art.color2}`}>
+            <div class="art-img">
+              <i class="ti ti-file-text"></i>
             </div>
-            <div class="article-body">
-              <span class="article-cat">{article.category}</span>
-              <h3>{article.title}</h3>
-              <div class="article-meta">⏱ {article.readTime} min baca</div>
-              <span class="article-cta">Baca →</span>
+            <div class="art-body">
+              <div class="art-cat">{art.category}</div>
+              <h3 class="art-title">{art.title}</h3>
+              <div class="art-meta"><i class="ti ti-clock"></i> {art.readTime} baca</div>
+              <span class="art-link">Baca Artikel <i class="ti ti-arrow-right"></i></span>
             </div>
           </a>
         ))}
       </div>
-    </div>
-  </section>
 
-  <section class="faq-section">
-    <div class="container">
-      <div class="section-head">
-        <span class="eyebrow">FAQ</span>
-        <h2>Pertanyaan yang <em>Sering Ditanyakan</em></h2>
-      </div>
-      <div class="faq-list">
-        <details class="faq-item" open>
-          <summary>Apakah HitungCerdas benar-benar gratis?</summary>
-          <div class="faq-answer">Ya, semua kalkulator di HitungCerdas 100% gratis tanpa biaya tersembunyi. Tidak perlu mendaftar atau berlangganan.</div>
-        </details>
-        <details class="faq-item">
-          <summary>Apakah hasil perhitungan akurat?</summary>
-          <div class="faq-answer">Hasil menggunakan rumus standar Indonesia (UU HPP pajak, BAZNAS zakat, anuitas KPR). Hasil bersifat estimasi — untuk keputusan resmi, konsultasikan dengan profesional.</div>
-        </details>
-        <details class="faq-item">
-          <summary>Apakah data yang saya masukkan aman?</summary>
-          <div class="faq-answer">Aman. Semua perhitungan terjadi di browser kamu (client-side) dan TIDAK dikirim ke server kami. Data input kamu tidak disimpan.</div>
-        </details>
-        <details class="faq-item">
-          <summary>Bisakah saya pakai di HP?</summary>
-          <div class="faq-answer">Tentu. Semua kalkulator dirancang mobile-friendly dan bekerja sempurna di HP Android, iPhone, maupun tablet.</div>
-        </details>
-        <details class="faq-item">
-          <summary>Apakah hasil bisa dijadikan acuan resmi?</summary>
-          <div class="faq-answer">Hasil bersifat estimasi dan referensi awal. Untuk keperluan resmi (pelaporan pajak, akad KPR, pembagian warisan), konsultasikan dengan profesional berkompeten.</div>
-        </details>
+      <div class="art-cta">
+        <a href="/blog" class="btn btn-ghost">
+          Lihat Semua Artikel <i class="ti ti-arrow-right"></i>
+        </a>
       </div>
     </div>
   </section>
 
+  <AdSlot format="horizontal" />
+
+  <FAQ items={faqs} />
 </Layout>
 
 <style>
-.hero {
-  position: relative;
-  background: linear-gradient(180deg, var(--navy) 0%, var(--navy-2) 100%);
-  color: #fff;
-  padding: 80px 0 100px;
-  overflow: hidden;
-}
-.hero-content { max-width: 720px; }
-.hero-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 14px;
-  background: rgba(16,185,129,0.12);
-  border: 1px solid rgba(16,185,129,0.3);
-  border-radius: 999px;
-  font-size: 13px;
-  color: #6EE7B7;
-  font-weight: 500;
-  margin-bottom: 24px;
-}
-.hero-badge .dot {
-  width: 6px; height: 6px;
-  background: var(--green);
-  border-radius: 50%;
-  box-shadow: 0 0 0 3px rgba(16,185,129,0.25);
-}
-.hero-title {
-  font-family: var(--font-display);
-  font-weight: 400;
-  font-size: clamp(36px, 6vw, 64px);
-  line-height: 1.05;
-  margin: 0 0 20px;
-  color: #fff;
-}
-.hero-title em { font-style: italic; color: var(--gold); }
-.hero-sub {
-  font-size: 17px;
-  color: rgba(255,255,255,0.75);
-  margin: 0 0 32px;
-  max-width: 600px;
-}
-.hero-actions {
-  display: flex; gap: 12px; flex-wrap: wrap;
-  margin-bottom: 32px;
-}
-.btn-primary, .btn-secondary {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 14px 24px;
-  border-radius: 12px;
-  font-weight: 600;
-  font-size: 15px;
-  transition: all .2s var(--ease);
-}
-.btn-primary { background: var(--green); color: #fff; }
-.btn-primary:hover { background: var(--green-deep); color: #fff; transform: translateY(-1px); }
-.btn-secondary {
-  background: rgba(255,255,255,0.08);
-  color: #fff;
-  border: 1px solid rgba(255,255,255,0.15);
-}
-.btn-secondary:hover { background: rgba(255,255,255,0.14); color: #fff; }
-.hero-features {
-  display: flex; gap: 24px; flex-wrap: wrap;
-  font-size: 14px;
-  color: rgba(255,255,255,0.7);
-}
+  /* ═══════════════ HERO ═══════════════ */
+  .hero {
+    background: linear-gradient(135deg, #0A2540 0%, #13335C 50%, #1E4475 100%);
+    color: #fff;
+    padding: 64px 0 56px;
+    position: relative;
+    overflow: hidden;
+  }
 
-.section-head { margin-bottom: 48px; text-align: center; }
-.section-head .eyebrow {
-  display: inline-block;
-  font-size: 11.5px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  color: var(--blue);
-  margin-bottom: 12px;
-}
-.section-head h2 {
-  font-family: var(--font-display);
-  font-weight: 400;
-  font-size: clamp(28px, 4vw, 44px);
-  line-height: 1.1;
-  margin: 0 0 14px;
-  color: var(--ink);
-}
-.section-head h2 em { font-style: italic; color: var(--navy); }
-.section-head p {
-  font-size: 15.5px;
-  color: var(--ink-3);
-  max-width: 620px;
-  margin: 0 auto;
-}
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -20%;
+    right: -10%;
+    width: 60%;
+    height: 140%;
+    background: radial-gradient(ellipse, rgba(37, 99, 235, .25), transparent 60%);
+    pointer-events: none;
+  }
 
-.tools { padding: 80px 0; }
-.tabs {
-  display: flex; gap: 6px;
-  margin: 0 auto 36px;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-.tab {
-  padding: 10px 22px;
-  background: var(--bg);
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  font-weight: 500;
-  font-size: 14px;
-  color: var(--ink-2);
-  transition: all .2s var(--ease);
-}
-.tab:hover { background: var(--bg-soft); border-color: var(--ink-3); }
-.tab.active { background: var(--navy); color: #fff; border-color: var(--navy); }
+  .hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, .06) 1px, transparent 0);
+    background-size: 24px 24px;
+    pointer-events: none;
+    opacity: .5;
+  }
 
-.cards-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 18px;
-}
-.card {
-  background: var(--bg);
-  border: 1px solid var(--line);
-  border-radius: 20px;
-  padding: 22px;
-  display: flex;
-  flex-direction: column;
-  color: var(--ink);
-  transition: all .25s var(--ease);
-  position: relative;
-}
-.card:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-lg);
-  color: var(--ink);
-}
-.card-head {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  margin-bottom: 14px;
-}
-.card-icon {
-  width: 48px; height: 48px;
-  border-radius: 12px;
-  display: grid; place-items: center;
-  font-size: 22px;
-}
-.card-tag {
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  padding: 4px 8px;
-  border-radius: 6px;
-}
-.card h3 {
-  font-weight: 700;
-  font-size: 17px;
-  margin: 0 0 8px;
-  color: var(--ink);
-}
-.card p {
-  font-size: 13.5px;
-  color: var(--ink-3);
-  line-height: 1.5;
-  margin: 0 0 16px;
-  flex: 1;
-}
-.card-cta { font-size: 13.5px; font-weight: 600; color: var(--blue); }
+  .hero-wrap {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 0 20px;
+    position: relative;
+    z-index: 1;
+  }
 
-.icon-blue { background: #DBEAFE; color: #2563EB; }
-.tag-blue { background: #DBEAFE; color: #1E40AF; }
-.icon-red { background: #FEE2E2; color: #DC2626; }
-.tag-red { background: #FEE2E2; color: #991B1B; }
-.icon-green { background: #D1FAE5; color: #059669; }
-.tag-green { background: #D1FAE5; color: #065F46; }
-.icon-yellow { background: #FEF3C7; color: #D97706; }
-.tag-yellow { background: #FEF3C7; color: #92400E; }
-.icon-purple { background: #EDE9FE; color: #7C3AED; }
-.tag-purple { background: #EDE9FE; color: #5B21B6; }
-.icon-pink { background: #FCE7F3; color: #DB2777; }
-.tag-pink { background: #FCE7F3; color: #9D174D; }
-.icon-teal { background: #CCFBF1; color: #0D9488; }
-.tag-teal { background: #CCFBF1; color: #115E59; }
+  .hero-content {
+    animation: fadeUp .5s ease both;
+  }
 
-.why { padding: 64px 0; background: var(--bg-soft); }
-.why-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 18px;
-}
-.why-card {
-  background: var(--bg);
-  border: 1px solid var(--line);
-  border-radius: 20px;
-  padding: 28px 24px;
-  text-align: center;
-}
-.why-icon {
-  width: 56px; height: 56px;
-  border-radius: 14px;
-  display: grid; place-items: center;
-  font-size: 26px;
-  margin: 0 auto 16px;
-  background: #FEF3C7;
-}
-.why-card h4 { font-weight: 700; font-size: 17px; margin: 0 0 8px; color: var(--ink); }
-.why-card p { font-size: 14px; color: var(--ink-3); margin: 0; }
+  .hero-content > * {
+    animation: fadeUp .5s ease both;
+  }
 
-.articles { padding: 80px 0; }
-.articles-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 22px;
-}
-.article-card {
-  display: flex;
-  flex-direction: column;
-  background: var(--bg);
-  border: 1px solid var(--line);
-  border-radius: 20px;
-  overflow: hidden;
-  color: var(--ink);
-  transition: all .25s var(--ease);
-}
-.article-card:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-lg);
-  color: var(--ink);
-}
-.article-thumb {
-  aspect-ratio: 16/10;
-  display: grid;
-  place-items: center;
-  font-size: 48px;
-  opacity: 0.85;
-}
-.thumb-blue { background: linear-gradient(135deg, #2563EB, #1E40AF); }
-.thumb-red { background: linear-gradient(135deg, #DC2626, #991B1B); }
-.thumb-green { background: linear-gradient(135deg, #10B981, #047857); }
-.thumb-pink { background: linear-gradient(135deg, #EC4899, #9D174D); }
-.article-body { padding: 22px; flex: 1; display: flex; flex-direction: column; }
-.article-cat {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  color: var(--blue);
-  margin-bottom: 8px;
-}
-.article-card h3 {
-  font-weight: 700;
-  font-size: 17px;
-  line-height: 1.4;
-  color: var(--ink);
-  margin: 0 0 14px;
-  flex: 1;
-}
-.article-meta {
-  font-size: 12.5px;
-  color: var(--ink-3);
-  margin-bottom: 12px;
-}
-.article-cta { font-size: 13.5px; font-weight: 600; color: var(--blue); }
+  .hero-content > *:nth-child(1) { animation-delay: .05s; }
+  .hero-content > *:nth-child(2) { animation-delay: .15s; }
+  .hero-content > *:nth-child(3) { animation-delay: .25s; }
+  .hero-content > *:nth-child(4) { animation-delay: .35s; }
+  .hero-content > *:nth-child(5) { animation-delay: .45s; }
 
-.faq-section { padding: 64px 0 80px; background: var(--bg-soft); }
-.faq-list { max-width: 720px; margin: 0 auto; }
-.faq-item {
-  background: var(--bg);
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  margin-bottom: 12px;
-  overflow: hidden;
-}
-.faq-item summary {
-  list-style: none;
-  cursor: pointer;
-  padding: 18px 22px;
-  font-weight: 600;
-  font-size: 15px;
-  color: var(--ink);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.faq-item summary::-webkit-details-marker { display: none; }
-.faq-item summary::after {
-  content: "+";
-  font-size: 24px;
-  color: var(--ink-3);
-  transition: transform .2s var(--ease);
-}
-.faq-item[open] summary::after { transform: rotate(45deg); color: var(--blue); }
-.faq-answer {
-  padding: 0 22px 18px;
-  font-size: 14.5px;
-  color: var(--ink-2);
-  line-height: 1.6;
-}
+  .hero-illust {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 340px;
+    height: 340px;
+    display: none;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  @media (min-width: 1024px) {
+    .hero-illust {
+      display: block;
+    }
+    .hero h1,
+    .hero-sub,
+    .hero-btns,
+    .hero-feats {
+      max-width: 600px;
+    }
+  }
+
+  .hero h1 {
+    color: #fff;
+    font-size: clamp(28px, 4.3vw, 50px);
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -.025em;
+    margin: 0 0 18px;
+    max-width: 780px;
+  }
+
+  .hero h1 .hl {
+    background: linear-gradient(135deg, #FBBF24 0%, #F59E0B 50%, #FCD34D 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    font-style: italic;
+  }
+
+  .badge {
+    margin-bottom: 18px;
+  }
+
+  .hero-sub {
+    font-size: clamp(15px, 1.5vw, 18px);
+    color: rgba(255, 255, 255, .75);
+    line-height: 1.65;
+    margin: 0 0 28px;
+    max-width: 660px;
+    font-weight: 400;
+  }
+
+  .hero-btns {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+  }
+
+  .hero-feats {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .feat {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: rgba(255, 255, 255, .85);
+  }
+
+  .feat i {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: rgba(16, 185, 129, .18);
+    color: #34D399;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+
+  /* ═══════════════ PARTICLES ═══════════════ */
+  .hero-particles {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .particle {
+    position: absolute;
+    background: #FCD34D;
+    border-radius: 50%;
+    opacity: 0;
+    animation: particleFloat 14s linear infinite;
+  }
+
+  .p-1 { left: 8%; width: 4px; height: 4px; animation-delay: 0s; }
+  .p-2 { left: 22%; width: 3px; height: 3px; animation-delay: 2s; animation-duration: 16s; }
+  .p-3 { left: 38%; width: 5px; height: 5px; animation-delay: 4s; animation-duration: 13s; }
+  .p-4 { left: 55%; width: 3px; height: 3px; animation-delay: 1s; animation-duration: 15s; }
+  .p-5 { left: 68%; width: 4px; height: 4px; animation-delay: 3s; animation-duration: 17s; }
+  .p-6 { left: 84%; width: 3px; height: 3px; animation-delay: 5s; background: #FBBF24; }
+  .p-7 { left: 14%; width: 2px; height: 2px; animation-delay: 6s; animation-duration: 18s; background: rgba(255, 255, 255, .6); }
+  .p-8 { left: 48%; width: 2px; height: 2px; animation-delay: 7s; animation-duration: 19s; background: rgba(255, 255, 255, .6); }
+  .p-9 { left: 76%; width: 2px; height: 2px; animation-delay: 8s; animation-duration: 16s; background: rgba(255, 255, 255, .6); }
+
+  /* ═══════════════ SEARCH BAR ═══════════════ */
+  .search-wrap {
+    max-width: 1240px;
+    margin: -32px auto 0;
+    padding: 0 20px;
+    position: relative;
+    z-index: 10;
+  }
+
+  .search-box {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: var(--shadow-xl);
+  }
+
+  .search-ic {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    background: var(--blue-light);
+    color: var(--blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  .search-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text);
+    background: transparent;
+    min-width: 0;
+  }
+
+  .search-input::placeholder {
+    color: var(--text-mute);
+    font-weight: 400;
+  }
+
+  .search-btn {
+    background: var(--navy);
+    color: #fff;
+    font-weight: 600;
+    font-size: 13px;
+    padding: 10px 20px;
+    border-radius: 10px;
+    flex-shrink: 0;
+    transition: var(--tx);
+    white-space: nowrap;
+  }
+
+  .search-btn:hover {
+    background: var(--navy-2);
+  }
+
+  .search-results {
+    display: none;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-top: 8px;
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+    max-height: 300px;
+    overflow-y: auto;
+  }
+
+  .search-results.show {
+    display: block;
+  }
+
+  .search-item {
+    padding: 11px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: background .15s;
+    border-bottom: 1px solid var(--border);
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .search-item:last-child {
+    border-bottom: none;
+  }
+
+  .search-item:hover {
+    background: var(--bg-soft);
+  }
+
+  .search-item-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .search-item-cat {
+    font-size: 11px;
+    color: var(--text-mute);
+  }
+
+  .mt-ad {
+    margin-top: 48px;
+  }
+
+  /* ═══════════════ CATEGORY TABS ═══════════════ */
+  .cat-tabs {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+  }
+
+  .cat-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #fff;
+    border: 1px solid var(--border);
+    padding: 9px 18px;
+    border-radius: 99px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-soft);
+    cursor: pointer;
+    transition: var(--tx);
+  }
+
+  .cat-tab:hover {
+    border-color: var(--blue);
+    color: var(--blue);
+  }
+
+  .cat-tab.active {
+    background: var(--navy);
+    color: #fff;
+    border-color: var(--navy);
+    box-shadow: 0 4px 12px rgba(10, 37, 64, .2);
+  }
+
+  /* ═══════════════ TOOLS GRID ═══════════════ */
+  .tool-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+  }
+
+  /* ═══════════════ BENEFITS ═══════════════ */
+  .benefits-bg {
+    background: linear-gradient(135deg, #F8FAFC 0%, #EFF6FF 100%);
+  }
+
+  .benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-top: 36px;
+  }
+
+  .benefit-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px;
+    transition: var(--tx);
+  }
+
+  .benefit-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+  }
+
+  .benefit-ic {
+    width: 54px;
+    height: 54px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 14px;
+    transition: transform .35s cubic-bezier(.34, 1.56, .64, 1);
+  }
+
+  .benefit-ic svg {
+    width: 34px;
+    height: 34px;
+  }
+
+  .benefit-card:hover .benefit-ic {
+    transform: scale(1.1) rotate(-4deg);
+  }
+
+  .benefit-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--navy);
+    margin: 0 0 6px;
+    font-family: var(--ff-display);
+  }
+
+  .benefit-desc {
+    font-size: 13px;
+    color: var(--text-soft);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* ═══════════════ ARTICLES ═══════════════ */
+  .art-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 18px;
+  }
+
+  .art-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    transition: var(--tx);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .art-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--art-color, var(--blue));
+  }
+
+  .art-img {
+    height: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--art-color, var(--blue)), var(--art-color2, var(--navy)));
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+    font-size: 60px;
+  }
+
+  .art-img::before {
+    content: '';
+    position: absolute;
+    top: -30%;
+    right: -20%;
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .1);
+    transition: transform .5s;
+  }
+
+  .art-card:hover .art-img::before {
+    transform: scale(1.2);
+  }
+
+  .art-body {
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+  }
+
+  .art-cat {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--blue);
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+
+  .art-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1.35;
+    letter-spacing: -.01em;
+    flex: 1;
+    margin: 0;
+    font-family: var(--ff-display);
+  }
+
+  .art-meta {
+    font-size: 11px;
+    color: var(--text-mute);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 4px;
+  }
+
+  .art-link {
+    font-size: 11px;
+    color: var(--blue);
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    margin-top: 6px;
+  }
+
+  .art-cta {
+    text-align: center;
+    margin-top: 32px;
+  }
+
+  /* ═══════════════ RESPONSIVE ═══════════════ */
+  @media (max-width: 1024px) {
+    .benefits-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .hero {
+      padding: 48px 0 44px;
+    }
+    .hero-feats {
+      gap: 14px;
+    }
+    .benefits-grid {
+      grid-template-columns: 1fr;
+    }
+    .tool-grid {
+      grid-template-columns: 1fr;
+    }
+  }
 </style>
 
-<script>
-const tabs = document.querySelectorAll('.tab');
-const cards = document.querySelectorAll('.cards-grid .card');
-tabs.forEach(tab => {
-  tab.addEventListener('click', () => {
-    tabs.forEach(t => t.classList.remove('active'));
-    tab.classList.add('active');
-    const cat = tab.dataset.cat;
-    cards.forEach(card => {
-      card.style.display = (cat === 'all' || card.dataset.cat === cat) ? 'flex' : 'none';
+<script is:inline define:vars={{ CALCULATORS_DATA: CALCULATORS.map(c => ({ slug: c.slug, name: c.shortTitle, cat: c.categoryLabel, tag: c.tag })) }}>
+  // ─── Category Tabs Filter ───
+  document.querySelectorAll('.cat-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const cat = tab.dataset.cat;
+      document.querySelectorAll('.tool-card').forEach(card => {
+        card.style.display = (cat === 'semua' || card.dataset.category === cat) ? '' : 'none';
+      });
     });
   });
-});
+
+  // ─── Search ───
+  (function() {
+    const input = document.getElementById('searchInput');
+    const results = document.getElementById('searchResults');
+    const btn = document.getElementById('searchBtn');
+    if (!input || !results) return;
+
+    input.addEventListener('input', e => {
+      const q = e.target.value.toLowerCase().trim();
+      if (!q) {
+        results.classList.remove('show');
+        return;
+      }
+      const matches = CALCULATORS_DATA.filter(c =>
+        c.name.toLowerCase().includes(q) ||
+        c.cat.toLowerCase().includes(q) ||
+        c.tag.toLowerCase().includes(q)
+      );
+      if (!matches.length) {
+        results.innerHTML = '<div class="search-item" style="cursor:default"><div class="search-item-name" style="color:var(--text-mute)">Tidak ditemukan tools untuk "' + q + '"</div></div>';
+      } else {
+        results.innerHTML = matches.map(t => `
+          <a class="search-item" href="/kalkulator/${t.slug}">
+            <div><div class="search-item-name">${t.name}</div><div class="search-item-cat">${t.cat}</div></div>
+          </a>
+        `).join('');
+      }
+      results.classList.add('show');
+    });
+
+    document.addEventListener('click', e => {
+      if (!e.target.closest('.search-wrap')) {
+        results.classList.remove('show');
+      }
+    });
+
+    btn?.addEventListener('click', () => {
+      const q = input.value.toLowerCase().trim();
+      if (!q) return;
+      const match = CALCULATORS_DATA.find(c => c.name.toLowerCase().includes(q));
+      if (match) {
+        window.location.href = `/kalkulator/${match.slug}`;
+      } else {
+        window.showToast?.('Tools tidak ditemukan');
+      }
+    });
+  })();
 </script>

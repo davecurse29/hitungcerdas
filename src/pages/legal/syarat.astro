@@ -1,0 +1,137 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import AdSlot from '../../components/AdSlot.astro';
+
+const today = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+
+<Layout
+  title="Syarat & Ketentuan — HitungCerdas"
+  description="Syarat dan Ketentuan penggunaan website HitungCerdas. Hak dan kewajiban pengguna, pembatasan tanggung jawab, dan aturan penggunaan."
+  canonical="https://hitungcerdas.net/legal/syarat"
+>
+  <section class="page-hero" style="--cat-color:#0F172A;--cat-color2:#1E293B">
+    <div class="wrap">
+      <h1>Syarat & Ketentuan</h1>
+      <p>Terakhir diperbarui: {today}</p>
+    </div>
+  </section>
+
+  <section class="content-section">
+    <div class="wrap-text">
+      <h2>1. Persetujuan Penggunaan</h2>
+      <p>
+        Dengan mengakses dan menggunakan website <strong>HitungCerdas</strong>
+        (https://hitungcerdas.net), Anda menyetujui untuk terikat oleh Syarat & Ketentuan ini.
+        Jika Anda tidak setuju, harap berhenti menggunakan website ini.
+      </p>
+
+      <h2>2. Tentang Layanan</h2>
+      <p>
+        HitungCerdas adalah platform <strong>kalkulator online gratis</strong> yang menyediakan
+        18 tools untuk perhitungan keuangan, bisnis, dan islami. Layanan ini bersifat informasional
+        dan edukatif, <strong>bukan</strong> nasihat keuangan, pajak, hukum, atau syariah profesional.
+      </p>
+
+      <h2>3. Akurasi Hasil Kalkulator</h2>
+      <p>
+        Semua hasil kalkulator di HitungCerdas adalah <strong>estimasi</strong> berdasarkan rumus
+        standar dan input yang Anda berikan. Hasil ini:
+      </p>
+      <ul class="info-list">
+        <li><strong>Tidak dijamin 100% akurat</strong> untuk semua kasus individual.</li>
+        <li><strong>Tidak mengikat secara hukum</strong> — bank, kantor pajak, BAZNAS, dan institusi lain memiliki perhitungan resmi yang mungkin berbeda.</li>
+        <li><strong>Tidak menggantikan konsultasi profesional</strong> dari bank, konsultan pajak, perencana keuangan, ulama, atau pengadilan agama.</li>
+        <li>Bergantung pada akurasi input yang Anda berikan.</li>
+      </ul>
+
+      <h2>4. Pembatasan Tanggung Jawab</h2>
+      <p>
+        HitungCerdas (termasuk pemilik, tim, dan kontributor) <strong>tidak bertanggung jawab</strong>
+        atas:
+      </p>
+      <ul class="info-list">
+        <li>Kerugian finansial yang timbul dari penggunaan hasil kalkulator kami.</li>
+        <li>Keputusan finansial, bisnis, atau ibadah yang Anda buat berdasarkan hasil kalkulator.</li>
+        <li>Akurasi atau kelengkapan informasi yang ditampilkan.</li>
+        <li>Perubahan aturan pemerintah, fatwa, atau kebijakan bank yang mungkin mempengaruhi akurasi hasil.</li>
+        <li>Gangguan layanan, error, atau downtime website.</li>
+        <li>Konten dari website third-party yang kami link (BAZNAS, bank, dll).</li>
+      </ul>
+
+      <h2>5. Penggunaan yang Diperbolehkan</h2>
+      <p>Anda boleh:</p>
+      <ul class="info-list">
+        <li>Menggunakan kalkulator untuk kepentingan personal dan komersial.</li>
+        <li>Berbagi link halaman HitungCerdas di media sosial atau aplikasi pesan.</li>
+        <li>Mengutip artikel dengan menyebutkan sumber dan link ke halaman asli.</li>
+        <li>Screenshot hasil kalkulator untuk catatan personal.</li>
+      </ul>
+
+      <h2>6. Penggunaan yang Dilarang</h2>
+      <p>Anda <strong>TIDAK</strong> diperbolehkan:</p>
+      <ul class="info-list">
+        <li>Menyalin/clone seluruh kode atau desain website tanpa izin.</li>
+        <li>Menggunakan scraping atau bot untuk mengambil konten secara massal.</li>
+        <li>Mempublikasikan ulang konten artikel kami tanpa sumber atau atribusi.</li>
+        <li>Menggunakan website untuk aktivitas ilegal atau menyesatkan.</li>
+        <li>Mencoba meretas, merusak, atau menyerang sistem website kami.</li>
+        <li>Memasang iklan/promosi di website kami tanpa izin.</li>
+      </ul>
+
+      <h2>7. Hak Cipta</h2>
+      <p>
+        Semua konten di HitungCerdas (artikel, desain, kode, logo) adalah hak cipta SideStepID
+        atau pemilik aslinya. Penggunaan tanpa izin dapat dikenakan tindakan hukum sesuai
+        UU Hak Cipta Indonesia.
+      </p>
+
+      <h2>8. Iklan & Affiliate</h2>
+      <p>
+        Website ini menampilkan iklan dari <strong>Google AdSense</strong>. Kami mungkin juga
+        menyertakan link affiliate di artikel/halaman tertentu — namun penyebutan brand bank,
+        lembaga zakat, atau platform investasi dalam artikel adalah <strong>informatif</strong>,
+        bukan endorsement atau jaminan.
+      </p>
+
+      <h2>9. Privasi</h2>
+      <p>
+        Kebijakan privasi penggunaan data Anda dijelaskan di
+        <a href="/legal/privasi"><strong>Kebijakan Privasi</strong></a>.
+      </p>
+
+      <h2>10. Perubahan Syarat</h2>
+      <p>
+        Syarat & Ketentuan ini dapat diperbarui sewaktu-waktu. Perubahan akan diumumkan di halaman
+        ini dengan update tanggal "Terakhir diperbarui". Penggunaan berkelanjutan setelah perubahan
+        berarti Anda menyetujui versi terbaru.
+      </p>
+
+      <h2>11. Hukum yang Berlaku</h2>
+      <p>
+        Syarat & Ketentuan ini diatur dan ditafsirkan sesuai dengan hukum Republik Indonesia.
+        Setiap sengketa yang timbul akan diselesaikan melalui jalur musyawarah, dan jika tidak
+        berhasil, melalui pengadilan yang berwenang di Indonesia.
+      </p>
+
+      <h2>12. Kontak</h2>
+      <p>
+        Pertanyaan terkait Syarat & Ketentuan, hubungi: <strong>hitungcerdas.id@gmail.com</strong>
+        atau melalui halaman <a href="/kontak">Kontak</a>.
+      </p>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+</Layout>
+
+<style>
+  .page-hero {
+    background: linear-gradient(135deg, var(--cat-color) 0%, var(--cat-color2) 100%);
+    color: #fff;
+    padding: 56px 0;
+    text-align: center;
+  }
+  .page-hero h1 { color: #fff; margin-bottom: 8px; }
+  .page-hero p { color: rgba(255, 255, 255, .7); font-size: 13px; }
+</style>

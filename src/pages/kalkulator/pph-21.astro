@@ -1,0 +1,318 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import FAQ from '../../components/FAQ.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import CalculatorCard from '../../components/CalculatorCard.astro';
+import { getCalculatorBySlug, getRelatedCalculators } from '../../data/calculators';
+
+const calc = getCalculatorBySlug('pph-21')!;
+const related = getRelatedCalculators('pph-21', 3);
+
+const faqs = [
+  { question: 'Bagaimana cara menghitung PPh 21 karyawan?', answer: '1) Hitung bruto setahun (gaji + tunjangan × 12 + bonus + THR). 2) Kurangi biaya jabatan (5% maks Rp 6jt/thn). 3) Kurangi BPJS karyawan. 4) Hasilnya = Neto. 5) Kurangi PTKP sesuai status. 6) Hasilnya = PKP (Penghasilan Kena Pajak). 7) Kalikan tarif progresif 5 lapisan UU HPP 2022.' },
+  { question: 'Apa itu UU HPP dan tarif baru PPh 21?', answer: '<strong>UU Harmonisasi Peraturan Perpajakan (HPP) 2022</strong> mengubah tarif PPh 21 dari 4 menjadi 5 lapisan progresif: (1) 0-60jt: 5%, (2) 60-250jt: 15%, (3) 250-500jt: 25%, (4) 500jt-5M: 30%, (5) >5M: 35%. Tarif progresif berarti hanya bagian yang melebihi setiap lapisan yang kena tarif lapisan itu.' },
+  { question: 'Berapa PTKP terbaru di 2026?', answer: 'PTKP (Penghasilan Tidak Kena Pajak) 2026: <strong>TK/0</strong> Rp 54jt, <strong>K/0</strong> Rp 58,5jt, <strong>K/1</strong> Rp 63jt, <strong>K/2</strong> Rp 67,5jt, <strong>K/3</strong> Rp 72jt. Setiap tanggungan menambah Rp 4,5jt. Maksimal 3 tanggungan diakui pajak.' },
+  { question: 'Bagaimana cara mengurangi PPh 21 secara legal?', answer: 'Cara LEGAL: (1) Update status K/3 jika punya 3 anak — turunkan PKP Rp 18jt. (2) Bayar zakat via lembaga resmi (BAZNAS, Dompet Dhuafa) — bisa kurangi PKP per PMK 254/2010. (3) Iuran JHT BPJS — pengurang bruto. (4) Iuran pensiun dengan persetujuan menteri.' },
+  { question: 'Apakah THR & bonus kena PPh 21?', answer: 'YA, THR dan bonus tahunan termasuk objek PPh 21. Tarifnya sama (progresif), tapi metode hitungnya pakai <strong>PPh 21 Final atas Bonus</strong>: dihitung total bruto setahun TERMASUK bonus, lalu dibandingkan PPh setahun tanpa bonus. Selisihnya adalah PPh atas bonus, dipotong di bulan bonus diterima.' },
+];
+
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '/#tools' }, { label: calc.shortTitle }];
+---
+
+<Layout title={calc.title} description={calc.metaDescription} keywords={calc.keywords} canonical={`https://hitungcerdas.net/kalkulator/${calc.slug}`}>
+  <section class="calc-hero" style="--cat-color:#DC2626;--cat-color2:#991B1B">
+    <div class="wrap">
+      <Breadcrumb items={bcItems} />
+      <div class="calc-hero-grid">
+        <div class="calc-hero-text">
+          <div class="calc-hero-tag" style="background:#FEE2E2;color:#991B1B"><i class="ti ti-receipt-tax"></i> {calc.categoryLabel}</div>
+          <h1 class="calc-hero-title">{calc.h1}</h1>
+          <p class="calc-hero-sub">{calc.introText}</p>
+          <ul class="calc-hero-benefits">{calc.benefits.map(b => <li><i class="ti ti-check"></i> {b}</li>)}</ul>
+        </div>
+        <div class="calc-hero-illust">
+          <svg viewBox="0 0 200 200" fill="none">
+            <circle cx="100" cy="100" r="85" fill="rgba(255,255,255,.08)"/>
+            <rect x="55" y="50" width="90" height="110" rx="8" fill="#FFF" stroke="#FBBF24" stroke-width="2"/>
+            <path d="M55 75H145M55 100H125M55 120H140M55 140H110" stroke="#DC2626" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="135" cy="135" r="18" fill="#FBBF24"/>
+            <text x="135" y="140" text-anchor="middle" font-size="14" font-weight="900" fill="#FFF" font-family="Inter">%</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+
+  <section class="calc-section">
+    <div class="wrap">
+      <div class="calc-card">
+        <div class="calc-card-hdr">
+          <div class="calc-card-hdr-ic" style="background:linear-gradient(135deg,#DC2626 0%,#991B1B 100%)"><i class="ti ti-receipt-tax"></i></div>
+          <div><h2 class="calc-card-title">Kalkulator PPh 21 — UU HPP 2022</h2><p class="calc-card-sub">Pajak penghasilan progresif 5 lapisan (5%-35%)</p></div>
+        </div>
+
+        <div class="calc-grid">
+          <div class="calc-input">
+            <div class="field"><label>Gaji Pokok per Bulan</label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span>
+                <input type="text" id="gaji" class="has-prefix" placeholder="10.000.000" value="10.000.000" inputmode="numeric" /></div>
+            </div>
+
+            <div class="field"><label>Tunjangan per Bulan <span class="hint">(transport, makan, jabatan)</span></label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span>
+                <input type="text" id="tunjangan" class="has-prefix" placeholder="2.000.000" value="2.000.000" inputmode="numeric" /></div>
+            </div>
+
+            <div class="field"><label>Bonus / THR Setahun</label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span>
+                <input type="text" id="bonus" class="has-prefix" placeholder="10.000.000" value="10.000.000" inputmode="numeric" /></div>
+            </div>
+
+            <div class="field"><label>Status PTKP</label>
+              <select id="ptkp">
+                <option value="54000000">TK/0 - Lajang (Rp 54jt)</option>
+                <option value="58500000">K/0 - Menikah (Rp 58,5jt)</option>
+                <option value="63000000">K/1 - Menikah 1 anak (Rp 63jt)</option>
+                <option value="67500000">K/2 - Menikah 2 anak (Rp 67,5jt)</option>
+                <option value="72000000">K/3 - Menikah 3 anak (Rp 72jt)</option>
+              </select>
+            </div>
+
+            <div class="field"><label>BPJS Karyawan per Bulan <span class="hint">(JHT 2% + Kesehatan 1% + JP 1%)</span></label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span>
+                <input type="text" id="bpjs" class="has-prefix" placeholder="400.000" value="400.000" inputmode="numeric" /></div>
+              <p class="field-hint">Otomatis dihitung 4% gaji (maks BPJS Rp 480rb/bln)</p>
+            </div>
+
+            <div class="calc-action-bar">
+              <button type="button" class="btn-hitung" id="btnHitung"><i class="ti ti-calculator"></i> Hitung Sekarang</button>
+              <button type="button" class="btn-reset" id="btnReset"><i class="ti ti-refresh"></i> Reset</button>
+            </div>
+          </div>
+
+          <div class="calc-output">
+            <div class="result-placeholder" id="placeholder">
+              <i class="ti ti-receipt-tax result-placeholder-icon"></i>
+              <div class="result-placeholder-title">Hasil PPh 21 akan muncul di sini</div>
+              <div class="result-placeholder-desc">Isi data karyawan, lalu klik <strong>"Hitung Sekarang"</strong> untuk lihat PPh 21 sesuai UU HPP 2022.</div>
+            </div>
+
+            <div class="result-wrapper" id="results">
+              <div class="result-main">
+                <div class="result-label">PPh 21 Per Bulan</div>
+                <div class="result-value" id="pphBulan">Rp 0</div>
+                <div class="result-meta"><i class="ti ti-info-circle"></i> <span id="metaInfo">PPh setahun</span></div>
+              </div>
+
+              <div class="result-grid">
+                <div class="result-item"><div class="result-item-label">Bruto Setahun</div><div class="result-item-value" id="bruto">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">Neto Setahun</div><div class="result-item-value" id="neto">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">PKP (Kena Pajak)</div><div class="result-item-value" id="pkp">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">Take-Home Pay/Bulan</div><div class="result-item-value result-strong" id="thp">Rp 0</div></div>
+              </div>
+
+              <div class="adv-section">
+                <div class="adv-toggle"><span><i class="ti ti-stairs"></i>&nbsp; Detail Tarif Progresif per Lapisan</span><i class="ti ti-chevron-down chev"></i></div>
+                <div class="adv-content">
+                  <table class="compare-table">
+                    <thead><tr><th>Lapisan</th><th class="right">PKP di Lapisan</th><th class="right">Tarif</th><th class="right">PPh</th></tr></thead>
+                    <tbody id="lapisanBody"></tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div class="adv-section">
+                <div class="adv-toggle"><span><i class="ti ti-users"></i>&nbsp; Bandingkan Semua Status PTKP</span><i class="ti ti-chevron-down chev"></i></div>
+                <div class="adv-content">
+                  <table class="compare-table">
+                    <thead><tr><th>Status</th><th class="right">PTKP</th><th class="right">PPh/Tahun</th><th class="right">PPh/Bulan</th></tr></thead>
+                    <tbody id="ptkpCompareBody"></tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div class="export-row">
+                <button type="button" class="export-btn img" id="exportImg"><i class="ti ti-photo-down"></i><span>Save Image</span></button>
+                <button type="button" class="export-btn wa" id="exportWa"><i class="ti ti-brand-whatsapp"></i><span>Share WA</span></button>
+                <button type="button" class="export-btn pdf" id="exportPdf"><i class="ti ti-printer"></i><span>Print/PDF</span></button>
+                <button type="button" class="export-btn copy" id="exportCopy"><i class="ti ti-copy"></i><span>Copy Teks</span></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="content-section">
+    <div class="wrap-text">
+      <h2>Cara Hitung PPh 21 Sesuai UU HPP 2022</h2>
+      <p>UU HPP 2022 mengubah tarif PPh 21 jadi <strong>5 lapisan progresif</strong>. Karyawan dengan gaji Rp 10jt + tunjangan Rp 2jt + THR Rp 10jt status K/0 bayar PPh 21 sekitar <strong>Rp 5,4jt/tahun</strong> atau Rp 450rb/bulan.</p>
+
+      <h3>Tarif Progresif PPh 21 — UU HPP 2022</h3>
+      <ul class="info-list">
+        <li><strong>Lapisan 1</strong>: PKP 0 - 60jt → 5%</li>
+        <li><strong>Lapisan 2</strong>: PKP 60-250jt → 15%</li>
+        <li><strong>Lapisan 3</strong>: PKP 250-500jt → 25%</li>
+        <li><strong>Lapisan 4</strong>: PKP 500jt - 5M → 30%</li>
+        <li><strong>Lapisan 5</strong>: PKP &gt; 5M → 35%</li>
+      </ul>
+
+      <div class="cta-box"><h3>Coba Kalkulator PPh 21 Sekarang</h3><p>Isi data gaji & status PTKP, lalu klik "Hitung Sekarang".</p></div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+  <FAQ title="Pertanyaan Seputar PPh 21" items={faqs} />
+
+  <section class="section"><div class="wrap">
+    <div class="section-hdr"><div class="section-eyebrow">Kalkulator Lainnya</div><h2 class="section-title">Hitung Juga yang Lain</h2></div>
+    <div class="related-grid">{related.map(c => <CalculatorCard calc={c} />)}</div>
+  </div></section>
+</Layout>
+
+<script is:inline>
+  (function() {
+    function ready(fn) { if (window.HC && window.html2canvas) fn(); else setTimeout(() => ready(fn), 100); }
+    ready(() => {
+      const $ = id => document.getElementById(id);
+      const els = { gaji: $('gaji'), tunj: $('tunjangan'), bonus: $('bonus'), ptkp: $('ptkp'), bpjs: $('bpjs') };
+
+      [els.gaji, els.tunj, els.bonus, els.bpjs].forEach(el => el.addEventListener('input', HC.fmtInput));
+
+      document.querySelectorAll('.adv-toggle').forEach(t => t.addEventListener('click', () => t.parentElement.classList.toggle('open')));
+
+      const BRACKETS = [
+        { max: 60000000, rate: 0.05, label: 'Lapisan 1 (0-60jt)' },
+        { max: 250000000, rate: 0.15, label: 'Lapisan 2 (60-250jt)' },
+        { max: 500000000, rate: 0.25, label: 'Lapisan 3 (250-500jt)' },
+        { max: 5000000000, rate: 0.30, label: 'Lapisan 4 (500jt-5M)' },
+        { max: Infinity, rate: 0.35, label: 'Lapisan 5 (>5M)' },
+      ];
+
+      function calcPPh(pkp) {
+        if (pkp <= 0) return { total: 0, breakdown: [] };
+        let remaining = pkp, total = 0, prev = 0;
+        const breakdown = [];
+        for (const b of BRACKETS) {
+          if (remaining <= 0) break;
+          const slice = Math.min(remaining, b.max - prev);
+          const tax = slice * b.rate;
+          if (slice > 0) breakdown.push({ label: b.label, slice, rate: b.rate * 100, tax });
+          total += tax;
+          remaining -= slice;
+          prev = b.max;
+        }
+        return { total, breakdown };
+      }
+
+      let lastCalc = null;
+
+      function hitung() {
+        const gaji = HC.parseRp(els.gaji.value);
+        const tunj = HC.parseRp(els.tunj.value);
+        const bonus = HC.parseRp(els.bonus.value);
+        const ptkp = parseInt(els.ptkp.value);
+        const bpjsBulan = HC.parseRp(els.bpjs.value);
+
+        if (gaji === 0) { HC.toast('Masukkan gaji pokok dulu', 'error'); return; }
+
+        const bruto = (gaji + tunj) * 12 + bonus;
+        const biayaJabatan = Math.min(bruto * 0.05, 6000000);
+        const bpjsTahun = bpjsBulan * 12;
+        const neto = bruto - biayaJabatan - bpjsTahun;
+        const pkp = Math.max(0, neto - ptkp);
+        const { total: pphTahun, breakdown } = calcPPh(pkp);
+        const pphBulan = pphTahun / 12;
+        const thp = (gaji + tunj) - bpjsBulan - pphBulan;
+
+        $('pphBulan').textContent = HC.fmt(pphBulan);
+        $('metaInfo').textContent = `PPh setahun: ${HC.fmt(pphTahun)}`;
+        $('bruto').textContent = HC.fmt(bruto);
+        $('neto').textContent = HC.fmt(neto);
+        $('pkp').textContent = HC.fmt(pkp);
+        $('thp').textContent = HC.fmt(thp);
+
+        $('lapisanBody').innerHTML = breakdown.length ? breakdown.map(b =>
+          `<tr><td>${b.label}</td><td class="right">${HC.fmt(b.slice)}</td><td class="right">${b.rate}%</td><td class="right" style="color:var(--red);font-weight:700">${HC.fmt(b.tax)}</td></tr>`
+        ).join('') : '<tr><td colspan="4" style="text-align:center;color:var(--text-mute);padding:14px">PKP nol — tidak kena pajak</td></tr>';
+
+        const ptkpOptions = [
+          { val: 54000000, label: 'TK/0 - Lajang' },
+          { val: 58500000, label: 'K/0 - Menikah' },
+          { val: 63000000, label: 'K/1 - 1 anak' },
+          { val: 67500000, label: 'K/2 - 2 anak' },
+          { val: 72000000, label: 'K/3 - 3 anak' },
+        ];
+        $('ptkpCompareBody').innerHTML = ptkpOptions.map(opt => {
+          const pkpAlt = Math.max(0, neto - opt.val);
+          const pphAlt = calcPPh(pkpAlt).total;
+          return `<tr class="${opt.val === ptkp ? 'active' : ''}"><td>${opt.label}</td><td class="right">${HC.fmt(opt.val)}</td><td class="right">${HC.fmt(pphAlt)}</td><td class="right">${HC.fmt(pphAlt / 12)}</td></tr>`;
+        }).join('');
+
+        lastCalc = { gaji, tunj, bonus, ptkp, ptkpLabel: els.ptkp.options[els.ptkp.selectedIndex].text, bpjsBulan, bruto, neto, pkp, pphBulan, pphTahun, thp };
+        $('placeholder').style.display = 'none';
+        $('results').classList.add('show');
+        $('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        HC.toast('PPh 21 berhasil dihitung!');
+      }
+
+      function reset() {
+        els.gaji.value = '10.000.000'; els.tunj.value = '2.000.000'; els.bonus.value = '10.000.000';
+        els.ptkp.value = '54000000'; els.bpjs.value = '400.000';
+        $('placeholder').style.display = ''; $('results').classList.remove('show');
+        lastCalc = null; HC.toast('Form direset', 'info');
+      }
+
+      function buildReport() {
+        if (!lastCalc) return null;
+        const c = lastCalc;
+        const insight = c.pphBulan > 1000000
+          ? `PPh ${HC.fmt(c.pphBulan)}/bulan cukup besar. Pertimbangkan bayar zakat via lembaga resmi untuk kurangi PKP sesuai PMK 254/2010.`
+          : `PPh ${HC.fmt(c.pphBulan)}/bulan masih wajar. THP per bulan ${HC.fmt(c.thp)}, alokasikan 50/30/20 (kebutuhan/keinginan/tabungan).`;
+
+        return HC.buildReportCard({
+          title: '🧾 Simulasi PPh 21 — UU HPP 2022',
+          color: '#DC2626', color2: '#991B1B',
+          heroLabel: 'PPh 21 Per Bulan',
+          heroValue: HC.fmt(c.pphBulan),
+          heroSubtext: `PPh setahun: ${HC.fmt(c.pphTahun)} · ${c.ptkpLabel}`,
+          inputs: [
+            { label: '💼 Gaji Pokok/Bulan', value: HC.fmt(c.gaji) },
+            { label: '➕ Tunjangan/Bulan', value: HC.fmt(c.tunj) },
+            { label: '🎁 Bonus/THR Setahun', value: HC.fmt(c.bonus) },
+            { label: '👨‍👩‍👧 Status PTKP', value: c.ptkpLabel },
+          ],
+          results: [
+            { label: 'PPh 21/Bulan', value: HC.fmt(c.pphBulan), highlight: true },
+            { label: 'PPh 21/Tahun', value: HC.fmt(c.pphTahun) },
+            { label: 'Bruto Setahun', value: HC.fmt(c.bruto) },
+            { label: 'PKP (Kena Pajak)', value: HC.fmt(c.pkp) },
+            { label: 'Take-Home Pay/Bulan', value: HC.fmt(c.thp), highlight: true },
+            { label: 'Efektif Pajak', value: HC.fmtPct(c.bruto > 0 ? (c.pphTahun / c.bruto) * 100 : 0) },
+          ],
+          insight, slug: 'pph-21',
+        });
+      }
+
+      function summaryText() {
+        if (!lastCalc) return '';
+        const c = lastCalc;
+        return `🧾 *Simulasi PPh 21 - HitungCerdas*\n\n` +
+               `Gaji: ${HC.fmt(c.gaji)}/bln\nTunjangan: ${HC.fmt(c.tunj)}/bln\nBonus/THR: ${HC.fmt(c.bonus)}/thn\nStatus: ${c.ptkpLabel}\n\n` +
+               `💰 *PPh 21: ${HC.fmt(c.pphBulan)}/bulan*\n📊 PPh setahun: ${HC.fmt(c.pphTahun)}\n💵 Take-Home Pay: ${HC.fmt(c.thp)}/bln\n\n` +
+               `Hitung di: https://hitungcerdas.net/kalkulator/pph-21`;
+      }
+
+      $('btnHitung').addEventListener('click', hitung);
+      $('btnReset').addEventListener('click', reset);
+      $('exportImg').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToImage(c, 'pph21-' + Date.now()); });
+      $('exportWa').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.shareWhatsApp(c, summaryText(), 'pph-21'); });
+      $('exportPdf').addEventListener('click', () => { if (!lastCalc) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToPDF(); });
+      $('exportCopy').addEventListener('click', () => { if (!lastCalc) { HC.toast('Hitung dulu', 'error'); return; } HC.copyText(summaryText(), 'Tersalin!'); });
+    });
+  })();
+</script>

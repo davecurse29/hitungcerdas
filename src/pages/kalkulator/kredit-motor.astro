@@ -1,0 +1,302 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import FAQ from '../../components/FAQ.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import CalculatorCard from '../../components/CalculatorCard.astro';
+import { getCalculatorBySlug, getRelatedCalculators } from '../../data/calculators';
+
+const calc = getCalculatorBySlug('kredit-motor')!;
+const related = getRelatedCalculators('kredit-motor', 3);
+
+const faqs = [
+  { question: 'Berapa DP minimum kredit motor di Indonesia?', answer: 'DP minimum kredit motor sesuai OJK: <strong>10-15% dari OTR</strong>. Promo dealer sering 0% DP dengan syarat tertentu (cicilan jadi lebih besar atau bunga lebih tinggi). Idealnya DP <strong>30%+</strong> untuk cicilan ringan.' },
+  { question: 'Bunga kredit motor di Indonesia berapa?', answer: '<strong>Bunga flat</strong> 8-15% per tahun (Adira, FIF, BAF, MCF). Bunga flat = bunga dihitung dari pokok awal, total konsisten setiap bulan. Berbeda dengan KPR yang anuitas. Flat 8% ≈ Anuitas 14-15% (efektif).' },
+  { question: 'Mengapa inflasi mempengaruhi bunga kredit motor?', answer: 'Saat inflasi tinggi, <strong>BI Rate naik</strong>, biaya dana leasing/multifinance juga naik. Otomatis bunga kredit motor naik. Mode Inflasi kami simulasikan dampak skenario inflasi terhadap bunga & cicilan untuk perencanaan jangka panjang.' },
+  { question: 'Apa biaya tambahan beli motor kredit?', answer: 'Selain cicilan: <strong>(1) BBN/Pajak</strong> ~Rp 200-500rb, <strong>(2) Asuransi TLO</strong> Rp 200-400rb/thn, <strong>(3) Servis berkala</strong> Rp 200rb/bulan, <strong>(4) Bensin</strong> Rp 200-500rb/bulan, <strong>(5) Kelengkapan</strong> (helm, jaket, dll).' },
+];
+
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '/#tools' }, { label: calc.shortTitle }];
+---
+
+<Layout title={calc.title} description={calc.metaDescription} keywords={calc.keywords} canonical={`https://hitungcerdas.net/kalkulator/${calc.slug}`}>
+  <section class="calc-hero" style="--cat-color:#7C3AED;--cat-color2:#5B21B6">
+    <div class="wrap">
+      <Breadcrumb items={bcItems} />
+      <div class="calc-hero-grid">
+        <div class="calc-hero-text">
+          <div class="calc-hero-tag" style="background:#EDE9FE;color:#5B21B6"><i class="ti ti-motorbike"></i> {calc.categoryLabel}</div>
+          <h1 class="calc-hero-title">{calc.h1}</h1>
+          <p class="calc-hero-sub">{calc.introText}</p>
+          <ul class="calc-hero-benefits">{calc.benefits.map(b => <li><i class="ti ti-check"></i> {b}</li>)}</ul>
+        </div>
+        <div class="calc-hero-illust">
+          <svg viewBox="0 0 200 200" fill="none">
+            <circle cx="100" cy="100" r="85" fill="rgba(255,255,255,.08)"/>
+            <circle cx="60" cy="130" r="22" fill="none" stroke="#FBBF24" stroke-width="4"/>
+            <circle cx="140" cy="130" r="22" fill="none" stroke="#FBBF24" stroke-width="4"/>
+            <path d="M60 130L90 90L130 90L140 130" stroke="#FFF" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <rect x="85" y="75" width="35" height="20" fill="#FFF" rx="3"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+
+  <section class="calc-section">
+    <div class="wrap">
+      <div class="calc-card">
+        <div class="calc-card-hdr">
+          <div class="calc-card-hdr-ic" style="background:linear-gradient(135deg,#7C3AED 0%,#5B21B6 100%)"><i class="ti ti-motorbike"></i></div>
+          <div><h2 class="calc-card-title">Kalkulator Kredit Motor</h2><p class="calc-card-sub">Bunga flat dealer/leasing dengan mode inflasi</p></div>
+        </div>
+
+        <div class="calc-grid">
+          <div class="calc-input">
+            <div class="field"><label>Harga OTR Motor</label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span>
+                <input type="text" id="harga" class="has-prefix" value="25.000.000" inputmode="numeric" /></div></div>
+
+            <div class="field"><label>DP (Down Payment)</label>
+              <div class="input-wrap"><input type="number" id="dp" class="has-suffix" value="20" step="1" min="0" max="100" /><span class="input-suffix">%</span></div>
+              <div class="quick-btns">
+                <button type="button" data-dp="10">10%</button><button type="button" data-dp="15">15%</button>
+                <button type="button" data-dp="20">20%</button><button type="button" data-dp="30">30%</button>
+                <button type="button" data-dp="50">50%</button>
+              </div></div>
+
+            <div class="field"><label>Bunga Flat per Tahun</label>
+              <div class="input-wrap"><input type="number" id="bunga" class="has-suffix" value="11" step="0.5" min="0" /><span class="input-suffix">%</span></div>
+              <p class="field-hint">Bunga flat dealer/leasing: 8-15% per tahun</p></div>
+
+            <div class="field"><label>Tenor (Lama Cicilan)</label>
+              <select id="tenor">
+                <option value="12">12 bulan (1 tahun)</option>
+                <option value="24">24 bulan (2 tahun)</option>
+                <option value="36" selected>36 bulan (3 tahun)</option>
+                <option value="48">48 bulan (4 tahun)</option>
+                <option value="60">60 bulan (5 tahun)</option>
+              </select></div>
+
+            <div class="inflation-box" id="inflationBox">
+              <label class="inflation-toggle">
+                <input type="checkbox" id="inflasiToggle" />
+                <span>🔥 Aktifkan Mode Skenario Inflasi</span>
+              </label>
+              <div class="inflation-options">
+                <label>Skenario Inflasi:</label>
+                <select id="inflasiSkenario">
+                  <option value="rendah">📉 Rendah (2.5%)</option>
+                  <option value="normal" selected>📊 Normal (3.5%)</option>
+                  <option value="tinggi">📈 Tinggi (5.0%)</option>
+                  <option value="krisis">⚠️ Krisis (7.5%)</option>
+                </select>
+                <p class="inflation-note">Inflasi tinggi → BI Rate naik → bunga kredit motor naik. Mode ini auto-adjust suku bunga.</p>
+              </div>
+            </div>
+
+            <div class="calc-action-bar">
+              <button type="button" class="btn-hitung" id="btnHitung"><i class="ti ti-calculator"></i> Hitung Sekarang</button>
+              <button type="button" class="btn-reset" id="btnReset"><i class="ti ti-refresh"></i> Reset</button>
+            </div>
+          </div>
+
+          <div class="calc-output">
+            <div class="result-placeholder" id="placeholder">
+              <i class="ti ti-motorbike result-placeholder-icon"></i>
+              <div class="result-placeholder-title">Cicilan motor akan muncul di sini</div>
+              <div class="result-placeholder-desc">Isi data motor, klik <strong>"Hitung Sekarang"</strong>.</div>
+            </div>
+
+            <div class="result-wrapper" id="results">
+              <div class="result-main">
+                <div class="result-label">Cicilan Per Bulan</div>
+                <div class="result-value" id="cicilan">Rp 0</div>
+                <div class="result-meta"><i class="ti ti-info-circle"></i> <span id="metaInfo">0 bulan</span></div>
+              </div>
+
+              <div class="result-grid">
+                <div class="result-item"><div class="result-item-label">DP</div><div class="result-item-value" id="dpAmt">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">Pokok Pinjaman</div><div class="result-item-value" id="pokok">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">Total Bunga</div><div class="result-item-value result-warn" id="totalBunga">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">Total Bayar</div><div class="result-item-value result-strong" id="totalBayar">Rp 0</div></div>
+              </div>
+
+              <div class="adv-section">
+                <div class="adv-toggle"><span><i class="ti ti-chart-bar"></i>&nbsp; Bandingkan Semua Tenor</span><i class="ti ti-chevron-down chev"></i></div>
+                <div class="adv-content">
+                  <table class="compare-table">
+                    <thead><tr><th>Tenor</th><th class="right">Cicilan/Bulan</th><th class="right">Total Bunga</th><th class="right">Total Bayar</th></tr></thead>
+                    <tbody id="tenorBody"></tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div class="adv-section" id="advInflasi" style="display:none">
+                <div class="adv-toggle"><span><i class="ti ti-trending-up"></i>&nbsp; Dampak Inflasi terhadap Bunga</span><i class="ti ti-chevron-down chev"></i></div>
+                <div class="adv-content">
+                  <table class="compare-table">
+                    <thead><tr><th>Skenario</th><th class="right">Bunga</th><th class="right">Cicilan/Bulan</th><th class="right">Total Bayar</th></tr></thead>
+                    <tbody id="inflasiBody"></tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div class="export-row">
+                <button type="button" class="export-btn img" id="exportImg"><i class="ti ti-photo-down"></i><span>Save Image</span></button>
+                <button type="button" class="export-btn wa" id="exportWa"><i class="ti ti-brand-whatsapp"></i><span>Share WA</span></button>
+                <button type="button" class="export-btn pdf" id="exportPdf"><i class="ti ti-printer"></i><span>Print/PDF</span></button>
+                <button type="button" class="export-btn copy" id="exportCopy"><i class="ti ti-copy"></i><span>Copy Teks</span></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="content-section">
+    <div class="wrap-text">
+      <h2>Cara Menghitung Kredit Motor (Bunga Flat)</h2>
+      <p>Beda dengan KPR yang pakai anuitas, kredit motor di Indonesia umumnya pakai <strong>bunga flat</strong>: bunga dihitung dari pokok awal sepanjang tenor. Rumusnya: <strong>Cicilan = (Pokok + (Pokok × Bunga × Tenor tahun)) / Total Bulan</strong>.</p>
+      <div class="cta-box"><h3>Coba Kalkulator Kredit Motor</h3><p>Isi data motor, aktifkan mode inflasi untuk simulasi worst-case, klik "Hitung Sekarang".</p></div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+  <FAQ title="Pertanyaan Seputar Kredit Motor" items={faqs} />
+
+  <section class="section"><div class="wrap">
+    <div class="section-hdr"><div class="section-eyebrow">Kalkulator Lainnya</div><h2 class="section-title">Hitung Juga yang Lain</h2></div>
+    <div class="related-grid">{related.map(c => <CalculatorCard calc={c} />)}</div>
+  </div></section>
+</Layout>
+
+<script is:inline>
+  (function() {
+    function ready(fn) { if (window.HC && window.html2canvas) fn(); else setTimeout(() => ready(fn), 100); }
+    ready(() => {
+      const $ = id => document.getElementById(id);
+      const els = { harga: $('harga'), dp: $('dp'), bunga: $('bunga'), tenor: $('tenor'),
+                    inflasiToggle: $('inflasiToggle'), inflasiSkenario: $('inflasiSkenario'),
+                    inflasiBox: $('inflationBox'), advInflasi: $('advInflasi') };
+      [els.harga].forEach(el => el.addEventListener('input', HC.fmtInput));
+      document.querySelectorAll('.quick-btns button').forEach(btn => btn.addEventListener('click', () => { els.dp.value = btn.dataset.dp; }));
+      els.inflasiToggle.addEventListener('change', () => els.inflasiBox.classList.toggle('active', els.inflasiToggle.checked));
+      document.querySelectorAll('.adv-toggle').forEach(t => t.addEventListener('click', () => t.parentElement.classList.toggle('open')));
+
+      // Flat interest formula
+      function flat(pokok, bungaTahun, totalBulan) {
+        const totalBunga = pokok * (bungaTahun / 100) * (totalBulan / 12);
+        return { cicilan: (pokok + totalBunga) / totalBulan, totalBunga };
+      }
+
+      let lastCalc = null;
+
+      function hitung() {
+        const harga = HC.parseRp(els.harga.value);
+        const dpPct = parseFloat(els.dp.value) || 0;
+        let bunga = parseFloat(els.bunga.value) || 0;
+        const tenor = parseInt(els.tenor.value);
+        if (harga === 0) { HC.toast('Masukkan harga motor dulu', 'error'); return; }
+
+        const useInflasi = els.inflasiToggle.checked;
+        let bungaOriginal = bunga, skenario = null;
+        if (useInflasi) {
+          skenario = els.inflasiSkenario.value;
+          bunga = HC.adjustInterestRate(bunga, skenario);
+        }
+
+        const dpAmt = harga * (dpPct / 100);
+        const pokok = harga - dpAmt;
+        const { cicilan, totalBunga } = flat(pokok, bunga, tenor);
+        const totalBayar = dpAmt + cicilan * tenor;
+
+        $('cicilan').textContent = HC.fmt(cicilan);
+        $('metaInfo').textContent = `${tenor} bulan · Bunga flat ${bunga.toFixed(2)}%${useInflasi ? ' (inflasi-adjusted)' : ''}`;
+        $('dpAmt').textContent = `${HC.fmt(dpAmt)} (${dpPct}%)`;
+        $('pokok').textContent = HC.fmt(pokok);
+        $('totalBunga').textContent = HC.fmt(totalBunga);
+        $('totalBayar').textContent = HC.fmt(totalBayar);
+
+        const tenorOpts = [12, 24, 36, 48, 60];
+        $('tenorBody').innerHTML = tenorOpts.map(t => {
+          const { cicilan: c, totalBunga: tb } = flat(pokok, bunga, t);
+          return `<tr class="${t === tenor ? 'active' : ''}"><td>${t} bln</td><td class="right">${HC.fmt(c)}</td><td class="right">${HC.fmt(tb)}</td><td class="right">${HC.fmt(c * t + dpAmt)}</td></tr>`;
+        }).join('');
+
+        if (useInflasi) {
+          els.advInflasi.style.display = '';
+          const scenarios = ['rendah', 'normal', 'tinggi', 'krisis'];
+          const labels = { rendah: 'Rendah (2.5%)', normal: 'Normal (3.5%)', tinggi: 'Tinggi (5.0%)', krisis: 'Krisis (7.5%)' };
+          $('inflasiBody').innerHTML = scenarios.map(s => {
+            const b = HC.adjustInterestRate(bungaOriginal, s);
+            const { cicilan: c } = flat(pokok, b, tenor);
+            return `<tr class="${s === skenario ? 'active' : ''}"><td>${labels[s]}</td><td class="right">${b.toFixed(2)}%</td><td class="right">${HC.fmt(c)}</td><td class="right">${HC.fmt(c * tenor + dpAmt)}</td></tr>`;
+          }).join('');
+        } else {
+          els.advInflasi.style.display = 'none';
+        }
+
+        lastCalc = { harga, dpPct, dpAmt, pokok, bunga, bungaOriginal, tenor, cicilan, totalBunga, totalBayar, useInflasi, skenario };
+        $('placeholder').style.display = 'none';
+        $('results').classList.add('show');
+        $('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        HC.toast('Cicilan motor berhasil dihitung!');
+      }
+
+      function reset() {
+        els.harga.value = '25.000.000'; els.dp.value = '20'; els.bunga.value = '11';
+        els.tenor.value = '36'; els.inflasiToggle.checked = false; els.inflasiBox.classList.remove('active');
+        $('placeholder').style.display = ''; $('results').classList.remove('show');
+        lastCalc = null; HC.toast('Form direset', 'info');
+      }
+
+      function buildReport() {
+        if (!lastCalc) return null;
+        const c = lastCalc;
+        const insight = `Total bunga ${HC.fmt(c.totalBunga)} = ${((c.totalBunga / c.pokok) * 100).toFixed(0)}% dari pokok. ${c.tenor <= 24 ? 'Tenor pendek, bunga ringan.' : 'Tenor panjang, bunga total bertambah. Pertimbangkan tambah DP.'}`;
+
+        const inputs = [
+          { label: '🏍️ Harga OTR', value: HC.fmt(c.harga) },
+          { label: '💰 DP', value: `${c.dpPct}% (${HC.fmt(c.dpAmt)})` },
+          { label: '📊 Bunga Flat', value: `${c.bunga.toFixed(2)}%${c.useInflasi ? ' (inflasi-adjusted)' : ''}` },
+          { label: '📅 Tenor', value: `${c.tenor} bulan` },
+        ];
+        if (c.useInflasi) inputs.push({ label: '🔥 Skenario Inflasi', value: c.skenario.charAt(0).toUpperCase() + c.skenario.slice(1) });
+
+        return HC.buildReportCard({
+          title: '🏍️ Simulasi Kredit Motor',
+          color: '#7C3AED', color2: '#5B21B6',
+          heroLabel: 'Cicilan Per Bulan',
+          heroValue: HC.fmt(c.cicilan),
+          heroSubtext: `${c.tenor} bulan · Bunga flat ${c.bunga.toFixed(2)}%`,
+          inputs,
+          results: [
+            { label: 'Cicilan/Bulan', value: HC.fmt(c.cicilan), highlight: true },
+            { label: 'DP', value: HC.fmt(c.dpAmt) },
+            { label: 'Pokok Pinjaman', value: HC.fmt(c.pokok) },
+            { label: 'Total Bunga', value: HC.fmt(c.totalBunga) },
+            { label: 'Total Bayar', value: HC.fmt(c.totalBayar), highlight: true },
+          ],
+          insight, slug: 'kredit-motor',
+        });
+      }
+
+      function summaryText() {
+        if (!lastCalc) return '';
+        const c = lastCalc;
+        return `🏍️ *Simulasi Kredit Motor - HitungCerdas*\n\nHarga: ${HC.fmt(c.harga)}\nDP ${c.dpPct}%: ${HC.fmt(c.dpAmt)}\nBunga flat: ${c.bunga.toFixed(2)}%\nTenor: ${c.tenor} bulan\n\n💰 *Cicilan: ${HC.fmt(c.cicilan)}/bulan*\n📊 Total Bunga: ${HC.fmt(c.totalBunga)}\n💵 Total Bayar: ${HC.fmt(c.totalBayar)}\n\nHitung: https://hitungcerdas.net/kalkulator/kredit-motor`;
+      }
+
+      $('btnHitung').addEventListener('click', hitung);
+      $('btnReset').addEventListener('click', reset);
+      $('exportImg').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToImage(c, 'kredit-motor-' + Date.now()); });
+      $('exportWa').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.shareWhatsApp(c, summaryText(), 'kredit-motor'); });
+      $('exportPdf').addEventListener('click', () => { if (!lastCalc) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToPDF(); });
+      $('exportCopy').addEventListener('click', () => { if (!lastCalc) { HC.toast('Hitung dulu', 'error'); return; } HC.copyText(summaryText(), 'Tersalin!'); });
+    });
+  })();
+</script>

@@ -1,0 +1,156 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import AdSlot from '../../components/AdSlot.astro';
+
+const today = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'Panduan Warisan Faraidh' }];
+---
+
+<Layout
+  title="Panduan Lengkap Pembagian Warisan Faraidh Sesuai QS An-Nisa 11-12"
+  description="Panduan hukum waris Islam (faraidh) berdasarkan QS An-Nisa 11-12: urutan kewajiban, bagian ahli waris, wasiat maksimal 1/3, dan kapan konsultasi ulama."
+  keywords={['warisan faraidh', 'hukum waris islam', 'pembagian warisan', 'an-nisa 11', 'faraidh']}
+  canonical="https://hitungcerdas.net/blog/panduan-warisan-faraidh"
+  ogType="article"
+>
+  <section class="article-hero" style="--cat-color:#DC2626;--cat-color2:#991B1B">
+    <div class="wrap">
+      <Breadcrumb items={bcItems} />
+      <div class="article-tag">WARISAN ISLAM</div>
+      <h1>Panduan Lengkap Pembagian Warisan Faraidh Sesuai QS An-Nisa</h1>
+      <div class="article-meta">
+        <span><i class="ti ti-calendar"></i> {today}</span>
+        <span><i class="ti ti-clock"></i> 8 menit baca</span>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+
+  <article class="content-section">
+    <div class="wrap-text">
+      <p class="lead">
+        Faraidh adalah ilmu pembagian warisan dalam Islam yang sangat detail. Dasarnya
+        <strong>QS. An-Nisa ayat 11-12</strong>. Setiap ahli waris (suami, istri, anak, orang tua,
+        saudara) memiliki bagian yang sudah ditentukan Allah SWT. Kesalahan pembagian dapat
+        menimbulkan dosa keluarga.
+      </p>
+
+      <h2>1. Dasar Hukum</h2>
+      <p>
+        Pembagian warisan dalam Islam diatur jelas dalam:
+      </p>
+      <ul class="info-list">
+        <li><strong>QS. An-Nisa: 11</strong> — Bagian anak, orang tua</li>
+        <li><strong>QS. An-Nisa: 12</strong> — Bagian suami, istri, saudara</li>
+        <li><strong>QS. An-Nisa: 176</strong> — Kasus kalalah (tidak ada anak/orang tua)</li>
+        <li><strong>Hadits Bukhari-Muslim</strong> — Penegasan pembagian</li>
+      </ul>
+
+      <h2>2. Urutan Sebelum Pembagian</h2>
+      <p>Harta peninggalan tidak langsung dibagi. Urutan kewajiban dulu:</p>
+      <ol class="tips-list">
+        <li><strong>Biaya Pengurusan Jenazah</strong> — Kafan, pemakaman, tahlilan (sesuai adat).</li>
+        <li><strong>Pelunasan Hutang Almarhum</strong> — KPR, hutang teman, hutang lainnya.</li>
+        <li><strong>Wasiat (Maks 1/3 Sisa)</strong> — Tidak boleh untuk ahli waris. Untuk amal, sedekah, pihak ketiga.</li>
+        <li><strong>Sisa Dibagi ke Ahli Waris</strong> — Sesuai faraidh.</li>
+      </ol>
+      <p>
+        Jika hutang lebih besar dari harta, <strong>semua harta untuk pelunasan hutang</strong>.
+        Ahli waris tidak warisi hutang almarhum (kecuali bersedia tanggung).
+      </p>
+
+      <h2>3. Bagian Anak Laki-Laki vs Perempuan</h2>
+      <p>
+        Kaidah dasar (QS. An-Nisa 11): <strong>anak laki-laki dapat 2× bagian anak perempuan</strong>.
+      </p>
+      <p>
+        Contoh: Harta Rp 30 juta, 1 anak laki + 1 anak perempuan:
+      </p>
+      <ul class="info-list">
+        <li>Anak laki: 2/3 × Rp 30jt = <strong>Rp 20 juta</strong></li>
+        <li>Anak perempuan: 1/3 × Rp 30jt = <strong>Rp 10 juta</strong></li>
+      </ul>
+      <p>
+        <strong>Alasan</strong>: Dalam Islam, laki-laki punya kewajiban nafkah istri dan keluarga.
+        Perempuan tidak wajib menafkahi, sehingga bagiannya disesuaikan dengan kewajiban.
+      </p>
+
+      <h2>4. Bagian Suami atau Istri</h2>
+      <p><strong>Jika Suami Wafat:</strong></p>
+      <ul class="info-list">
+        <li>Istri tanpa anak: <strong>1/4</strong> dari harta suami</li>
+        <li>Istri dengan anak: <strong>1/8</strong> dari harta suami</li>
+        <li>Jika beberapa istri: bagian 1/4 atau 1/8 dibagi rata</li>
+      </ul>
+      <p><strong>Jika Istri Wafat:</strong></p>
+      <ul class="info-list">
+        <li>Suami tanpa anak: <strong>1/2</strong> dari harta istri</li>
+        <li>Suami dengan anak: <strong>1/4</strong> dari harta istri</li>
+      </ul>
+
+      <h2>5. Bagian Orang Tua Almarhum</h2>
+      <p><strong>Jika almarhum punya anak:</strong></p>
+      <ul class="info-list">
+        <li>Ibu: <strong>1/6</strong></li>
+        <li>Ayah: <strong>1/6</strong> + sisa (jika ada)</li>
+      </ul>
+      <p><strong>Jika almarhum tidak punya anak (tapi punya saudara):</strong></p>
+      <ul class="info-list">
+        <li>Ibu: <strong>1/6</strong></li>
+        <li>Ayah: sisa setelah ibu & istri/suami</li>
+      </ul>
+      <p><strong>Jika almarhum tidak punya anak & saudara:</strong></p>
+      <ul class="info-list">
+        <li>Ibu: <strong>1/3</strong></li>
+        <li>Ayah: sisa</li>
+      </ul>
+
+      <h2>6. Kapan WAJIB Konsultasi Ulama / Pengadilan Agama?</h2>
+      <p>
+        Kalkulator dan panduan online hanya untuk <strong>estimasi awal</strong>. Untuk pembagian
+        resmi, hubungi <strong>Pengadilan Agama setempat</strong>. Konsultasi WAJIB jika:
+      </p>
+      <ul class="info-list">
+        <li>Ada perselisihan antar ahli waris</li>
+        <li>Almarhum tidak punya anak (kasus kalalah)</li>
+        <li>Ada saudara/saudari/kakek-nenek yang masih hidup</li>
+        <li>Almarhum punya istri lebih dari 1</li>
+        <li>Ada wasiat yang lebih dari 1/3</li>
+        <li>Harta meliputi properti/usaha kompleks</li>
+        <li>Ada anak angkat atau anak hasil zina (status berbeda)</li>
+      </ul>
+
+      <h2>7. Hindari Praktik Salah dalam Pembagian Warisan</h2>
+      <ol class="tips-list">
+        <li><strong>Jangan Lewati Faraidh</strong> — Adat lokal yang berlawanan dengan faraidh tidak sah.</li>
+        <li><strong>Jangan Tunda Pembagian</strong> — Lama menunda bikin masalah saat ahli waris berikutnya wafat.</li>
+        <li><strong>Bukan "Dibagi Rata"</strong> — Salah kaprah. Faraidh punya rumus spesifik per ahli waris.</li>
+        <li><strong>Wasiat ≤ 1/3</strong> — Maksimal 1/3 dari sisa setelah hutang & makam.</li>
+        <li><strong>Wasiat untuk Ahli Waris Tidak Sah</strong> — Kecuali disepakati semua ahli waris.</li>
+      </ol>
+
+      <div class="cta-box">
+        <h3>Coba Kalkulator Faraidh Kami</h3>
+        <p>Gunakan kalkulator warisan HitungCerdas untuk estimasi pembagian. Untuk pembagian resmi, hubungi Pengadilan Agama.</p>
+        <p style="margin-top:14px"><a href="/kalkulator/warisan-faraidh" class="btn btn-pri"><i class="ti ti-calculator"></i> Kalkulator Warisan Faraidh</a></p>
+      </div>
+    </div>
+  </article>
+
+  <AdSlot format="horizontal" />
+</Layout>
+
+<style>
+  .article-hero { background: linear-gradient(135deg, var(--cat-color) 0%, var(--cat-color2) 100%); color: #fff; padding: 20px 0 48px; }
+  .article-hero :global(.breadcrumb-item), .article-hero :global(.breadcrumb-item a) { color: rgba(255, 255, 255, .7); }
+  .article-hero :global(.breadcrumb-item a:hover) { color: var(--gold-soft); }
+  .article-hero :global(.breadcrumb-item span) { color: #fff; }
+  .article-hero :global(.breadcrumb-item i) { color: rgba(255, 255, 255, .4); }
+  .article-tag { display: inline-block; font-size: 11px; font-weight: 700; color: var(--gold-soft); letter-spacing: .1em; text-transform: uppercase; margin: 16px 0 12px; }
+  .article-hero h1 { color: #fff; font-size: clamp(26px, 3.8vw, 42px); margin: 0 0 20px; max-width: 800px; line-height: 1.2; }
+  .article-meta { display: flex; gap: 20px; color: rgba(255, 255, 255, .75); font-size: 13px; flex-wrap: wrap; }
+  .article-meta span { display: inline-flex; align-items: center; gap: 6px; }
+  .lead { font-size: 17px !important; line-height: 1.7 !important; color: var(--text) !important; padding: 20px 24px; background: var(--bg-soft); border-radius: 12px; border-left: 4px solid var(--red); margin-bottom: 24px !important; }
+</style>

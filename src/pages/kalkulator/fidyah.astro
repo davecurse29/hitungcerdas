@@ -1,0 +1,222 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import FAQ from '../../components/FAQ.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import CalculatorCard from '../../components/CalculatorCard.astro';
+import { getCalculatorBySlug, getRelatedCalculators } from '../../data/calculators';
+
+const calc = getCalculatorBySlug('fidyah')!;
+const related = getRelatedCalculators('fidyah', 3);
+
+const faqs = [
+  { question: 'Apa itu fidyah?', answer: 'Pengganti puasa Ramadhan untuk yang tidak mampu puasa atau qadha karena alasan syari. Wajib bagi: ibu hamil/menyusui (yang khawatir bayi), lansia, sakit kronis. Dasar: QS Al-Baqarah 184.' },
+  { question: 'Berapa fidyah/hari 2026?', answer: '<strong>1 mud</strong> (≈ 675 gr atau 0,75 kg) makanan pokok per hari. Atau uang setara. Standar BAZNAS 2026: <strong>Rp 50.000 - 60.000/hari</strong> di Jakarta.' },
+  { question: 'Hamil/menyusui wajib qadha?', answer: 'Tergantung niat: khawatir <strong>diri</strong> → WAJIB QADHA, tidak fidyah. Khawatir <strong>bayi</strong> → WAJIB QADHA + FIDYAH (jumhur ulama). Untuk aman, lakukan keduanya.' },
+  { question: 'Kapan bayar fidyah?', answer: 'Setiap hari atau diakhir Ramadhan (akumulasi). Maks sebelum Ramadhan tahun depan. TIDAK BOLEH dibayar sebelum mulai meninggalkan puasa.' },
+  { question: 'Boleh uang?', answer: 'Mazhab Hanafi: boleh, lebih bermanfaat untuk fakir miskin (bisa beli kebutuhan lain). BAZNAS Indonesia ikut Hanafi. Praktis: bayar via lembaga zakat resmi.' },
+];
+
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '/#tools' }, { label: calc.shortTitle }];
+---
+
+<Layout title={calc.title} description={calc.metaDescription} keywords={calc.keywords} canonical={`https://hitungcerdas.net/kalkulator/${calc.slug}`}>
+  <section class="calc-hero" style="--cat-color:#7C3AED;--cat-color2:#5B21B6">
+    <div class="wrap">
+      <Breadcrumb items={bcItems} />
+      <div class="calc-hero-grid">
+        <div class="calc-hero-text">
+          <div class="calc-hero-tag" style="background:#EDE9FE;color:#5B21B6"><i class="ti ti-bowl"></i> {calc.categoryLabel}</div>
+          <h1 class="calc-hero-title">{calc.h1}</h1>
+          <p class="calc-hero-sub">{calc.introText}</p>
+          <ul class="calc-hero-benefits">{calc.benefits.map(b => <li><i class="ti ti-check"></i> {b}</li>)}</ul>
+        </div>
+        <div class="calc-hero-illust">
+          <svg viewBox="0 0 200 200" fill="none">
+            <circle cx="100" cy="100" r="85" fill="rgba(255,255,255,.08)"/>
+            <ellipse cx="100" cy="140" rx="55" ry="15" fill="#FBBF24"/>
+            <path d="M45 130C45 110 70 95 100 95C130 95 155 110 155 130L155 140L45 140Z" fill="#FFF" stroke="#FBBF24" stroke-width="2.5"/>
+            <circle cx="80" cy="118" r="5" fill="#FBBF24"/>
+            <circle cx="100" cy="115" r="5" fill="#FBBF24"/>
+            <circle cx="120" cy="118" r="5" fill="#FBBF24"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+
+  <section class="calc-section">
+    <div class="wrap">
+      <div class="calc-card">
+        <div class="calc-card-hdr">
+          <div class="calc-card-hdr-ic" style="background:linear-gradient(135deg,#7C3AED 0%,#5B21B6 100%)"><i class="ti ti-bowl"></i></div>
+          <div><h2 class="calc-card-title">Kalkulator Fidyah</h2><p class="calc-card-sub">Pengganti puasa untuk hamil, menyusui, lansia, sakit</p></div>
+        </div>
+
+        <div class="calc-grid">
+          <div class="calc-input">
+            <div class="field"><label>Alasan Tidak Berpuasa</label>
+              <select id="alasan">
+                <option value="hamil">Ibu hamil (khawatir janin)</option>
+                <option value="menyusui">Ibu menyusui (khawatir bayi)</option>
+                <option value="lansia">Lansia tidak sanggup puasa</option>
+                <option value="sakit">Sakit kronis (sulit sembuh)</option>
+                <option value="lainnya">Alasan syari lain</option>
+              </select></div>
+            <div class="field"><label>Jumlah Hari Tidak Puasa</label>
+              <input type="number" id="hari" value="30" min="1" max="30" />
+              <p class="field-hint">Maks 30 hari per orang per Ramadhan</p></div>
+            <div class="field"><label>Jumlah Orang</label>
+              <input type="number" id="orang" value="1" min="1" max="10" /></div>
+            <div class="field"><label>Standar Fidyah per Hari per Orang</label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="standar" class="has-prefix" value="55.000" inputmode="numeric" /></div>
+              <p class="field-hint">BAZNAS 2026: Rp 50-60rb/hari</p></div>
+
+            <div class="calc-action-bar">
+              <button type="button" class="btn-hitung" id="btnHitung"><i class="ti ti-calculator"></i> Hitung Sekarang</button>
+              <button type="button" class="btn-reset" id="btnReset"><i class="ti ti-refresh"></i> Reset</button>
+            </div>
+          </div>
+
+          <div class="calc-output">
+            <div class="result-placeholder" id="placeholder">
+              <i class="ti ti-bowl result-placeholder-icon"></i>
+              <div class="result-placeholder-title">Hasil akan muncul di sini</div>
+              <div class="result-placeholder-desc">Isi alasan, hari, dan jumlah orang, lalu klik <strong>"Hitung Sekarang"</strong>.</div>
+            </div>
+
+            <div class="result-wrapper" id="results">
+              <div class="result-main">
+                <div class="result-label">Total Fidyah</div>
+                <div class="result-value" id="totalFidyah">Rp 0</div>
+                <div class="result-meta"><i class="ti ti-info-circle"></i> <span id="totalInfo">0 hari × 0 orang</span></div>
+              </div>
+
+              <div class="result-grid">
+                <div class="result-item"><div class="result-item-label">Per Hari/Orang</div><div class="result-item-value" id="perHari">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">Setara Beras</div><div class="result-item-value" id="setaraBeras">0 kg</div></div>
+              </div>
+
+              <div class="kelayakan-box">
+                <div class="kelayakan-hdr"><i class="ti ti-info-circle"></i> <span>Catatan Wajib Qadha</span></div>
+                <div id="qadhaNote" style="font-size:12.5px;line-height:1.7;color:var(--text-soft)"></div>
+              </div>
+
+              <div class="export-row">
+                <button class="export-btn img" id="exportImg"><i class="ti ti-photo-down"></i><span>Save Image</span></button>
+                <button class="export-btn wa" id="exportWa"><i class="ti ti-brand-whatsapp"></i><span>Share WA</span></button>
+                <button class="export-btn pdf" id="exportPdf"><i class="ti ti-printer"></i><span>Print/PDF</span></button>
+                <button class="export-btn copy" id="exportCopy"><i class="ti ti-copy"></i><span>Copy Teks</span></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="content-section">
+    <div class="wrap-text">
+      <h2>Panduan Lengkap Fidyah</h2>
+      <p>Fidyah = pengganti puasa Ramadhan bagi yang berhalangan dengan alasan syari yang tidak memungkinkan puasa atau qadha. Berbeda dengan kafarat (denda dosa), fidyah adalah keringanan agama.</p>
+      <p>Ibu hamil/menyusui yang khawatir bayinya wajib <strong>qadha + fidyah</strong> (jumhur ulama). Lansia & sakit kronis yang sulit sembuh cukup fidyah. Standar BAZNAS 2026: Rp 50-60rb/hari/orang.</p>
+      <div class="cta-box"><h3>Tunaikan Fidyah Anda</h3><p>Hitung total, salurkan via BAZNAS, Dompet Dhuafa, atau langsung ke fakir miskin.</p></div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+  <FAQ items={faqs} />
+
+  <section class="section"><div class="wrap">
+    <div class="section-hdr"><div class="section-eyebrow">Kalkulator Lainnya</div><h2 class="section-title">Hitung Juga yang Lain</h2></div>
+    <div class="related-grid">{related.map(c => <CalculatorCard calc={c} />)}</div>
+  </div></section>
+</Layout>
+
+<script is:inline>
+  (function() {
+    function ready(fn) { if (window.HC && window.html2canvas) fn(); else setTimeout(() => ready(fn), 100); }
+    ready(() => {
+      const $ = id => document.getElementById(id);
+      const els = { a: $('alasan'), h: $('hari'), o: $('orang'), s: $('standar') };
+      els.s.addEventListener('input', HC.fmtInput);
+
+      let lastCalc = null;
+
+      function hitung() {
+        const al = els.a.value, h = parseInt(els.h.value) || 0,
+              o = parseInt(els.o.value) || 1, s = HC.parseRp(els.s.value);
+        if (h === 0 || s === 0) { HC.toast('Lengkapi data', 'error'); return; }
+
+        const total = s * h * o;
+        const beras = (h * o * 0.75).toFixed(2);
+
+        $('totalFidyah').textContent = HC.fmt(total);
+        $('totalInfo').textContent = `${h} hari × ${o} orang × ${HC.fmt(s)}`;
+        $('perHari').textContent = HC.fmt(s);
+        $('setaraBeras').textContent = `${beras} kg`;
+
+        const $q = $('qadhaNote');
+        if (al === 'hamil' || al === 'menyusui') {
+          $q.innerHTML = `<strong style="color:var(--gold-dark)">⚠️ WAJIB QADHA + FIDYAH</strong><br>Sesuai jumhur ulama, ibu hamil/menyusui yang khawatir janin/bayi wajib <strong>fidyah + qadha</strong> (puasa pengganti setelah lahiran/menyapih). Qadha bisa dicicil di hari biasa di luar Ramadhan.`;
+        } else if (al === 'lansia' || al === 'sakit') {
+          $q.innerHTML = `<strong style="color:var(--green-dark)">✓ CUKUP FIDYAH</strong><br>Tidak ada kemampuan/harapan puasa di waktu lain. Fidyah menggantikan kewajiban puasa selamanya.`;
+        } else {
+          $q.innerHTML = `Konsultasi dengan ulama setempat untuk kepastian status qadha sesuai kondisi spesifik Anda.`;
+        }
+
+        lastCalc = { al, alasanLabel: els.a.options[els.a.selectedIndex].text, h, o, s, total, beras };
+        $('placeholder').style.display = 'none';
+        $('results').classList.add('show');
+        $('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        HC.toast('Berhasil dihitung!');
+      }
+
+      function reset() {
+        els.a.value = 'hamil'; els.h.value = '30'; els.o.value = '1'; els.s.value = '55.000';
+        $('placeholder').style.display = ''; $('results').classList.remove('show');
+        lastCalc = null; HC.toast('Form direset', 'info');
+      }
+
+      function buildReport() {
+        if (!lastCalc) return null;
+        const c = lastCalc;
+        const qadha = (c.al === 'hamil' || c.al === 'menyusui') ? 'WAJIB QADHA + FIDYAH' : 'CUKUP FIDYAH';
+        return HC.buildReportCard({
+          title: '🤲 Fidyah Calculator', color: '#7C3AED', color2: '#5B21B6',
+          heroLabel: 'Total Fidyah', heroValue: HC.fmt(c.total),
+          heroSubtext: `${c.h} hari × ${c.o} orang · ${HC.fmt(c.s)}/hari`,
+          inputs: [
+            { label: '📿 Alasan', value: c.alasanLabel },
+            { label: '📅 Jumlah Hari', value: c.h + ' hari' },
+            { label: '👨‍👩‍👧 Jumlah Orang', value: c.o + ' orang' },
+            { label: '💵 Standar/hari', value: HC.fmt(c.s) },
+          ],
+          results: [
+            { label: 'Total Fidyah', value: HC.fmt(c.total), highlight: true },
+            { label: 'Per Hari/Orang', value: HC.fmt(c.s) },
+            { label: 'Setara Beras', value: `${c.beras} kg` },
+            { label: 'Status', value: qadha, highlight: true },
+          ],
+          insight: `Salurkan via BAZNAS atau lembaga zakat resmi sebelum Ramadhan tahun depan. Untuk hamil/menyusui yang khawatir bayi, lakukan qadha juga setelah memungkinkan.`,
+          slug: 'fidyah',
+        });
+      }
+
+      function summaryText() {
+        if (!lastCalc) return '';
+        const c = lastCalc;
+        return `🤲 *Fidyah - HitungCerdas*\n\n${c.alasanLabel}\n${c.h} hari × ${c.o} orang\n\n💰 *Total: ${HC.fmt(c.total)}*\n\nHitung: https://hitungcerdas.net/kalkulator/fidyah`;
+      }
+
+      $('btnHitung').addEventListener('click', hitung);
+      $('btnReset').addEventListener('click', reset);
+      $('exportImg').addEventListener('click', () => { const r = buildReport(); if (r) HC.exportToImage(r, 'fidyah-' + Date.now()); else HC.toast('Hitung dulu', 'error'); });
+      $('exportWa').addEventListener('click', () => { const r = buildReport(); if (r) HC.shareWhatsApp(r, summaryText(), 'fidyah'); else HC.toast('Hitung dulu', 'error'); });
+      $('exportPdf').addEventListener('click', () => { if (lastCalc) HC.exportToPDF(); else HC.toast('Hitung dulu', 'error'); });
+      $('exportCopy').addEventListener('click', () => { if (lastCalc) HC.copyText(summaryText(), 'Tersalin!'); else HC.toast('Hitung dulu', 'error'); });
+    });
+  })();
+</script>

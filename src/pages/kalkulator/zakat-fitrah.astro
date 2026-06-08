@@ -1,0 +1,221 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import FAQ from '../../components/FAQ.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import CalculatorCard from '../../components/CalculatorCard.astro';
+import { getCalculatorBySlug, getRelatedCalculators } from '../../data/calculators';
+
+const calc = getCalculatorBySlug('zakat-fitrah')!;
+const related = getRelatedCalculators('zakat-fitrah', 3);
+
+const faqs = [
+  { question: 'Berapa zakat fitrah per jiwa 2026?', answer: 'Sesuai BAZNAS: <strong>2,5 kg beras</strong> per jiwa atau <strong>3,5 liter</strong>. Dalam uang: <strong>Rp 50.000 - 60.000 per jiwa</strong> di Jakarta (sesuai harga beras lokal).' },
+  { question: 'Siapa wajib zakat fitrah?', answer: 'Setiap Muslim yang hidup malam Idul Fitri & mampu (punya kelebihan makanan). Termasuk bayi (lahir sebelum maghrib hari Idul Fitri), anak-anak, lansia. Wajib dibayar kepala keluarga.' },
+  { question: 'Kapan waktu bayar?', answer: 'Sebelum shalat Idul Fitri. Boleh sejak awal Ramadhan (Syafi\'i). Disarankan 2-3 hari sebelum Lebaran agar amil bisa distribusikan tepat waktu.' },
+  { question: 'Boleh uang?', answer: 'Mazhab Hanafi boleh. Syafi\'i wajib beras. BAZNAS RI ikut Hanafi: boleh uang setara harga beras yang biasa dikonsumsi keluarga.' },
+];
+
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '/#tools' }, { label: calc.shortTitle }];
+---
+
+<Layout title={calc.title} description={calc.metaDescription} keywords={calc.keywords} canonical={`https://hitungcerdas.net/kalkulator/${calc.slug}`}>
+  <section class="calc-hero" style="--cat-color:#059669;--cat-color2:#065F46">
+    <div class="wrap">
+      <Breadcrumb items={bcItems} />
+      <div class="calc-hero-grid">
+        <div class="calc-hero-text">
+          <div class="calc-hero-tag" style="background:#D1FAE5;color:#065F46"><i class="ti ti-moon-stars"></i> {calc.categoryLabel}</div>
+          <h1 class="calc-hero-title">{calc.h1}</h1>
+          <p class="calc-hero-sub">{calc.introText}</p>
+          <ul class="calc-hero-benefits">{calc.benefits.map(b => <li><i class="ti ti-check"></i> {b}</li>)}</ul>
+        </div>
+        <div class="calc-hero-illust">
+          <svg viewBox="0 0 200 200" fill="none">
+            <circle cx="100" cy="100" r="85" fill="rgba(255,255,255,.08)"/>
+            <ellipse cx="100" cy="115" rx="55" ry="14" fill="#FFF" stroke="#FBBF24" stroke-width="2.5"/>
+            <ellipse cx="100" cy="105" rx="55" ry="14" fill="rgba(255,255,255,.9)" stroke="#FBBF24" stroke-width="2.5"/>
+            <circle cx="80" cy="100" r="3" fill="#FBBF24"/><circle cx="100" cy="103" r="3" fill="#FBBF24"/><circle cx="120" cy="100" r="3" fill="#FBBF24"/>
+            <circle cx="140" cy="50" r="14" fill="none" stroke="#FBBF24" stroke-width="2.5"/>
+            <circle cx="145" cy="48" r="11" fill="#FBBF24"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+
+  <section class="calc-section">
+    <div class="wrap">
+      <div class="calc-card">
+        <div class="calc-card-hdr">
+          <div class="calc-card-hdr-ic" style="background:linear-gradient(135deg,#059669 0%,#065F46 100%)"><i class="ti ti-moon-stars"></i></div>
+          <div><h2 class="calc-card-title">Kalkulator Zakat Fitrah</h2><p class="calc-card-sub">2,5 kg beras per jiwa · sesuai BAZNAS</p></div>
+        </div>
+
+        <div class="calc-grid">
+          <div class="calc-input">
+            <div class="field"><label>Jumlah Jiwa Keluarga</label>
+              <input type="number" id="jiwa" value="4" min="1" max="20" />
+              <p class="field-hint">Termasuk bayi, lansia, semua yang hidup sampai maghrib Idul Fitri</p></div>
+            <div class="field"><label>Bayar Dengan</label>
+              <select id="metode">
+                <option value="beras">Beras (2,5 kg/jiwa)</option>
+                <option value="uang" selected>Uang setara beras</option>
+              </select></div>
+            <div class="field"><label>Harga Beras per Kg</label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="hargaBeras" class="has-prefix" value="14.000" inputmode="numeric" /></div>
+              <div class="quick-btns">
+                <button type="button" data-h="12000">Premium 12k</button>
+                <button type="button" data-h="14000">Standar 14k</button>
+                <button type="button" data-h="18000">Pandan 18k</button>
+                <button type="button" data-h="22000">Organik 22k</button>
+              </div></div>
+
+            <div class="calc-action-bar">
+              <button type="button" class="btn-hitung" id="btnHitung"><i class="ti ti-calculator"></i> Hitung Sekarang</button>
+              <button type="button" class="btn-reset" id="btnReset"><i class="ti ti-refresh"></i> Reset</button>
+            </div>
+          </div>
+
+          <div class="calc-output">
+            <div class="result-placeholder" id="placeholder">
+              <i class="ti ti-moon-stars result-placeholder-icon"></i>
+              <div class="result-placeholder-title">Hasil akan muncul di sini</div>
+              <div class="result-placeholder-desc">Isi jumlah jiwa & harga beras, lalu klik <strong>"Hitung Sekarang"</strong>.</div>
+            </div>
+
+            <div class="result-wrapper" id="results">
+              <div class="result-main">
+                <div class="result-label">Total Zakat Fitrah</div>
+                <div class="result-value" id="totalZakat">Rp 0</div>
+                <div class="result-meta"><i class="ti ti-info-circle"></i> <span id="perJiwa">Per jiwa: Rp 0</span></div>
+              </div>
+
+              <div class="result-grid">
+                <div class="result-item"><div class="result-item-label">Per Jiwa</div><div class="result-item-value" id="nominalJiwa">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">Setara Beras</div><div class="result-item-value" id="kgBeras">0 kg</div></div>
+              </div>
+
+              <div class="kelayakan-box">
+                <div class="kelayakan-hdr"><i class="ti ti-building-mosque"></i> <span>Lembaga Penyalur Terpercaya</span></div>
+                <div style="font-size:12.5px;line-height:1.8;color:var(--text-soft)">
+                  <div>🕌 <strong>BAZNAS</strong> — baznas.go.id</div>
+                  <div>🤲 <strong>Dompet Dhuafa</strong> — dompetdhuafa.org</div>
+                  <div>📋 <strong>Rumah Zakat</strong> — rumahzakat.org</div>
+                  <div>🌙 <strong>NU Care</strong> — nucare.id</div>
+                  <div>💚 <strong>LAZISMU</strong> — lazismu.org</div>
+                  <div>🌱 <strong>Masjid setempat</strong> — distribusi cepat</div>
+                </div>
+              </div>
+
+              <div class="export-row">
+                <button class="export-btn img" id="exportImg"><i class="ti ti-photo-down"></i><span>Save Image</span></button>
+                <button class="export-btn wa" id="exportWa"><i class="ti ti-brand-whatsapp"></i><span>Share WA</span></button>
+                <button class="export-btn pdf" id="exportPdf"><i class="ti ti-printer"></i><span>Print/PDF</span></button>
+                <button class="export-btn copy" id="exportCopy"><i class="ti ti-copy"></i><span>Copy Teks</span></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="content-section">
+    <div class="wrap-text">
+      <h2>Panduan Lengkap Zakat Fitrah Idul Fitri</h2>
+      <p>Zakat fitrah adalah <strong>kewajiban setiap Muslim</strong>, laki-laki/perempuan, anak-anak/dewasa, yang hidup sampai malam Idul Fitri. Mensucikan jiwa setelah puasa Ramadhan dan memberi kegembiraan kepada fakir miskin di hari raya.</p>
+      <p>Besaran: <strong>1 sha'</strong> (2,5 - 3 kg) makanan pokok per jiwa. BAZNAS Indonesia: 2,5 kg beras atau setara uang.</p>
+      <div class="cta-box"><h3>Tunaikan Sebelum Idul Fitri</h3><p>Hitung untuk seluruh keluarga, salurkan via BAZNAS/LAZ resmi sebelum shalat Idul Fitri.</p></div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+  <FAQ items={faqs} />
+
+  <section class="section"><div class="wrap">
+    <div class="section-hdr"><div class="section-eyebrow">Kalkulator Lainnya</div><h2 class="section-title">Hitung Juga yang Lain</h2></div>
+    <div class="related-grid">{related.map(c => <CalculatorCard calc={c} />)}</div>
+  </div></section>
+</Layout>
+
+<script is:inline>
+  (function() {
+    function ready(fn) { if (window.HC && window.html2canvas) fn(); else setTimeout(() => ready(fn), 100); }
+    ready(() => {
+      const $ = id => document.getElementById(id);
+      const els = { j: $('jiwa'), m: $('metode'), h: $('hargaBeras') };
+      els.h.addEventListener('input', HC.fmtInput);
+      document.querySelectorAll('.quick-btns button').forEach(btn => btn.addEventListener('click', () => {
+        els.h.value = parseInt(btn.dataset.h).toLocaleString('id-ID');
+      }));
+
+      let lastCalc = null;
+
+      function hitung() {
+        const j = parseInt(els.j.value) || 1;
+        const m = els.m.value;
+        const h = HC.parseRp(els.h.value);
+        const kgPerJiwa = 2.5;
+        const kgTotal = j * kgPerJiwa;
+        const nominalJiwa = m === 'uang' ? h * kgPerJiwa : 0;
+        const total = m === 'uang' ? h * kgTotal : 0;
+
+        $('totalZakat').textContent = m === 'uang' ? HC.fmt(total) : `${kgTotal} kg beras`;
+        $('perJiwa').textContent = m === 'uang' ? `Per jiwa: ${HC.fmt(nominalJiwa)}` : `Per jiwa: 2,5 kg`;
+        $('nominalJiwa').textContent = m === 'uang' ? HC.fmt(nominalJiwa) : '2,5 kg';
+        $('kgBeras').textContent = `${kgTotal} kg`;
+
+        lastCalc = { j, m, h, kgTotal, nominalJiwa, total };
+        $('placeholder').style.display = 'none';
+        $('results').classList.add('show');
+        $('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        HC.toast('Berhasil dihitung!');
+      }
+
+      function reset() {
+        els.j.value = '4'; els.m.value = 'uang'; els.h.value = '14.000';
+        $('placeholder').style.display = ''; $('results').classList.remove('show');
+        lastCalc = null; HC.toast('Form direset', 'info');
+      }
+
+      function buildReport() {
+        if (!lastCalc) return null;
+        const c = lastCalc;
+        return HC.buildReportCard({
+          title: '🕌 Zakat Fitrah Keluarga', color: '#059669', color2: '#065F46',
+          heroLabel: 'Total Zakat Fitrah',
+          heroValue: c.m === 'uang' ? HC.fmt(c.total) : `${c.kgTotal} kg beras`,
+          heroSubtext: `Keluarga ${c.j} jiwa · ${c.m === 'uang' ? HC.fmt(c.nominalJiwa) : '2,5 kg'} per jiwa`,
+          inputs: [
+            { label: '👨‍👩‍👧‍👦 Jumlah Jiwa', value: c.j + ' orang' },
+            { label: '💵 Metode', value: c.m === 'uang' ? 'Uang' : 'Beras' },
+            { label: '🌾 Harga Beras/kg', value: HC.fmt(c.h) },
+          ],
+          results: [
+            { label: 'Total Zakat', value: c.m === 'uang' ? HC.fmt(c.total) : `${c.kgTotal} kg`, highlight: true },
+            { label: 'Per Jiwa', value: c.m === 'uang' ? HC.fmt(c.nominalJiwa) : '2,5 kg' },
+            { label: 'Setara Beras', value: `${c.kgTotal} kg` },
+          ],
+          insight: `Bayar sebelum shalat Idul Fitri via BAZNAS atau LAZ resmi (Dompet Dhuafa, Rumah Zakat, LAZISMU, NU Care). Disarankan 2-3 hari sebelum Lebaran.`,
+          slug: 'zakat-fitrah',
+        });
+      }
+
+      function summaryText() {
+        if (!lastCalc) return '';
+        const c = lastCalc;
+        return `🕌 *Zakat Fitrah - HitungCerdas*\n\nKeluarga ${c.j} jiwa\nMetode: ${c.m === 'uang' ? 'Uang' : 'Beras'}\n\n💰 *Total: ${c.m === 'uang' ? HC.fmt(c.total) : c.kgTotal + ' kg beras'}*\n\nHitung: https://hitungcerdas.net/kalkulator/zakat-fitrah`;
+      }
+
+      $('btnHitung').addEventListener('click', hitung);
+      $('btnReset').addEventListener('click', reset);
+      $('exportImg').addEventListener('click', () => { const r = buildReport(); if (r) HC.exportToImage(r, 'zakat-fitrah-' + Date.now()); else HC.toast('Hitung dulu', 'error'); });
+      $('exportWa').addEventListener('click', () => { const r = buildReport(); if (r) HC.shareWhatsApp(r, summaryText(), 'zakat-fitrah'); else HC.toast('Hitung dulu', 'error'); });
+      $('exportPdf').addEventListener('click', () => { if (lastCalc) HC.exportToPDF(); else HC.toast('Hitung dulu', 'error'); });
+      $('exportCopy').addEventListener('click', () => { if (lastCalc) HC.copyText(summaryText(), 'Tersalin!'); else HC.toast('Hitung dulu', 'error'); });
+    });
+  })();
+</script>

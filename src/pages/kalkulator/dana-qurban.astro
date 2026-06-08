@@ -1,0 +1,238 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import FAQ from '../../components/FAQ.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import CalculatorCard from '../../components/CalculatorCard.astro';
+import { getCalculatorBySlug, getRelatedCalculators } from '../../data/calculators';
+
+const calc = getCalculatorBySlug('dana-qurban')!;
+const related = getRelatedCalculators('dana-qurban', 3);
+
+const faqs = [
+  { question: 'Hukum qurban?', answer: 'Sunnah muakkadah (sangat dianjurkan) bagi yang mampu. Mazhab Hanafi: wajib bagi yang mampu. Dasar: QS Al-Kautsar 2 & hadits Bukhari-Muslim.' },
+  { question: 'Harga hewan 2026?', answer: 'Kambing standar Rp 3-4jt, premium Rp 5-7jt, domba Rp 4-5jt, sapi utuh Rp 25-50jt, patungan sapi 1/7 Rp 3,5-7jt. Inflasi 5-8%/tahun.' },
+  { question: 'Patungan sapi 1/7?', answer: 'SAH untuk maksimal 7 orang (hadits Nabi). Pahala per orang seperti qurban 1 kambing. Cocok untuk pemula.' },
+  { question: 'Mengapa inflasi mempengaruhi qurban?', answer: 'Harga hewan qurban naik 5-8%/tahun karena: kenaikan pakan ternak, biaya transport, dan inflasi umum. Mode inflasi simulasikan target harga di tahun berangkat.' },
+  { question: 'Pembagian daging?', answer: '1/3 untuk yang berqurban, 1/3 untuk fakir miskin, 1/3 untuk kerabat. Boleh dibagikan SEMUA untuk fakir miskin jika lingkungan banyak dhuafa.' },
+];
+
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '/#tools' }, { label: calc.shortTitle }];
+---
+
+<Layout title={calc.title} description={calc.metaDescription} keywords={calc.keywords} canonical={`https://hitungcerdas.net/kalkulator/${calc.slug}`}>
+  <section class="calc-hero" style="--cat-color:#047857;--cat-color2:#064E3B">
+    <div class="wrap">
+      <Breadcrumb items={bcItems} />
+      <div class="calc-hero-grid">
+        <div class="calc-hero-text">
+          <div class="calc-hero-tag" style="background:#D1FAE5;color:#064E3B"><i class="ti ti-paw"></i> {calc.categoryLabel}</div>
+          <h1 class="calc-hero-title">{calc.h1}</h1>
+          <p class="calc-hero-sub">{calc.introText}</p>
+          <ul class="calc-hero-benefits">{calc.benefits.map(b => <li><i class="ti ti-check"></i> {b}</li>)}</ul>
+        </div>
+        <div class="calc-hero-illust">
+          <svg viewBox="0 0 200 200" fill="none">
+            <circle cx="100" cy="100" r="85" fill="rgba(255,255,255,.08)"/>
+            <ellipse cx="100" cy="130" rx="50" ry="32" fill="#FFF" stroke="#FBBF24" stroke-width="2.5"/>
+            <circle cx="70" cy="100" r="22" fill="#FFF" stroke="#FBBF24" stroke-width="2.5"/>
+            <path d="M60 90L57 80M80 90L83 80" stroke="#FBBF24" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="65" cy="100" r="2" fill="#0A2540"/>
+            <circle cx="75" cy="100" r="2" fill="#0A2540"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+
+  <section class="calc-section">
+    <div class="wrap">
+      <div class="calc-card">
+        <div class="calc-card-hdr">
+          <div class="calc-card-hdr-ic" style="background:linear-gradient(135deg,#047857 0%,#064E3B 100%)"><i class="ti ti-paw"></i></div>
+          <div><h2 class="calc-card-title">Kalkulator Dana Qurban</h2><p class="calc-card-sub">Tabungan bulanan dengan proyeksi inflasi</p></div>
+        </div>
+
+        <div class="calc-grid">
+          <div class="calc-input">
+            <div class="field"><label>Jenis Hewan Qurban</label>
+              <select id="hewan">
+                <option value="3500000">Kambing Standar (Rp 3,5jt)</option>
+                <option value="5000000" selected>Kambing Premium (Rp 5jt)</option>
+                <option value="4500000">Domba (Rp 4,5jt)</option>
+                <option value="5000000">Patungan Sapi 1/7 (Rp 5jt)</option>
+                <option value="35000000">Sapi Utuh (Rp 35jt)</option>
+              </select></div>
+            <div class="field"><label>Harga Hewan Saat Ini</label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="hargaCustom" class="has-prefix" value="5.000.000" inputmode="numeric" /></div></div>
+            <div class="field"><label>Target Tahun Qurban</label>
+              <select id="targetTahun">
+                <option value="0">Tahun ini (2026)</option>
+                <option value="1" selected>Tahun depan (2027)</option>
+                <option value="2">2 tahun lagi (2028)</option>
+                <option value="3">3 tahun lagi (2029)</option>
+                <option value="5">5 tahun lagi (2031)</option>
+              </select></div>
+            <div class="field"><label>Tabungan yang Sudah Ada</label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="tabunganAwal" class="has-prefix" placeholder="0" inputmode="numeric" /></div></div>
+            <div class="field"><label>Asumsi Inflasi Harga Hewan/Tahun</label>
+              <div class="input-wrap"><input type="number" id="inflasi" class="has-suffix" value="7" step="1" /><span class="input-suffix">%</span></div>
+              <p class="field-hint">Inflasi harga hewan qurban Indonesia: 5-8%/tahun</p></div>
+
+            <div class="calc-action-bar">
+              <button type="button" class="btn-hitung" id="btnHitung"><i class="ti ti-calculator"></i> Hitung Sekarang</button>
+              <button type="button" class="btn-reset" id="btnReset"><i class="ti ti-refresh"></i> Reset</button>
+            </div>
+          </div>
+
+          <div class="calc-output">
+            <div class="result-placeholder" id="placeholder">
+              <i class="ti ti-paw result-placeholder-icon"></i>
+              <div class="result-placeholder-title">Hasil akan muncul di sini</div>
+              <div class="result-placeholder-desc">Pilih jenis hewan & target tahun, lalu klik <strong>"Hitung Sekarang"</strong>.</div>
+            </div>
+
+            <div class="result-wrapper" id="results">
+              <div class="result-main">
+                <div class="result-label">Nabung per Bulan</div>
+                <div class="result-value" id="perBulan">Rp 0</div>
+                <div class="result-meta"><i class="ti ti-info-circle"></i> <span id="perHari">Per hari: Rp 0</span></div>
+              </div>
+
+              <div class="result-grid">
+                <div class="result-item"><div class="result-item-label">Target Harga (Inflasi)</div><div class="result-item-value result-warn" id="targetHarga">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">Tabungan Awal</div><div class="result-item-value" id="tabSekarang">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">Kekurangan</div><div class="result-item-value" id="kekurangan">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">Total Bulan</div><div class="result-item-value" id="totalBulan">0 bulan</div></div>
+              </div>
+
+              <div class="kelayakan-box">
+                <div class="kelayakan-hdr"><i class="ti ti-building-mosque"></i> <span>Tabungan Qurban Resmi</span></div>
+                <div style="font-size:12.5px;line-height:1.8;color:var(--text-soft)">
+                  <div>🐑 <strong>Dompet Dhuafa</strong> — Qurban Pelosok</div>
+                  <div>🐄 <strong>Rumah Zakat</strong> — SuperQurban</div>
+                  <div>🌍 <strong>ACT</strong> — Qurban Mancanegara</div>
+                  <div>💚 <strong>BSI</strong> — Tabungan Qurban</div>
+                </div>
+              </div>
+
+              <div class="export-row">
+                <button class="export-btn img" id="exportImg"><i class="ti ti-photo-down"></i><span>Save Image</span></button>
+                <button class="export-btn wa" id="exportWa"><i class="ti ti-brand-whatsapp"></i><span>Share WA</span></button>
+                <button class="export-btn pdf" id="exportPdf"><i class="ti ti-printer"></i><span>Print/PDF</span></button>
+                <button class="export-btn copy" id="exportCopy"><i class="ti ti-copy"></i><span>Copy Teks</span></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="content-section">
+    <div class="wrap-text">
+      <h2>Persiapkan Qurban dari Sekarang</h2>
+      <p>Banyak Muslim merasa qurban "mahal" karena belum nabung dari jauh hari. Padahal dengan Rp 200-400rb/bulan, bisa qurban kambing tahun depan. Mode inflasi simulasi kenaikan harga hewan 5-8%/tahun.</p>
+      <div class="cta-box"><h3>Mulai Nabung Qurban</h3><p>Hitung target nabung per bulan, setup auto-debet ke rekening tabungan qurban.</p></div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+  <FAQ items={faqs} />
+
+  <section class="section"><div class="wrap">
+    <div class="section-hdr"><div class="section-eyebrow">Kalkulator Lainnya</div><h2 class="section-title">Hitung Juga yang Lain</h2></div>
+    <div class="related-grid">{related.map(c => <CalculatorCard calc={c} />)}</div>
+  </div></section>
+</Layout>
+
+<script is:inline>
+  (function() {
+    function ready(fn) { if (window.HC && window.html2canvas) fn(); else setTimeout(() => ready(fn), 100); }
+    ready(() => {
+      const $ = id => document.getElementById(id);
+      const els = { hewan: $('hewan'), custom: $('hargaCustom'), tt: $('targetTahun'),
+                    ta: $('tabunganAwal'), inf: $('inflasi') };
+      els.hewan.addEventListener('change', () => { els.custom.value = parseInt(els.hewan.value).toLocaleString('id-ID'); });
+      [els.custom, els.ta].forEach(el => el.addEventListener('input', HC.fmtInput));
+
+      let lastCalc = null;
+
+      function hitung() {
+        const harga = HC.parseRp(els.custom.value);
+        const tt = parseInt(els.tt.value);
+        const ta = HC.parseRp(els.ta.value);
+        const inf = parseFloat(els.inf.value) / 100 || 0.07;
+        if (harga === 0) { HC.toast('Masukkan harga hewan', 'error'); return; }
+
+        const targetHarga = harga * Math.pow(1 + inf, tt);
+        const kekurangan = Math.max(0, targetHarga - ta);
+        const totalBulan = Math.max(1, tt * 12);
+        const perBulan = kekurangan / totalBulan;
+        const perHari = perBulan / 30;
+
+        $('perBulan').textContent = HC.fmt(perBulan);
+        $('perHari').textContent = `Per hari: ${HC.fmt(perHari)}`;
+        $('targetHarga').textContent = HC.fmt(targetHarga);
+        $('tabSekarang').textContent = HC.fmt(ta);
+        $('kekurangan').textContent = HC.fmt(kekurangan);
+        $('totalBulan').textContent = `${totalBulan} bulan`;
+
+        lastCalc = { harga, tt, ta, inf: inf * 100, targetHarga, kekurangan, totalBulan, perBulan, perHari,
+                     hewanLabel: els.hewan.options[els.hewan.selectedIndex].text };
+        $('placeholder').style.display = 'none';
+        $('results').classList.add('show');
+        $('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        HC.toast('Berhasil dihitung!');
+      }
+
+      function reset() {
+        els.hewan.value = '5000000'; els.custom.value = '5.000.000'; els.tt.value = '1';
+        els.ta.value = ''; els.inf.value = '7';
+        $('placeholder').style.display = ''; $('results').classList.remove('show');
+        lastCalc = null; HC.toast('Form direset', 'info');
+      }
+
+      function buildReport() {
+        if (!lastCalc) return null;
+        const c = lastCalc;
+        return HC.buildReportCard({
+          title: '🐑 Dana Qurban', color: '#047857', color2: '#064E3B',
+          heroLabel: 'Nabung per Bulan', heroValue: HC.fmt(c.perBulan),
+          heroSubtext: `Target ${c.tt} tahun · ${c.hewanLabel}`,
+          inputs: [
+            { label: '🐑 Hewan', value: c.hewanLabel },
+            { label: '💰 Harga Saat Ini', value: HC.fmt(c.harga) },
+            { label: '📅 Target Tahun', value: c.tt + ' tahun lagi' },
+            { label: '📈 Inflasi/thn', value: c.inf + '%' },
+            { label: '💵 Tabungan Awal', value: HC.fmt(c.ta) },
+          ],
+          results: [
+            { label: 'Target Harga', value: HC.fmt(c.targetHarga), highlight: true },
+            { label: 'Kekurangan', value: HC.fmt(c.kekurangan) },
+            { label: 'Total Bulan', value: c.totalBulan + ' bulan' },
+            { label: 'Nabung/Bulan', value: HC.fmt(c.perBulan), highlight: true },
+            { label: 'Nabung/Hari', value: HC.fmt(c.perHari) },
+          ],
+          insight: `Setup auto-debet ke tabungan qurban syariah (Dompet Dhuafa, BSI, Rumah Zakat). Inflasi ${c.inf}%/thn dapat dikompensasi dengan deposito syariah/sukuk.`,
+          slug: 'dana-qurban',
+        });
+      }
+
+      function summaryText() {
+        if (!lastCalc) return '';
+        const c = lastCalc;
+        return `🐑 *Dana Qurban - HitungCerdas*\n\n${c.hewanLabel}\nTarget: ${c.tt} tahun lagi\nTarget Harga: ${HC.fmt(c.targetHarga)}\n\n💰 *Nabung: ${HC.fmt(c.perBulan)}/bln*\n\nHitung: https://hitungcerdas.net/kalkulator/dana-qurban`;
+      }
+
+      $('btnHitung').addEventListener('click', hitung);
+      $('btnReset').addEventListener('click', reset);
+      $('exportImg').addEventListener('click', () => { const r = buildReport(); if (r) HC.exportToImage(r, 'dana-qurban-' + Date.now()); else HC.toast('Hitung dulu', 'error'); });
+      $('exportWa').addEventListener('click', () => { const r = buildReport(); if (r) HC.shareWhatsApp(r, summaryText(), 'dana-qurban'); else HC.toast('Hitung dulu', 'error'); });
+      $('exportPdf').addEventListener('click', () => { if (lastCalc) HC.exportToPDF(); else HC.toast('Hitung dulu', 'error'); });
+      $('exportCopy').addEventListener('click', () => { if (lastCalc) HC.copyText(summaryText(), 'Tersalin!'); else HC.toast('Hitung dulu', 'error'); });
+    });
+  })();
+</script>

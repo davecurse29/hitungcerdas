@@ -1,0 +1,191 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import AdSlot from '../../components/AdSlot.astro';
+
+const today = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+const bcItems = [
+  { label: 'Beranda', href: '/' },
+  { label: 'Blog', href: '/blog' },
+  { label: 'Cara Menghitung Cicilan KPR' },
+];
+---
+
+<Layout
+  title="Cara Menghitung Cicilan KPR 2026 — Panduan Lengkap Anuitas, Tenor, Bunga"
+  description="Panduan lengkap cara menghitung cicilan KPR yang benar di 2026: rumus anuitas, simulasi tenor 5-30 tahun, perbandingan bunga fixed vs floating, dan tips negosiasi."
+  keywords={['cara menghitung kpr', 'rumus kpr anuitas', 'cicilan kpr', 'bunga kpr', 'kpr 2026']}
+  canonical="https://hitungcerdas.net/blog/cara-menghitung-kpr"
+  ogType="article"
+>
+  <section class="article-hero" style="--cat-color:#2563EB;--cat-color2:#1E40AF">
+    <div class="wrap">
+      <Breadcrumb items={bcItems} />
+      <div class="article-tag">PANDUAN KPR</div>
+      <h1>Cara Menghitung Cicilan KPR yang Benar di 2026</h1>
+      <div class="article-meta">
+        <span><i class="ti ti-calendar"></i> {today}</span>
+        <span><i class="ti ti-clock"></i> 5 menit baca</span>
+        <span><i class="ti ti-user"></i> Tim HitungCerdas</span>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+
+  <article class="content-section">
+    <div class="wrap-text">
+      <p class="lead">
+        KPR (Kredit Pemilikan Rumah) adalah pembelian properti dengan pembiayaan bank. Untuk
+        rumah seharga Rp 800 juta dengan DP 20%, tenor 15 tahun, dan bunga 7,5%, cicilan bulananmu
+        adalah <strong>Rp 5,9 juta</strong>. Mari kita pelajari rumus, contoh perhitungan, dan
+        tips memilih KPR yang menguntungkan.
+      </p>
+
+      <h2>1. Rumus Cicilan KPR: Anuitas</h2>
+      <p>
+        Bank Indonesia menggunakan <strong>sistem anuitas</strong> untuk menghitung cicilan KPR.
+        Di sistem ini, cicilan bulananmu tetap sama sepanjang tenor, tapi komposisinya berubah:
+        di awal lebih banyak bunga, di akhir lebih banyak pokok.
+      </p>
+
+      <div class="formula-box">
+        <p class="formula"><strong>M = P × (i × (1+i)^n) / ((1+i)^n - 1)</strong></p>
+        <ul>
+          <li><strong>M</strong> = Cicilan per bulan (Monthly payment)</li>
+          <li><strong>P</strong> = Pokok pinjaman (harga rumah - DP)</li>
+          <li><strong>i</strong> = Bunga bulanan (bunga tahunan ÷ 12 ÷ 100)</li>
+          <li><strong>n</strong> = Total bulan (tenor tahun × 12)</li>
+        </ul>
+      </div>
+
+      <h2>2. Contoh Perhitungan</h2>
+      <p>
+        Misalkan kamu ingin beli rumah seharga <strong>Rp 800 juta</strong>, dengan DP 20%, bunga
+        KPR 7,5% per tahun, tenor 15 tahun. Mari hitung:
+      </p>
+      <ol class="tips-list">
+        <li><strong>DP</strong>: 20% × Rp 800.000.000 = <strong>Rp 160.000.000</strong></li>
+        <li><strong>Pokok Pinjaman</strong>: Rp 800.000.000 - Rp 160.000.000 = <strong>Rp 640.000.000</strong></li>
+        <li><strong>Bunga bulanan</strong>: 7,5% ÷ 12 = <strong>0,625%</strong></li>
+        <li><strong>Total bulan</strong>: 15 × 12 = <strong>180 bulan</strong></li>
+        <li><strong>Cicilan</strong>: Rp 640.000.000 × (0,00625 × 1,00625^180) / (1,00625^180 - 1) = <strong>Rp 5.933.000/bulan</strong></li>
+      </ol>
+      <p>
+        Total bayar selama 15 tahun: Rp 5.933.000 × 180 = <strong>Rp 1.068 miliar</strong>.
+        Total bunga: Rp 1.068 miliar - Rp 640 juta = <strong>Rp 428 juta</strong> (67% dari pokok).
+      </p>
+
+      <h2>3. Faktor yang Mempengaruhi Cicilan KPR</h2>
+      <ul class="info-list">
+        <li><strong>Harga Properti</strong>: Semakin mahal, semakin besar cicilan.</li>
+        <li><strong>DP</strong>: Semakin besar DP, semakin kecil pokok pinjaman, semakin kecil cicilan.</li>
+        <li><strong>Suku Bunga</strong>: Naik 1% saja bisa naikkan cicilan ratusan ribu/bulan.</li>
+        <li><strong>Tenor</strong>: Tenor panjang = cicilan kecil tapi total bunga lebih besar.</li>
+      </ul>
+
+      <h2>4. Perbandingan Tenor 5-30 Tahun</h2>
+      <p>
+        Untuk pinjaman Rp 640 juta dengan bunga 7,5%:
+      </p>
+      <ul class="info-list">
+        <li><strong>5 tahun (60 bulan)</strong>: Cicilan Rp 12,8 juta/bulan, total bunga Rp 130 juta</li>
+        <li><strong>10 tahun</strong>: Cicilan Rp 7,6 juta/bulan, total bunga Rp 270 juta</li>
+        <li><strong>15 tahun</strong>: Cicilan Rp 5,9 juta/bulan, total bunga Rp 428 juta</li>
+        <li><strong>20 tahun</strong>: Cicilan Rp 5,15 juta/bulan, total bunga Rp 597 juta</li>
+        <li><strong>30 tahun</strong>: Cicilan Rp 4,47 juta/bulan, total bunga Rp 970 juta (1,5× pokok!)</li>
+      </ul>
+      <p>
+        <strong>Tips</strong>: Pilih tenor terpanjang yang kamu mampu, lalu lakukan pelunasan
+        dipercepat saat dapat bonus. Strategi ini hemat banyak bunga di akhir.
+      </p>
+
+      <h2>5. Bunga Fixed vs Floating</h2>
+      <p>
+        <strong>Bunga Fixed</strong>: Bunga tetap selama periode tertentu (biasanya 1-5 tahun pertama).
+        Misalnya, bunga fixed 5% selama 3 tahun. Cicilan tidak berubah, lebih predictable.
+      </p>
+      <p>
+        <strong>Bunga Floating</strong>: Bunga mengikuti suku bunga acuan (BI Rate, JIBOR). Bisa
+        naik/turun setiap 3-6 bulan. Risiko cicilan membengkak saat ekonomi memburuk.
+      </p>
+      <p>
+        Banyak bank menawarkan <strong>kombinasi</strong>: fixed 1-3 tahun pertama, lalu floating.
+        <strong>WASPADA</strong> bunga "promo" 3% yang biasanya hanya fixed 1 tahun!
+      </p>
+
+      <h2>6. Cara Aman Ambil KPR</h2>
+      <ol class="tips-list">
+        <li><strong>Cek DTI Maksimum 30%</strong> — Cicilan KPR maksimal 30% gaji bulanan.</li>
+        <li><strong>Bandingkan Minimal 3 Bank</strong> — Selisih bunga 1% bisa hemat puluhan juta.</li>
+        <li><strong>Hitung Total Pembayaran 30 Tahun</strong> — Bukan cuma cicilan bulanan.</li>
+        <li><strong>Siapkan Biaya Awal 25-30%</strong> — DP + provisi + notaris + asuransi.</li>
+        <li><strong>Pertimbangkan KPR Syariah</strong> — Bagi yang ingin hindari riba.</li>
+        <li><strong>Cek FLPP</strong> — Untuk MBR (gaji max Rp 8 juta), bunga 5% fixed 20 tahun.</li>
+      </ol>
+
+      <div class="cta-box">
+        <h3>Coba Kalkulator KPR Kami Sekarang</h3>
+        <p>Daripada hitung manual, gunakan kalkulator KPR HitungCerdas yang sudah dilengkapi dengan tabel amortisasi dan cek kelayakan dari gaji.</p>
+        <p style="margin-top:14px"><a href="/kalkulator/kpr" class="btn btn-pri"><i class="ti ti-calculator"></i> Buka Kalkulator KPR</a></p>
+      </div>
+
+      <h2>Kesimpulan</h2>
+      <p>
+        Menghitung KPR yang benar adalah langkah penting sebelum tanda tangan. Dengan rumus anuitas,
+        kamu bisa kalkulasi cicilan bulanan dan total bunga. Pilih tenor yang sesuai cash flow,
+        jangan tergoda bunga promo singkat, dan selalu sisakan margin untuk pajak, maintenance,
+        dan dana darurat. Selamat merencanakan rumah impianmu!
+      </p>
+    </div>
+  </article>
+
+  <AdSlot format="horizontal" />
+</Layout>
+
+<style>
+  .article-hero {
+    background: linear-gradient(135deg, var(--cat-color) 0%, var(--cat-color2) 100%);
+    color: #fff;
+    padding: 20px 0 48px;
+  }
+  .article-hero :global(.breadcrumb-item),
+  .article-hero :global(.breadcrumb-item a) { color: rgba(255, 255, 255, .7); }
+  .article-hero :global(.breadcrumb-item a:hover) { color: var(--gold-soft); }
+  .article-hero :global(.breadcrumb-item span) { color: #fff; }
+  .article-hero :global(.breadcrumb-item i) { color: rgba(255, 255, 255, .4); }
+  .article-tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--gold-soft);
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    margin: 16px 0 12px;
+  }
+  .article-hero h1 {
+    color: #fff;
+    font-size: clamp(26px, 3.8vw, 42px);
+    margin: 0 0 20px;
+    max-width: 800px;
+    line-height: 1.2;
+  }
+  .article-meta {
+    display: flex;
+    gap: 20px;
+    color: rgba(255, 255, 255, .75);
+    font-size: 13px;
+    flex-wrap: wrap;
+  }
+  .article-meta span { display: inline-flex; align-items: center; gap: 6px; }
+  .lead {
+    font-size: 17px !important;
+    line-height: 1.7 !important;
+    color: var(--text) !important;
+    padding: 20px 24px;
+    background: var(--bg-soft);
+    border-radius: 12px;
+    border-left: 4px solid var(--blue);
+    margin-bottom: 24px !important;
+  }
+</style>

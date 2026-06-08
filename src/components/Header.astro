@@ -1,0 +1,249 @@
+---
+// Header dengan navigasi premium + mobile drawer
+const currentPath = Astro.url.pathname;
+
+const navItems = [
+  { href: '/', label: 'Beranda' },
+  { href: '/kalkulator/kpr', label: 'KPR' },
+  { href: '/kalkulator/pph-21', label: 'Pajak' },
+  { href: '/kalkulator/gaji-bersih', label: 'Gaji' },
+  { href: '/kalkulator/investasi', label: 'Investasi' },
+  { href: '/kalkulator/zakat-fitrah', label: 'Zakat' },
+  { href: '/blog', label: 'Blog' },
+  { href: '/tentang', label: 'Tentang' },
+];
+---
+
+<header role="banner">
+  <div class="hdr">
+    <a href="/" class="logo" aria-label="HitungCerdas Beranda">
+      <div class="logo-ic">HC</div>
+      <div class="logo-text">Hitung<span>Cerdas</span></div>
+    </a>
+
+    <nav role="navigation" aria-label="Menu utama" id="mainNav">
+      {navItems.map(item => (
+        <a
+          href={item.href}
+          class:list={['nv', { active: currentPath === item.href || (item.href !== '/' && currentPath.startsWith(item.href)) }]}
+        >
+          {item.label}
+        </a>
+      ))}
+    </nav>
+
+    <a href="/#tools" class="hdr-cta">
+      <i class="ti ti-calculator" aria-hidden="true"></i>
+      <span>Mulai Hitung</span>
+    </a>
+
+    <button class="menu-tg" aria-label="Buka menu" aria-expanded="false" id="menuToggle">
+      <i class="ti ti-menu-2" aria-hidden="true"></i>
+    </button>
+  </div>
+</header>
+
+<style>
+  header {
+    background: rgba(255, 255, 255, .92);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: saturate(180%) blur(12px);
+    -webkit-backdrop-filter: saturate(180%) blur(12px);
+  }
+
+  .hdr {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    height: 64px;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .logo-ic {
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+    background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: 800;
+    font-size: 14px;
+    letter-spacing: -.04em;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, .25);
+    font-family: var(--ff-display);
+  }
+
+  .logo-text {
+    font-family: var(--ff-display);
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--navy);
+    letter-spacing: -.025em;
+  }
+
+  .logo-text span {
+    color: var(--green);
+  }
+
+  nav {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    flex: 1;
+  }
+
+  .nv {
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--text-soft);
+    padding: 7px 12px;
+    border-radius: var(--r-sm);
+    transition: var(--tx);
+    white-space: nowrap;
+    text-decoration: none;
+  }
+
+  .nv:hover {
+    color: var(--navy);
+    background: var(--bg-soft);
+  }
+
+  .nv.active {
+    color: var(--blue);
+    font-weight: 600;
+    background: var(--blue-light);
+  }
+
+  .hdr-cta {
+    background: var(--navy);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 9px 18px;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transition: var(--tx);
+    margin-left: auto;
+    box-shadow: 0 2px 8px rgba(10, 37, 64, .18);
+    text-decoration: none;
+  }
+
+  .hdr-cta:hover {
+    background: var(--navy-2);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(10, 37, 64, .25);
+  }
+
+  .menu-tg {
+    display: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-size: 20px;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg);
+  }
+
+  /* ── Mobile ── */
+  @media (max-width: 900px) {
+    .nv {
+      padding: 7px 10px;
+      font-size: 13px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    nav {
+      display: none;
+    }
+
+    nav.mobile-open {
+      position: fixed;
+      top: 64px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: #fff;
+      flex-direction: column;
+      align-items: stretch;
+      padding: 18px;
+      gap: 6px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, .15);
+      overflow-y: auto;
+      display: flex;
+      z-index: 99;
+    }
+
+    nav.mobile-open .nv {
+      padding: 14px 18px;
+      font-size: 15px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+
+    nav.mobile-open .nv.active {
+      background: var(--blue-light);
+      border-color: var(--blue);
+    }
+
+    .menu-tg {
+      display: flex;
+    }
+
+    .hdr {
+      gap: 12px;
+      padding: 0 16px;
+    }
+
+    .hdr-cta {
+      padding: 7px 14px;
+      font-size: 12px;
+    }
+
+    .hdr-cta span {
+      display: none;
+    }
+  }
+</style>
+
+<script is:inline>
+  (function() {
+    const tg = document.getElementById('menuToggle');
+    const nav = document.getElementById('mainNav');
+    if (!tg || !nav) return;
+
+    tg.addEventListener('click', () => {
+      const isOpen = nav.classList.toggle('mobile-open');
+      tg.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      tg.querySelector('i').className = isOpen ? 'ti ti-x' : 'ti ti-menu-2';
+    });
+
+    // Close on nav link click
+    nav.querySelectorAll('.nv').forEach(link => {
+      link.addEventListener('click', () => {
+        nav.classList.remove('mobile-open');
+        tg.setAttribute('aria-expanded', 'false');
+        tg.querySelector('i').className = 'ti ti-menu-2';
+      });
+    });
+  })();
+</script>

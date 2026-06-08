@@ -1,0 +1,220 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import FAQ from '../../components/FAQ.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import CalculatorCard from '../../components/CalculatorCard.astro';
+import { getCalculatorBySlug, getRelatedCalculators } from '../../data/calculators';
+
+const calc = getCalculatorBySlug('zakat-mal')!;
+const related = getRelatedCalculators('zakat-mal', 3);
+
+const faqs = [
+  { question: 'Beda zakat mal & fitrah?', answer: '<strong>Mal</strong>: zakat harta yang capai nisab & haul 1 tahun, tarif 2,5%. <strong>Fitrah</strong>: zakat jiwa di Ramadhan, 2,5kg beras/jiwa, tidak ada nisab.' },
+  { question: 'Harta apa wajib dizakati?', answer: 'Uang tunai, tabungan, emas/perak, investasi (saham, reksadana, crypto), piutang, aset usaha, properti investasi. TIDAK: rumah tinggal, kendaraan pribadi, perabotan, pakaian.' },
+  { question: 'Nisab & haul?', answer: '<strong>Nisab</strong> = 85 gr emas (~Rp 85jt). <strong>Haul</strong> = harta dimiliki min 1 tahun. Praktis: tetapkan tanggal patokan (misal Ramadhan) untuk hitung setahun sekali.' },
+  { question: 'Hutang mengurangi zakat?', answer: 'YA, hutang jatuh tempo 12 bulan ke depan kurangi harta. Rumus: Zakat = (Harta - Hutang Jangka Pendek) × 2,5%, jika setelahnya masih di atas nisab.' },
+  { question: 'Kapan bayar?', answer: 'Saat haul terpenuhi (harta dimiliki 1 tahun). Praktis: tetapkan tanggal patokan tahunan, hitung total harta, bayar 2,5%. Banyak Muslim Indonesia bayar di Ramadhan.' },
+];
+
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '/#tools' }, { label: calc.shortTitle }];
+---
+
+<Layout title={calc.title} description={calc.metaDescription} keywords={calc.keywords} canonical={`https://hitungcerdas.net/kalkulator/${calc.slug}`}>
+  <section class="calc-hero" style="--cat-color:#D97706;--cat-color2:#92400E">
+    <div class="wrap">
+      <Breadcrumb items={bcItems} />
+      <div class="calc-hero-grid">
+        <div class="calc-hero-text">
+          <div class="calc-hero-tag" style="background:#FEF3C7;color:#92400E"><i class="ti ti-coins"></i> {calc.categoryLabel}</div>
+          <h1 class="calc-hero-title">{calc.h1}</h1>
+          <p class="calc-hero-sub">{calc.introText}</p>
+          <ul class="calc-hero-benefits">{calc.benefits.map(b => <li><i class="ti ti-check"></i> {b}</li>)}</ul>
+        </div>
+        <div class="calc-hero-illust">
+          <svg viewBox="0 0 200 200" fill="none">
+            <circle cx="100" cy="100" r="85" fill="rgba(255,255,255,.08)"/>
+            <ellipse cx="100" cy="155" rx="50" ry="8" fill="#B45309"/>
+            <ellipse cx="100" cy="135" rx="50" ry="8" fill="#FCD34D" stroke="#B45309" stroke-width="1.5"/>
+            <ellipse cx="100" cy="105" rx="50" ry="8" fill="#FCD34D" stroke="#B45309" stroke-width="1.5"/>
+            <ellipse cx="100" cy="80" rx="50" ry="8" fill="#FCD34D" stroke="#B45309" stroke-width="1.5"/>
+            <text x="100" y="85" text-anchor="middle" font-size="11" font-weight="900" fill="#B45309">2,5%</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+
+  <section class="calc-section">
+    <div class="wrap">
+      <div class="calc-card">
+        <div class="calc-card-hdr">
+          <div class="calc-card-hdr-ic" style="background:linear-gradient(135deg,#D97706 0%,#92400E 100%)"><i class="ti ti-coins"></i></div>
+          <div><h2 class="calc-card-title">Kalkulator Zakat Mal</h2><p class="calc-card-sub">2,5% dari harta yang capai nisab & haul 1 tahun</p></div>
+        </div>
+
+        <div class="calc-grid">
+          <div class="calc-input">
+            <div class="field"><label>Tabungan & Uang Tunai</label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="tab" class="has-prefix" value="50.000.000" inputmode="numeric" /></div></div>
+            <div class="field"><label>Emas, Perak, Logam Mulia</label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="emas" class="has-prefix" value="20.000.000" inputmode="numeric" /></div></div>
+            <div class="field"><label>Investasi <span class="hint">(reksadana, saham, deposito, crypto)</span></label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="invest" class="has-prefix" value="30.000.000" inputmode="numeric" /></div></div>
+            <div class="field"><label>Piutang & Aset Usaha</label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="aset" class="has-prefix" placeholder="0" inputmode="numeric" /></div></div>
+            <div class="field"><label>Hutang Jatuh Tempo 12 Bulan</label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="hutang" class="has-prefix" placeholder="0" inputmode="numeric" /></div>
+              <p class="field-hint">Hanya cicilan 12 bulan ke depan untuk hutang panjang</p></div>
+            <div class="field"><label>Harga Emas per Gram</label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="emasGr" class="has-prefix" value="1.000.000" inputmode="numeric" /></div></div>
+
+            <div class="calc-action-bar">
+              <button type="button" class="btn-hitung" id="btnHitung"><i class="ti ti-calculator"></i> Hitung Sekarang</button>
+              <button type="button" class="btn-reset" id="btnReset"><i class="ti ti-refresh"></i> Reset</button>
+            </div>
+          </div>
+
+          <div class="calc-output">
+            <div class="result-placeholder" id="placeholder">
+              <i class="ti ti-coins result-placeholder-icon"></i>
+              <div class="result-placeholder-title">Hasil akan muncul di sini</div>
+              <div class="result-placeholder-desc">Isi semua harta yang dimiliki min 1 tahun, lalu klik <strong>"Hitung Sekarang"</strong>.</div>
+            </div>
+
+            <div class="result-wrapper" id="results">
+              <div class="result-main">
+                <div class="result-label">Zakat Mal Wajib Bayar</div>
+                <div class="result-value" id="zakatMal">Rp 0</div>
+                <div class="result-meta"><i class="ti ti-info-circle"></i> <span id="zakatPct">2,5% dari harta bersih</span></div>
+              </div>
+
+              <div class="result-grid">
+                <div class="result-item"><div class="result-item-label">Total Harta</div><div class="result-item-value" id="totalHarta">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">Harta Bersih</div><div class="result-item-value" id="hartaBersih">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">Nisab (85gr emas)</div><div class="result-item-value" id="nisab">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">Selisih vs Nisab</div><div class="result-item-value" id="selisih">Rp 0</div></div>
+              </div>
+
+              <div class="kelayakan-box">
+                <div class="kelayakan-hdr"><i class="ti ti-shield-check"></i> <span>Status & Haul</span></div>
+                <div id="status"></div>
+              </div>
+
+              <div class="export-row">
+                <button class="export-btn img" id="exportImg"><i class="ti ti-photo-down"></i><span>Save Image</span></button>
+                <button class="export-btn wa" id="exportWa"><i class="ti ti-brand-whatsapp"></i><span>Share WA</span></button>
+                <button class="export-btn pdf" id="exportPdf"><i class="ti ti-printer"></i><span>Print/PDF</span></button>
+                <button class="export-btn copy" id="exportCopy"><i class="ti ti-copy"></i><span>Copy Teks</span></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="content-section">
+    <div class="wrap-text">
+      <h2>Cara Menghitung Zakat Mal yang Benar</h2>
+      <p>Zakat mal wajib bagi Muslim yang hartanya capai nisab (85 gr emas ≈ Rp 85jt) dan sudah dimiliki min 1 tahun. Tarif 2,5% dari harta bersih (setelah dikurangi hutang jatuh tempo).</p>
+      <div class="cta-box"><h3>Tunaikan Zakat Mal Anda</h3><p>Hitung total harta, kurangi hutang, lalu bayar 2,5% via BAZNAS atau lembaga zakat resmi.</p></div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+  <FAQ items={faqs} />
+
+  <section class="section"><div class="wrap">
+    <div class="section-hdr"><div class="section-eyebrow">Kalkulator Lainnya</div><h2 class="section-title">Hitung Juga yang Lain</h2></div>
+    <div class="related-grid">{related.map(c => <CalculatorCard calc={c} />)}</div>
+  </div></section>
+</Layout>
+
+<script is:inline>
+  (function() {
+    function ready(fn) { if (window.HC && window.html2canvas) fn(); else setTimeout(() => ready(fn), 100); }
+    ready(() => {
+      const $ = id => document.getElementById(id);
+      const ids = ['tab', 'emas', 'invest', 'aset', 'hutang', 'emasGr'];
+      const els = {}; ids.forEach(id => { els[id] = $(id); els[id].addEventListener('input', HC.fmtInput); });
+
+      let lastCalc = null;
+
+      function hitung() {
+        const v = {}; ids.forEach(id => v[id] = HC.parseRp(els[id].value));
+        const total = v.tab + v.emas + v.invest + v.aset;
+        const bersih = Math.max(0, total - v.hutang);
+        const nisab = v.emasGr * 85;
+        const wajib = bersih >= nisab;
+        const zakat = wajib ? bersih * 0.025 : 0;
+        const selisih = bersih - nisab;
+
+        $('zakatMal').textContent = HC.fmt(zakat);
+        $('totalHarta').textContent = HC.fmt(total);
+        $('hartaBersih').textContent = HC.fmt(bersih);
+        $('nisab').textContent = HC.fmt(nisab);
+        $('selisih').textContent = (selisih >= 0 ? '+ ' : '- ') + HC.fmt(Math.abs(selisih));
+
+        const $s = $('status');
+        if (wajib) $s.innerHTML = `<div class="kelayakan-status ks-good"><i class="ti ti-circle-check"></i> WAJIB ZAKAT</div><p class="ks-note">Harta bersih melebihi nisab. Bayar <strong>${HC.fmt(zakat)}</strong> jika sudah haul 1 tahun.</p>`;
+        else $s.innerHTML = `<div class="kelayakan-status ks-warn"><i class="ti ti-info-circle"></i> Belum Wajib</div><p class="ks-note">Masih ${HC.fmt(nisab - bersih)} di bawah nisab. Disunnahkan sedekah.</p>`;
+
+        lastCalc = { ...v, total, bersih, nisab, wajib, zakat, selisih };
+        $('placeholder').style.display = 'none';
+        $('results').classList.add('show');
+        $('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        HC.toast('Berhasil dihitung!');
+      }
+
+      function reset() {
+        els.tab.value = '50.000.000'; els.emas.value = '20.000.000'; els.invest.value = '30.000.000';
+        els.aset.value = ''; els.hutang.value = ''; els.emasGr.value = '1.000.000';
+        $('placeholder').style.display = ''; $('results').classList.remove('show');
+        lastCalc = null; HC.toast('Form direset', 'info');
+      }
+
+      function buildReport() {
+        if (!lastCalc) return null;
+        const c = lastCalc;
+        return HC.buildReportCard({
+          title: '🪙 Zakat Mal', color: '#D97706', color2: '#92400E',
+          heroLabel: c.wajib ? 'Zakat Wajib' : 'Status',
+          heroValue: c.wajib ? HC.fmt(c.zakat) : 'Belum Nisab',
+          heroSubtext: c.wajib ? `2,5% dari harta bersih ${HC.fmt(c.bersih)}` : `Masih ${HC.fmt(c.nisab - c.bersih)} di bawah nisab`,
+          inputs: [
+            { label: '💵 Tabungan', value: HC.fmt(c.tab) },
+            { label: '🪙 Emas/Perak', value: HC.fmt(c.emas) },
+            { label: '📈 Investasi', value: HC.fmt(c.invest) },
+            { label: '📊 Aset Usaha', value: HC.fmt(c.aset) },
+            { label: '💳 Hutang JT', value: HC.fmt(c.hutang) },
+          ],
+          results: [
+            { label: 'Total Harta', value: HC.fmt(c.total) },
+            { label: 'Harta Bersih', value: HC.fmt(c.bersih) },
+            { label: 'Nisab', value: HC.fmt(c.nisab) },
+            { label: 'Status', value: c.wajib ? '✅ Wajib' : '⏸️ Belum', highlight: c.wajib },
+            { label: 'Zakat Wajib', value: HC.fmt(c.zakat), highlight: true },
+          ],
+          insight: c.wajib ? 'Bayar jika haul 1 tahun terpenuhi. Via BAZNAS/LAZ resmi. Disunnahkan di Ramadhan untuk pahala berlipat.' : 'Belum wajib zakat mal. Tetap dianjurkan sedekah & infaq.',
+          slug: 'zakat-mal',
+        });
+      }
+
+      function summaryText() {
+        if (!lastCalc) return '';
+        const c = lastCalc;
+        return `🪙 *Zakat Mal - HitungCerdas*\n\nTotal Harta: ${HC.fmt(c.total)}\nHarta Bersih: ${HC.fmt(c.bersih)}\nNisab: ${HC.fmt(c.nisab)}\n\n${c.wajib ? `✅ *Wajib Zakat: ${HC.fmt(c.zakat)}*` : `⏸️ Belum capai nisab`}\n\nHitung: https://hitungcerdas.net/kalkulator/zakat-mal`;
+      }
+
+      $('btnHitung').addEventListener('click', hitung);
+      $('btnReset').addEventListener('click', reset);
+      $('exportImg').addEventListener('click', () => { const r = buildReport(); if (r) HC.exportToImage(r, 'zakat-mal-' + Date.now()); else HC.toast('Hitung dulu', 'error'); });
+      $('exportWa').addEventListener('click', () => { const r = buildReport(); if (r) HC.shareWhatsApp(r, summaryText(), 'zakat-mal'); else HC.toast('Hitung dulu', 'error'); });
+      $('exportPdf').addEventListener('click', () => { if (lastCalc) HC.exportToPDF(); else HC.toast('Hitung dulu', 'error'); });
+      $('exportCopy').addEventListener('click', () => { if (lastCalc) HC.copyText(summaryText(), 'Tersalin!'); else HC.toast('Hitung dulu', 'error'); });
+    });
+  })();
+</script>

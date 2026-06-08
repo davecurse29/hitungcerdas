@@ -1,0 +1,104 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import AdSlot from '../../components/AdSlot.astro';
+
+const today = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'Cara Menghitung Gaji Bersih' }];
+---
+
+<Layout
+  title="Cara Menghitung Gaji Bersih (Take-Home Pay) Karyawan — Komponen Lengkap"
+  description="Panduan menghitung gaji bersih (take-home pay) karyawan dari gaji bruto. Komponen BPJS, PPh 21, biaya jabatan, dan tips alokasi 50/30/20."
+  keywords={['cara menghitung gaji bersih', 'take home pay', 'gaji bersih karyawan', 'bpjs karyawan']}
+  canonical="https://hitungcerdas.net/blog/cara-menghitung-gaji-bersih"
+  ogType="article"
+>
+  <section class="article-hero" style="--cat-color:#059669;--cat-color2:#047857">
+    <div class="wrap">
+      <Breadcrumb items={bcItems} />
+      <div class="article-tag">GAJI & PENGHASILAN</div>
+      <h1>Cara Menghitung Gaji Bersih (Take-Home Pay) Karyawan</h1>
+      <div class="article-meta">
+        <span><i class="ti ti-calendar"></i> {today}</span>
+        <span><i class="ti ti-clock"></i> 4 menit baca</span>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+
+  <article class="content-section">
+    <div class="wrap-text">
+      <p class="lead">
+        Gaji bersih (take-home pay) adalah uang yang benar-benar masuk rekeningmu setelah semua
+        potongan: BPJS, PPh 21, dan potongan lain. Biasanya 70-85% dari gaji bruto. Untuk gaji
+        bruto Rp 10 juta, take-home pay sekitar <strong>Rp 8-8,5 juta</strong>.
+      </p>
+
+      <h2>1. Komponen Gaji Bruto</h2>
+      <ul class="info-list">
+        <li><strong>Gaji Pokok</strong> — Komponen utama, biasanya 60-80% dari total</li>
+        <li><strong>Tunjangan Tetap</strong> — Transport, makan, jabatan, perumahan</li>
+        <li><strong>Tunjangan Tidak Tetap</strong> — Lembur, insentif, komisi</li>
+        <li><strong>Bonus & THR</strong> — Tahunan, tidak masuk bulanan</li>
+      </ul>
+
+      <h2>2. Komponen Potongan</h2>
+      <p>Potongan standar karyawan di Indonesia:</p>
+      <ul class="info-list">
+        <li><strong>BPJS Kesehatan</strong>: 1% gaji (max Rp 120.000/bln)</li>
+        <li><strong>BPJS JHT</strong> (Jaminan Hari Tua): 2% gaji</li>
+        <li><strong>BPJS JP</strong> (Jaminan Pensiun): 1% gaji (max Rp 87.000/bln)</li>
+        <li><strong>PPh 21</strong>: Progresif 5-35% dari PKP</li>
+        <li><strong>Potongan Lain</strong>: Koperasi, simpanan wajib, cicilan internal</li>
+      </ul>
+
+      <h2>3. Rumus Take-Home Pay</h2>
+      <div class="formula-box">
+        <p class="formula"><strong>THP = Bruto - BPJS Karyawan - PPh 21 - Potongan Lain</strong></p>
+      </div>
+
+      <h2>4. Contoh Perhitungan</h2>
+      <p>Karyawan dengan gaji pokok Rp 8 juta + tunjangan Rp 1,5 juta, status K/0:</p>
+      <ul class="info-list">
+        <li>Bruto bulanan: <strong>Rp 9.500.000</strong></li>
+        <li>BPJS Kesehatan (1%): Rp 95.000</li>
+        <li>BPJS JHT (2%): Rp 160.000</li>
+        <li>BPJS JP (1%): Rp 80.000</li>
+        <li>PPh 21 bulanan: ~Rp 350.000</li>
+        <li>Total potongan: Rp 685.000</li>
+        <li><strong>Take-Home Pay: Rp 8.815.000</strong> (~93% dari bruto)</li>
+      </ul>
+
+      <h2>5. Tips Alokasi 50/30/20</h2>
+      <p>Aturan klasik untuk alokasi gaji bulanan:</p>
+      <ul class="info-list">
+        <li><strong>50% Kebutuhan</strong>: Sewa/cicilan, listrik, transport, makan, BPJS</li>
+        <li><strong>30% Keinginan</strong>: Hiburan, makan di luar, hobby, langganan</li>
+        <li><strong>20% Tabungan & Investasi</strong>: Dana darurat, reksadana, saham, emas</li>
+      </ul>
+
+      <div class="cta-box">
+        <h3>Cek Take-Home Pay Kamu</h3>
+        <p>Gunakan kalkulator gaji bersih HitungCerdas untuk hitung detail bulanan.</p>
+        <p style="margin-top:14px"><a href="/kalkulator/gaji-bersih" class="btn btn-pri"><i class="ti ti-calculator"></i> Kalkulator Gaji Bersih</a></p>
+      </div>
+    </div>
+  </article>
+
+  <AdSlot format="horizontal" />
+</Layout>
+
+<style>
+  .article-hero { background: linear-gradient(135deg, var(--cat-color) 0%, var(--cat-color2) 100%); color: #fff; padding: 20px 0 48px; }
+  .article-hero :global(.breadcrumb-item), .article-hero :global(.breadcrumb-item a) { color: rgba(255, 255, 255, .7); }
+  .article-hero :global(.breadcrumb-item a:hover) { color: var(--gold-soft); }
+  .article-hero :global(.breadcrumb-item span) { color: #fff; }
+  .article-hero :global(.breadcrumb-item i) { color: rgba(255, 255, 255, .4); }
+  .article-tag { display: inline-block; font-size: 11px; font-weight: 700; color: var(--gold-soft); letter-spacing: .1em; text-transform: uppercase; margin: 16px 0 12px; }
+  .article-hero h1 { color: #fff; font-size: clamp(26px, 3.8vw, 42px); margin: 0 0 20px; max-width: 800px; line-height: 1.2; }
+  .article-meta { display: flex; gap: 20px; color: rgba(255, 255, 255, .75); font-size: 13px; flex-wrap: wrap; }
+  .article-meta span { display: inline-flex; align-items: center; gap: 6px; }
+  .lead { font-size: 17px !important; line-height: 1.7 !important; color: var(--text) !important; padding: 20px 24px; background: var(--bg-soft); border-radius: 12px; border-left: 4px solid var(--green); margin-bottom: 24px !important; }
+</style>

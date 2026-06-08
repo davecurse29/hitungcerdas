@@ -1,0 +1,295 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import FAQ from '../../components/FAQ.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import CalculatorCard from '../../components/CalculatorCard.astro';
+import { getCalculatorBySlug, getRelatedCalculators } from '../../data/calculators';
+
+const calc = getCalculatorBySlug('gaji-bersih')!;
+const related = getRelatedCalculators('gaji-bersih', 3);
+
+const faqs = [
+  { question: 'Apa itu gaji bersih (take-home pay)?', answer: 'Gaji bersih = uang yang benar-benar masuk rekeningmu setelah semua potongan: BPJS Kesehatan (1%), BPJS JHT (2%), BPJS JP (1%), PPh 21 progresif, dan potongan internal (koperasi, cicilan). Biasanya 70-85% dari gaji bruto.' },
+  { question: 'Berapa total potongan BPJS karyawan?', answer: 'Total potongan BPJS karyawan = 4% gaji: <strong>BPJS Kesehatan 1%</strong> (maks Rp 120rb/bln, batas ceiling Rp 12jt), <strong>JHT 2%</strong>, <strong>JP 1%</strong> (maks Rp 87rb/bln, batas ceiling Rp 8,7jt). Perusahaan tambah ~9% dari sisinya untuk JKK, JKM, BPJS Kes.' },
+  { question: 'Bagaimana alokasi 50/30/20 yang tepat?', answer: 'Aturan emas alokasi take-home pay: <strong>50% kebutuhan</strong> (sewa/cicilan, listrik, transport, makan), <strong>30% keinginan</strong> (hiburan, hobi, makan di luar), <strong>20% tabungan & investasi</strong> (dana darurat, reksadana, emas).' },
+  { question: 'Apakah lembur dan komisi kena PPh?', answer: 'YA, lembur dan komisi termasuk objek PPh 21. Hitungnya ditambahkan ke bruto setahun. Tarifnya progresif sama seperti gaji pokok. Komisi yang besar bisa bikin loncat ke lapisan tarif berikutnya.' },
+];
+
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '/#tools' }, { label: calc.shortTitle }];
+---
+
+<Layout title={calc.title} description={calc.metaDescription} keywords={calc.keywords} canonical={`https://hitungcerdas.net/kalkulator/${calc.slug}`}>
+  <section class="calc-hero" style="--cat-color:#059669;--cat-color2:#047857">
+    <div class="wrap">
+      <Breadcrumb items={bcItems} />
+      <div class="calc-hero-grid">
+        <div class="calc-hero-text">
+          <div class="calc-hero-tag" style="background:#D1FAE5;color:#047857"><i class="ti ti-wallet"></i> {calc.categoryLabel}</div>
+          <h1 class="calc-hero-title">{calc.h1}</h1>
+          <p class="calc-hero-sub">{calc.introText}</p>
+          <ul class="calc-hero-benefits">{calc.benefits.map(b => <li><i class="ti ti-check"></i> {b}</li>)}</ul>
+        </div>
+        <div class="calc-hero-illust">
+          <svg viewBox="0 0 200 200" fill="none">
+            <circle cx="100" cy="100" r="85" fill="rgba(255,255,255,.08)"/>
+            <rect x="50" y="65" width="100" height="70" rx="8" fill="#FFF" stroke="#FBBF24" stroke-width="2"/>
+            <circle cx="100" cy="100" r="20" fill="none" stroke="#059669" stroke-width="3"/>
+            <text x="100" y="106" text-anchor="middle" font-size="14" font-weight="900" fill="#059669" font-family="Inter">Rp</text>
+            <rect x="60" y="75" width="20" height="5" fill="#FBBF24"/>
+            <rect x="120" y="75" width="20" height="5" fill="#FBBF24"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+
+  <section class="calc-section">
+    <div class="wrap">
+      <div class="calc-card">
+        <div class="calc-card-hdr">
+          <div class="calc-card-hdr-ic" style="background:linear-gradient(135deg,#059669 0%,#047857 100%)"><i class="ti ti-wallet"></i></div>
+          <div><h2 class="calc-card-title">Kalkulator Gaji Bersih</h2><p class="calc-card-sub">Hitung take-home pay setelah BPJS & PPh 21</p></div>
+        </div>
+
+        <div class="calc-grid">
+          <div class="calc-input">
+            <div class="field"><label>Gaji Pokok</label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span>
+                <input type="text" id="gaji" class="has-prefix" value="8.000.000" inputmode="numeric" /></div></div>
+
+            <div class="field"><label>Tunjangan Tetap <span class="hint">(transport, makan)</span></label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span>
+                <input type="text" id="tunj" class="has-prefix" value="1.500.000" inputmode="numeric" /></div></div>
+
+            <div class="field"><label>Tunjangan Tidak Tetap <span class="hint">(lembur, komisi)</span></label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span>
+                <input type="text" id="tunjVar" class="has-prefix" value="0" inputmode="numeric" /></div></div>
+
+            <div class="field"><label>Status PTKP</label>
+              <select id="ptkp">
+                <option value="54000000">TK/0 - Lajang</option>
+                <option value="58500000">K/0 - Menikah no anak</option>
+                <option value="63000000">K/1 - 1 anak</option>
+                <option value="67500000">K/2 - 2 anak</option>
+                <option value="72000000">K/3 - 3 anak</option>
+              </select></div>
+
+            <div class="field"><label>Potongan Lain per Bulan <span class="hint">(koperasi, cicilan internal)</span></label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span>
+                <input type="text" id="potLain" class="has-prefix" value="0" inputmode="numeric" /></div></div>
+
+            <div class="calc-action-bar">
+              <button type="button" class="btn-hitung" id="btnHitung"><i class="ti ti-calculator"></i> Hitung Sekarang</button>
+              <button type="button" class="btn-reset" id="btnReset"><i class="ti ti-refresh"></i> Reset</button>
+            </div>
+          </div>
+
+          <div class="calc-output">
+            <div class="result-placeholder" id="placeholder">
+              <i class="ti ti-wallet result-placeholder-icon"></i>
+              <div class="result-placeholder-title">Take-Home Pay akan muncul di sini</div>
+              <div class="result-placeholder-desc">Isi komponen gaji, klik <strong>"Hitung Sekarang"</strong>.</div>
+            </div>
+
+            <div class="result-wrapper" id="results">
+              <div class="result-main">
+                <div class="result-label">Take-Home Pay (Gaji Bersih)</div>
+                <div class="result-value" id="thp">Rp 0</div>
+                <div class="result-meta"><i class="ti ti-info-circle"></i> <span id="thpPct">0% dari bruto</span></div>
+              </div>
+
+              <div class="result-grid">
+                <div class="result-item"><div class="result-item-label">Gaji Bruto/Bulan</div><div class="result-item-value" id="bruto">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">BPJS Karyawan</div><div class="result-item-value result-warn" id="bpjsTotal">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">PPh 21/Bulan</div><div class="result-item-value result-warn" id="pphBulan">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">Potongan Lain</div><div class="result-item-value" id="potLainShow">Rp 0</div></div>
+              </div>
+
+              <div class="adv-section">
+                <div class="adv-toggle"><span><i class="ti ti-pie-chart"></i>&nbsp; Alokasi 50/30/20 Take-Home</span><i class="ti ti-chevron-down chev"></i></div>
+                <div class="adv-content">
+                  <table class="compare-table">
+                    <thead><tr><th>Kategori</th><th class="right">% THP</th><th class="right">Nominal/Bulan</th></tr></thead>
+                    <tbody id="alokasiBody"></tbody>
+                  </table>
+                  <p style="font-size:11.5px;color:var(--text-mute);margin-top:8px;line-height:1.5">💡 Aturan klasik: <strong>50%</strong> kebutuhan (cicilan, makan, transport), <strong>30%</strong> keinginan (hiburan), <strong>20%</strong> tabungan & investasi.</p>
+                </div>
+              </div>
+
+              <div class="adv-section">
+                <div class="adv-toggle"><span><i class="ti ti-target"></i>&nbsp; Tabungan 20% Selama 5 Tahun</span><i class="ti ti-chevron-down chev"></i></div>
+                <div class="adv-content">
+                  <table class="compare-table">
+                    <thead><tr><th>Tahun</th><th class="right">Tabungan Pokok</th><th class="right">+ Bunga 6%/thn</th></tr></thead>
+                    <tbody id="proyeksiBody"></tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div class="export-row">
+                <button type="button" class="export-btn img" id="exportImg"><i class="ti ti-photo-down"></i><span>Save Image</span></button>
+                <button type="button" class="export-btn wa" id="exportWa"><i class="ti ti-brand-whatsapp"></i><span>Share WA</span></button>
+                <button type="button" class="export-btn pdf" id="exportPdf"><i class="ti ti-printer"></i><span>Print/PDF</span></button>
+                <button type="button" class="export-btn copy" id="exportCopy"><i class="ti ti-copy"></i><span>Copy Teks</span></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="content-section">
+    <div class="wrap-text">
+      <h2>Cara Menghitung Gaji Bersih Karyawan</h2>
+      <p>Gaji bersih (take-home pay) = gaji bruto - BPJS Kesehatan 1% - JHT 2% - JP 1% - PPh 21 progresif - potongan lain. Untuk gaji bruto Rp 9,5jt, THP biasanya sekitar Rp 8,8jt (93%).</p>
+      <div class="cta-box"><h3>Coba Sekarang</h3><p>Isi data gaji & potongan, klik "Hitung Sekarang" untuk simulasi lengkap dengan alokasi 50/30/20.</p></div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+  <FAQ title="Pertanyaan Seputar Gaji Bersih" items={faqs} />
+
+  <section class="section"><div class="wrap">
+    <div class="section-hdr"><div class="section-eyebrow">Kalkulator Lainnya</div><h2 class="section-title">Hitung Juga yang Lain</h2></div>
+    <div class="related-grid">{related.map(c => <CalculatorCard calc={c} />)}</div>
+  </div></section>
+</Layout>
+
+<script is:inline>
+  (function() {
+    function ready(fn) { if (window.HC && window.html2canvas) fn(); else setTimeout(() => ready(fn), 100); }
+    ready(() => {
+      const $ = id => document.getElementById(id);
+      const els = { gaji: $('gaji'), tunj: $('tunj'), tunjVar: $('tunjVar'), ptkp: $('ptkp'), potLain: $('potLain') };
+      [els.gaji, els.tunj, els.tunjVar, els.potLain].forEach(el => el.addEventListener('input', HC.fmtInput));
+      document.querySelectorAll('.adv-toggle').forEach(t => t.addEventListener('click', () => t.parentElement.classList.toggle('open')));
+
+      const BRACKETS = [
+        { max: 60000000, rate: 0.05 }, { max: 250000000, rate: 0.15 },
+        { max: 500000000, rate: 0.25 }, { max: 5000000000, rate: 0.30 },
+        { max: Infinity, rate: 0.35 },
+      ];
+      function calcPPh(pkp) {
+        if (pkp <= 0) return 0;
+        let r = pkp, total = 0, prev = 0;
+        for (const b of BRACKETS) { if (r <= 0) break; const s = Math.min(r, b.max - prev); total += s * b.rate; r -= s; prev = b.max; }
+        return total;
+      }
+
+      let lastCalc = null;
+
+      function hitung() {
+        const gaji = HC.parseRp(els.gaji.value);
+        const tunj = HC.parseRp(els.tunj.value);
+        const tunjVar = HC.parseRp(els.tunjVar.value);
+        const ptkp = parseInt(els.ptkp.value);
+        const potLain = HC.parseRp(els.potLain.value);
+
+        if (gaji === 0) { HC.toast('Masukkan gaji pokok dulu', 'error'); return; }
+
+        const brutoBulan = gaji + tunj + tunjVar;
+        // BPJS (with ceiling rules)
+        const bpjsKes = Math.min(brutoBulan * 0.01, 120000);
+        const bpjsJht = brutoBulan * 0.02;
+        const bpjsJp = Math.min(brutoBulan * 0.01, 87000);
+        const bpjsTotal = bpjsKes + bpjsJht + bpjsJp;
+
+        // PPh 21
+        const brutoTahun = brutoBulan * 12;
+        const biayaJabatan = Math.min(brutoTahun * 0.05, 6000000);
+        const neto = brutoTahun - biayaJabatan - (bpjsTotal * 12);
+        const pkp = Math.max(0, neto - ptkp);
+        const pphTahun = calcPPh(pkp);
+        const pphBulan = pphTahun / 12;
+
+        const thp = brutoBulan - bpjsTotal - pphBulan - potLain;
+        const thpPct = (thp / brutoBulan) * 100;
+
+        $('thp').textContent = HC.fmt(thp);
+        $('thpPct').textContent = `${thpPct.toFixed(1)}% dari bruto`;
+        $('bruto').textContent = HC.fmt(brutoBulan);
+        $('bpjsTotal').textContent = HC.fmt(bpjsTotal);
+        $('pphBulan').textContent = HC.fmt(pphBulan);
+        $('potLainShow').textContent = HC.fmt(potLain);
+
+        $('alokasiBody').innerHTML = `
+          <tr><td>🏠 Kebutuhan (50%)</td><td class="right">50%</td><td class="right">${HC.fmt(thp * 0.5)}</td></tr>
+          <tr><td>🎮 Keinginan (30%)</td><td class="right">30%</td><td class="right">${HC.fmt(thp * 0.3)}</td></tr>
+          <tr class="active"><td>💰 Tabungan (20%)</td><td class="right">20%</td><td class="right">${HC.fmt(thp * 0.2)}</td></tr>`;
+
+        // Projection
+        const monthly = thp * 0.2;
+        const r = 0.06 / 12;
+        let html = '';
+        for (let y = 1; y <= 5; y++) {
+          const months = y * 12;
+          const pokok = monthly * months;
+          const fv = monthly * ((Math.pow(1 + r, months) - 1) / r);
+          html += `<tr><td>Tahun ${y}</td><td class="right">${HC.fmt(pokok)}</td><td class="right" style="color:var(--green-dark);font-weight:700">${HC.fmt(fv)}</td></tr>`;
+        }
+        $('proyeksiBody').innerHTML = html;
+
+        lastCalc = { gaji, tunj, tunjVar, ptkpLabel: els.ptkp.options[els.ptkp.selectedIndex].text, potLain, brutoBulan, bpjsTotal, pphBulan, thp, thpPct };
+        $('placeholder').style.display = 'none';
+        $('results').classList.add('show');
+        $('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        HC.toast('Gaji bersih berhasil dihitung!');
+      }
+
+      function reset() {
+        els.gaji.value = '8.000.000'; els.tunj.value = '1.500.000'; els.tunjVar.value = '0';
+        els.ptkp.value = '54000000'; els.potLain.value = '0';
+        $('placeholder').style.display = ''; $('results').classList.remove('show');
+        lastCalc = null; HC.toast('Form direset', 'info');
+      }
+
+      function buildReport() {
+        if (!lastCalc) return null;
+        const c = lastCalc;
+        const insight = c.thpPct >= 90
+          ? `Take-Home Pay ${c.thpPct.toFixed(1)}% dari bruto — sangat efisien! Maksimalkan alokasi 20% untuk tabungan & investasi.`
+          : `Take-Home Pay ${c.thpPct.toFixed(1)}% dari bruto. PPh 21 cukup besar — pertimbangkan zakat via lembaga resmi untuk kurangi PKP.`;
+
+        return HC.buildReportCard({
+          title: '💰 Gaji Bersih (Take-Home Pay)',
+          color: '#059669', color2: '#047857',
+          heroLabel: 'Take-Home Pay/Bulan',
+          heroValue: HC.fmt(c.thp),
+          heroSubtext: `${c.thpPct.toFixed(1)}% dari bruto · ${c.ptkpLabel}`,
+          inputs: [
+            { label: '💼 Gaji Pokok', value: HC.fmt(c.gaji) },
+            { label: '➕ Tunjangan Tetap', value: HC.fmt(c.tunj) },
+            { label: '⚡ Tunj. Tidak Tetap', value: HC.fmt(c.tunjVar) },
+            { label: '👨‍👩‍👧 Status PTKP', value: c.ptkpLabel },
+          ],
+          results: [
+            { label: 'Take-Home Pay', value: HC.fmt(c.thp), highlight: true },
+            { label: 'Bruto/Bulan', value: HC.fmt(c.brutoBulan) },
+            { label: 'BPJS Karyawan (4%)', value: HC.fmt(c.bpjsTotal) },
+            { label: 'PPh 21/Bulan', value: HC.fmt(c.pphBulan) },
+            { label: 'Untuk Kebutuhan (50%)', value: HC.fmt(c.thp * 0.5) },
+            { label: 'Untuk Tabungan (20%)', value: HC.fmt(c.thp * 0.2), highlight: true },
+          ],
+          insight, slug: 'gaji-bersih',
+        });
+      }
+
+      function summaryText() {
+        if (!lastCalc) return '';
+        const c = lastCalc;
+        return `💰 *Gaji Bersih - HitungCerdas*\n\nBruto: ${HC.fmt(c.brutoBulan)}/bln\nBPJS: ${HC.fmt(c.bpjsTotal)}\nPPh 21: ${HC.fmt(c.pphBulan)}\n\n💵 *Take-Home Pay: ${HC.fmt(c.thp)}/bulan*\n📊 ${c.thpPct.toFixed(1)}% dari bruto\n\nAlokasi 50/30/20:\n• Kebutuhan: ${HC.fmt(c.thp * 0.5)}\n• Keinginan: ${HC.fmt(c.thp * 0.3)}\n• Tabungan: ${HC.fmt(c.thp * 0.2)}\n\nHitung di: https://hitungcerdas.net/kalkulator/gaji-bersih`;
+      }
+
+      $('btnHitung').addEventListener('click', hitung);
+      $('btnReset').addEventListener('click', reset);
+      $('exportImg').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToImage(c, 'gaji-bersih-' + Date.now()); });
+      $('exportWa').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.shareWhatsApp(c, summaryText(), 'gaji-bersih'); });
+      $('exportPdf').addEventListener('click', () => { if (!lastCalc) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToPDF(); });
+      $('exportCopy').addEventListener('click', () => { if (!lastCalc) { HC.toast('Hitung dulu', 'error'); return; } HC.copyText(summaryText(), 'Tersalin!'); });
+    });
+  })();
+</script>

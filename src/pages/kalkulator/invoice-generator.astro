@@ -1,0 +1,301 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import FAQ from '../../components/FAQ.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import CalculatorCard from '../../components/CalculatorCard.astro';
+import { getCalculatorBySlug, getRelatedCalculators } from '../../data/calculators';
+
+const calc = getCalculatorBySlug('invoice-generator')!;
+const related = getRelatedCalculators('invoice-generator', 3);
+
+const faqs = [
+  { question: 'Komponen wajib invoice profesional?', answer: '1) Nomor invoice unik, 2) Tanggal & jatuh tempo, 3) Nama & alamat pihak (penjual+pembeli), 4) Detail item (nama, qty, harga), 5) Subtotal, PPN 11%, total, 6) Cara pembayaran (no rekening), 7) Tanda tangan/cap.' },
+  { question: 'PPN UMKM kapan?', answer: 'PKP wajib PPN 11% jika omzet > Rp 4,8 miliar/tahun. UMKM < 4,8M boleh tidak PPN. Khusus pelaku UMKM tertentu bisa pakai PPh Final 0,5% omzet.' },
+  { question: 'Penomoran invoice ideal?', answer: 'Format: <strong>INV/YYYY/MM/NNN</strong> (contoh: INV/2026/06/001). Urut, mudah dicari. Hindari nomor random. Pastikan tidak ada duplikat.' },
+  { question: 'Tempo pembayaran umum?', answer: 'Standar: NET 30 (30 hari). Bisa NET 7/14/30/60. Cantumkan tanggal jatuh tempo eksplisit. Untuk client baru/risk tinggi: <strong>50% DP, 50% sebelum kirim</strong>.' },
+  { question: 'Pajak hadiah/jasa?', answer: 'PPh 23 (jasa) 2% dari DPP, dipotong pemberi kerja. PPh 4(2) konstruksi 1,75-6%. PPh 21 freelance: progresif 5-35%. Wajib NPWP untuk legal.' },
+];
+
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '/#tools' }, { label: calc.shortTitle }];
+---
+
+<Layout title={calc.title} description={calc.metaDescription} keywords={calc.keywords} canonical={`https://hitungcerdas.net/kalkulator/${calc.slug}`}>
+  <section class="calc-hero" style="--cat-color:#0EA5E9;--cat-color2:#0369A1">
+    <div class="wrap">
+      <Breadcrumb items={bcItems} />
+      <div class="calc-hero-grid">
+        <div class="calc-hero-text">
+          <div class="calc-hero-tag" style="background:#E0F2FE;color:#0369A1"><i class="ti ti-file-invoice"></i> {calc.categoryLabel}</div>
+          <h1 class="calc-hero-title">{calc.h1}</h1>
+          <p class="calc-hero-sub">{calc.introText}</p>
+          <ul class="calc-hero-benefits">{calc.benefits.map(b => <li><i class="ti ti-check"></i> {b}</li>)}</ul>
+        </div>
+        <div class="calc-hero-illust">
+          <svg viewBox="0 0 200 200" fill="none">
+            <circle cx="100" cy="100" r="85" fill="rgba(255,255,255,.08)"/>
+            <rect x="55" y="40" width="90" height="130" rx="6" fill="#FFF" stroke="#FBBF24" stroke-width="2.5"/>
+            <rect x="65" y="55" width="40" height="3" fill="#0A2540"/>
+            <rect x="65" y="65" width="30" height="2" fill="#94A3B8"/>
+            <line x1="65" y1="80" x2="135" y2="80" stroke="#FBBF24" stroke-width="1"/>
+            <rect x="65" y="90" width="50" height="2" fill="#475569"/>
+            <rect x="125" y="90" width="10" height="2" fill="#475569"/>
+            <rect x="65" y="100" width="55" height="2" fill="#475569"/>
+            <rect x="125" y="100" width="10" height="2" fill="#475569"/>
+            <line x1="65" y1="120" x2="135" y2="120" stroke="#FBBF24" stroke-width="1"/>
+            <rect x="65" y="130" width="35" height="3" fill="#0A2540"/>
+            <rect x="120" y="130" width="15" height="3" fill="#FBBF24"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+
+  <section class="calc-section">
+    <div class="wrap">
+      <div class="calc-card">
+        <div class="calc-card-hdr">
+          <div class="calc-card-hdr-ic" style="background:linear-gradient(135deg,#0EA5E9 0%,#0369A1 100%)"><i class="ti ti-file-invoice"></i></div>
+          <div><h2 class="calc-card-title">Invoice Generator UMKM</h2><p class="calc-card-sub">Hitung invoice + PPN + DP/sisa, lalu export PNG/PDF</p></div>
+        </div>
+
+        <div class="calc-grid">
+          <div class="calc-input">
+            <div class="field"><label>Nama Bisnis/Penjual</label>
+              <input type="text" id="penjual" value="Toko Cuan Pertama" placeholder="Nama bisnis Anda" /></div>
+            <div class="field"><label>Nama Client/Pembeli</label>
+              <input type="text" id="pembeli" placeholder="PT. Nama Client" value="PT. Klien Contoh" /></div>
+            <div class="field"><label>Nomor Invoice</label>
+              <input type="text" id="noInv" value="INV/2026/06/001" /></div>
+
+            <div class="field">
+              <label>Item 1</label>
+              <input type="text" id="i1nama" placeholder="Nama item" value="Konsultasi" />
+              <div class="field-row" style="margin-top:6px">
+                <input type="number" id="i1qty" placeholder="Qty" value="2" min="0" />
+                <div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="i1harga" class="has-prefix" placeholder="Harga" value="500.000" inputmode="numeric" /></div>
+              </div>
+            </div>
+            <div class="field">
+              <label>Item 2 <span class="hint">(opsional)</span></label>
+              <input type="text" id="i2nama" placeholder="Nama item" />
+              <div class="field-row" style="margin-top:6px">
+                <input type="number" id="i2qty" placeholder="Qty" min="0" />
+                <div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="i2harga" class="has-prefix" placeholder="Harga" inputmode="numeric" /></div>
+              </div>
+            </div>
+            <div class="field">
+              <label>Item 3 <span class="hint">(opsional)</span></label>
+              <input type="text" id="i3nama" placeholder="Nama item" />
+              <div class="field-row" style="margin-top:6px">
+                <input type="number" id="i3qty" placeholder="Qty" min="0" />
+                <div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="i3harga" class="has-prefix" placeholder="Harga" inputmode="numeric" /></div>
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="check-row"><input type="checkbox" id="usePpn" /> <span>Kena PPN 11% (PKP)</span></label>
+              <label class="check-row"><input type="checkbox" id="useDp" /> <span>Pakai DP/Down Payment</span></label>
+              <div id="dpField" style="display:none;margin-top:6px">
+                <div class="input-wrap"><input type="number" id="dpPct" class="has-suffix" value="50" min="0" max="100" /><span class="input-suffix">%</span></div>
+              </div>
+            </div>
+
+            <div class="calc-action-bar">
+              <button type="button" class="btn-hitung" id="btnHitung"><i class="ti ti-calculator"></i> Hitung Sekarang</button>
+              <button type="button" class="btn-reset" id="btnReset"><i class="ti ti-refresh"></i> Reset</button>
+            </div>
+          </div>
+
+          <div class="calc-output">
+            <div class="result-placeholder" id="placeholder">
+              <i class="ti ti-file-invoice result-placeholder-icon"></i>
+              <div class="result-placeholder-title">Hasil akan muncul di sini</div>
+              <div class="result-placeholder-desc">Isi nama client & minimal 1 item, lalu klik <strong>"Hitung Sekarang"</strong>.</div>
+            </div>
+
+            <div class="result-wrapper" id="results">
+              <div class="result-main">
+                <div class="result-label">Total Invoice</div>
+                <div class="result-value" id="totalInv">Rp 0</div>
+                <div class="result-meta"><i class="ti ti-info-circle"></i> <span id="invMeta">0 item</span></div>
+              </div>
+
+              <div class="result-grid">
+                <div class="result-item"><div class="result-item-label">Subtotal</div><div class="result-item-value" id="subtotal">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">PPN 11%</div><div class="result-item-value" id="ppn">Rp 0</div></div>
+                <div class="result-item" id="dpRow" style="display:none"><div class="result-item-label">DP</div><div class="result-item-value result-good" id="dpAmt">Rp 0</div></div>
+                <div class="result-item" id="sisaRow" style="display:none"><div class="result-item-label">Sisa Bayar</div><div class="result-item-value result-warn" id="sisa">Rp 0</div></div>
+              </div>
+
+              <div class="kelayakan-box">
+                <div class="kelayakan-hdr"><i class="ti ti-list"></i> <span>Rincian Invoice</span></div>
+                <table class="compare-table">
+                  <thead><tr><th>Item</th><th class="right">Qty</th><th class="right">Harga</th><th class="right">Subtotal</th></tr></thead>
+                  <tbody id="itemBody"></tbody>
+                </table>
+              </div>
+
+              <div class="export-row">
+                <button class="export-btn img" id="exportImg"><i class="ti ti-photo-down"></i><span>Save Image</span></button>
+                <button class="export-btn wa" id="exportWa"><i class="ti ti-brand-whatsapp"></i><span>Share WA</span></button>
+                <button class="export-btn pdf" id="exportPdf"><i class="ti ti-printer"></i><span>Print/PDF</span></button>
+                <button class="export-btn copy" id="exportCopy"><i class="ti ti-copy"></i><span>Copy Teks</span></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="content-section">
+    <div class="wrap-text">
+      <h2>Cara Buat Invoice Profesional untuk UMKM</h2>
+      <p>Invoice yang baik = pembayaran tepat waktu. Pastikan ada: nomor invoice, tanggal, detail item, PPN (jika PKP), total, dan info pembayaran. Format penomoran: <strong>INV/YYYY/MM/NNN</strong> agar urut & mudah dicari.</p>
+      <div class="cta-box"><h3>Generate Invoice Sekarang</h3><p>Isi data, klik tombol, export sebagai image untuk dikirim ke client via WA atau email.</p></div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+  <FAQ items={faqs} />
+
+  <section class="section"><div class="wrap">
+    <div class="section-hdr"><div class="section-eyebrow">Kalkulator Lainnya</div><h2 class="section-title">Hitung Juga yang Lain</h2></div>
+    <div class="related-grid">{related.map(c => <CalculatorCard calc={c} />)}</div>
+  </div></section>
+</Layout>
+
+<style>
+  .check-row { display: flex; align-items: center; gap: 9px; font-size: 13px; color: var(--text); cursor: pointer; padding: 6px 0; font-weight: 500; }
+  .check-row input { width: 17px; height: 17px; cursor: pointer; accent-color: var(--blue); }
+</style>
+
+<script is:inline>
+  (function() {
+    function ready(fn) { if (window.HC && window.html2canvas) fn(); else setTimeout(() => ready(fn), 100); }
+    ready(() => {
+      const $ = id => document.getElementById(id);
+      const rpFields = ['i1harga', 'i2harga', 'i3harga'];
+      rpFields.forEach(id => $(id).addEventListener('input', HC.fmtInput));
+
+      $('useDp').addEventListener('change', () => {
+        $('dpField').style.display = $('useDp').checked ? '' : 'none';
+      });
+
+      let lastCalc = null;
+
+      function getItem(n) {
+        const nama = $(`i${n}nama`).value.trim();
+        const qty = parseInt($(`i${n}qty`).value) || 0;
+        const harga = HC.parseRp($(`i${n}harga`).value);
+        if (!nama || qty === 0 || harga === 0) return null;
+        return { nama, qty, harga, sub: qty * harga };
+      }
+
+      function hitung() {
+        const penjual = $('penjual').value.trim();
+        const pembeli = $('pembeli').value.trim();
+        const noInv = $('noInv').value.trim();
+        if (!pembeli) { HC.toast('Isi nama client', 'error'); return; }
+
+        const items = [getItem(1), getItem(2), getItem(3)].filter(Boolean);
+        if (items.length === 0) { HC.toast('Tambah minimal 1 item', 'error'); return; }
+
+        const subtotal = items.reduce((s, i) => s + i.sub, 0);
+        const usePpn = $('usePpn').checked;
+        const ppnAmt = usePpn ? subtotal * 0.11 : 0;
+        const total = subtotal + ppnAmt;
+
+        const useDp = $('useDp').checked;
+        const dpPct = parseFloat($('dpPct').value) || 0;
+        const dpAmt = useDp ? total * dpPct / 100 : 0;
+        const sisa = total - dpAmt;
+
+        $('totalInv').textContent = HC.fmt(total);
+        $('invMeta').textContent = `${items.length} item · ${pembeli}`;
+        $('subtotal').textContent = HC.fmt(subtotal);
+        $('ppn').textContent = usePpn ? HC.fmt(ppnAmt) : 'Tidak kena';
+
+        if (useDp) {
+          $('dpRow').style.display = '';
+          $('sisaRow').style.display = '';
+          $('dpAmt').textContent = HC.fmt(dpAmt);
+          $('sisa').textContent = HC.fmt(sisa);
+        } else {
+          $('dpRow').style.display = 'none';
+          $('sisaRow').style.display = 'none';
+        }
+
+        $('itemBody').innerHTML = items.map(i =>
+          `<tr><td>${i.nama}</td><td class="right">${i.qty}</td><td class="right">${HC.fmt(i.harga)}</td><td class="right"><strong>${HC.fmt(i.sub)}</strong></td></tr>`
+        ).join('');
+
+        lastCalc = { penjual, pembeli, noInv, items, subtotal, usePpn, ppnAmt, total, useDp, dpPct, dpAmt, sisa };
+        $('placeholder').style.display = 'none';
+        $('results').classList.add('show');
+        $('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        HC.toast('Berhasil dihitung!');
+      }
+
+      function reset() {
+        $('penjual').value = 'Toko Cuan Pertama'; $('pembeli').value = 'PT. Klien Contoh';
+        $('noInv').value = 'INV/2026/06/001';
+        $('i1nama').value = 'Konsultasi'; $('i1qty').value = '2'; $('i1harga').value = '500.000';
+        $('i2nama').value = ''; $('i2qty').value = ''; $('i2harga').value = '';
+        $('i3nama').value = ''; $('i3qty').value = ''; $('i3harga').value = '';
+        $('usePpn').checked = false; $('useDp').checked = false; $('dpField').style.display = 'none';
+        $('placeholder').style.display = ''; $('results').classList.remove('show');
+        lastCalc = null; HC.toast('Form direset', 'info');
+      }
+
+      function buildReport() {
+        if (!lastCalc) return null;
+        const c = lastCalc;
+        const inputs = [
+          { label: '📄 No. Invoice', value: c.noInv || 'N/A' },
+          { label: '🏢 Penjual', value: c.penjual || 'N/A' },
+          { label: '👤 Client', value: c.pembeli },
+          { label: '📦 Item', value: c.items.length + ' item' },
+        ];
+        const results = [
+          { label: 'Subtotal', value: HC.fmt(c.subtotal) },
+          { label: 'PPN 11%', value: c.usePpn ? HC.fmt(c.ppnAmt) : '-' },
+          { label: 'TOTAL', value: HC.fmt(c.total), highlight: true },
+        ];
+        if (c.useDp) {
+          results.push({ label: `DP ${c.dpPct}%`, value: HC.fmt(c.dpAmt) });
+          results.push({ label: 'Sisa Bayar', value: HC.fmt(c.sisa), highlight: true });
+        }
+        return HC.buildReportCard({
+          title: '📄 Invoice ' + (c.noInv || ''), color: '#0EA5E9', color2: '#0369A1',
+          heroLabel: 'Total Invoice', heroValue: HC.fmt(c.total),
+          heroSubtext: `Untuk: ${c.pembeli} · ${c.items.length} item${c.usePpn ? ' · Include PPN 11%' : ''}`,
+          inputs, results,
+          insight: c.useDp ? `DP ${c.dpPct}% = ${HC.fmt(c.dpAmt)}. Sisa pembayaran ${HC.fmt(c.sisa)} sebelum/saat barang/jasa diterima.` : `Pembayaran penuh ${HC.fmt(c.total)}. Disarankan tempo NET 30 hari setelah invoice diterbitkan.`,
+          slug: 'invoice-generator',
+        });
+      }
+
+      function summaryText() {
+        if (!lastCalc) return '';
+        const c = lastCalc;
+        let s = `📄 *Invoice ${c.noInv} - HitungCerdas*\n\nKepada: ${c.pembeli}\nDari: ${c.penjual}\n\n*Items:*\n`;
+        c.items.forEach(i => s += `• ${i.nama} ${i.qty}× = ${HC.fmt(i.sub)}\n`);
+        s += `\nSubtotal: ${HC.fmt(c.subtotal)}\n${c.usePpn ? `PPN 11%: ${HC.fmt(c.ppnAmt)}\n` : ''}*TOTAL: ${HC.fmt(c.total)}*`;
+        if (c.useDp) s += `\nDP ${c.dpPct}%: ${HC.fmt(c.dpAmt)}\nSisa: ${HC.fmt(c.sisa)}`;
+        s += `\n\nGenerated by HitungCerdas\nhttps://hitungcerdas.net/kalkulator/invoice-generator`;
+        return s;
+      }
+
+      $('btnHitung').addEventListener('click', hitung);
+      $('btnReset').addEventListener('click', reset);
+      $('exportImg').addEventListener('click', () => { const r = buildReport(); if (r) HC.exportToImage(r, 'invoice-' + Date.now()); else HC.toast('Hitung dulu', 'error'); });
+      $('exportWa').addEventListener('click', () => { const r = buildReport(); if (r) HC.shareWhatsApp(r, summaryText(), 'invoice-generator'); else HC.toast('Hitung dulu', 'error'); });
+      $('exportPdf').addEventListener('click', () => { if (lastCalc) HC.exportToPDF(); else HC.toast('Hitung dulu', 'error'); });
+      $('exportCopy').addEventListener('click', () => { if (lastCalc) HC.copyText(summaryText(), 'Tersalin!'); else HC.toast('Hitung dulu', 'error'); });
+    });
+  })();
+</script>

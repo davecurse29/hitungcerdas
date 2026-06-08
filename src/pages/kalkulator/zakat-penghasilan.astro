@@ -1,0 +1,214 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import FAQ from '../../components/FAQ.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import CalculatorCard from '../../components/CalculatorCard.astro';
+import { getCalculatorBySlug, getRelatedCalculators } from '../../data/calculators';
+
+const calc = getCalculatorBySlug('zakat-penghasilan')!;
+const related = getRelatedCalculators('zakat-penghasilan', 3);
+
+const faqs = [
+  { question: 'Apa itu zakat penghasilan?', answer: 'Zakat dari gaji/honor profesi yang capai nisab. Tarif 2,5%. Dasar: QS Adz-Dzariyat 19, Fatwa MUI 3/2003, Peraturan BAZNAS 1/2018.' },
+  { question: 'Berapa nisab 2026?', answer: '<strong>85 gram emas</strong> per tahun. Dengan harga emas ~Rp 1jt/gr: nisab = <strong>Rp 85jt/tahun</strong> atau <strong>Rp 7,08jt/bulan</strong>.' },
+  { question: 'Bruto atau neto?', answer: 'BAZNAS RI: bruto (lebih hati-hati). Sebagian ulama: neto setelah biaya pokok. Hasilnya tidak terlalu berbeda — Rp 10jt × 2,5% = Rp 250rb.' },
+  { question: 'Bulanan atau setahun?', answer: 'Keduanya sah. Mayoritas Muslim Indonesia: per bulan (lebih terstruktur, auto-debet ke lembaga zakat resmi).' },
+  { question: 'Zakat kurangi PPh 21?', answer: 'YA! Sesuai PMK 254/PMK.03/2010, zakat via lembaga resmi (BAZNAS, LAZ Kemenag) jadi <strong>pengurang PKP</strong>. Simpan bukti untuk SPT Tahunan.' },
+];
+
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '/#tools' }, { label: calc.shortTitle }];
+---
+
+<Layout title={calc.title} description={calc.metaDescription} keywords={calc.keywords} canonical={`https://hitungcerdas.net/kalkulator/${calc.slug}`}>
+  <section class="calc-hero" style="--cat-color:#0891B2;--cat-color2:#155E75">
+    <div class="wrap">
+      <Breadcrumb items={bcItems} />
+      <div class="calc-hero-grid">
+        <div class="calc-hero-text">
+          <div class="calc-hero-tag" style="background:#CFFAFE;color:#155E75"><i class="ti ti-coin"></i> {calc.categoryLabel}</div>
+          <h1 class="calc-hero-title">{calc.h1}</h1>
+          <p class="calc-hero-sub">{calc.introText}</p>
+          <ul class="calc-hero-benefits">{calc.benefits.map(b => <li><i class="ti ti-check"></i> {b}</li>)}</ul>
+        </div>
+        <div class="calc-hero-illust">
+          <svg viewBox="0 0 200 200" fill="none">
+            <circle cx="100" cy="100" r="85" fill="rgba(255,255,255,.08)"/>
+            <circle cx="100" cy="100" r="55" fill="#FBBF24" stroke="#FFF" stroke-width="3"/>
+            <text x="100" y="92" text-anchor="middle" font-size="22" font-weight="900" fill="#0A2540">2,5</text>
+            <text x="100" y="113" text-anchor="middle" font-size="18" font-weight="900" fill="#0A2540">%</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+
+  <section class="calc-section">
+    <div class="wrap">
+      <div class="calc-card">
+        <div class="calc-card-hdr">
+          <div class="calc-card-hdr-ic" style="background:linear-gradient(135deg,#0891B2 0%,#155E75 100%)"><i class="ti ti-coin"></i></div>
+          <div><h2 class="calc-card-title">Kalkulator Zakat Penghasilan</h2><p class="calc-card-sub">2,5% dari gaji jika capai nisab 85 gr emas</p></div>
+        </div>
+
+        <div class="calc-grid">
+          <div class="calc-input">
+            <div class="field"><label>Penghasilan per Bulan</label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="penghasilan" class="has-prefix" value="10.000.000" inputmode="numeric" /></div>
+              <p class="field-hint">Gaji + tunjangan + bonus (rata-rata)</p></div>
+            <div class="field"><label>Penghasilan Lain/Bulan <span class="hint">(freelance, dividen)</span></label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="lain" class="has-prefix" placeholder="0" inputmode="numeric" /></div></div>
+            <div class="field"><label>Harga Emas per Gram</label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="emas" class="has-prefix" value="1.000.000" inputmode="numeric" /></div>
+              <p class="field-hint">Cek harga terbaru di pegadaian.co.id</p></div>
+
+            <div class="calc-action-bar">
+              <button type="button" class="btn-hitung" id="btnHitung"><i class="ti ti-calculator"></i> Hitung Sekarang</button>
+              <button type="button" class="btn-reset" id="btnReset"><i class="ti ti-refresh"></i> Reset</button>
+            </div>
+          </div>
+
+          <div class="calc-output">
+            <div class="result-placeholder" id="placeholder">
+              <i class="ti ti-coin result-placeholder-icon"></i>
+              <div class="result-placeholder-title">Hasil akan muncul di sini</div>
+              <div class="result-placeholder-desc">Isi penghasilan bulanan & harga emas, lalu klik <strong>"Hitung Sekarang"</strong>.</div>
+            </div>
+
+            <div class="result-wrapper" id="results">
+              <div class="result-main">
+                <div class="result-label">Zakat per Bulan</div>
+                <div class="result-value" id="zakatBulan">Rp 0</div>
+                <div class="result-meta"><i class="ti ti-info-circle"></i> <span id="zakatTahun">Setahun: Rp 0</span></div>
+              </div>
+
+              <div class="result-grid">
+                <div class="result-item"><div class="result-item-label">Penghasilan/Tahun</div><div class="result-item-value" id="brutoTahun">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">Nisab (85 gr emas)</div><div class="result-item-value" id="nisab">Rp 0</div></div>
+              </div>
+
+              <div class="kelayakan-box">
+                <div class="kelayakan-hdr"><i class="ti ti-shield-check"></i> <span>Status Wajib Zakat</span></div>
+                <div id="status"></div>
+              </div>
+
+              <div class="export-row">
+                <button class="export-btn img" id="exportImg"><i class="ti ti-photo-down"></i><span>Save Image</span></button>
+                <button class="export-btn wa" id="exportWa"><i class="ti ti-brand-whatsapp"></i><span>Share WA</span></button>
+                <button class="export-btn pdf" id="exportPdf"><i class="ti ti-printer"></i><span>Print/PDF</span></button>
+                <button class="export-btn copy" id="exportCopy"><i class="ti ti-copy"></i><span>Copy Teks</span></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="content-section">
+    <div class="wrap-text">
+      <h2>Panduan Lengkap Zakat Penghasilan</h2>
+      <p>Zakat profesi/penghasilan = <strong>2,5% dari penghasilan</strong> jika setahun mencapai nisab 85 gram emas (~Rp 85jt). Bayar via lembaga zakat resmi BAZNAS/LAZ Kemenag — bisa <strong>kurangi PPh 21</strong> per PMK 254/2010.</p>
+      <div class="cta-box"><h3>Tunaikan Zakat Penghasilan</h3><p>Cek apakah penghasilanmu capai nisab, lalu hitung zakat 2,5% wajib.</p></div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+  <FAQ items={faqs} />
+
+  <section class="section"><div class="wrap">
+    <div class="section-hdr"><div class="section-eyebrow">Kalkulator Lainnya</div><h2 class="section-title">Hitung Juga yang Lain</h2></div>
+    <div class="related-grid">{related.map(c => <CalculatorCard calc={c} />)}</div>
+  </div></section>
+</Layout>
+
+<script is:inline>
+  (function() {
+    function ready(fn) { if (window.HC && window.html2canvas) fn(); else setTimeout(() => ready(fn), 100); }
+    ready(() => {
+      const $ = id => document.getElementById(id);
+      const els = { p: $('penghasilan'), l: $('lain'), e: $('emas') };
+      Object.values(els).forEach(el => el.addEventListener('input', HC.fmtInput));
+
+      let lastCalc = null;
+
+      function hitung() {
+        const p = HC.parseRp(els.p.value), l = HC.parseRp(els.l.value), e = HC.parseRp(els.e.value);
+        if (p === 0) { HC.toast('Masukkan penghasilan', 'error'); return; }
+
+        const totalBulan = p + l;
+        const brutoTahun = totalBulan * 12;
+        const nisab = e * 85;
+        const wajib = brutoTahun >= nisab;
+        const zakatTahun = wajib ? brutoTahun * 0.025 : 0;
+        const zakatBulan = zakatTahun / 12;
+
+        $('zakatBulan').textContent = HC.fmt(zakatBulan);
+        $('zakatTahun').textContent = `Setahun: ${HC.fmt(zakatTahun)}`;
+        $('brutoTahun').textContent = HC.fmt(brutoTahun);
+        $('nisab').textContent = HC.fmt(nisab);
+
+        const $s = $('status');
+        if (wajib) {
+          const excess = brutoTahun - nisab;
+          $s.innerHTML = `<div class="kelayakan-status ks-good"><i class="ti ti-circle-check"></i> WAJIB ZAKAT</div><p class="ks-note">Penghasilan ${HC.fmt(brutoTahun)} melebihi nisab ${HC.fmt(nisab)} sebesar ${HC.fmt(excess)}. Bayar 2,5% = <strong>${HC.fmt(zakatBulan)}/bln</strong>.</p>`;
+        } else {
+          const lack = nisab - brutoTahun;
+          $s.innerHTML = `<div class="kelayakan-status ks-warn"><i class="ti ti-info-circle"></i> Belum Wajib Zakat</div><p class="ks-note">Masih ${HC.fmt(lack)} di bawah nisab. Disunnahkan sedekah/infaq.</p>`;
+        }
+
+        lastCalc = { p, l, e, totalBulan, brutoTahun, nisab, wajib, zakatTahun, zakatBulan };
+        $('placeholder').style.display = 'none';
+        $('results').classList.add('show');
+        $('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        HC.toast('Berhasil dihitung!');
+      }
+
+      function reset() {
+        els.p.value = '10.000.000'; els.l.value = ''; els.e.value = '1.000.000';
+        $('placeholder').style.display = ''; $('results').classList.remove('show');
+        lastCalc = null; HC.toast('Form direset', 'info');
+      }
+
+      function buildReport() {
+        if (!lastCalc) return null;
+        const c = lastCalc;
+        return HC.buildReportCard({
+          title: '💰 Zakat Penghasilan', color: '#0891B2', color2: '#155E75',
+          heroLabel: c.wajib ? 'Zakat Wajib/Bulan' : 'Status',
+          heroValue: c.wajib ? HC.fmt(c.zakatBulan) : 'Belum Nisab',
+          heroSubtext: c.wajib ? `Setahun ${HC.fmt(c.zakatTahun)} · 2,5% dari ${HC.fmt(c.brutoTahun)}` : `Belum capai nisab ${HC.fmt(c.nisab)}`,
+          inputs: [
+            { label: '💰 Penghasilan/bulan', value: HC.fmt(c.p) },
+            { label: '💵 Penghasilan lain', value: HC.fmt(c.l) },
+            { label: '🪙 Harga Emas/gram', value: HC.fmt(c.e) },
+          ],
+          results: [
+            { label: 'Penghasilan Setahun', value: HC.fmt(c.brutoTahun) },
+            { label: 'Nisab 85gr Emas', value: HC.fmt(c.nisab) },
+            { label: 'Status', value: c.wajib ? '✅ Wajib Zakat' : '⏸️ Belum Nisab', highlight: c.wajib },
+            { label: 'Zakat/Bulan', value: HC.fmt(c.zakatBulan), highlight: c.wajib },
+            { label: 'Zakat/Tahun', value: HC.fmt(c.zakatTahun) },
+          ],
+          insight: c.wajib ? 'Bayar via BAZNAS/LAZ resmi untuk dapat bukti pengurang PPh 21 (PMK 254/2010).' : 'Belum wajib zakat penghasilan. Tetap sunnah sedekah/infaq.',
+          slug: 'zakat-penghasilan',
+        });
+      }
+
+      function summaryText() {
+        if (!lastCalc) return '';
+        const c = lastCalc;
+        return `💰 *Zakat Penghasilan - HitungCerdas*\n\nPenghasilan: ${HC.fmt(c.p)}/bln\nNisab: ${HC.fmt(c.nisab)}/thn\n\n${c.wajib ? `✅ *WAJIB ZAKAT*\nZakat: ${HC.fmt(c.zakatBulan)}/bln (2,5%)` : `⏸️ Belum capai nisab`}\n\nHitung: https://hitungcerdas.net/kalkulator/zakat-penghasilan`;
+      }
+
+      $('btnHitung').addEventListener('click', hitung);
+      $('btnReset').addEventListener('click', reset);
+      $('exportImg').addEventListener('click', () => { const r = buildReport(); if (r) HC.exportToImage(r, 'zakat-penghasilan-' + Date.now()); else HC.toast('Hitung dulu', 'error'); });
+      $('exportWa').addEventListener('click', () => { const r = buildReport(); if (r) HC.shareWhatsApp(r, summaryText(), 'zakat-penghasilan'); else HC.toast('Hitung dulu', 'error'); });
+      $('exportPdf').addEventListener('click', () => { if (lastCalc) HC.exportToPDF(); else HC.toast('Hitung dulu', 'error'); });
+      $('exportCopy').addEventListener('click', () => { if (lastCalc) HC.copyText(summaryText(), 'Tersalin!'); else HC.toast('Hitung dulu', 'error'); });
+    });
+  })();
+</script>

@@ -1,0 +1,255 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import FAQ from '../../components/FAQ.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import CalculatorCard from '../../components/CalculatorCard.astro';
+import { getCalculatorBySlug, getRelatedCalculators } from '../../data/calculators';
+
+const calc = getCalculatorBySlug('margin')!;
+const related = getRelatedCalculators('margin', 3);
+
+const faqs = [
+  { question: 'Apa beda margin vs markup?', answer: '<strong>Margin</strong> = Profit ÷ Harga Jual × 100% (lebih akurat untuk bisnis). <strong>Markup</strong> = Profit ÷ Modal × 100% (lebih mudah untuk pricing). Margin selalu lebih kecil dari markup untuk profit yang sama. Markup 100% = Margin 50%. Markup 50% = Margin 33%.' },
+  { question: 'Berapa margin yang sehat untuk bisnis?', answer: 'Tergantung industri: <strong>Retail/grocery</strong> 5-15% (high volume), <strong>Fashion</strong> 30-50%, <strong>F&B</strong> 40-60% (food cost max 35%), <strong>Beauty</strong> 50-70%, <strong>SaaS/digital</strong> 70-90%, <strong>Handmade</strong> 100-300%.' },
+  { question: 'Cara naikkan margin tanpa naikkan harga?', answer: '(1) <strong>Negosiasi supplier</strong> diskon volume 5-15%. (2) <strong>Reduce packaging cost</strong>. (3) <strong>Bulk buying</strong> bahan saat harga turun. (4) <strong>Efisiensi operasional</strong>. (5) <strong>Bundling</strong> untuk naikkan AOV. (6) <strong>Loyalty program</strong> hindari biaya akuisisi tinggi.' },
+];
+
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '/#tools' }, { label: calc.shortTitle }];
+---
+
+<Layout title={calc.title} description={calc.metaDescription} keywords={calc.keywords} canonical={`https://hitungcerdas.net/kalkulator/${calc.slug}`}>
+  <section class="calc-hero" style="--cat-color:#10B981;--cat-color2:#065F46">
+    <div class="wrap">
+      <Breadcrumb items={bcItems} />
+      <div class="calc-hero-grid">
+        <div class="calc-hero-text">
+          <div class="calc-hero-tag" style="background:#D1FAE5;color:#065F46"><i class="ti ti-percentage"></i> {calc.categoryLabel}</div>
+          <h1 class="calc-hero-title">{calc.h1}</h1>
+          <p class="calc-hero-sub">{calc.introText}</p>
+          <ul class="calc-hero-benefits">{calc.benefits.map(b => <li><i class="ti ti-check"></i> {b}</li>)}</ul>
+        </div>
+        <div class="calc-hero-illust">
+          <svg viewBox="0 0 200 200" fill="none">
+            <circle cx="100" cy="100" r="85" fill="rgba(255,255,255,.08)"/>
+            <circle cx="100" cy="100" r="55" fill="#FFF" stroke="#FBBF24" stroke-width="3"/>
+            <text x="100" y="115" text-anchor="middle" font-size="38" font-weight="900" fill="#10B981" font-family="Inter">%</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+
+  <section class="calc-section">
+    <div class="wrap">
+      <div class="calc-card">
+        <div class="calc-card-hdr">
+          <div class="calc-card-hdr-ic" style="background:linear-gradient(135deg,#10B981 0%,#065F46 100%)"><i class="ti ti-percentage"></i></div>
+          <div><h2 class="calc-card-title">Kalkulator Margin & Markup</h2><p class="calc-card-sub">Profit margin, markup, dan break-even analysis</p></div>
+        </div>
+
+        <div class="calc-grid">
+          <div class="calc-input">
+            <div class="field"><label>HPP / Modal per Unit</label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span>
+                <input type="text" id="hpp" class="has-prefix" value="50.000" inputmode="numeric" /></div></div>
+
+            <div class="field"><label>Harga Jual per Unit</label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span>
+                <input type="text" id="harga" class="has-prefix" value="80.000" inputmode="numeric" /></div></div>
+
+            <div class="field"><label>Biaya Tetap Bulanan <span class="hint">(sewa, gaji, utilities)</span></label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span>
+                <input type="text" id="fixedCost" class="has-prefix" value="5.000.000" inputmode="numeric" /></div></div>
+
+            <div class="field"><label>Target Volume Penjualan per Bulan</label>
+              <input type="number" id="volume" value="200" min="0" /></div>
+
+            <div class="calc-action-bar">
+              <button type="button" class="btn-hitung" id="btnHitung"><i class="ti ti-calculator"></i> Hitung Sekarang</button>
+              <button type="button" class="btn-reset" id="btnReset"><i class="ti ti-refresh"></i> Reset</button>
+            </div>
+          </div>
+
+          <div class="calc-output">
+            <div class="result-placeholder" id="placeholder">
+              <i class="ti ti-percentage result-placeholder-icon"></i>
+              <div class="result-placeholder-title">Analisa margin akan muncul di sini</div>
+              <div class="result-placeholder-desc">Isi HPP & harga jual, klik <strong>"Hitung Sekarang"</strong>.</div>
+            </div>
+
+            <div class="result-wrapper" id="results">
+              <div class="result-main">
+                <div class="result-label">Margin Profit</div>
+                <div class="result-value" id="marginPct">0%</div>
+                <div class="result-meta"><i class="ti ti-info-circle"></i> <span id="metaInfo">Profit per unit</span></div>
+              </div>
+
+              <div class="result-grid">
+                <div class="result-item"><div class="result-item-label">Profit per Unit</div><div class="result-item-value result-strong" id="profitUnit">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">Markup</div><div class="result-item-value" id="markupPct">0%</div></div>
+                <div class="result-item"><div class="result-item-label">Break-Even Volume</div><div class="result-item-value result-warn" id="bep">0 unit</div></div>
+                <div class="result-item"><div class="result-item-label">Profit Bulanan</div><div class="result-item-value result-strong" id="profitBulan">Rp 0</div></div>
+              </div>
+
+              <div class="kelayakan-box">
+                <div class="kelayakan-hdr"><i class="ti ti-target"></i><span>Analisa Kesehatan Margin</span></div>
+                <div id="analisaBody"></div>
+              </div>
+
+              <div class="adv-section">
+                <div class="adv-toggle"><span><i class="ti ti-chart-bar"></i>&nbsp; Proyeksi Berbagai Volume</span><i class="ti ti-chevron-down chev"></i></div>
+                <div class="adv-content">
+                  <table class="compare-table">
+                    <thead><tr><th>Volume/Bulan</th><th class="right">Omzet</th><th class="right">Profit Bersih</th><th class="right">Status</th></tr></thead>
+                    <tbody id="volumeBody"></tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div class="export-row">
+                <button type="button" class="export-btn img" id="exportImg"><i class="ti ti-photo-down"></i><span>Save Image</span></button>
+                <button type="button" class="export-btn wa" id="exportWa"><i class="ti ti-brand-whatsapp"></i><span>Share WA</span></button>
+                <button type="button" class="export-btn pdf" id="exportPdf"><i class="ti ti-printer"></i><span>Print/PDF</span></button>
+                <button type="button" class="export-btn copy" id="exportCopy"><i class="ti ti-copy"></i><span>Copy Teks</span></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="content-section">
+    <div class="wrap-text">
+      <h2>Margin vs Markup yang Sering Tertukar</h2>
+      <p>Banyak UMKM bilang "margin 50%" padahal yang dimaksud markup 50% (= margin 33%). Margin selalu LEBIH KECIL dari markup. Untuk profit Rp 30, HPP Rp 50, Harga Rp 80 → Margin 37,5%, Markup 60%.</p>
+      <p><strong>Break-Even Point (BEP)</strong> = volume minimum agar tidak rugi setelah biaya tetap. Untuk profit Rp 30/unit dan biaya tetap Rp 5jt/bln, BEP = 167 unit/bln. Di atas itu = profit, di bawah = rugi.</p>
+      <div class="cta-box"><h3>Analisa Margin Bisnismu</h3><p>Isi HPP, harga jual, dan biaya tetap, klik "Hitung Sekarang" untuk dashboard lengkap.</p></div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+  <FAQ title="Pertanyaan Seputar Margin" items={faqs} />
+
+  <section class="section"><div class="wrap">
+    <div class="section-hdr"><div class="section-eyebrow">Kalkulator Lainnya</div><h2 class="section-title">Hitung Juga yang Lain</h2></div>
+    <div class="related-grid">{related.map(c => <CalculatorCard calc={c} />)}</div>
+  </div></section>
+</Layout>
+
+<script is:inline>
+  (function() {
+    function ready(fn) { if (window.HC && window.html2canvas) fn(); else setTimeout(() => ready(fn), 100); }
+    ready(() => {
+      const $ = id => document.getElementById(id);
+      const els = { hpp: $('hpp'), harga: $('harga'), fixed: $('fixedCost'), vol: $('volume') };
+      [els.hpp, els.harga, els.fixed].forEach(el => el.addEventListener('input', HC.fmtInput));
+      document.querySelectorAll('.adv-toggle').forEach(t => t.addEventListener('click', () => t.parentElement.classList.toggle('open')));
+
+      let lastCalc = null;
+
+      function hitung() {
+        const hpp = HC.parseRp(els.hpp.value);
+        const harga = HC.parseRp(els.harga.value);
+        const fixed = HC.parseRp(els.fixed.value);
+        const vol = parseInt(els.vol.value) || 0;
+
+        if (hpp === 0 || harga === 0) { HC.toast('Masukkan HPP & harga jual dulu', 'error'); return; }
+        if (harga < hpp) { HC.toast('Harga jual harus > HPP!', 'error'); return; }
+
+        const profit = harga - hpp;
+        const marginPct = (profit / harga) * 100;
+        const markupPct = (profit / hpp) * 100;
+        const bep = fixed > 0 && profit > 0 ? Math.ceil(fixed / profit) : 0;
+        const omzet = harga * vol;
+        const profitBruto = profit * vol;
+        const profitBulan = profitBruto - fixed;
+
+        $('marginPct').textContent = marginPct.toFixed(1) + '%';
+        $('metaInfo').textContent = `Profit ${HC.fmt(profit)}/unit · Markup ${markupPct.toFixed(1)}%`;
+        $('profitUnit').textContent = HC.fmt(profit);
+        $('markupPct').textContent = markupPct.toFixed(1) + '%';
+        $('bep').textContent = `${bep} unit`;
+        $('profitBulan').textContent = HC.fmt(profitBulan);
+
+        // Analisa
+        let analisa = '';
+        if (marginPct < 10) analisa = `<div class="kelayakan-status ks-bad"><i class="ti ti-alert-circle"></i> Margin terlalu tipis (${marginPct.toFixed(1)}%)</div><p class="ks-note">Sulit untuk bertahan & berkembang. Pertimbangkan naikkan harga atau cari supplier lebih murah.</p>`;
+        else if (marginPct < 25) analisa = `<div class="kelayakan-status ks-warn"><i class="ti ti-alert-triangle"></i> Margin tipis (${marginPct.toFixed(1)}%)</div><p class="ks-note">Untuk high-volume sale (>500/bln) cukup. Untuk low-volume, perlu strategi naikkan margin.</p>`;
+        else if (marginPct < 50) analisa = `<div class="kelayakan-status ks-good"><i class="ti ti-circle-check"></i> Margin sehat (${marginPct.toFixed(1)}%)</div><p class="ks-note">Sweet spot untuk kebanyakan UMKM. Ada ruang untuk diskon promo & loyalty program.</p>`;
+        else analisa = `<div class="kelayakan-status ks-good"><i class="ti ti-star"></i> Margin sangat baik (${marginPct.toFixed(1)}%)</div><p class="ks-note">Margin premium! Cocok untuk produk handmade/craft/luxury. Fokus quality & branding.</p>`;
+        $('analisaBody').innerHTML = analisa + `<p class="ks-note" style="margin-top:8px"><strong>BEP:</strong> ${bep} unit/bulan untuk break-even (omzet ${HC.fmt(bep * harga)}). Volume kamu ${vol}: ${vol >= bep ? '✅ untung' : '❌ masih rugi'}.</p>`;
+
+        const volumes = [50, 100, 200, 500, 1000];
+        $('volumeBody').innerHTML = volumes.map(v => {
+          const oz = harga * v;
+          const pf = (profit * v) - fixed;
+          const status = pf > 0 ? '✅ Untung' : pf === 0 ? '⚖️ BEP' : '❌ Rugi';
+          const color = pf > 0 ? 'color:var(--green-dark)' : 'color:var(--red)';
+          return `<tr class="${v === vol ? 'active' : ''}"><td>${v} unit</td><td class="right">${HC.fmt(oz)}</td><td class="right" style="${color};font-weight:700">${HC.fmt(pf)}</td><td class="right">${status}</td></tr>`;
+        }).join('');
+
+        lastCalc = { hpp, harga, fixed, vol, profit, marginPct, markupPct, bep, profitBulan };
+        $('placeholder').style.display = 'none';
+        $('results').classList.add('show');
+        $('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        HC.toast('Margin berhasil dihitung!');
+      }
+
+      function reset() {
+        els.hpp.value = '50.000'; els.harga.value = '80.000'; els.fixed.value = '5.000.000'; els.vol.value = '200';
+        $('placeholder').style.display = ''; $('results').classList.remove('show');
+        lastCalc = null; HC.toast('Form direset', 'info');
+      }
+
+      function buildReport() {
+        if (!lastCalc) return null;
+        const c = lastCalc;
+        const status = c.marginPct < 10 ? 'rugi' : c.marginPct < 25 ? 'tipis' : c.marginPct < 50 ? 'sehat' : 'sangat-baik';
+        const insight = status === 'sangat-baik' ? `Margin ${c.marginPct.toFixed(1)}% PREMIUM — cocok untuk produk niche/handmade.` :
+                        status === 'sehat' ? `Margin ${c.marginPct.toFixed(1)}% SEHAT — sweet spot UMKM, ada ruang promo.` :
+                        status === 'tipis' ? `Margin ${c.marginPct.toFixed(1)}% TIPIS — butuh high-volume untuk profitable.` :
+                        `Margin ${c.marginPct.toFixed(1)}% RAWAN RUGI — pertimbangkan naikkan harga.`;
+
+        return HC.buildReportCard({
+          title: '📊 Analisa Margin & Markup',
+          color: '#10B981', color2: '#065F46',
+          heroLabel: 'Profit Margin',
+          heroValue: c.marginPct.toFixed(1) + '%',
+          heroSubtext: `Profit ${HC.fmt(c.profit)}/unit · Markup ${c.markupPct.toFixed(1)}%`,
+          inputs: [
+            { label: '🥫 HPP per Unit', value: HC.fmt(c.hpp) },
+            { label: '🏷️ Harga Jual', value: HC.fmt(c.harga) },
+            { label: '🏢 Biaya Tetap/Bln', value: HC.fmt(c.fixed) },
+            { label: '📦 Target Volume', value: `${c.vol} unit/bln` },
+          ],
+          results: [
+            { label: 'Margin', value: c.marginPct.toFixed(1) + '%', highlight: true },
+            { label: 'Markup', value: c.markupPct.toFixed(1) + '%' },
+            { label: 'Profit/Unit', value: HC.fmt(c.profit) },
+            { label: 'Break-Even Volume', value: `${c.bep} unit` },
+            { label: `Omzet ${c.vol} unit`, value: HC.fmt(c.harga * c.vol) },
+            { label: 'Profit Bulanan', value: HC.fmt(c.profitBulan), highlight: true },
+          ],
+          insight, slug: 'margin',
+        });
+      }
+
+      function summaryText() {
+        if (!lastCalc) return '';
+        const c = lastCalc;
+        return `📊 *Analisa Margin - HitungCerdas*\n\nHPP: ${HC.fmt(c.hpp)}\nHarga Jual: ${HC.fmt(c.harga)}\n\n📈 *Margin: ${c.marginPct.toFixed(1)}%*\n📊 Markup: ${c.markupPct.toFixed(1)}%\n💰 Profit/Unit: ${HC.fmt(c.profit)}\n⚖️ Break-Even: ${c.bep} unit/bln\n💵 Profit Bulanan: ${HC.fmt(c.profitBulan)}\n\nHitung: https://hitungcerdas.net/kalkulator/margin`;
+      }
+
+      $('btnHitung').addEventListener('click', hitung);
+      $('btnReset').addEventListener('click', reset);
+      $('exportImg').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToImage(c, 'margin-' + Date.now()); });
+      $('exportWa').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.shareWhatsApp(c, summaryText(), 'margin'); });
+      $('exportPdf').addEventListener('click', () => { if (!lastCalc) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToPDF(); });
+      $('exportCopy').addEventListener('click', () => { if (!lastCalc) { HC.toast('Hitung dulu', 'error'); return; } HC.copyText(summaryText(), 'Tersalin!'); });
+    });
+  })();
+</script>

@@ -1,0 +1,467 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import FAQ from '../../components/FAQ.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import CalculatorCard from '../../components/CalculatorCard.astro';
+import { getCalculatorBySlug, getRelatedCalculators } from '../../data/calculators';
+
+const calc = getCalculatorBySlug('nama-bisnis-generator')!;
+const related = getRelatedCalculators('nama-bisnis-generator', 3);
+
+const faqs = [
+  { question: 'Apa kriteria nama bisnis yang bagus?', answer: 'Nama bisnis ideal harus: <strong>1) Mudah diucapkan</strong> (max 3-4 suku kata), <strong>2) Mudah diingat</strong> (gunakan rima, alliterasi, atau kata unik), <strong>3) Relevan</strong> dengan produk/jasa, <strong>4) Domain tersedia</strong> (.com/.id), <strong>5) Sosmed handle tersedia</strong> (Instagram/TikTok), <strong>6) Tidak melanggar merek dagang</strong> orang lain (cek di pdki-indonesia.dgip.go.id).' },
+  { question: 'Apakah perlu daftar merek dagang?', answer: 'Sangat disarankan! Pendaftaran merek di <strong>DJKI Kemenkumham</strong> bikin nama bisnis kamu dilindungi hukum di Indonesia selama 10 tahun (bisa diperpanjang). Biaya sekitar Rp 1.800.000 (UMKM Rp 500.000). Proses 6-12 bulan. Tanpa daftar, kompetitor bisa pakai nama yang sama atau mirip tanpa konsekuensi hukum.' },
+  { question: 'Bagaimana cek nama bisnis sudah dipakai?', answer: 'Cek di beberapa platform: <strong>1) DJKI</strong> (pdki-indonesia.dgip.go.id) untuk merek dagang, <strong>2) AHU</strong> (ahu.go.id) untuk PT/CV, <strong>3) OSS</strong> untuk NIB, <strong>4) Google search</strong> untuk popularitas, <strong>5) Instagram/TikTok</strong> untuk handle, <strong>6) Domain checker</strong> (namecheap, godaddy) untuk .com/.id.' },
+  { question: 'Lebih bagus nama bisnis dalam Bahasa Indonesia atau Inggris?', answer: 'Tergantung target market dan positioning:<br>• <strong>Bahasa Indonesia/Lokal</strong>: Cocok untuk produk lokal, target mass market, kuliner tradisional, fashion lokal. Contoh: Indofood, Sariwangi, Roti Boy.<br>• <strong>Bahasa Inggris</strong>: Cocok untuk produk premium, target kelas menengah-atas, tech/digital. Contoh: GoTo, Tokopedia, Bukalapak.<br>• <strong>Campuran</strong>: Paling fleksibel. Contoh: Warung Pintar, Kopi Kenangan, RuangGuru.' },
+  { question: 'Berapa biaya membuat brand identity lengkap?', answer: 'Tergantung kebutuhan:<br>• <strong>DIY (Canva + free tools)</strong>: Rp 0 - 500.000<br>• <strong>Freelance designer lokal</strong>: Rp 1.000.000 - 5.000.000 (logo, business card, social media kit)<br>• <strong>Agency menengah</strong>: Rp 5.000.000 - 25.000.000 (logo, brand book, packaging, web)<br>• <strong>Agency premium</strong>: Rp 25.000.000 - 200.000.000+ (full branding, strategy, naming, identity)<br><br>Untuk UMKM bootstrap, gunakan generator ini + Canva + freelance designer untuk logo (Rp 500rb-1jt).' },
+];
+
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '/#tools' }, { label: calc.shortTitle }];
+---
+
+<Layout title={calc.title} description={calc.metaDescription} keywords={calc.keywords} canonical={`https://hitungcerdas.net/kalkulator/${calc.slug}`}>
+  <section class="calc-hero" style="--cat-color:#8B5CF6;--cat-color2:#6D28D9">
+    <div class="wrap">
+      <Breadcrumb items={bcItems} />
+      <div class="calc-hero-grid">
+        <div class="calc-hero-text">
+          <div class="calc-hero-tag" style="background:#EDE9FE;color:#5B21B6"><i class="ti ti-building-store"></i> {calc.categoryLabel}</div>
+          <h1 class="calc-hero-title">{calc.h1}</h1>
+          <p class="calc-hero-sub">{calc.introText}</p>
+          <ul class="calc-hero-benefits">{calc.benefits.map(b => <li><i class="ti ti-check"></i> {b}</li>)}</ul>
+        </div>
+        <div class="calc-hero-illust">
+          <svg viewBox="0 0 200 200" fill="none">
+            <circle cx="100" cy="100" r="85" fill="rgba(255,255,255,.08)"/>
+            <circle cx="100" cy="100" r="65" fill="rgba(255,255,255,.05)"/>
+            <g transform="translate(60 70)">
+              <rect x="0" y="20" width="80" height="60" rx="4" fill="#FFF" stroke="#FBBF24" stroke-width="2"/>
+              <path d="M0 20L40 0L80 20" fill="#FBBF24" stroke="#FFF" stroke-width="2" stroke-linejoin="round"/>
+              <rect x="30" y="50" width="20" height="30" fill="#8B5CF6"/>
+              <rect x="10" y="40" width="12" height="12" fill="#FBBF24"/>
+              <rect x="58" y="40" width="12" height="12" fill="#FBBF24"/>
+              <text x="40" y="32" text-anchor="middle" fill="#0A2540" font-size="9" font-weight="bold">BRAND</text>
+            </g>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+
+  <section class="calc-section">
+    <div class="wrap">
+      <div class="calc-card">
+        <div class="calc-card-hdr">
+          <div class="calc-card-hdr-ic" style="background:linear-gradient(135deg,#8B5CF6,#6D28D9)"><i class="ti ti-building-store"></i></div>
+          <div>
+            <h2 class="calc-card-title">Nama Bisnis Generator</h2>
+            <p class="calc-card-sub">Isi detail bisnis → klik "Generate" → dapat 20 ide nama brand</p>
+          </div>
+        </div>
+
+        <div class="calc-grid">
+          <div class="calc-input">
+            <div class="field">
+              <label for="jenisUsaha">Jenis Usaha *</label>
+              <select id="jenisUsaha">
+                <option value="kopi">☕ Kopi / Coffee Shop</option>
+                <option value="kuliner">🍲 Kuliner / Resto</option>
+                <option value="fashion">👗 Fashion / Pakaian</option>
+                <option value="hijab">🧕 Hijab / Muslim Wear</option>
+                <option value="kosmetik">💄 Kosmetik / Skincare</option>
+                <option value="kue">🎂 Bakery / Kue</option>
+                <option value="laundry">🧺 Laundry</option>
+                <option value="salon">💇 Salon / Barbershop</option>
+                <option value="elektronik">📱 Elektronik / Gadget</option>
+                <option value="jasa">💼 Jasa / Service</option>
+                <option value="travel">✈️ Travel / Tour</option>
+                <option value="properti">🏠 Properti / Real Estate</option>
+                <option value="pendidikan">📚 Edukasi / Kursus</option>
+                <option value="tech">💻 Teknologi / Digital</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="gayaNama">Gaya Nama</label>
+              <select id="gayaNama">
+                <option value="modern">🌟 Modern & Trendy</option>
+                <option value="profesional">💼 Profesional & Formal</option>
+                <option value="islami">☪️ Islami / Religi</option>
+                <option value="aesthetic">✨ Aesthetic / Catchy</option>
+                <option value="lokal">🇮🇩 Lokal Indonesia</option>
+                <option value="premium">👑 Premium / Luxury</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="targetMarket">Target Market</label>
+              <select id="targetMarket">
+                <option value="muslimah">👩 Muslimah</option>
+                <option value="ibu_muda">🤱 Ibu Muda</option>
+                <option value="genz">💁 Gen Z</option>
+                <option value="milenial">🧑 Milenial</option>
+                <option value="profesional">👨‍💼 Profesional</option>
+                <option value="keluarga">👨‍👩‍👧 Keluarga</option>
+                <option value="anak_muda">🎓 Anak Muda Umum</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="kataKunci">Kata Kunci Pribadi <span class="hint">(opsional, contoh: nama panggilan, kota, makna)</span></label>
+              <input type="text" id="kataKunci" placeholder="Sari, Jakarta, Bunga, Bahagia..." />
+              <p class="field-hint">Kata ini akan dikombinasikan dengan template gaya yang dipilih</p>
+            </div>
+
+            <div class="calc-action-bar">
+              <button type="button" class="btn-hitung" id="btnHitung" style="background:linear-gradient(135deg,#8B5CF6,#6D28D9);box-shadow:0 6px 16px rgba(139,92,246,.22)">
+                <i class="ti ti-sparkles"></i> Generate 20 Ide Nama
+              </button>
+              <button type="button" class="btn-reset" id="btnReset">
+                <i class="ti ti-refresh"></i> Reset
+              </button>
+            </div>
+          </div>
+
+          <div class="calc-output">
+            <div class="result-placeholder" id="placeholder">
+              <i class="ti ti-building-store result-placeholder-icon"></i>
+              <div class="result-placeholder-title">20 Ide Nama Brand akan muncul di sini</div>
+              <div class="result-placeholder-desc">
+                Isi detail bisnis di sebelah kiri, lalu klik <strong>"Generate 20 Ide Nama"</strong> untuk dapat 20 ide nama brand catchy + slogan.
+              </div>
+            </div>
+
+            <div class="result-wrapper" id="results">
+              <div class="result-main" style="background:linear-gradient(135deg,#8B5CF615,#6D28D920);border:1px solid #8B5CF640">
+                <div class="result-label" style="color:#5B21B6">20 Ide Nama Brand</div>
+                <div class="result-value" style="font-size:24px;color:#5B21B6" id="namaMeta">Beserta slogan singkat</div>
+                <div class="result-meta"><span><i class="ti ti-info-circle"></i> Cek ketersediaan di DJKI sebelum dipakai resmi</span></div>
+              </div>
+
+              <div id="namaContainer" style="display:grid;grid-template-columns:1fr 1fr;gap:10px"></div>
+
+              <div class="adv-section">
+                <div class="adv-toggle">
+                  <span><i class="ti ti-clipboard-check"></i>&nbsp; Checklist Validasi Nama Brand</span>
+                  <i class="ti ti-chevron-down chev"></i>
+                </div>
+                <div class="adv-content">
+                  <ul style="font-size:13px;color:var(--text);line-height:1.8;padding-left:20px;margin:0">
+                    <li>✅ <strong>Mudah diucapkan & diingat</strong> (max 3-4 suku kata)</li>
+                    <li>✅ <strong>Cek merek dagang</strong> di <a href="https://pdki-indonesia.dgip.go.id" target="_blank" rel="noopener">pdki-indonesia.dgip.go.id</a></li>
+                    <li>✅ <strong>Cek nama PT/CV</strong> di <a href="https://ahu.go.id" target="_blank" rel="noopener">ahu.go.id</a></li>
+                    <li>✅ <strong>Domain .com tersedia</strong> (cek Namecheap/GoDaddy)</li>
+                    <li>✅ <strong>Domain .id tersedia</strong> (cek PANDI)</li>
+                    <li>✅ <strong>Instagram handle tersedia</strong> (@brandkamu)</li>
+                    <li>✅ <strong>TikTok handle tersedia</strong> (@brandkamu)</li>
+                    <li>✅ <strong>Google search tidak ada brand serupa</strong></li>
+                    <li>✅ <strong>Tidak ada konotasi negatif</strong> di bahasa lain</li>
+                    <li>✅ <strong>Sesuai jenis usaha</strong> & tidak misleading</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="export-row">
+                <button type="button" class="export-btn img" id="exportImg">
+                  <i class="ti ti-photo-down"></i><span>Save Image</span>
+                </button>
+                <button type="button" class="export-btn wa" id="exportWa">
+                  <i class="ti ti-brand-whatsapp"></i><span>Share WA</span>
+                </button>
+                <button type="button" class="export-btn pdf" id="exportPdf">
+                  <i class="ti ti-printer"></i><span>Print/PDF</span>
+                </button>
+                <button type="button" class="export-btn copy" id="exportCopyAll">
+                  <i class="ti ti-copy"></i><span>Copy Semua</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="content-section">
+    <div class="wrap-text">
+      <h2>Cara Pilih Nama Bisnis yang Tepat</h2>
+      <ol class="tips-list">
+        <li><strong>Pilih 3-5 nama favorit</strong> dari 20 ide yang di-generate.</li>
+        <li><strong>Cek ketersediaan domain</strong> .com dan .id di Namecheap atau PANDI.</li>
+        <li><strong>Cek merek dagang</strong> di DJKI Kemenkumham (pdki-indonesia.dgip.go.id) — gratis.</li>
+        <li><strong>Cek nama PT/CV</strong> di AHU Online (ahu.go.id) jika mau bikin badan usaha.</li>
+        <li><strong>Tanya 10 orang di target market</strong> — apakah nama mudah diingat, diucapkan, dan kesan apa yang muncul.</li>
+        <li><strong>Cek konotasi di bahasa lain</strong> — Google Translate atau tanya teman bilingual.</li>
+        <li><strong>Pastikan tersedia di sosmed</strong> — Instagram, TikTok, Facebook untuk username @brandmu.</li>
+        <li><strong>Pilih nama akhir</strong> dan daftarkan merek dagang segera (proses 6-12 bulan).</li>
+      </ol>
+
+      <div class="cta-box">
+        <h3>Setelah Pilih Nama, Lakukan</h3>
+        <p>1. Daftar domain (.com + .id) → 2. Daftar sosmed handle → 3. Bikin logo (DIY pakai Canva atau hire freelancer) → 4. Daftar merek dagang di DJKI → 5. Bikin business card & branding kit → 6. Launch!</p>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+  <FAQ title="Pertanyaan Seputar Nama Bisnis" items={faqs} />
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-hdr">
+        <div class="section-eyebrow">Tools Bisnis Lainnya</div>
+        <h2 class="section-title">Bantu Bisnismu Naik</h2>
+      </div>
+      <div class="related-grid">{related.map(c => <CalculatorCard calc={c} />)}</div>
+    </div>
+  </section>
+</Layout>
+
+<script is:inline>
+  (function() {
+    function ready(fn) {
+      if (window.HC && window.html2canvas) fn();
+      else setTimeout(() => ready(fn), 100);
+    }
+
+    ready(() => {
+      const $ = id => document.getElementById(id);
+      const els = {
+        jenisUsaha: $('jenisUsaha'),
+        gayaNama: $('gayaNama'),
+        targetMarket: $('targetMarket'),
+        kataKunci: $('kataKunci'),
+      };
+
+      // Toggle adv section
+      document.querySelectorAll('.adv-toggle').forEach(t => {
+        t.addEventListener('click', () => t.parentElement.classList.toggle('open'));
+      });
+
+      // ─── NAME GENERATOR LIBRARIES ───
+      const PREFIXES = {
+        modern: ['Neo', 'Nova', 'Zenith', 'Pulse', 'Vibe', 'Spark', 'Echo', 'Lumen', 'Flux', 'Pixel', 'Aero', 'Volt'],
+        profesional: ['Prima', 'Optima', 'Sigma', 'Alfa', 'Beta', 'Gamma', 'Delta', 'Sentral', 'Utama', 'Global', 'Nusa', 'Cipta'],
+        islami: ['Al-', 'Ar-', 'As-', 'An-', 'Rahmat', 'Berkah', 'Barokah', 'Aisha', 'Khadijah', 'Salsabila', 'Hijrah', 'Madinah'],
+        aesthetic: ['Hana', 'Sora', 'Luna', 'Eva', 'Aria', 'Lila', 'Mio', 'Kira', 'Maya', 'Nala', 'Yui', 'Zoe'],
+        lokal: ['Sari', 'Indah', 'Sejati', 'Mekar', 'Bunga', 'Kembang', 'Cahaya', 'Pelangi', 'Mentari', 'Senja', 'Rembulan', 'Bintang'],
+        premium: ['Royal', 'Imperial', 'Crown', 'Elite', 'Lux', 'Grand', 'Mahkota', 'Permata', 'Mutiara', 'Berlian', 'Emas', 'Ratna'],
+      };
+
+      const SUFFIXES = {
+        kopi: ['Coffee', 'Kopi', 'Brew', 'Roastery', 'Caffe', 'Java', 'Bean'],
+        kuliner: ['Resto', 'Kitchen', 'Dapur', 'Pawon', 'Warung', 'Sajian', 'Boga'],
+        fashion: ['Style', 'Wardrobe', 'Outfit', 'Couture', 'Apparel', 'Closet', 'Wear'],
+        hijab: ['Hijab', 'Modesty', 'Veil', 'Scarf', 'Khimar', 'Muslimah', 'Hijri'],
+        kosmetik: ['Beauty', 'Glow', 'Cosmetic', 'Skin', 'Cantik', 'Glamour', 'Aura'],
+        kue: ['Bakery', 'Cake', 'Sweet', 'Patisserie', 'Roti', 'Manis', 'Cookies'],
+        laundry: ['Laundry', 'Wash', 'Clean', 'Bersih', 'Cuci', 'Express', 'Quick'],
+        salon: ['Salon', 'Studio', 'Cut', 'Style', 'Beauty', 'Hair', 'Look'],
+        elektronik: ['Tech', 'Gadget', 'Store', 'Electronics', 'Digital', 'Smart', 'Hub'],
+        jasa: ['Pro', 'Service', 'Solutions', 'Jasa', 'Consult', 'Care', 'Center'],
+        travel: ['Travel', 'Tour', 'Holiday', 'Wisata', 'Adventure', 'Journey', 'Trip'],
+        properti: ['Properti', 'Realty', 'Land', 'Estate', 'Homes', 'Property', 'Residence'],
+        pendidikan: ['Edu', 'Academy', 'School', 'Learning', 'Course', 'Class', 'Smart'],
+        tech: ['Tech', 'Digital', 'Soft', 'Code', 'Lab', 'Hub', 'Studio'],
+      };
+
+      const SLOGANS = {
+        kopi: ['Setiap tegukan, cerita baru', 'Kopi nikmat untuk hari berharga', 'Brewed with passion', 'Teman setia harimu'],
+        kuliner: ['Rasa nikmat, harga ramah', 'Cita rasa rumahan favoritmu', 'Setiap suapan istimewa', 'Kuliner pilihan keluarga'],
+        fashion: ['Tampil percaya diri setiap hari', 'Style yang menggambarkan kamu', 'Outfit untuk segala suasana', 'Fashion yang berkualitas'],
+        hijab: ['Cantik bersyariah', 'Hijab nyaman untuk muslimah aktif', 'Tampil syari dengan style', 'Pilihan muslimah modern'],
+        kosmetik: ['Glow up natural', 'Cantik alami dari dalam', 'Skincare untuk kulit sehat', 'Kecantikan yang merawat'],
+        kue: ['Setiap gigit penuh cinta', 'Manis-manis bikin happy', 'Baked with love', 'Pilihan momen istimewa'],
+        laundry: ['Bersih cepat, hidup tenang', 'Cucian rapi, hari produktif', 'Hemat waktu, hemat tenaga', 'Service trusted family'],
+        salon: ['Look better, feel better', 'Cantik tanpa repot', 'Style yang menggambarkan kamu', 'Refresh setiap kunjungan'],
+        elektronik: ['Tech yang bikin hidup mudah', 'Gadget terpercaya pilihanmu', 'Pintar memilih elektronik', 'Quality at fair price'],
+        jasa: ['Solusi tepat, hasil maksimal', 'Profesional, terpercaya, cepat', 'Layanan terbaik untukmu', 'Trust the experts'],
+        travel: ['Liburan tanpa ribet', 'Petualangan tak terlupakan', 'Travel smart, travel happy', 'Wisata berkesan, harga ramah'],
+        properti: ['Rumah impian jadi kenyataan', 'Properti terpercaya', 'Investment yang menguntungkan', 'Tempat tinggal idaman'],
+        pendidikan: ['Belajar fun, hasil maksimal', 'Investasi terbaik adalah ilmu', 'Smart learning for smart future', 'Pendidikan untuk semua'],
+        tech: ['Tech solution for modern life', 'Smart code, smart future', 'Inovasi digital terpercaya', 'Build with passion'],
+      };
+
+      function pickRandom(arr) {
+        return arr[Math.floor(Math.random() * arr.length)];
+      }
+
+      function pickN(arr, n) {
+        const shuffled = [...arr].sort(() => 0.5 - Math.random());
+        return shuffled.slice(0, n);
+      }
+
+      function generateNames(jenisUsaha, gaya, targetMarket, kataKunci) {
+        const prefixes = PREFIXES[gaya] || PREFIXES.modern;
+        const suffixes = SUFFIXES[jenisUsaha] || ['Brand'];
+        const slogans = SLOGANS[jenisUsaha] || ['Brand pilihanmu'];
+        const customKey = kataKunci.trim();
+
+        const names = new Set();
+        const results = [];
+
+        // Strategy 1: Prefix + Suffix (8 names)
+        while (results.length < 8) {
+          const p = pickRandom(prefixes);
+          const s = pickRandom(suffixes);
+          const name = `${p} ${s}`;
+          if (!names.has(name)) {
+            names.add(name);
+            results.push({ name, slogan: pickRandom(slogans) });
+          }
+        }
+
+        // Strategy 2: With custom keyword (5 names)
+        if (customKey) {
+          while (results.length < 13) {
+            const variation = Math.floor(Math.random() * 4);
+            const p = pickRandom(prefixes);
+            const s = pickRandom(suffixes);
+            let name;
+            if (variation === 0) name = `${customKey} ${s}`;
+            else if (variation === 1) name = `${p} ${customKey}`;
+            else if (variation === 2) name = `${customKey}'s ${s}`;
+            else name = `${customKey} & Co.`;
+            if (!names.has(name)) {
+              names.add(name);
+              results.push({ name, slogan: pickRandom(slogans) });
+            }
+          }
+        }
+
+        // Strategy 3: Suffix-led + creative (fill to 20)
+        while (results.length < 20) {
+          const variation = Math.floor(Math.random() * 5);
+          const p = pickRandom(prefixes);
+          const s = pickRandom(suffixes);
+          const p2 = pickRandom(prefixes);
+          let name;
+          if (variation === 0) name = `${p}${s}`; // Compound
+          else if (variation === 1) name = `${s} ${p}`;
+          else if (variation === 2) name = `${p}-${s}`;
+          else if (variation === 3) name = `The ${p} ${s}`;
+          else name = `${p} ${p2}`;
+          if (!names.has(name)) {
+            names.add(name);
+            results.push({ name, slogan: pickRandom(slogans) });
+          }
+          if (results.length >= 50) break; // safety
+        }
+
+        return results.slice(0, 20);
+      }
+
+      let lastNames = null;
+      let lastData = null;
+
+      function hitung() {
+        const data = {
+          jenisUsaha: els.jenisUsaha.value,
+          gayaNama: els.gayaNama.value,
+          targetMarket: els.targetMarket.value,
+          kataKunci: els.kataKunci.value.trim(),
+        };
+
+        const names = generateNames(data.jenisUsaha, data.gayaNama, data.targetMarket, data.kataKunci);
+        lastNames = names;
+        lastData = data;
+
+        $('namaContainer').innerHTML = names.map((n, i) => `
+          <div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:14px 12px;text-align:center;transition:.2s">
+            <div style="font-size:11px;color:var(--text-mute);font-weight:600;margin-bottom:4px">#${i + 1}</div>
+            <div style="font-size:15px;font-weight:800;color:#5B21B6;margin-bottom:6px;letter-spacing:-.01em">${n.name}</div>
+            <div style="font-size:10.5px;color:var(--text-soft);line-height:1.4;font-style:italic;margin-bottom:10px">"${n.slogan}"</div>
+            <button type="button" data-name="${n.name}" class="name-copy" style="background:#EDE9FE;color:#5B21B6;border:none;padding:5px 10px;border-radius:6px;font-size:10.5px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:3px">
+              <i class="ti ti-copy" style="font-size:12px"></i> Copy
+            </button>
+          </div>
+        `).join('');
+
+        document.querySelectorAll('.name-copy').forEach(btn => {
+          btn.addEventListener('click', () => HC.copyText(btn.dataset.name, 'Nama tersalin!'));
+        });
+
+        $('namaMeta').textContent = `${names.length} nama unik untuk ${data.jenisUsaha}`;
+        $('placeholder').style.display = 'none';
+        $('results').classList.add('show');
+        $('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        HC.toast(`${names.length} ide nama berhasil di-generate!`);
+      }
+
+      function reset() {
+        els.jenisUsaha.value = 'kopi';
+        els.gayaNama.value = 'modern';
+        els.targetMarket.value = 'genz';
+        els.kataKunci.value = '';
+        $('placeholder').style.display = '';
+        $('results').classList.remove('show');
+        lastNames = null;
+        lastData = null;
+        HC.toast('Form direset', 'info');
+      }
+
+      function buildReport() {
+        if (!lastNames || !lastData) return null;
+
+        const inputs = [
+          { label: '🏪 Jenis Usaha', value: lastData.jenisUsaha.charAt(0).toUpperCase() + lastData.jenisUsaha.slice(1) },
+          { label: '🎨 Gaya Nama', value: lastData.gayaNama.charAt(0).toUpperCase() + lastData.gayaNama.slice(1) },
+          { label: '🎯 Target Market', value: lastData.targetMarket.replace(/_/g, ' ') },
+        ];
+        if (lastData.kataKunci) inputs.push({ label: '🔑 Kata Kunci', value: lastData.kataKunci });
+
+        // Top 8 names in result card
+        const results = lastNames.slice(0, 8).map((n, i) => ({
+          label: `#${i + 1}`,
+          value: n.name,
+          highlight: i < 4,
+        }));
+
+        return HC.buildReportCard({
+          title: '🏪 Nama Bisnis - 20 Ide Brand',
+          color: '#8B5CF6',
+          color2: '#6D28D9',
+          heroLabel: 'Pilih dari 20 Ide Nama',
+          heroValue: lastNames[0].name,
+          heroSubtext: `Top pick + 19 alternatif untuk ${lastData.jenisUsaha}`,
+          inputs, results,
+          insight: 'Cek ketersediaan domain (.com/.id), sosmed handle, dan merek dagang di DJKI sebelum dipakai resmi.',
+          slug: 'nama-bisnis-generator',
+        });
+      }
+
+      function summaryText() {
+        if (!lastNames || !lastData) return '';
+        let txt = `🏪 *20 Ide Nama Bisnis ${lastData.jenisUsaha.charAt(0).toUpperCase() + lastData.jenisUsaha.slice(1)}*\n\n`;
+        lastNames.forEach((n, i) => {
+          txt += `${i + 1}. *${n.name}*\n   "${n.slogan}"\n\n`;
+        });
+        txt += `Generate nama brand di: https://hitungcerdas.net/kalkulator/nama-bisnis-generator`;
+        return txt;
+      }
+
+      $('btnHitung').addEventListener('click', hitung);
+      $('btnReset').addEventListener('click', reset);
+      $('exportImg').addEventListener('click', () => {
+        const card = buildReport();
+        if (!card) { HC.toast('Generate dulu', 'error'); return; }
+        HC.exportToImage(card, 'nama-bisnis-' + Date.now());
+      });
+      $('exportWa').addEventListener('click', () => {
+        if (!lastNames) { HC.toast('Generate dulu', 'error'); return; }
+        window.open('https://wa.me/?text=' + encodeURIComponent(summaryText()), '_blank');
+      });
+      $('exportPdf').addEventListener('click', () => {
+        if (!lastNames) { HC.toast('Generate dulu', 'error'); return; }
+        HC.exportToPDF();
+      });
+      $('exportCopyAll').addEventListener('click', () => {
+        if (!lastNames) { HC.toast('Generate dulu', 'error'); return; }
+        HC.copyText(summaryText(), 'Semua nama tersalin!');
+      });
+    });
+  })();
+</script>

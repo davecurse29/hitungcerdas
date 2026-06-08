@@ -1,0 +1,147 @@
+---
+// FAQ Accordion dengan Schema.org FAQPage markup
+// Untuk Google rich snippets di search results
+
+interface FAQItem {
+  question: string;
+  answer: string;
+}
+
+interface Props {
+  title?: string;
+  items: FAQItem[];
+  generateSchema?: boolean;
+}
+
+const {
+  title = 'Pertanyaan yang Sering Ditanyakan',
+  items,
+  generateSchema = true,
+} = Astro.props;
+
+// Generate Schema.org FAQPage JSON-LD for rich snippets
+const faqSchema = generateSchema ? {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": items.map(item => ({
+    "@type": "Question",
+    "name": item.question,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": item.answer.replace(/<[^>]+>/g, ''), // Strip HTML for clean text
+    },
+  })),
+} : null;
+---
+
+{generateSchema && faqSchema && (
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+)}
+
+<section class="faq-section">
+  <div class="wrap">
+    <div class="section-hdr">
+      <div class="section-eyebrow">FAQ</div>
+      <h2 class="section-title">{title}</h2>
+    </div>
+
+    <div class="faq-list">
+      {items.map((item, idx) => (
+        <details class="faq" name="faq-group" open={idx === 0}>
+          <summary class="faq-q">
+            <span>{item.question}</span>
+            <i class="ti ti-plus" aria-hidden="true"></i>
+          </summary>
+          <div class="faq-a" set:html={item.answer} />
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq-section {
+    padding: 56px 0;
+  }
+
+  .faq-list {
+    max-width: 760px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .faq {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: border-color .2s, box-shadow .2s;
+  }
+
+  .faq[open] {
+    border-color: var(--blue);
+    box-shadow: var(--shadow);
+  }
+
+  .faq-q {
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    cursor: pointer;
+    font-size: 14.5px;
+    font-weight: 600;
+    color: var(--navy);
+    list-style: none;
+    user-select: none;
+  }
+
+  .faq-q::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-q i {
+    color: var(--blue);
+    font-size: 18px;
+    transition: transform .3s;
+    flex-shrink: 0;
+  }
+
+  .faq[open] .faq-q i {
+    transform: rotate(45deg);
+  }
+
+  .faq-a {
+    padding: 0 20px 18px;
+    font-size: 13.5px;
+    color: var(--text-soft);
+    line-height: 1.7;
+  }
+
+  .faq-a :global(p) {
+    margin-bottom: 10px;
+  }
+
+  .faq-a :global(p:last-child) {
+    margin-bottom: 0;
+  }
+
+  .faq-a :global(strong) {
+    color: var(--navy);
+    font-weight: 600;
+  }
+
+  .faq-a :global(ul),
+  .faq-a :global(ol) {
+    margin: 10px 0 10px 20px;
+    color: var(--text-soft);
+  }
+
+  .faq-a :global(li) {
+    margin-bottom: 4px;
+    line-height: 1.6;
+  }
+</style>

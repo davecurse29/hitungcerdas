@@ -1,0 +1,139 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import AdSlot from '../../components/AdSlot.astro';
+
+const today = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+
+<Layout
+  title="Kebijakan Privasi — HitungCerdas"
+  description="Kebijakan privasi HitungCerdas: bagaimana kami melindungi data pengguna, penggunaan cookies, Google AdSense, dan analytics."
+  canonical="https://hitungcerdas.net/legal/privasi"
+>
+  <section class="page-hero" style="--cat-color:#0F172A;--cat-color2:#1E293B">
+    <div class="wrap">
+      <h1>Kebijakan Privasi</h1>
+      <p>Terakhir diperbarui: {today}</p>
+    </div>
+  </section>
+
+  <section class="content-section">
+    <div class="wrap-text">
+      <h2>1. Pendahuluan</h2>
+      <p>
+        HitungCerdas (selanjutnya disebut "Kami") berkomitmen melindungi privasi pengguna ("Anda"
+        atau "Pengguna"). Kebijakan ini menjelaskan jenis data yang kami kumpulkan, bagaimana kami
+        menggunakannya, dan hak Anda terkait data pribadi saat menggunakan website kami di
+        <strong>https://hitungcerdas.net</strong>.
+      </p>
+
+      <h2>2. Data yang Kami Kumpulkan</h2>
+      <p>
+        <strong>Kami TIDAK mengumpulkan data pribadi yang Anda masukkan di kalkulator.</strong>
+        Semua perhitungan (KPR, pajak, zakat, dll) dilakukan langsung di browser Anda
+        (<em>client-side</em>) dan tidak dikirim ke server kami. Begitu Anda menutup tab, data
+        tersebut hilang sepenuhnya.
+      </p>
+      <p>
+        Yang kami kumpulkan secara otomatis melalui third-party tools (untuk analitik dan iklan):
+      </p>
+      <ul class="info-list">
+        <li><strong>Cookies & similar technologies</strong> dari Google AdSense, Google Analytics, dan Cloudflare Web Analytics.</li>
+        <li><strong>Data anonim agregat</strong>: tipe device, browser, OS, halaman yang dikunjungi, durasi, dan referrer.</li>
+        <li><strong>IP address</strong> (dianonimkan oleh Cloudflare untuk keamanan dan analitik).</li>
+        <li><strong>Lokasi geografis perkiraan</strong> (negara dan kota, tidak detail).</li>
+      </ul>
+      <p>
+        Data ini bersifat anonim dan agregat — tidak terkait dengan identitas personal Anda.
+      </p>
+
+      <h2>3. Google AdSense</h2>
+      <p>
+        Website kami menggunakan <strong>Google AdSense</strong> untuk menampilkan iklan. Google
+        dan partner pihak ketiga menggunakan cookies untuk menyajikan iklan berdasarkan kunjungan
+        Anda ke website ini dan website lain di internet.
+      </p>
+      <p>
+        Anda dapat <strong>opt-out</strong> dari iklan yang dipersonalisasi dengan mengunjungi
+        <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener">
+          Google Ads Settings
+        </a> atau <a href="https://optout.networkadvertising.org" target="_blank" rel="noopener">
+          aboutads.info
+        </a>.
+      </p>
+
+      <h2>4. Google Analytics & Cloudflare Web Analytics</h2>
+      <p>
+        Kami menggunakan <strong>Google Analytics</strong> dan <strong>Cloudflare Web Analytics</strong>
+        untuk memahami pola penggunaan website (jumlah pengunjung, halaman populer, durasi sesi,
+        dll). Data yang dikumpulkan adalah anonim dan tidak menyimpan informasi pribadi Anda.
+      </p>
+      <p>
+        Anda dapat menonaktifkan Google Analytics dengan menginstal
+        <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener">
+          Google Analytics Opt-out Browser Add-on
+        </a>.
+      </p>
+
+      <h2>5. Cookies</h2>
+      <p>Cookies yang digunakan di website ini:</p>
+      <ul class="info-list">
+        <li><strong>Essential cookies</strong>: untuk fungsi dasar website (tidak dapat dinonaktifkan).</li>
+        <li><strong>Analytics cookies</strong>: untuk memahami pengguna (Google Analytics, Cloudflare).</li>
+        <li><strong>Advertising cookies</strong>: untuk menyajikan iklan relevan (Google AdSense).</li>
+      </ul>
+      <p>
+        Anda dapat menonaktifkan atau menghapus cookies melalui pengaturan browser Anda. Namun,
+        beberapa fitur website mungkin tidak berfungsi optimal.
+      </p>
+
+      <h2>6. Data yang Tidak Dikumpulkan</h2>
+      <p>
+        Kami <strong>TIDAK</strong> mengumpulkan:
+      </p>
+      <ul class="info-list">
+        <li>Nama, alamat email, nomor telepon (kecuali Anda kirimkan via email/sosmed).</li>
+        <li>Data finansial pribadi (gaji, hutang, harta) yang Anda input di kalkulator.</li>
+        <li>Detail pembayaran (kami tidak punya sistem pembayaran apapun).</li>
+        <li>Lokasi GPS akurat.</li>
+        <li>Akses ke file/folder di device Anda.</li>
+      </ul>
+
+      <h2>7. Hak Pengguna</h2>
+      <p>
+        Sesuai UU Pelindungan Data Pribadi Indonesia (UU PDP 2022), Anda memiliki hak:
+      </p>
+      <ul class="info-list">
+        <li><strong>Mengetahui</strong> data apa yang kami kumpulkan (sudah dijelaskan di atas).</li>
+        <li><strong>Mengakses</strong> data Anda (jika ada, hubungi kami).</li>
+        <li><strong>Menghapus</strong> data Anda dari sistem kami (hubungi kami).</li>
+        <li><strong>Menarik persetujuan</strong> kapan saja melalui pengaturan browser/cookie.</li>
+      </ul>
+
+      <h2>8. Kontak</h2>
+      <p>
+        Pertanyaan terkait kebijakan privasi, hubungi: <strong>hitungcerdas.id@gmail.com</strong>
+        atau melalui halaman <a href="/kontak">Kontak</a>.
+      </p>
+
+      <h2>9. Perubahan Kebijakan</h2>
+      <p>
+        Kebijakan ini dapat diperbarui sewaktu-waktu. Versi terbaru selalu tersedia di halaman ini.
+        Tanggal pembaruan akan tertulis di bagian atas.
+      </p>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+</Layout>
+
+<style>
+  .page-hero {
+    background: linear-gradient(135deg, var(--cat-color) 0%, var(--cat-color2) 100%);
+    color: #fff;
+    padding: 56px 0;
+    text-align: center;
+  }
+  .page-hero h1 { color: #fff; margin-bottom: 8px; }
+  .page-hero p { color: rgba(255, 255, 255, .7); font-size: 13px; }
+</style>

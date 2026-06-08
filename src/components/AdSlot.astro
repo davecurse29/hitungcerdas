@@ -1,0 +1,46 @@
+---
+// Reusable AdSense slot component
+// Usage: <AdSlot format="horizontal" />
+
+interface Props {
+  format?: 'horizontal' | 'rectangle' | 'auto';
+  className?: string;
+  showLabel?: boolean;
+}
+
+const {
+  format = 'horizontal',
+  className = '',
+  showLabel = true,
+} = Astro.props;
+
+const formatStyles: Record<string, string> = {
+  horizontal: 'display:block;min-height:90px;width:100%;max-width:728px',
+  rectangle: 'display:inline-block;width:336px;height:280px;max-width:100%',
+  auto: 'display:block;min-height:100px',
+};
+---
+
+<div class={`ad-strip ${className}`}>
+  <div class="ad-strip-inner">
+    {showLabel && <span class="ad-lbl">Iklan</span>}
+    <ins
+      class="adsbygoogle"
+      style={formatStyles[format]}
+      data-ad-client="ca-pub-7503808144261296"
+      data-ad-slot="auto"
+      data-ad-format={format}
+      data-full-width-responsive="true"
+    ></ins>
+  </div>
+</div>
+
+<script is:inline>
+  (function() {
+    try {
+      (window.adsbygoogle = window.adsbygoogle || []).push({});
+    } catch (e) {
+      // AdSense not ready yet, will retry
+    }
+  })();
+</script>

@@ -1,0 +1,167 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import AdSlot from '../../components/AdSlot.astro';
+
+const articles = [
+  { slug: 'cara-menghitung-kpr', title: 'Cara Menghitung Cicilan KPR yang Benar di 2026', category: 'PANDUAN KPR', readTime: '5 min', color: '#2563EB', color2: '#1E40AF', excerpt: 'Pahami rumus anuitas KPR, simulasi tenor 5-30 tahun, dan tips negosiasi bunga dengan bank.' },
+  { slug: 'cara-menghitung-pph-21', title: 'Cara Menghitung PPh 21 Karyawan Sesuai UU HPP 2022', category: 'PANDUAN PAJAK', readTime: '7 min', color: '#DC2626', color2: '#991B1B', excerpt: 'Tarif progresif baru 5 lapisan, PTKP terbaru, dan tips legal mengurangi pajak penghasilan.' },
+  { slug: 'cara-menghitung-gaji-bersih', title: 'Cara Menghitung Gaji Bersih (Take-Home Pay) Karyawan', category: 'GAJI & PENGHASILAN', readTime: '4 min', color: '#059669', color2: '#047857', excerpt: 'Dari gaji bruto ke gaji bersih: BPJS, PPh 21, biaya jabatan, dan aturan alokasi 50/30/20.' },
+  { slug: 'cara-menentukan-harga-jual', title: 'Cara Menentukan Harga Jual Produk UMKM agar Untung', category: 'UMKM & BISNIS', readTime: '6 min', color: '#EC4899', color2: '#9D174D', excerpt: 'Rumus HPP, target margin sehat 30-50%, dan strategi pricing untuk marketplace Shopee/Tokopedia.' },
+  { slug: 'cara-menghitung-margin', title: 'Beda Margin dan Markup yang Sering Dibingungkan UMKM', category: 'UMKM & BISNIS', readTime: '5 min', color: '#10B981', color2: '#065F46', excerpt: 'Pahami beda margin vs markup, benchmark per industri, dan cara naikkan margin tanpa naikkan harga.' },
+  { slug: 'cara-menghitung-investasi', title: 'Kekuatan Compound Interest dalam Investasi Jangka Panjang', category: 'INVESTASI', readTime: '6 min', color: '#0891B2', color2: '#155E75', excerpt: 'Mengenal compound interest, instrumen investasi Indonesia, dan strategi Dollar Cost Averaging (DCA).' },
+  { slug: 'panduan-warisan-faraidh', title: 'Panduan Lengkap Pembagian Warisan Faraidh Sesuai QS An-Nisa', category: 'WARISAN ISLAM', readTime: '8 min', color: '#DC2626', color2: '#991B1B', excerpt: 'Dasar hukum waris Islam, urutan kewajiban sebelum pembagian, dan bagian masing-masing ahli waris.' },
+  { slug: 'cara-menghitung-dana-haji', title: 'Persiapan Dana Haji & Umrah: Reguler, Plus, Furoda', category: 'HAJI & UMRAH', readTime: '7 min', color: '#6D28D9', color2: '#5B21B6', excerpt: 'Bedanya 3 jenis haji, antrian per provinsi, tabungan haji syariah, dan strategi compound interest.' },
+];
+---
+
+<Layout
+  title="Blog & Panduan HitungCerdas — Tips Keuangan, Bisnis & Islami"
+  description="Artikel & panduan lengkap seputar perhitungan KPR, PPh 21, gaji bersih, harga jual UMKM, zakat, warisan, haji, dan investasi untuk masyarakat Indonesia."
+  canonical="https://hitungcerdas.net/blog"
+>
+  <section class="page-hero" style="--cat-color:#2563EB;--cat-color2:#1E40AF">
+    <div class="wrap">
+      <h1>Blog & Panduan</h1>
+      <p>Tips, edukasi, dan panduan seputar keuangan, bisnis, dan ibadah islami untuk masyarakat Indonesia</p>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+
+  <section class="section">
+    <div class="wrap">
+      <div class="art-grid">
+        {articles.map(art => (
+          <a href={`/blog/${art.slug}`} class="art-card" style={`--art-color:${art.color};--art-color2:${art.color2}`}>
+            <div class="art-img">
+              <i class="ti ti-file-text"></i>
+            </div>
+            <div class="art-body">
+              <div class="art-cat">{art.category}</div>
+              <h3 class="art-title">{art.title}</h3>
+              <p class="art-excerpt">{art.excerpt}</p>
+              <div class="art-meta"><i class="ti ti-clock"></i> {art.readTime} baca</div>
+              <span class="art-link">Baca Selengkapnya <i class="ti ti-arrow-right"></i></span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+</Layout>
+
+<style>
+  .page-hero {
+    background: linear-gradient(135deg, var(--cat-color) 0%, var(--cat-color2) 100%);
+    color: #fff;
+    padding: 56px 0;
+    text-align: center;
+  }
+  .page-hero h1 { color: #fff; margin-bottom: 12px; }
+  .page-hero p { color: rgba(255, 255, 255, .85); font-size: 16px; max-width: 700px; margin: 0 auto; }
+
+  .art-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 18px;
+  }
+
+  .art-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    transition: var(--tx);
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .art-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--art-color);
+  }
+
+  .art-img {
+    height: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--art-color), var(--art-color2));
+    color: #fff;
+    font-size: 60px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .art-img::before {
+    content: '';
+    position: absolute;
+    top: -30%;
+    right: -20%;
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .1);
+    transition: transform .5s;
+  }
+
+  .art-card:hover .art-img::before { transform: scale(1.2); }
+
+  .art-body {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+  }
+
+  .art-cat {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--blue);
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+
+  .art-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1.35;
+    letter-spacing: -.01em;
+    margin: 0;
+    font-family: var(--ff-display);
+  }
+
+  .art-excerpt {
+    font-size: 13px;
+    color: var(--text-soft);
+    line-height: 1.55;
+    margin: 4px 0 8px;
+    flex: 1;
+  }
+
+  .art-meta {
+    font-size: 11px;
+    color: var(--text-mute);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .art-link {
+    font-size: 12px;
+    color: var(--blue);
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    margin-top: 6px;
+  }
+</style>

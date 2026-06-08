@@ -1,0 +1,282 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import FAQ from '../../components/FAQ.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import CalculatorCard from '../../components/CalculatorCard.astro';
+import { getCalculatorBySlug, getRelatedCalculators } from '../../data/calculators';
+
+const calc = getCalculatorBySlug('warisan-faraidh')!;
+const related = getRelatedCalculators('warisan-faraidh', 3);
+
+const faqs = [
+  { question: 'Dasar hukum waris Islam?', answer: 'QS An-Nisa 11-12 (pembagian rinci), An-Nisa 176 (kalalah), hadits Nabi: "Bagilah warisan di antara ahli faraidh berdasarkan kitab Allah." Sangat presisi matematis.' },
+  { question: 'Urutan penyelesaian?', answer: '1) Biaya pengurusan jenazah, 2) Pelunasan hutang almarhum, 3) Wasiat (max 1/3 sisa, bukan untuk ahli waris), 4) Sisa dibagi ke ahli waris faraidh.' },
+  { question: 'Anak laki vs perempuan?', answer: 'Kaidah dasar QS An-Nisa 11: <strong>anak laki = 2× anak perempuan</strong>. Alasan: laki-laki punya kewajiban nafkah, perempuan tidak.' },
+  { question: 'Bagian suami/istri?', answer: '<strong>Suami</strong> dari istri: 1/2 (no anak), 1/4 (ada anak). <strong>Istri</strong> dari suami: 1/4 (no anak), 1/8 (ada anak). Jika beberapa istri: dibagi rata.' },
+  { question: 'Kapan WAJIB ke Pengadilan Agama?', answer: 'Kasus kompleks: ada saudara, kakek-nenek, kalalah, beberapa istri, anak angkat, perselisihan, atau properti rumit. Pembagian resmi memerlukan putusan Pengadilan Agama.' },
+];
+
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '/#tools' }, { label: calc.shortTitle }];
+---
+
+<Layout title={calc.title} description={calc.metaDescription} keywords={calc.keywords} canonical={`https://hitungcerdas.net/kalkulator/${calc.slug}`}>
+  <section class="calc-hero" style="--cat-color:#DC2626;--cat-color2:#991B1B">
+    <div class="wrap">
+      <Breadcrumb items={bcItems} />
+      <div class="calc-hero-grid">
+        <div class="calc-hero-text">
+          <div class="calc-hero-tag" style="background:#FEE2E2;color:#991B1B"><i class="ti ti-book"></i> {calc.categoryLabel}</div>
+          <h1 class="calc-hero-title">{calc.h1}</h1>
+          <p class="calc-hero-sub">{calc.introText}</p>
+          <ul class="calc-hero-benefits">{calc.benefits.map(b => <li><i class="ti ti-check"></i> {b}</li>)}</ul>
+        </div>
+        <div class="calc-hero-illust">
+          <svg viewBox="0 0 200 200" fill="none">
+            <circle cx="100" cy="100" r="85" fill="rgba(255,255,255,.08)"/>
+            <rect x="55" y="50" width="90" height="110" rx="6" fill="#FFF" stroke="#FBBF24" stroke-width="2.5"/>
+            <rect x="65" y="65" width="70" height="3" fill="#0A2540"/>
+            <rect x="65" y="75" width="50" height="2" fill="#94A3B8"/>
+            <rect x="65" y="82" width="65" height="2" fill="#94A3B8"/>
+            <circle cx="100" cy="135" r="14" fill="#FBBF24"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+
+  <section class="calc-section">
+    <div class="wrap">
+      <div class="calc-card">
+        <div class="calc-card-hdr">
+          <div class="calc-card-hdr-ic" style="background:linear-gradient(135deg,#DC2626 0%,#991B1B 100%)"><i class="ti ti-book"></i></div>
+          <div><h2 class="calc-card-title">Kalkulator Warisan Faraidh</h2><p class="calc-card-sub">Pembagian sesuai QS An-Nisa 11-12</p></div>
+        </div>
+
+        <div class="calc-grid">
+          <div class="calc-input">
+            <div class="field"><label>Total Harta Peninggalan</label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="harta" class="has-prefix" value="500.000.000" inputmode="numeric" /></div></div>
+            <div class="field"><label>Hutang Almarhum</label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="hutang" class="has-prefix" placeholder="0" inputmode="numeric" /></div></div>
+            <div class="field"><label>Biaya Pemakaman</label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="makam" class="has-prefix" value="10.000.000" inputmode="numeric" /></div></div>
+            <div class="field"><label>Wasiat <span class="hint">(max 1/3 sisa)</span></label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="wasiat" class="has-prefix" placeholder="0" inputmode="numeric" /></div></div>
+            <div class="field"><label>Status Almarhum</label>
+              <select id="status">
+                <option value="suami">Laki-laki (suami meninggal)</option>
+                <option value="istri">Perempuan (istri meninggal)</option>
+              </select></div>
+            <div class="field"><label>Pasangan Masih Hidup?</label>
+              <select id="pasangan"><option value="ya">Ya</option><option value="tidak">Tidak</option></select></div>
+            <div class="field-row">
+              <div class="field"><label>Anak Laki-Laki</label><input type="number" id="anakL" value="1" min="0" max="10" /></div>
+              <div class="field"><label>Anak Perempuan</label><input type="number" id="anakP" value="1" min="0" max="10" /></div>
+            </div>
+            <div class="field-row">
+              <div class="field"><label>Ayah Almarhum</label>
+                <select id="ayah"><option value="ya">Hidup</option><option value="tidak" selected>Meninggal</option></select></div>
+              <div class="field"><label>Ibu Almarhum</label>
+                <select id="ibu"><option value="ya">Hidup</option><option value="tidak" selected>Meninggal</option></select></div>
+            </div>
+
+            <div class="calc-action-bar">
+              <button type="button" class="btn-hitung" id="btnHitung"><i class="ti ti-calculator"></i> Hitung Sekarang</button>
+              <button type="button" class="btn-reset" id="btnReset"><i class="ti ti-refresh"></i> Reset</button>
+            </div>
+          </div>
+
+          <div class="calc-output">
+            <div class="result-placeholder" id="placeholder">
+              <i class="ti ti-book result-placeholder-icon"></i>
+              <div class="result-placeholder-title">Hasil akan muncul di sini</div>
+              <div class="result-placeholder-desc">Lengkapi data ahli waris, lalu klik <strong>"Hitung Sekarang"</strong>.</div>
+            </div>
+
+            <div class="result-wrapper" id="results">
+              <div class="result-main">
+                <div class="result-label">Harta Bersih Dibagi</div>
+                <div class="result-value" id="hartaBersih">Rp 0</div>
+                <div class="result-meta"><i class="ti ti-info-circle"></i> <span id="setelahPotongan">Setelah hutang, makam, wasiat</span></div>
+              </div>
+
+              <div class="kelayakan-box">
+                <div class="kelayakan-hdr"><i class="ti ti-users"></i> <span>Pembagian per Ahli Waris</span></div>
+                <div id="pembagian" style="font-size:13px;line-height:1.8"></div>
+              </div>
+
+              <div class="kelayakan-box" style="background:var(--gold-light);border-color:var(--gold-dark)">
+                <div class="kelayakan-hdr" style="color:var(--gold-dark)"><i class="ti ti-alert-circle"></i> <span>Disclaimer</span></div>
+                <div style="font-size:12px;line-height:1.6;color:var(--text)">
+                  Hasil <strong>estimasi awal</strong>. Kasus warisan kompleks (kakek-nenek, saudara, kalalah, dll) <strong>WAJIB</strong> konsultasi <strong>Pengadilan Agama</strong> atau ulama spesialis faraidh.
+                </div>
+              </div>
+
+              <div class="export-row">
+                <button class="export-btn img" id="exportImg"><i class="ti ti-photo-down"></i><span>Save Image</span></button>
+                <button class="export-btn wa" id="exportWa"><i class="ti ti-brand-whatsapp"></i><span>Share WA</span></button>
+                <button class="export-btn pdf" id="exportPdf"><i class="ti ti-printer"></i><span>Print/PDF</span></button>
+                <button class="export-btn copy" id="exportCopy"><i class="ti ti-copy"></i><span>Copy Teks</span></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="content-section">
+    <div class="wrap-text">
+      <h2>Memahami Hukum Waris Islam (Faraidh)</h2>
+      <p>Faraidh = ilmu pembagian warisan berdasarkan QS An-Nisa 11-12. Sebelum dibagi: pengurusan jenazah → hutang → wasiat (max 1/3 sisa) → ahli waris. Anak laki 2× anak perempuan karena tanggung jawab nafkah.</p>
+      <div class="cta-box"><h3>Konsultasi Pengadilan Agama</h3><p>Untuk pembagian resmi & sengketa, hubungi Pengadilan Agama setempat atau ulama spesialis faraidh.</p></div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+  <FAQ items={faqs} />
+
+  <section class="section"><div class="wrap">
+    <div class="section-hdr"><div class="section-eyebrow">Kalkulator Lainnya</div><h2 class="section-title">Hitung Juga yang Lain</h2></div>
+    <div class="related-grid">{related.map(c => <CalculatorCard calc={c} />)}</div>
+  </div></section>
+</Layout>
+
+<script is:inline>
+  (function() {
+    function ready(fn) { if (window.HC && window.html2canvas) fn(); else setTimeout(() => ready(fn), 100); }
+    ready(() => {
+      const $ = id => document.getElementById(id);
+      ['harta', 'hutang', 'makam', 'wasiat'].forEach(id => $(id).addEventListener('input', HC.fmtInput));
+
+      let lastCalc = null;
+
+      function hitung() {
+        const harta = HC.parseRp($('harta').value);
+        const hutang = HC.parseRp($('hutang').value);
+        const makam = HC.parseRp($('makam').value);
+        let wasiat = HC.parseRp($('wasiat').value);
+        const status = $('status').value;
+        const pasanganHidup = $('pasangan').value === 'ya';
+        const anakL = parseInt($('anakL').value) || 0;
+        const anakP = parseInt($('anakP').value) || 0;
+        const adaAyah = $('ayah').value === 'ya';
+        const adaIbu = $('ibu').value === 'ya';
+
+        if (harta === 0) { HC.toast('Masukkan harta peninggalan', 'error'); return; }
+
+        const setelahHutang = harta - hutang - makam;
+        const maxWasiat = setelahHutang / 3;
+        if (wasiat > maxWasiat) wasiat = maxWasiat;
+        const bersih = setelahHutang - wasiat;
+
+        $('hartaBersih').textContent = HC.fmt(bersih);
+        $('setelahPotongan').textContent = `Setelah ${HC.fmt(hutang + makam + wasiat)} potongan`;
+
+        const adaAnak = (anakL + anakP) > 0;
+        let shares = [];
+
+        if (pasanganHidup) {
+          if (status === 'suami') {
+            const r = adaAnak ? 1/8 : 1/4;
+            shares.push({ name: 'Istri (janda)', fraction: r, amount: bersih * r });
+          } else {
+            const r = adaAnak ? 1/4 : 1/2;
+            shares.push({ name: 'Suami (duda)', fraction: r, amount: bersih * r });
+          }
+        }
+
+        if (adaIbu) {
+          const r = adaAnak ? 1/6 : 1/3;
+          shares.push({ name: 'Ibu Almarhum', fraction: r, amount: bersih * r });
+        }
+        if (adaAyah) {
+          if (adaAnak) {
+            shares.push({ name: 'Ayah Almarhum', fraction: 1/6, amount: bersih / 6 });
+          } else {
+            const used = shares.reduce((s, x) => s + x.fraction, 0);
+            const r = 1 - used;
+            shares.push({ name: 'Ayah (sisa/ashabah)', fraction: r, amount: bersih * r });
+          }
+        }
+
+        if (adaAnak) {
+          const used = shares.reduce((s, x) => s + x.fraction, 0);
+          const anakTotal = 1 - used;
+          const unit = anakTotal / (anakL * 2 + anakP);
+          for (let i = 0; i < anakL; i++) shares.push({ name: `Anak Laki-Laki ${i + 1}`, fraction: unit * 2, amount: bersih * unit * 2 });
+          for (let i = 0; i < anakP; i++) shares.push({ name: `Anak Perempuan ${i + 1}`, fraction: unit, amount: bersih * unit });
+        }
+
+        let html = '', total = 0;
+        shares.forEach(s => {
+          total += s.amount;
+          html += `<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border)">
+            <span>${s.name} <small style="color:var(--text-mute)">(${(s.fraction * 100).toFixed(2)}%)</small></span>
+            <strong>${HC.fmt(s.amount)}</strong>
+          </div>`;
+        });
+        html += `<div style="display:flex;justify-content:space-between;padding:8px 0;font-weight:700;color:var(--red)"><span>TOTAL DIBAGI</span><span>${HC.fmt(total)}</span></div>`;
+        if (!shares.length) html = '<p style="color:var(--text-mute);padding:10px 0">Pilih minimal 1 ahli waris yang masih hidup</p>';
+        $('pembagian').innerHTML = html;
+
+        lastCalc = { harta, hutang, makam, wasiat, bersih, shares, statusLabel: status === 'suami' ? 'Suami meninggal' : 'Istri meninggal' };
+        $('placeholder').style.display = 'none';
+        $('results').classList.add('show');
+        $('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        HC.toast('Berhasil dihitung!');
+      }
+
+      function reset() {
+        $('harta').value = '500.000.000'; $('hutang').value = ''; $('makam').value = '10.000.000'; $('wasiat').value = '';
+        $('status').value = 'suami'; $('pasangan').value = 'ya';
+        $('anakL').value = '1'; $('anakP').value = '1';
+        $('ayah').value = 'tidak'; $('ibu').value = 'tidak';
+        $('placeholder').style.display = ''; $('results').classList.remove('show');
+        lastCalc = null; HC.toast('Form direset', 'info');
+      }
+
+      function buildReport() {
+        if (!lastCalc) return null;
+        const c = lastCalc;
+        const results = c.shares.slice(0, 8).map(s => ({
+          label: s.name + ` (${(s.fraction * 100).toFixed(1)}%)`,
+          value: HC.fmt(s.amount),
+        }));
+        return HC.buildReportCard({
+          title: '📖 Warisan Faraidh', color: '#DC2626', color2: '#991B1B',
+          heroLabel: 'Harta Bersih Dibagi', heroValue: HC.fmt(c.bersih),
+          heroSubtext: `${c.statusLabel} · QS An-Nisa 11-12`,
+          inputs: [
+            { label: '💰 Total Harta', value: HC.fmt(c.harta) },
+            { label: '💳 Hutang', value: HC.fmt(c.hutang) },
+            { label: '⚱️ Pemakaman', value: HC.fmt(c.makam) },
+            { label: '📜 Wasiat', value: HC.fmt(c.wasiat) },
+          ],
+          results,
+          insight: 'Hasil ESTIMASI. Untuk pembagian resmi, konsultasi Pengadilan Agama atau ulama spesialis faraidh. Kasus kompleks (saudara, kakek-nenek, kalalah) memerlukan ijtihad detail.',
+          slug: 'warisan-faraidh',
+        });
+      }
+
+      function summaryText() {
+        if (!lastCalc) return '';
+        const c = lastCalc;
+        let s = `📖 *Warisan Faraidh - HitungCerdas*\n\nTotal Harta: ${HC.fmt(c.harta)}\nDibagi: ${HC.fmt(c.bersih)}\n\n*Pembagian:*\n`;
+        c.shares.forEach(sh => s += `• ${sh.name}: ${HC.fmt(sh.amount)} (${(sh.fraction*100).toFixed(1)}%)\n`);
+        s += `\n⚠️ Estimasi. Konsultasi PA untuk resmi.\nHitung: https://hitungcerdas.net/kalkulator/warisan-faraidh`;
+        return s;
+      }
+
+      $('btnHitung').addEventListener('click', hitung);
+      $('btnReset').addEventListener('click', reset);
+      $('exportImg').addEventListener('click', () => { const r = buildReport(); if (r) HC.exportToImage(r, 'warisan-' + Date.now()); else HC.toast('Hitung dulu', 'error'); });
+      $('exportWa').addEventListener('click', () => { const r = buildReport(); if (r) HC.shareWhatsApp(r, summaryText(), 'warisan-faraidh'); else HC.toast('Hitung dulu', 'error'); });
+      $('exportPdf').addEventListener('click', () => { if (lastCalc) HC.exportToPDF(); else HC.toast('Hitung dulu', 'error'); });
+      $('exportCopy').addEventListener('click', () => { if (lastCalc) HC.copyText(summaryText(), 'Tersalin!'); else HC.toast('Hitung dulu', 'error'); });
+    });
+  })();
+</script>

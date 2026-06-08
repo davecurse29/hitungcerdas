@@ -1,0 +1,145 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import AdSlot from '../../components/AdSlot.astro';
+
+const today = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+
+<Layout
+  title="Disclaimer — HitungCerdas"
+  description="Disclaimer HitungCerdas: hasil kalkulator adalah estimasi edukatif, bukan nasihat keuangan, pajak, hukum, atau syariah profesional."
+  canonical="https://hitungcerdas.net/legal/disclaimer"
+>
+  <section class="page-hero" style="--cat-color:#0F172A;--cat-color2:#1E293B">
+    <div class="wrap">
+      <h1>Disclaimer</h1>
+      <p>Terakhir diperbarui: {today}</p>
+    </div>
+  </section>
+
+  <section class="content-section">
+    <div class="wrap-text">
+      <h2>1. Sifat Layanan</h2>
+      <p>
+        HitungCerdas adalah <strong>platform edukasi dan informasi</strong> yang menyediakan
+        kalkulator online gratis. Kami <strong>BUKAN</strong>:
+      </p>
+      <ul class="info-list">
+        <li>Lembaga keuangan, bank, atau penyedia produk investasi</li>
+        <li>Konsultan pajak berlisensi (Kuasa Hukum, BKP)</li>
+        <li>Pengacara atau penasihat hukum</li>
+        <li>Lembaga Amil Zakat resmi atau ulama</li>
+        <li>Notaris atau pengadilan agama</li>
+        <li>Perencana keuangan berlisensi (CFP)</li>
+      </ul>
+
+      <h2>2. Bukan Nasihat Profesional</h2>
+      <p>
+        Semua konten di HitungCerdas (kalkulator, artikel, panduan, infografis) bersifat
+        <strong>informasional dan edukatif</strong>. Konten ini:
+      </p>
+      <ul class="info-list">
+        <li>BUKAN nasihat keuangan personal</li>
+        <li>BUKAN nasihat pajak personal</li>
+        <li>BUKAN nasihat hukum personal</li>
+        <li>BUKAN fatwa atau ijtihad keagamaan personal</li>
+        <li>BUKAN rekomendasi investasi</li>
+      </ul>
+      <p>
+        Untuk keputusan finansial, hukum, atau ibadah yang penting, <strong>selalu konsultasi
+        dengan profesional terkait yang berlisensi</strong> di bidangnya.
+      </p>
+
+      <h2>3. Estimasi, Bukan Hasil Final</h2>
+      <p>
+        Hasil kalkulator HitungCerdas adalah <strong>estimasi berdasarkan rumus standar</strong>.
+        Hasil ini dapat berbeda dengan perhitungan resmi dari:
+      </p>
+      <ul class="info-list">
+        <li><strong>Bank</strong>: Kebijakan suku bunga, biaya admin, asuransi bisa berbeda. Hasil KPR/kredit kami bukan penawaran resmi bank.</li>
+        <li><strong>Direktorat Jenderal Pajak</strong>: Perhitungan PPh 21 final dilakukan kantor pajak/pemberi kerja sesuai SPT.</li>
+        <li><strong>BAZNAS / Lembaga Zakat</strong>: Standar zakat dapat berubah sesuai daerah dan harga emas terkini.</li>
+        <li><strong>Pengadilan Agama</strong>: Pembagian warisan resmi memerlukan putusan pengadilan, bukan kalkulator online.</li>
+        <li><strong>Kemenag</strong>: Biaya haji resmi dan antrian ditentukan pemerintah, bisa berubah setiap tahun.</li>
+      </ul>
+
+      <h2>4. Tidak Ada Garansi</h2>
+      <p>
+        HitungCerdas <strong>tidak memberikan garansi atau jaminan</strong> apapun atas:
+      </p>
+      <ul class="info-list">
+        <li>Akurasi 100% hasil kalkulator</li>
+        <li>Kelengkapan atau ketepatan informasi artikel</li>
+        <li>Ketersediaan website (downtime, error, maintenance)</li>
+        <li>Hasil finansial atau ibadah dari penggunaan tools kami</li>
+        <li>Kompatibilitas dengan semua device atau browser</li>
+      </ul>
+
+      <h2>5. Pembatasan Tanggung Jawab</h2>
+      <p>
+        Penggunaan website ini sepenuhnya <strong>atas risiko sendiri</strong>. HitungCerdas,
+        pemilik, tim, dan kontributor <strong>tidak bertanggung jawab</strong> atas:
+      </p>
+      <ul class="info-list">
+        <li>Kerugian finansial (langsung atau tidak langsung) dari penggunaan tools kami</li>
+        <li>Keputusan personal yang Anda ambil berdasarkan hasil kalkulator</li>
+        <li>Perselisihan hukum, pajak, atau syariah yang timbul dari penggunaan informasi kami</li>
+        <li>Konten website third-party yang kami link</li>
+        <li>Iklan yang ditampilkan oleh Google AdSense atau partner</li>
+      </ul>
+
+      <h2>6. Perubahan Aturan & Tarif</h2>
+      <p>
+        Aturan pemerintah, kebijakan bank, fatwa lembaga zakat, dan harga emas dapat berubah
+        sewaktu-waktu. HitungCerdas berusaha mengupdate konten secara berkala, tetapi:
+      </p>
+      <ul class="info-list">
+        <li>Tidak ada jaminan informasi selalu update real-time</li>
+        <li>Verifikasi info kritis dengan sumber resmi terbaru sebelum mengambil keputusan</li>
+      </ul>
+
+      <h2>7. Iklan & Konten Pihak Ketiga</h2>
+      <p>
+        Iklan dari Google AdSense dan link ke website third-party (BAZNAS, bank, lembaga zakat,
+        dll) <strong>bukan endorsement atau jaminan kualitas</strong> dari kami. Kami tidak
+        bertanggung jawab atas:
+      </p>
+      <ul class="info-list">
+        <li>Konten, kebijakan, atau praktik bisnis dari third-party tersebut</li>
+        <li>Transaksi yang Anda lakukan dengan third-party</li>
+        <li>Iklan yang ditampilkan Google AdSense (kami tidak kontrol iklan spesifik)</li>
+      </ul>
+
+      <h2>8. Konsultasi Profesional</h2>
+      <p>
+        Untuk masalah serius, hubungi profesional yang tepat:
+      </p>
+      <ul class="info-list">
+        <li><strong>Pajak</strong>: Konsultan Pajak Bersertifikat / Direktorat Jenderal Pajak (pajak.go.id)</li>
+        <li><strong>KPR & Investasi</strong>: Bank pilihan Anda / Otoritas Jasa Keuangan (ojk.go.id)</li>
+        <li><strong>Zakat & Fidyah</strong>: BAZNAS (baznas.go.id), Dompet Dhuafa, Rumah Zakat</li>
+        <li><strong>Warisan Faraidh</strong>: Pengadilan Agama setempat, ulama spesialis faraidh</li>
+        <li><strong>Haji & Umrah</strong>: Kemenag (haji.kemenag.go.id), travel berlisensi PPIU/PIHK</li>
+      </ul>
+
+      <h2>9. Persetujuan</h2>
+      <p>
+        Dengan menggunakan HitungCerdas, Anda menyetujui disclaimer ini secara penuh dan
+        memahami risiko serta keterbatasan informasi yang kami sediakan.
+      </p>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+</Layout>
+
+<style>
+  .page-hero {
+    background: linear-gradient(135deg, var(--cat-color) 0%, var(--cat-color2) 100%);
+    color: #fff;
+    padding: 56px 0;
+    text-align: center;
+  }
+  .page-hero h1 { color: #fff; margin-bottom: 8px; }
+  .page-hero p { color: rgba(255, 255, 255, .7); font-size: 13px; }
+</style>
