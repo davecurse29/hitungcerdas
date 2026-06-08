@@ -1,0 +1,54 @@
+# robots.txt untuk HitungCerdas.net
+# Last updated: 2026-06-08
+# Merged: AI blocking lama + AdSense crawler rules baru
+
+# ═══════════════════════════════════════════════════════
+# ALLOW semua mainstream crawler (Google, Bing, dll)
+# ═══════════════════════════════════════════════════════
+User-agent: *
+Allow: /
+
+# ═══════════════════════════════════════════════════════
+# BLOCK AI scrapers (preserve dari config lama)
+# Lindungi konten 3000+ baris dari AI training tanpa izin
+# ═══════════════════════════════════════════════════════
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: Claude-Web
+Disallow: /
+
+User-agent: PerplexityBot
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
+# ═══════════════════════════════════════════════════════
+# EXPLICIT ALLOW untuk Google AdSense (BARU - kritis!)
+# ═══════════════════════════════════════════════════════
+User-agent: Mediapartners-Google
+Allow: /
+
+User-agent: AdsBot-Google
+Allow: /
+
+User-agent: AdsBot-Google-Mobile
+Allow: /
+
+# ═══════════════════════════════════════════════════════
+# Sitemap reference (Astro auto-generate sitemap-index.xml)
+# ═══════════════════════════════════════════════════════
+Sitemap: https://hitungcerdas.net/sitemap-index.xml
