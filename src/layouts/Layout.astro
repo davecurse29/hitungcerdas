@@ -1,0 +1,346 @@
+---
+// src/layouts/Layout.astro
+// Master template untuk semua halaman HitungCerdas
+
+export interface Props {
+  title: string;
+  description: string;
+  canonical?: string;
+  ogImage?: string;
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description,
+  canonical,
+  ogImage = '/og-default.png',
+  noindex = false,
+} = Astro.props;
+
+const SITE_URL = 'https://hitungcerdas.net';
+const canonicalURL = canonical || new URL(Astro.url.pathname, SITE_URL).href;
+const fullTitle = title.includes('HitungCerdas') ? title : `${title} | HitungCerdas`;
+
+// Active nav detection
+const currentPath = Astro.url.pathname;
+const isActive = (path) => {
+  if (path === '/') return currentPath === '/';
+  return currentPath.startsWith(path);
+};
+---
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0B1738" />
+
+  <!-- SEO -->
+  <title>{fullTitle}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonicalURL} />
+  {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="id_ID" />
+  <meta property="og:title" content={fullTitle} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonicalURL} />
+  <meta property="og:site_name" content="HitungCerdas" />
+  <meta property="og:image" content={new URL(ogImage, SITE_URL).href} />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={fullTitle} />
+  <meta name="twitter:description" content={description} />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Structured Data: Organization -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "HitungCerdas",
+    "url": SITE_URL,
+    "logo": `${SITE_URL}/logo.png`,
+    "description": "Kalkulator online Indonesia untuk keuangan, bisnis, dan Islami",
+    "sameAs": []
+  })} />
+</head>
+
+<body>
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/" class="brand" aria-label="HitungCerdas beranda">
+        <span class="brand-mark">HC</span>
+        <span class="brand-name">Hitung<em>Cerdas</em></span>
+      </a>
+
+      <nav class="nav" id="nav" aria-label="Navigasi utama">
+        <a href="/" class={isActive('/') ? 'active' : ''}>Beranda</a>
+        <a href="/kalkulator-keuangan" class={isActive('/kalkulator-keuangan') ? 'active' : ''}>Keuangan</a>
+        <a href="/kalkulator-bisnis" class={isActive('/kalkulator-bisnis') ? 'active' : ''}>Bisnis</a>
+        <a href="/kalkulator-islami" class={isActive('/kalkulator-islami') ? 'active' : ''}>Islami</a>
+        <a href="/blog" class={isActive('/blog') ? 'active' : ''}>Blog</a>
+        <a href="/tentang" class={isActive('/tentang') ? 'active' : ''}>Tentang</a>
+      </nav>
+
+      <button class="menu-toggle" aria-label="Buka menu" onclick="document.getElementById('nav').classList.toggle('open')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22">
+          <line x1="4" y1="7" x2="20" y2="7"/>
+          <line x1="4" y1="12" x2="20" y2="12"/>
+          <line x1="4" y1="17" x2="20" y2="17"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main>
+    <slot />
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand">Hitung<em>Cerdas</em></div>
+          <p class="footer-tagline">Pusat kalkulator keuangan, bisnis, dan Islami online gratis untuk masyarakat Indonesia.</p>
+          <p class="footer-disclaimer"><strong>Disclaimer:</strong> Hasil perhitungan bersifat estimasi, bukan nasihat profesional.</p>
+        </div>
+
+        <div>
+          <h5>Keuangan</h5>
+          <ul>
+            <li><a href="/kalkulator-kpr">Kalkulator KPR</a></li>
+            <li><a href="/kalkulator-pph-21">Kalkulator PPh 21</a></li>
+            <li><a href="/kalkulator-gaji-bersih">Gaji Bersih</a></li>
+            <li><a href="/simulasi-kredit-motor">Kredit Motor</a></li>
+            <li><a href="/simulasi-kredit-mobil">Kredit Mobil</a></li>
+            <li><a href="/kalkulator-investasi">Investasi</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h5>Bisnis</h5>
+          <ul>
+            <li><a href="/kalkulator-harga-jual">Harga Jual</a></li>
+            <li><a href="/kalkulator-margin">Margin</a></li>
+            <li><a href="/invoice-generator">Invoice</a></li>
+            <li><a href="/nama-bisnis-generator">Nama Bisnis</a></li>
+            <li><a href="/caption-jualan-generator">Caption Jualan</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h5>Islami</h5>
+          <ul>
+            <li><a href="/zakat-fitrah">Zakat Fitrah</a></li>
+            <li><a href="/zakat-penghasilan">Zakat Penghasilan</a></li>
+            <li><a href="/zakat-mal">Zakat Mal</a></li>
+            <li><a href="/kalkulator-fidyah">Fidyah</a></li>
+            <li><a href="/warisan-faraidh">Faraidh</a></li>
+            <li><a href="/dana-qurban">Dana Qurban</a></li>
+            <li><a href="/dana-haji-umrah">Haji & Umrah</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h5>Perusahaan</h5>
+          <ul>
+            <li><a href="/tentang">Tentang</a></li>
+            <li><a href="/kontak">Kontak</a></li>
+            <li><a href="/blog">Blog</a></li>
+            <li><a href="/kebijakan-privasi">Privasi</a></li>
+            <li><a href="/syarat-ketentuan">Syarat</a></li>
+            <li><a href="/disclaimer">Disclaimer</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© {new Date().getFullYear()} HitungCerdas. Semua hak dilindungi.</span>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
+
+<style is:global>
+:root {
+  --navy: #0B1738;
+  --navy-2: #142242;
+  --gold: #F5C842;
+  --green: #10B981;
+  --green-deep: #047857;
+  --blue: #2563EB;
+  --blue-soft: #DBEAFE;
+  --bg: #FFFFFF;
+  --bg-soft: #F8FAFC;
+  --ink: #0F172A;
+  --ink-2: #334155;
+  --ink-3: #64748B;
+  --line: #E2E8F0;
+  --shadow-lg: 0 20px 40px -12px rgba(15,23,42,.15);
+  --ease: cubic-bezier(.2,.8,.2,1);
+  --font-display: 'Instrument Serif', Georgia, serif;
+  --font-body: 'Plus Jakarta Sans', system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+img { max-width: 100%; display: block; }
+a { color: var(--blue); text-decoration: none; transition: color .2s var(--ease); }
+a:hover { color: var(--navy); }
+button { font-family: inherit; cursor: pointer; }
+
+.container { max-width: 1180px; margin: 0 auto; padding: 0 20px; }
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: saturate(140%) blur(12px);
+  border-bottom: 1px solid var(--line);
+}
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 72px;
+  gap: 16px;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 800;
+  font-size: 21px;
+  color: var(--ink);
+}
+.brand:hover { color: var(--ink); }
+.brand-mark {
+  width: 38px; height: 38px;
+  background: linear-gradient(135deg, var(--navy), var(--navy-2));
+  border-radius: 10px;
+  display: grid; place-items: center;
+  color: #fff;
+  font-weight: 800;
+  font-size: 14px;
+}
+.brand-name em { font-style: normal; color: var(--green); }
+
+.nav { display: flex; gap: 4px; align-items: center; }
+.nav a {
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 14.5px;
+  color: var(--ink-2);
+}
+.nav a:hover { background: var(--bg-soft); color: var(--ink); }
+.nav a.active { color: var(--blue); background: var(--blue-soft); }
+
+.menu-toggle {
+  display: none;
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  width: 42px; height: 42px;
+  align-items: center; justify-content: center;
+  color: var(--ink);
+}
+
+@media (max-width: 820px) {
+  .nav { display: none; }
+  .menu-toggle { display: flex; }
+  .nav.open {
+    display: flex;
+    position: absolute;
+    top: 72px; left: 0; right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+    padding: 12px 20px 20px;
+    gap: 4px;
+  }
+  .nav.open a { padding: 12px 14px; }
+}
+
+.site-footer {
+  background: var(--navy);
+  color: rgba(255,255,255,0.75);
+  padding: 56px 0 24px;
+  margin-top: 80px;
+  font-size: 14px;
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+  gap: 32px;
+  margin-bottom: 40px;
+}
+.footer-grid h5 {
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin: 0 0 14px;
+}
+.footer-grid ul { list-style: none; padding: 0; margin: 0; }
+.footer-grid li { margin-bottom: 8px; }
+.footer-grid a { color: rgba(255,255,255,0.7); font-size: 14px; }
+.footer-grid a:hover { color: var(--gold); }
+
+.footer-brand {
+  font-family: var(--font-display);
+  font-size: 28px;
+  color: #fff;
+  margin-bottom: 12px;
+}
+.footer-brand em { font-style: italic; color: var(--gold); }
+.footer-tagline { color: rgba(255,255,255,0.7); margin: 0 0 16px; max-width: 360px; }
+.footer-disclaimer { font-size: 12.5px; color: rgba(255,255,255,0.5); margin: 0; max-width: 360px; }
+.footer-disclaimer strong { color: rgba(255,255,255,0.75); }
+
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding-top: 24px;
+  font-size: 13px;
+  color: rgba(255,255,255,0.5);
+}
+
+@media (max-width: 900px) {
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+  .footer-grid > div:first-child { grid-column: 1 / -1; }
+}
+@media (max-width: 500px) {
+  .footer-grid { grid-template-columns: 1fr; }
+}
+</style>

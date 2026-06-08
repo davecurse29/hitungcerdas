@@ -1,0 +1,31 @@
+# robots.txt untuk HitungCerdas.net
+# Last updated: 2026-06-08
+
+# Allow semua bot mainstream
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /private/
+
+# Khusus Google AdSense crawlers - explicit allow
+User-agent: Mediapartners-Google
+Allow: /
+
+User-agent: AdsBot-Google
+Allow: /
+
+User-agent: AdsBot-Google-Mobile
+Allow: /
+
+# Googlebot - explicit allow
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 1
+
+# Bingbot
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 2
+
+# Sitemap reference
+Sitemap: https://hitungcerdas.net/sitemap.xml

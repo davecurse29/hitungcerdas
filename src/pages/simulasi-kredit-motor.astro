@@ -1,0 +1,721 @@
+---
+// src/pages/simulasi-kredit-motor.astro
+// Kalkulator Kredit Motor Pro — Cicilan + Asuransi + BBN + TCO
+import CalculatorLayout from '../components/CalculatorLayout.astro';
+---
+
+<CalculatorLayout
+  title="Simulasi Kredit Motor — Hitung Cicilan, Asuransi & Total Biaya Motor"
+  description="Kalkulator simulasi kredit motor online gratis. Hitung cicilan motor matic/sport/listrik, BBN, asuransi TLO/All Risk, dan total biaya kepemilikan motor."
+  icon="🏍️"
+  category="KALKULATOR KEUANGAN"
+  categoryColor="purple"
+  breadcrumb={[
+    { label: 'Kalkulator Keuangan', href: '/kalkulator-keuangan' },
+    { label: 'Simulasi Kredit Motor' }
+  ]}
+>
+
+  <div class="calc-grid">
+    <!-- LEFT: Input -->
+    <div class="calc-panel">
+      <h3>Detail Kredit Motor</h3>
+
+      <div class="form-group">
+        <label class="form-label">Jenis Motor</label>
+        <select id="jenisMotor" class="form-input">
+          <option value="matic">Matic — Vario, Beat, Scoopy, NMax</option>
+          <option value="bebek">Bebek — Revo, Supra X, MX King</option>
+          <option value="sport">Sport — Vixion, CB150R, Ninja</option>
+          <option value="bigbike">Big Bike — Ninja 250, R25, MT-25</option>
+          <option value="listrik">Motor Listrik — Volta, Selis, Smoot</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Harga Motor (OTR)</label>
+        <div class="form-input-prefix">
+          <span class="prefix">Rp</span>
+          <input type="text" id="harga" class="form-input" value="25.000.000" inputmode="numeric" data-format="rupiah" />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">DP <span class="form-hint">min 20%</span></label>
+          <div class="form-input-suffix">
+            <input type="number" id="dpPersen" class="form-input" value="20" min="20" max="80" step="1" />
+            <span class="suffix">%</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Tenor</label>
+          <select id="tenor" class="form-input">
+            <option value="12">12 bulan (1 thn)</option>
+            <option value="24">24 bulan (2 thn)</option>
+            <option value="35" selected>35 bulan (~3 thn)</option>
+            <option value="48">48 bulan (4 thn)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Suku Bunga Flat <span class="form-hint">leasing motor 10-18%</span></label>
+        <div class="form-input-suffix">
+          <input type="number" id="bunga" class="form-input" value="12" min="0" max="30" step="0.5" />
+          <span class="suffix">% /tahun</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Asuransi Motor</label>
+        <select id="jenisAsuransi" class="form-input">
+          <option value="none">Tanpa Asuransi (motor &lt; 30jt)</option>
+          <option value="tlo" selected>TLO — ~2,5%/tahun (recommended motor 30jt+)</option>
+          <option value="allrisk">All Risk — ~6%/tahun (motor mewah/big bike)</option>
+        </select>
+      </div>
+
+      <details class="advanced-toggle">
+        <summary>Biaya Tambahan (opsional)</summary>
+        <div class="form-row" style="margin-top: 12px;">
+          <div class="form-group">
+            <label class="form-label">BBN <span class="form-hint">~10%</span></label>
+            <div class="form-input-suffix">
+              <input type="number" id="bbn" class="form-input" value="10" min="0" max="20" step="0.5" />
+              <span class="suffix">%</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Admin & Provisi</label>
+            <div class="form-input-prefix">
+              <span class="prefix">Rp</span>
+              <input type="text" id="admin" class="form-input" value="500.000" inputmode="numeric" data-format="rupiah" />
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <div class="info-box">
+        <span class="info-box-icon">ℹ️</span>
+        <div>
+          <strong>Tip:</strong> Kredit motor pakai bunga flat 10-18%/tahun. Asuransi opsional untuk motor di bawah Rp 30jt karena premi-nya tidak sebanding.
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Results -->
+    <div class="calc-panel calc-panel-dark">
+      <h3 style="color: rgba(255,255,255,0.85);">Hasil Simulasi</h3>
+
+      <div class="result-main">
+        <span class="label">CICILAN PER BULAN</span>
+        <div class="value" id="cicilanPerBulan">Rp 0</div>
+      </div>
+
+      <div class="result-grid">
+        <div class="result-card">
+          <span class="label">UANG MUKA TOTAL</span>
+          <span class="value" id="resTotalMuka">Rp 0</span>
+        </div>
+        <div class="result-card">
+          <span class="label">POKOK</span>
+          <span class="value" id="resPokok">Rp 0</span>
+        </div>
+        <div class="result-card warning">
+          <span class="label">TOTAL BUNGA</span>
+          <span class="value" id="resTotalBunga">Rp 0</span>
+        </div>
+        <div class="result-card warning">
+          <span class="label">TOTAL BIAYA</span>
+          <span class="value" id="resTotalCost">Rp 0</span>
+        </div>
+      </div>
+
+      <div class="tco-box">
+        <div class="tco-label">
+          <span>Effective Cost vs Harga Motor</span>
+          <span id="effectiveRatio">0%</span>
+        </div>
+        <div class="tco-bar">
+          <div class="tco-fill" id="tcoFill" style="width: 0%;"></div>
+        </div>
+        <div class="tco-hint">Total biaya kepemilikan lebih tinggi dari harga motor</div>
+      </div>
+
+      <div class="action-buttons">
+        <button class="btn-action primary" onclick="window.print()">🖨️ Print / Save PDF</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cost Breakdown -->
+  <section class="breakdown-section">
+    <h2>📊 Rincian Total Biaya</h2>
+    <p class="section-sub">Detail komponen biaya kredit motor dari awal sampai lunas</p>
+
+    <div class="breakdown-grid">
+      <div class="breakdown-row">
+        <div class="breakdown-icon">💰</div>
+        <div class="breakdown-text">
+          <h4>Uang Muka (DP)</h4>
+          <p>Dibayar di awal</p>
+        </div>
+        <div class="breakdown-amount" id="bdDp">Rp 0</div>
+      </div>
+      <div class="breakdown-row">
+        <div class="breakdown-icon">📋</div>
+        <div class="breakdown-text">
+          <h4>BBN (Bea Balik Nama)</h4>
+          <p>BPKB, STNK, plat nomor</p>
+        </div>
+        <div class="breakdown-amount" id="bdBbn">Rp 0</div>
+      </div>
+      <div class="breakdown-row">
+        <div class="breakdown-icon">📝</div>
+        <div class="breakdown-text">
+          <h4>Admin & Provisi</h4>
+          <p>Biaya proses leasing</p>
+        </div>
+        <div class="breakdown-amount" id="bdAdmin">Rp 0</div>
+      </div>
+      <div class="breakdown-row">
+        <div class="breakdown-icon">💳</div>
+        <div class="breakdown-text">
+          <h4>Total Cicilan</h4>
+          <p>Pokok + bunga selama tenor</p>
+        </div>
+        <div class="breakdown-amount" id="bdCicilan">Rp 0</div>
+      </div>
+      <div class="breakdown-row" id="bdAsuransiRow">
+        <div class="breakdown-icon">🛡️</div>
+        <div class="breakdown-text">
+          <h4>Asuransi (Selama Tenor)</h4>
+          <p id="bdAsuransiHint">Tanpa Asuransi</p>
+        </div>
+        <div class="breakdown-amount" id="bdAsuransi">Rp 0</div>
+      </div>
+      <div class="breakdown-row breakdown-total">
+        <div class="breakdown-icon">🎯</div>
+        <div class="breakdown-text">
+          <h4>TOTAL COST OF OWNERSHIP</h4>
+          <p>Semua biaya kepemilikan motor</p>
+        </div>
+        <div class="breakdown-amount" id="bdTotal">Rp 0</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cash vs Credit -->
+  <section class="comparison-section">
+    <h2>💵 Cash vs Kredit Motor</h2>
+    <p class="section-sub">Bandingkan biaya beli motor cash vs kredit</p>
+
+    <div class="vs-grid">
+      <div class="vs-card vs-cash">
+        <div class="vs-tag">CASH</div>
+        <h4>💵 Beli Tunai</h4>
+        <table class="vs-table">
+          <tr><td>Harga Motor (OTR)</td><td id="vsCashHarga">Rp 0</td></tr>
+          <tr><td>BBN</td><td id="vsCashBbn">Rp 0</td></tr>
+          <tr><td>Asuransi (selama tenor)</td><td id="vsCashAsuransi">Rp 0</td></tr>
+          <tr class="vs-total"><td>Total Cash</td><td id="vsCashTotal">Rp 0</td></tr>
+        </table>
+      </div>
+      <div class="vs-card vs-credit">
+        <div class="vs-tag">KREDIT</div>
+        <h4>💳 Kredit Leasing</h4>
+        <table class="vs-table">
+          <tr><td>DP</td><td id="vsCreditDp">Rp 0</td></tr>
+          <tr><td>Total Cicilan</td><td id="vsCreditCicilan">Rp 0</td></tr>
+          <tr><td>BBN + Admin</td><td id="vsCreditBiaya">Rp 0</td></tr>
+          <tr><td>Asuransi (selama tenor)</td><td id="vsCreditAsuransi">Rp 0</td></tr>
+          <tr class="vs-total"><td>Total Kredit</td><td id="vsCreditTotal">Rp 0</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="vs-conclusion" id="vsConclusion"></div>
+  </section>
+
+  <!-- Tenor Comparison -->
+  <section class="tenor-section">
+    <h2>📅 Perbandingan Tenor</h2>
+    <p class="section-sub">Pilihan tenor populer untuk kredit motor di Indonesia</p>
+    <div class="tenor-table-wrap">
+      <table class="tenor-table">
+        <thead>
+          <tr><th>Tenor</th><th>Cicilan/Bulan</th><th>Total Bunga</th><th>Total Bayar</th></tr>
+        </thead>
+        <tbody id="tenorTableBody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Tips -->
+  <section class="tips-section">
+    <h2>💡 Tips Beli Motor Cerdas</h2>
+    <div class="tips-grid">
+      <div class="tip-card">
+        <div class="tip-icon">💰</div>
+        <h4>DP Besar = Bunga Kecil</h4>
+        <p>Naikkan DP dari 20% ke 30%, total bunga bisa turun 35%. Worth banget kalau punya cash.</p>
+      </div>
+      <div class="tip-card">
+        <div class="tip-icon">⏰</div>
+        <h4>Tenor Max 35 Bulan</h4>
+        <p>Tenor 4 tahun = bunga total bisa setara dengan 25% harga motor. Lebih pendek = lebih hemat.</p>
+      </div>
+      <div class="tip-card">
+        <div class="tip-icon">📋</div>
+        <h4>Cek Bunga Promo</h4>
+        <p>Diler resmi sering kasih promo bunga 0% atau cashback besar untuk model tertentu. Bandingkan dulu!</p>
+      </div>
+      <div class="tip-card">
+        <div class="tip-icon">🚀</div>
+        <h4>Motor Listrik Subsidi</h4>
+        <p>Pemerintah subsidi motor listrik Rp 7jt. Cek model yang masuk daftar subsidi LPSE.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq-section-calc">
+    <h2>❓ Pertanyaan Umum Kredit Motor</h2>
+    <div class="faq-list">
+      <details class="faq-item" open>
+        <summary>Berapa DP minimum kredit motor 2026?</summary>
+        <div class="faq-answer">
+          <p>OJK mengatur DP minimum kredit motor 20%. Tapi diler/leasing sering kasih promo DP 10% atau bahkan 0% untuk model tertentu.</p>
+          <p>Hati-hati promo DP rendah: biasanya bunga lebih tinggi atau tenor panjang. Hitung total bayar, bukan cuma cicilan bulanan.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>Apa beda kredit motor di diler vs leasing?</summary>
+        <div class="faq-answer">
+          <p><strong>Kredit di Diler (FIF, Adira, OTO):</strong> Diler kerjasama dengan multifinance. Proses cepat, bisa langsung bawa pulang. Bunga relatif kompetitif.</p>
+          <p><strong>Kredit Bank:</strong> Bunga lebih rendah (KKB), tapi proses lebih lama. Cocok untuk motor mahal/big bike.</p>
+          <p><strong>P2P Lending:</strong> Hindari untuk kredit motor. Bunga tinggi, banyak risiko penagihan agresif.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>Apakah motor listrik kena BBN?</summary>
+        <div class="faq-answer">
+          <p>Ya, motor listrik tetap kena BBN dan biaya STNK. Tapi pajak motor listrik jauh lebih rendah (1% BBN-KB vs 10% motor BBM, PKB juga lebih rendah).</p>
+          <p>Plus ada subsidi Rp 7jt dari pemerintah untuk model tertentu (cek daftar resmi LPSE).</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>Apakah harus asuransi motor?</summary>
+        <div class="faq-answer">
+          <p><strong>Motor &lt; Rp 30jt:</strong> Asuransi tidak wajib & tidak ekonomis. Premi TLO setahun Rp 750rb (3%) belum sebanding klaim potensial.</p>
+          <p><strong>Motor Rp 30-80jt:</strong> TLO direkomendasikan. Premi terjangkau, cover risiko hilang/rusak total.</p>
+          <p><strong>Big Bike (&gt;Rp 80jt):</strong> All Risk wajib! Sparepart mahal, kerusakan ringan bisa jutaan.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>Apa terjadi kalau telat bayar cicilan motor?</summary>
+        <div class="faq-answer">
+          <p><strong>Telat 1-30 hari:</strong> Denda 0,1-0,3% per hari dari cicilan. Cicilan Rp 1jt × 0,2% × 10 hari = Rp 20rb denda.</p>
+          <p><strong>Telat 30-90 hari:</strong> Surat peringatan, kemungkinan blacklist BI Checking.</p>
+          <p><strong>Telat &gt;90 hari:</strong> Motor disita debt collector. Cicilan yang sudah dibayar hangus (tidak refund).</p>
+          <p>Tip: kalau ada kesulitan bayar, hubungi leasing untuk restructuring sebelum default.</p>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- Related -->
+  <section class="related-section">
+    <h2>Kalkulator Terkait</h2>
+    <div class="related-grid">
+      <a href="/simulasi-kredit-mobil" class="related-card">
+        <span class="related-icon">🚗</span>
+        <h4>Simulasi Kredit Mobil</h4>
+        <p>Hitung cicilan + BBN + asuransi mobil</p>
+      </a>
+      <a href="/kalkulator-gaji-bersih" class="related-card">
+        <span class="related-icon">💼</span>
+        <h4>Kalkulator Gaji Bersih</h4>
+        <p>Take-home pay untuk planning cicilan motor</p>
+      </a>
+      <a href="/kalkulator-investasi" class="related-card">
+        <span class="related-icon">📈</span>
+        <h4>Kalkulator Investasi</h4>
+        <p>Investasi DP motor untuk return optimal</p>
+      </a>
+    </div>
+  </section>
+
+</CalculatorLayout>
+
+<style>
+.tco-box {
+  margin-top: 20px; padding: 14px 16px;
+  background: rgba(255,255,255,0.06); border-radius: 14px;
+}
+.tco-label {
+  display: flex; justify-content: space-between;
+  font-size: 12.5px; font-weight: 600;
+  color: rgba(255,255,255,0.85); margin-bottom: 8px;
+}
+.tco-label span:last-child { color: var(--gold); font-size: 14px; }
+.tco-bar {
+  height: 8px; background: rgba(255,255,255,0.08);
+  border-radius: 6px; overflow: hidden; margin-bottom: 6px;
+}
+.tco-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #A78BFA, #7C3AED);
+  border-radius: 6px; transition: width .4s var(--ease);
+}
+.tco-hint {
+  font-size: 11.5px; color: rgba(255,255,255,0.5); text-align: center;
+}
+
+.action-buttons {
+  display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap;
+}
+.action-buttons .btn-action.primary {
+  flex: 1; background: var(--gold); color: var(--navy);
+}
+.action-buttons .btn-action.primary:hover { background: #FCD34D; }
+
+.advanced-toggle {
+  border: 1px dashed var(--line); border-radius: 10px;
+  padding: 8px 14px; margin-bottom: 16px;
+}
+.advanced-toggle summary {
+  cursor: pointer; list-style: none;
+  font-size: 13.5px; font-weight: 600; color: var(--ink-2);
+  display: flex; align-items: center; gap: 6px;
+}
+.advanced-toggle summary::-webkit-details-marker { display: none; }
+.advanced-toggle summary::before {
+  content: "▸"; transition: transform .2s; font-size: 12px; color: var(--ink-3);
+}
+.advanced-toggle[open] summary::before { transform: rotate(90deg); }
+
+.breakdown-section, .comparison-section, .tenor-section,
+.tips-section, .faq-section-calc, .related-section {
+  margin-top: 48px; padding-top: 32px; border-top: 1px solid var(--line);
+}
+.breakdown-section h2, .comparison-section h2, .tenor-section h2,
+.tips-section h2, .faq-section-calc h2, .related-section h2 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(24px, 3.5vw, 32px);
+  margin: 0 0 8px; color: var(--ink);
+}
+.section-sub { font-size: 14.5px; color: var(--ink-3); margin: 0 0 24px; }
+
+.breakdown-grid {
+  background: #fff; border: 1px solid var(--line);
+  border-radius: 16px; overflow: hidden;
+}
+.breakdown-row {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 16px; align-items: center;
+  padding: 18px 22px; border-bottom: 1px solid var(--line);
+}
+.breakdown-row:last-child { border-bottom: none; }
+.breakdown-icon {
+  font-size: 24px; width: 44px; height: 44px;
+  display: grid; place-items: center;
+  background: var(--bg-soft); border-radius: 10px;
+}
+.breakdown-text h4 {
+  font-size: 14.5px; font-weight: 700; margin: 0 0 2px; color: var(--ink);
+}
+.breakdown-text p { font-size: 12.5px; color: var(--ink-3); margin: 0; }
+.breakdown-amount {
+  font-size: 16px; font-weight: 700; color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+.breakdown-total { background: var(--navy); color: #fff; }
+.breakdown-total .breakdown-icon { background: rgba(255,255,255,0.12); }
+.breakdown-total .breakdown-text h4 { color: #fff; font-size: 13px; letter-spacing: 0.06em; }
+.breakdown-total .breakdown-text p { color: rgba(255,255,255,0.6); }
+.breakdown-total .breakdown-amount { color: var(--gold); font-size: 20px; }
+
+.vs-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+}
+@media (max-width: 700px) {
+  .vs-grid { grid-template-columns: 1fr; }
+}
+.vs-card {
+  border: 2px solid var(--line); border-radius: 16px;
+  padding: 22px; background: #fff; position: relative;
+}
+.vs-card.vs-cash { border-color: #10B981; background: #ECFDF5; }
+.vs-card.vs-credit { border-color: #8B5CF6; background: #F5F3FF; }
+.vs-tag {
+  display: inline-block;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+  padding: 4px 10px; border-radius: 6px; margin-bottom: 10px;
+}
+.vs-card.vs-cash .vs-tag { background: #D1FAE5; color: #065F46; }
+.vs-card.vs-credit .vs-tag { background: #EDE9FE; color: #5B21B6; }
+.vs-card h4 {
+  font-size: 18px; font-weight: 700; margin: 0 0 14px; color: var(--ink);
+}
+.vs-table { width: 100%; font-size: 13.5px; border-collapse: collapse; }
+.vs-table td { padding: 8px 0; color: var(--ink-2); }
+.vs-table td:last-child {
+  text-align: right; font-weight: 600; color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+.vs-total td {
+  padding-top: 12px !important;
+  border-top: 1px dashed currentColor;
+  color: var(--ink) !important;
+  font-weight: 700; font-size: 15px !important;
+}
+.vs-card.vs-cash .vs-total td:last-child { color: #10B981 !important; }
+.vs-card.vs-credit .vs-total td:last-child { color: #8B5CF6 !important; }
+
+.vs-conclusion {
+  margin-top: 20px; padding: 16px 20px;
+  background: var(--bg-soft);
+  border-left: 4px solid var(--gold);
+  border-radius: 10px;
+  font-size: 14px; color: var(--ink-2); line-height: 1.6;
+}
+.vs-conclusion strong { color: var(--ink); }
+
+.tenor-table-wrap {
+  overflow-x: auto; border-radius: 16px; border: 1px solid var(--line);
+}
+.tenor-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.tenor-table thead { background: var(--bg-soft); }
+.tenor-table th {
+  padding: 14px 18px; text-align: left;
+  font-size: 12px; font-weight: 700;
+  letter-spacing: 0.08em; color: var(--ink-3);
+}
+.tenor-table td {
+  padding: 14px 18px; border-top: 1px solid var(--line); color: var(--ink);
+}
+.tenor-table tbody tr:hover { background: var(--bg-soft); }
+.tenor-table .recommended {
+  background: rgba(139,92,246,0.08); font-weight: 600;
+}
+.tenor-table .recommended td:first-child::before { content: "⭐ "; }
+
+.tips-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 18px;
+}
+.tip-card {
+  background: var(--bg-soft); border-radius: 16px;
+  padding: 22px; border: 1px solid var(--line);
+}
+.tip-icon { font-size: 28px; margin-bottom: 10px; }
+.tip-card h4 {
+  font-size: 15.5px; font-weight: 700; margin: 0 0 8px; color: var(--ink);
+}
+.tip-card p {
+  font-size: 13.5px; color: var(--ink-3); line-height: 1.55; margin: 0;
+}
+
+.faq-section-calc .faq-list { max-width: 100%; }
+.faq-section-calc .faq-item {
+  background: #fff; border: 1px solid var(--line);
+  border-radius: 14px; margin-bottom: 10px; overflow: hidden;
+}
+.faq-section-calc .faq-item summary {
+  list-style: none; cursor: pointer; padding: 16px 20px;
+  font-weight: 600; font-size: 14.5px; color: var(--ink);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.faq-section-calc .faq-item summary::-webkit-details-marker { display: none; }
+.faq-section-calc .faq-item summary::after {
+  content: "+"; font-size: 22px; color: var(--ink-3); transition: transform .2s;
+}
+.faq-section-calc .faq-item[open] summary::after {
+  transform: rotate(45deg); color: var(--blue);
+}
+.faq-section-calc .faq-answer {
+  padding: 0 20px 18px; font-size: 14px;
+  color: var(--ink-2); line-height: 1.6;
+}
+.faq-section-calc .faq-answer p { margin: 0 0 8px; }
+.faq-section-calc .faq-answer p:last-child { margin-bottom: 0; }
+
+.related-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+.related-card {
+  display: flex; flex-direction: column; padding: 22px;
+  background: #fff; border: 1px solid var(--line);
+  border-radius: 16px; text-decoration: none; color: var(--ink);
+  transition: all .2s;
+}
+.related-card:hover {
+  transform: translateY(-2px); box-shadow: var(--shadow-lg);
+  color: var(--ink); text-decoration: none;
+}
+.related-icon { font-size: 32px; margin-bottom: 10px; }
+.related-card h4 { font-size: 15.5px; font-weight: 700; margin: 0 0 6px; }
+.related-card p { font-size: 13px; color: var(--ink-3); margin: 0; }
+
+@media print {
+  .site-header, .site-footer, .breadcrumb, .action-buttons,
+  .tips-section, .faq-section-calc, .related-section { display: none !important; }
+  .calc-page { padding: 0; }
+  .calc-panel-dark { background: #fff !important; color: #000 !important; border: 1px solid #ccc; }
+  .calc-panel-dark * { color: #000 !important; }
+  .result-main .value { color: #000 !important; }
+}
+</style>
+
+<script>
+import { formatRupiah, parseRupiah, formatPercent, formatNumber } from '../utils/format.js';
+
+const $ = (id) => document.getElementById(id);
+
+const ASURANSI_RATES = { tlo: 2.5, allrisk: 6.0, none: 0 };
+const ASURANSI_LABEL = {
+  tlo: 'TLO (Total Loss Only)',
+  allrisk: 'All Risk (Comprehensive)',
+  none: 'Tanpa Asuransi',
+};
+
+const JENIS_DEFAULT_HARGA = {
+  matic: 25000000, bebek: 18000000, sport: 35000000,
+  bigbike: 95000000, listrik: 22000000,
+};
+
+// Format tenor display dengan rounding
+function formatTenor(bulan) {
+  const tahun = bulan / 12;
+  if (Number.isInteger(tahun)) {
+    return `${bulan} bulan (${tahun} thn)`;
+  }
+  return `${bulan} bulan (~${Math.round(tahun)} thn)`;
+}
+
+document.querySelectorAll('input[data-format="rupiah"]').forEach(input => {
+  input.addEventListener('input', (e) => {
+    const cursor = e.target.selectionStart;
+    const oldLen = e.target.value.length;
+    const raw = parseRupiah(e.target.value);
+    e.target.value = formatNumber(raw);
+    const newLen = e.target.value.length;
+    e.target.setSelectionRange(cursor + (newLen - oldLen), cursor + (newLen - oldLen));
+    recalculate();
+  });
+  input.addEventListener('blur', () => recalculate());
+});
+
+$('jenisMotor').addEventListener('change', () => {
+  const jenis = $('jenisMotor').value;
+  $('harga').value = formatNumber(JENIS_DEFAULT_HARGA[jenis]);
+  if (jenis === 'bigbike') $('jenisAsuransi').value = 'allrisk';
+  else if (jenis === 'sport') $('jenisAsuransi').value = 'tlo';
+  else if (jenis === 'matic' || jenis === 'bebek' || jenis === 'listrik') {
+    $('jenisAsuransi').value = JENIS_DEFAULT_HARGA[jenis] >= 30000000 ? 'tlo' : 'none';
+  }
+  recalculate();
+});
+
+function recalculate() {
+  const harga = parseRupiah($('harga').value);
+  const dpPersen = parseFloat($('dpPersen').value) || 0;
+  const tenorBulan = parseInt($('tenor').value) || 12;
+  const tenorTahun = tenorBulan / 12;
+  const bunga = parseFloat($('bunga').value) || 0;
+  const jenisAsuransi = $('jenisAsuransi').value;
+  const bbnPersen = parseFloat($('bbn').value) || 0;
+  const admin = parseRupiah($('admin').value);
+
+  if (!harga || harga <= 0) return;
+
+  const dp = harga * (dpPersen / 100);
+  const bbn = harga * (bbnPersen / 100);
+  const pokok = harga - dp;
+  const totalBunga = pokok * (bunga / 100) * tenorTahun;
+  const totalCicilan = pokok + totalBunga;
+  const cicilanPerBulan = totalCicilan / tenorBulan;
+
+  const tarifAsuransi = ASURANSI_RATES[jenisAsuransi];
+  const asuransiPerTahun = harga * (tarifAsuransi / 100);
+  const asuransiTotal = asuransiPerTahun * tenorTahun;
+
+  const totalMuka = dp + bbn + admin + (tarifAsuransi > 0 ? asuransiPerTahun : 0);
+  const totalCost = dp + totalCicilan + bbn + admin + asuransiTotal;
+  const effectiveRatio = ((totalCost - harga) / harga) * 100;
+
+  $('cicilanPerBulan').textContent = formatRupiah(cicilanPerBulan);
+  $('resTotalMuka').textContent = formatRupiah(totalMuka);
+  $('resPokok').textContent = formatRupiah(pokok);
+  $('resTotalBunga').textContent = formatRupiah(totalBunga);
+  $('resTotalCost').textContent = formatRupiah(totalCost);
+  $('effectiveRatio').textContent = formatPercent(effectiveRatio, 1);
+  $('tcoFill').style.width = `${Math.min(effectiveRatio, 100)}%`;
+
+  $('bdDp').textContent = formatRupiah(dp);
+  $('bdBbn').textContent = formatRupiah(bbn);
+  $('bdAdmin').textContent = formatRupiah(admin);
+  $('bdCicilan').textContent = formatRupiah(totalCicilan);
+  $('bdAsuransi').textContent = formatRupiah(asuransiTotal);
+  $('bdAsuransiHint').textContent = ASURANSI_LABEL[jenisAsuransi];
+  $('bdAsuransiRow').style.display = tarifAsuransi > 0 ? 'grid' : 'none';
+  $('bdTotal').textContent = formatRupiah(totalCost);
+
+  const cashTotal = harga + bbn + asuransiTotal;
+  const creditTotal = totalCost;
+
+  $('vsCashHarga').textContent = formatRupiah(harga);
+  $('vsCashBbn').textContent = formatRupiah(bbn);
+  $('vsCashAsuransi').textContent = formatRupiah(asuransiTotal);
+  $('vsCashTotal').textContent = formatRupiah(cashTotal);
+
+  $('vsCreditDp').textContent = formatRupiah(dp);
+  $('vsCreditCicilan').textContent = formatRupiah(totalCicilan);
+  $('vsCreditBiaya').textContent = formatRupiah(bbn + admin);
+  $('vsCreditAsuransi').textContent = formatRupiah(asuransiTotal);
+  $('vsCreditTotal').textContent = formatRupiah(creditTotal);
+
+  const selisih = creditTotal - cashTotal;
+  const selisihPersen = (selisih / cashTotal) * 100;
+  const returnNeeded = selisihPersen / tenorTahun;
+  $('vsConclusion').innerHTML = `
+    <strong>💡 Kesimpulan:</strong> Beli kredit lebih mahal <strong>${formatRupiah(selisih)}</strong> 
+    (${formatPercent(selisihPersen, 1)}) dibanding cash. 
+    Kalau punya cash + bisa investasi sisanya dengan return >${formatPercent(returnNeeded, 1)}/tahun, 
+    <strong>beli cash lebih menguntungkan</strong>.
+    ${tenorTahun >= 3 ? '<br><br>⚠️ <strong>Catatan:</strong> Tenor panjang motor berisiko — motor depresiasi 15-20%/tahun. Saat lunas, nilai motor mungkin < sisa hutang.' : ''}
+  `;
+
+  // Tenor comparison dengan formatTenor (FIXED)
+  const tenorOptions = [12, 24, 35, 48];
+  let tHtml = '';
+  tenorOptions.forEach(t => {
+    const tTahun = t / 12;
+    const tBunga = pokok * (bunga / 100) * tTahun;
+    const tCicilan = (pokok + tBunga) / t;
+    const tBayar = pokok + tBunga;
+    const isCurrent = t === tenorBulan;
+    tHtml += `<tr class="${isCurrent ? 'recommended' : ''}">
+      <td>${formatTenor(t)}</td>
+      <td>${formatRupiah(tCicilan)}</td>
+      <td>${formatRupiah(tBunga)}</td>
+      <td>${formatRupiah(tBayar)}</td>
+    </tr>`;
+  });
+  $('tenorTableBody').innerHTML = tHtml;
+}
+
+['dpPersen','tenor','bunga','jenisAsuransi','bbn'].forEach(id => {
+  $(id).addEventListener('input', recalculate);
+  $(id).addEventListener('change', recalculate);
+});
+
+recalculate();
+</script>

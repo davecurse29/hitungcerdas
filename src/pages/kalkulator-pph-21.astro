@@ -1,0 +1,792 @@
+---
+// src/pages/kalkulator-pph-21.astro
+// Kalkulator PPh 21 Pro — UU HPP + TER PMK 168/2023
+import CalculatorLayout from '../components/CalculatorLayout.astro';
+---
+
+<CalculatorLayout
+  title="Kalkulator PPh 21 — Hitung Pajak Penghasilan Karyawan UU HPP & TER 2026"
+  description="Kalkulator PPh 21 online gratis dengan tarif progresif UU HPP terbaru dan sistem TER PMK 168/2023. Hitung pajak gaji, bonus, THR, dan take-home pay bulanan."
+  icon="📋"
+  category="KALKULATOR KEUANGAN"
+  categoryColor="red"
+  breadcrumb={[
+    { label: 'Kalkulator Keuangan', href: '/kalkulator-keuangan' },
+    { label: 'Kalkulator PPh 21' }
+  ]}
+>
+
+  <div class="calc-grid">
+    <!-- LEFT: Input -->
+    <div class="calc-panel">
+      <h3>Detail Penghasilan</h3>
+
+      <div class="form-group">
+        <label class="form-label">Gaji Pokok <span class="form-hint">per bulan</span></label>
+        <div class="form-input-prefix">
+          <span class="prefix">Rp</span>
+          <input type="text" id="gajiPokok" class="form-input" value="10.000.000" inputmode="numeric" data-format="rupiah" />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Tunjangan <span class="form-hint">per bulan</span></label>
+          <div class="form-input-prefix">
+            <span class="prefix">Rp</span>
+            <input type="text" id="tunjangan" class="form-input" value="0" inputmode="numeric" data-format="rupiah" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Bonus + THR <span class="form-hint">tahunan</span></label>
+          <div class="form-input-prefix">
+            <span class="prefix">Rp</span>
+            <input type="text" id="bonus" class="form-input" value="0" inputmode="numeric" data-format="rupiah" />
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Status PTKP <span class="form-hint" id="ptkpAmount">Rp 54.000.000/tahun</span></label>
+        <select id="statusPtkp" class="form-input">
+          <option value="TK0" data-ptkp="54000000">TK/0 — Lajang, tanpa tanggungan</option>
+          <option value="TK1" data-ptkp="58500000">TK/1 — Lajang, 1 tanggungan</option>
+          <option value="TK2" data-ptkp="63000000">TK/2 — Lajang, 2 tanggungan</option>
+          <option value="TK3" data-ptkp="67500000">TK/3 — Lajang, 3 tanggungan</option>
+          <option value="K0" data-ptkp="58500000">K/0 — Menikah, tanpa anak</option>
+          <option value="K1" data-ptkp="63000000">K/1 — Menikah, 1 anak</option>
+          <option value="K2" data-ptkp="67500000">K/2 — Menikah, 2 anak</option>
+          <option value="K3" data-ptkp="72000000">K/3 — Menikah, 3 anak (max)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Sistem Perhitungan</label>
+        <select id="metodeHitung" class="form-input">
+          <option value="progresif" selected>Tarif Progresif UU HPP (akurat)</option>
+          <option value="ter">TER PMK 168/2023 (sederhana, dipotong tiap bulan)</option>
+        </select>
+      </div>
+
+      <details class="advanced-toggle">
+        <summary>BPJS & Potongan Lain (opsional)</summary>
+        <div class="form-row" style="margin-top: 12px;">
+          <div class="form-group">
+            <label class="form-label">BPJS Kesehatan <span class="form-hint">1%</span></label>
+            <div class="form-input-prefix">
+              <span class="prefix">Rp</span>
+              <input type="text" id="bpjsKesehatan" class="form-input" value="100.000" inputmode="numeric" data-format="rupiah" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">BPJS Ketenagakerjaan <span class="form-hint">~2%</span></label>
+            <div class="form-input-prefix">
+              <span class="prefix">Rp</span>
+              <input type="text" id="bpjsKetenagakerjaan" class="form-input" value="200.000" inputmode="numeric" data-format="rupiah" />
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Potongan Lain <span class="form-hint">koperasi, dll</span></label>
+          <div class="form-input-prefix">
+            <span class="prefix">Rp</span>
+            <input type="text" id="potonganLain" class="form-input" value="0" inputmode="numeric" data-format="rupiah" />
+          </div>
+        </div>
+      </details>
+
+      <div class="info-box">
+        <span class="info-box-icon">ℹ️</span>
+        <div>
+          <strong>Catatan:</strong> Mulai Januari 2024, sistem TER (Tarif Efektif Rata-rata) digunakan untuk pemotongan bulanan. Hitungan tahunan tetap pakai tarif progresif UU HPP saat pelaporan tahunan.
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Results -->
+    <div class="calc-panel calc-panel-dark">
+      <h3 style="color: rgba(255,255,255,0.85);">Hasil Perhitungan</h3>
+
+      <div class="result-main">
+        <span class="label">TAKE HOME PAY <span style="color: rgba(255,255,255,0.5);">per bulan</span></span>
+        <div class="value" id="takeHomePay">Rp 0</div>
+      </div>
+
+      <div class="result-grid">
+        <div class="result-card">
+          <span class="label">GAJI BRUTO</span>
+          <span class="value" id="resBruto">Rp 0</span>
+        </div>
+        <div class="result-card">
+          <span class="label">PENGHASILAN KENA PAJAK</span>
+          <span class="value" id="resPkp">Rp 0</span>
+        </div>
+        <div class="result-card warning">
+          <span class="label">PPH 21 / BULAN</span>
+          <span class="value" id="resPphBulan">Rp 0</span>
+        </div>
+        <div class="result-card warning">
+          <span class="label">PPH 21 / TAHUN</span>
+          <span class="value" id="resPphTahun">Rp 0</span>
+        </div>
+      </div>
+
+      <div class="effective-tax">
+        <div class="effective-tax-label">
+          <span>Tarif Pajak Efektif</span>
+          <span id="effectiveTaxRate">0%</span>
+        </div>
+        <div class="effective-tax-bar">
+          <div class="effective-tax-fill" id="effectiveTaxFill" style="width: 0%;"></div>
+        </div>
+        <div class="effective-tax-hint" id="effectiveTaxHint">Dari total penghasilan tahunan</div>
+      </div>
+
+      <div class="action-buttons">
+        <button class="btn-action primary" onclick="window.print()">🖨️ Print / Save PDF</button>
+        <button class="btn-action secondary" onclick="document.getElementById('rincian').scrollIntoView({behavior:'smooth'})">📊 Lihat Rincian</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Detailed Breakdown -->
+  <section class="rincian-section" id="rincian">
+    <h2>📊 Rincian Perhitungan Pajak</h2>
+    <p class="section-sub">Step-by-step perhitungan PPh 21 sesuai aturan berlaku</p>
+
+    <div class="rincian-grid">
+      <div class="rincian-card">
+        <h4>1️⃣ Penghasilan Bruto</h4>
+        <table class="rincian-table">
+          <tr><td>Gaji Pokok x 12</td><td id="rGajiTahun">Rp 0</td></tr>
+          <tr><td>Tunjangan x 12</td><td id="rTunjanganTahun">Rp 0</td></tr>
+          <tr><td>Bonus + THR</td><td id="rBonusTahun">Rp 0</td></tr>
+          <tr class="rincian-total"><td>Total Bruto Setahun</td><td id="rBrutoTotal">Rp 0</td></tr>
+        </table>
+      </div>
+
+      <div class="rincian-card">
+        <h4>2️⃣ Pengurang Penghasilan</h4>
+        <table class="rincian-table">
+          <tr><td>Biaya Jabatan <span class="rincian-hint">(5%, max 6jt)</span></td><td id="rBiayaJabatan">Rp 0</td></tr>
+          <tr><td>BPJS Ketenagakerjaan x 12</td><td id="rBpjsTK">Rp 0</td></tr>
+          <tr class="rincian-total"><td>Total Pengurang</td><td id="rPengurangTotal">Rp 0</td></tr>
+        </table>
+      </div>
+
+      <div class="rincian-card">
+        <h4>3️⃣ Penghasilan Neto & PKP</h4>
+        <table class="rincian-table">
+          <tr><td>Penghasilan Neto Setahun</td><td id="rNetoTahun">Rp 0</td></tr>
+          <tr><td>PTKP (<span id="rStatusPtkp">TK/0</span>)</td><td id="rPtkpAmount">Rp 0</td></tr>
+          <tr class="rincian-total"><td>PKP (Penghasilan Kena Pajak)</td><td id="rPkpTotal">Rp 0</td></tr>
+        </table>
+      </div>
+
+      <div class="rincian-card">
+        <h4>4️⃣ Lapisan Pajak Progresif (UU HPP)</h4>
+        <table class="rincian-table" id="tableLapisan">
+          <!-- Filled by JS -->
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- TER Table Reference -->
+  <section class="ter-section" id="terTable" style="display:none;">
+    <h2>📋 Tarif Efektif Rata-rata (TER) PMK 168/2023</h2>
+    <p class="section-sub">Tarif yang dipakai pemotongan bulanan PPh 21 (kategori A: TK/0, TK/1, K/0)</p>
+    <div class="ter-table-wrap">
+      <table class="ter-table">
+        <thead>
+          <tr><th>Penghasilan Bruto Bulanan</th><th>Kategori A</th><th>Kategori B</th><th>Kategori C</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>s.d. Rp 5.400.000</td><td>0%</td><td>0%</td><td>0%</td></tr>
+          <tr><td>Rp 5.400.001 – Rp 5.650.000</td><td>0,25%</td><td>0%</td><td>0%</td></tr>
+          <tr><td>Rp 5.650.001 – Rp 5.950.000</td><td>0,5%</td><td>0%</td><td>0%</td></tr>
+          <tr><td>Rp 6.300.001 – Rp 6.750.000</td><td>1%</td><td>0,25%</td><td>0%</td></tr>
+          <tr><td>Rp 6.750.001 – Rp 7.500.000</td><td>1,25%</td><td>0,5%</td><td>0,25%</td></tr>
+          <tr><td>Rp 8.550.001 – Rp 9.650.000</td><td>2%</td><td>1%</td><td>0,75%</td></tr>
+          <tr><td>Rp 11.200.001 – Rp 12.950.000</td><td>3%</td><td>2%</td><td>1,5%</td></tr>
+          <tr><td>Rp 16.400.001 – Rp 18.450.000</td><td>5%</td><td>3,5%</td><td>3%</td></tr>
+          <tr><td>Rp 22.000.001 – Rp 26.450.000</td><td>7%</td><td>5,5%</td><td>5%</td></tr>
+          <tr><td>Rp 35.400.001 – Rp 39.100.000</td><td>10%</td><td>8%</td><td>7,5%</td></tr>
+          <tr><td>Rp 51.250.001 – Rp 53.800.000</td><td>14%</td><td>11%</td><td>10%</td></tr>
+          <tr><td>Di atas Rp 1.405.000.001</td><td>34%</td><td>34%</td><td>34%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="info-box" style="margin-top: 16px;">
+      <span class="info-box-icon">ℹ️</span>
+      <div>
+        <strong>Kategori:</strong><br>
+        <strong>A:</strong> TK/0, TK/1, K/0<br>
+        <strong>B:</strong> TK/2, TK/3, K/1, K/2<br>
+        <strong>C:</strong> K/3
+      </div>
+    </div>
+  </section>
+
+  <!-- Tips Section -->
+  <section class="tips-section">
+    <h2>💡 Tips Mengoptimalkan Pajak</h2>
+    <div class="tips-grid">
+      <div class="tip-card">
+        <div class="tip-icon">📑</div>
+        <h4>Klaim Tanggungan Maksimal</h4>
+        <p>Setiap tanggungan (anak/orangtua) menambah PTKP Rp 4,5jt/tahun. Maksimum 3 tanggungan. Pastikan klaim sesuai status sebenarnya.</p>
+      </div>
+      <div class="tip-card">
+        <div class="tip-icon">🏥</div>
+        <h4>BPJS Sebagai Pengurang</h4>
+        <p>BPJS Ketenagakerjaan (JHT, JP) mengurangi penghasilan bruto. Pastikan iuran terpotong dari gaji untuk benefit ini.</p>
+      </div>
+      <div class="tip-card">
+        <div class="tip-icon">💰</div>
+        <h4>Bonus Tahunan</h4>
+        <p>PPh 21 atas bonus dihitung dengan tarif efektif tahunan. Bonus besar bisa naikkan ke lapisan pajak lebih tinggi.</p>
+      </div>
+      <div class="tip-card">
+        <div class="tip-icon">📊</div>
+        <h4>Lapor SPT Tahunan</h4>
+        <p>Wajib lapor SPT Tahunan paling lambat 31 Maret. Cek apakah PPh dipotong lebih atau kurang untuk klaim/bayar selisih.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="faq-section-calc">
+    <h2>❓ Pertanyaan Umum PPh 21</h2>
+    <div class="faq-list">
+      <details class="faq-item" open>
+        <summary>Apa itu sistem TER PMK 168/2023?</summary>
+        <div class="faq-answer">
+          <p>TER (Tarif Efektif Rata-rata) adalah sistem baru pemotongan PPh 21 bulanan yang berlaku sejak Januari 2024. Sebelumnya, perhitungan bulanan kompleks karena harus annualisasi dulu.</p>
+          <p>Dengan TER, HR cuma perlu lihat tabel TER sesuai kategori dan kalikan dengan gaji bruto. Lebih simple, tapi hitungan akhir tahun tetap pakai tarif progresif UU HPP.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>Apa beda PTKP, PKP, dan PPh 21?</summary>
+        <div class="faq-answer">
+          <p><strong>PTKP (Penghasilan Tidak Kena Pajak):</strong> Batas penghasilan yang dibebaskan dari pajak. TK/0 = Rp 54jt/tahun.</p>
+          <p><strong>PKP (Penghasilan Kena Pajak):</strong> Penghasilan neto dikurangi PTKP. PKP yang dikenai tarif progresif.</p>
+          <p><strong>PPh 21:</strong> Pajak penghasilan yang dipotong. Dihitung dari PKP x tarif progresif lapisan.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>Berapa tarif PPh 21 progresif UU HPP?</summary>
+        <div class="faq-answer">
+          <p>Sejak 2022 (UU HPP), tarif progresif PPh 21 ada 5 lapisan:</p>
+          <p><strong>Lapisan 1:</strong> PKP s.d. Rp 60jt = <strong>5%</strong></p>
+          <p><strong>Lapisan 2:</strong> Rp 60jt – Rp 250jt = <strong>15%</strong></p>
+          <p><strong>Lapisan 3:</strong> Rp 250jt – Rp 500jt = <strong>25%</strong></p>
+          <p><strong>Lapisan 4:</strong> Rp 500jt – Rp 5M = <strong>30%</strong></p>
+          <p><strong>Lapisan 5:</strong> Di atas Rp 5M = <strong>35%</strong></p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>Bagaimana cara hitung PPh 21 atas bonus/THR?</summary>
+        <div class="faq-answer">
+          <p>Bonus dan THR digabung dengan gaji setahun, lalu dihitung PPh 21-nya. Selisih antara PPh 21 dengan dan tanpa bonus = PPh 21 atas bonus.</p>
+          <p>Tip: Bonus besar bisa naikkan ke lapisan pajak lebih tinggi. Misal: gaji setahun Rp 200jt (lapisan 2, 15%) + bonus Rp 100jt bisa bikin sebagian masuk lapisan 3 (25%).</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>Apakah biaya jabatan otomatis dipotong?</summary>
+        <div class="faq-answer">
+          <p>Ya, otomatis. Biaya jabatan = 5% dari gaji bruto, dengan maksimum Rp 6jt/tahun (Rp 500rb/bulan).</p>
+          <p>Berlaku untuk semua karyawan tetap, tidak peduli posisi atau gaji. Sudah include dalam perhitungan PPh 21 standar.</p>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- Related Calculators -->
+  <section class="related-section">
+    <h2>Kalkulator Terkait</h2>
+    <div class="related-grid">
+      <a href="/kalkulator-gaji-bersih" class="related-card">
+        <span class="related-icon">💼</span>
+        <h4>Kalkulator Gaji Bersih</h4>
+        <p>Hitung take-home pay setelah semua potongan</p>
+      </a>
+      <a href="/kalkulator-kpr" class="related-card">
+        <span class="related-icon">🏠</span>
+        <h4>Kalkulator KPR</h4>
+        <p>Estimasi cicilan KPR sesuai income setelah pajak</p>
+      </a>
+      <a href="/kalkulator-investasi" class="related-card">
+        <span class="related-icon">📈</span>
+        <h4>Kalkulator Investasi</h4>
+        <p>Investasikan sisa take-home pay untuk masa depan</p>
+      </a>
+    </div>
+  </section>
+
+</CalculatorLayout>
+
+<style>
+/* Effective Tax */
+.effective-tax {
+  margin-top: 20px;
+  padding: 14px 16px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 14px;
+}
+.effective-tax-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.85);
+  margin-bottom: 8px;
+}
+.effective-tax-label span:last-child { color: var(--gold); font-size: 14px; }
+.effective-tax-bar {
+  height: 8px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+.effective-tax-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #FBBF24, #DC2626);
+  border-radius: 6px;
+  transition: width .4s var(--ease);
+}
+.effective-tax-hint {
+  font-size: 11.5px;
+  color: rgba(255,255,255,0.5);
+  text-align: center;
+}
+
+/* Action Buttons */
+.action-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+.action-buttons .btn-action.primary {
+  flex: 1;
+  background: var(--gold);
+  color: var(--navy);
+}
+.action-buttons .btn-action.primary:hover { background: #FCD34D; }
+.action-buttons .btn-action.secondary {
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+  flex: 1;
+}
+.action-buttons .btn-action.secondary:hover { background: rgba(255,255,255,0.14); }
+
+/* Advanced Toggle */
+.advanced-toggle {
+  border: 1px dashed var(--line);
+  border-radius: 10px;
+  padding: 8px 14px;
+  margin-bottom: 16px;
+}
+.advanced-toggle summary {
+  cursor: pointer;
+  list-style: none;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--ink-2);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.advanced-toggle summary::-webkit-details-marker { display: none; }
+.advanced-toggle summary::before {
+  content: "▸";
+  transition: transform .2s;
+  font-size: 12px;
+  color: var(--ink-3);
+}
+.advanced-toggle[open] summary::before { transform: rotate(90deg); }
+
+/* Section Common */
+.rincian-section,
+.ter-section,
+.tips-section,
+.faq-section-calc,
+.related-section {
+  margin-top: 48px;
+  padding-top: 32px;
+  border-top: 1px solid var(--line);
+}
+.rincian-section h2,
+.ter-section h2,
+.tips-section h2,
+.faq-section-calc h2,
+.related-section h2 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(24px, 3.5vw, 32px);
+  letter-spacing: -0.01em;
+  margin: 0 0 8px;
+  color: var(--ink);
+}
+.section-sub {
+  font-size: 14.5px;
+  color: var(--ink-3);
+  margin: 0 0 24px;
+}
+
+/* Rincian Cards */
+.rincian-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+.rincian-card {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 20px 22px;
+}
+.rincian-card h4 {
+  font-size: 14.5px;
+  font-weight: 700;
+  margin: 0 0 12px;
+  color: var(--ink);
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--line);
+}
+.rincian-table {
+  width: 100%;
+  font-size: 13.5px;
+  border-collapse: collapse;
+}
+.rincian-table td {
+  padding: 8px 0;
+  color: var(--ink-2);
+}
+.rincian-table td:last-child {
+  text-align: right;
+  font-weight: 600;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+.rincian-total td {
+  padding-top: 12px !important;
+  border-top: 1px dashed var(--line);
+  color: var(--ink) !important;
+  font-weight: 700;
+}
+.rincian-total td:last-child { color: var(--blue) !important; }
+.rincian-hint {
+  font-size: 11px;
+  color: var(--ink-3);
+  font-weight: 400;
+  display: block;
+}
+.rincian-lapisan-row td:first-child {
+  font-size: 12px;
+}
+
+/* TER Table */
+.ter-table-wrap {
+  overflow-x: auto;
+  border-radius: 16px;
+  border: 1px solid var(--line);
+}
+.ter-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.ter-table thead {
+  background: var(--navy);
+  color: #fff;
+}
+.ter-table th {
+  padding: 12px 14px;
+  text-align: left;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+.ter-table td {
+  padding: 10px 14px;
+  border-top: 1px solid var(--line);
+  color: var(--ink);
+}
+.ter-table tbody tr:nth-child(even) { background: var(--bg-soft); }
+
+/* Tips Grid */
+.tips-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 18px;
+}
+.tip-card {
+  background: var(--bg-soft);
+  border-radius: 16px;
+  padding: 22px;
+  border: 1px solid var(--line);
+}
+.tip-icon { font-size: 28px; margin-bottom: 10px; }
+.tip-card h4 {
+  font-size: 15.5px;
+  font-weight: 700;
+  margin: 0 0 8px;
+  color: var(--ink);
+}
+.tip-card p {
+  font-size: 13.5px;
+  color: var(--ink-3);
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* FAQ */
+.faq-section-calc .faq-list { max-width: 100%; }
+.faq-section-calc .faq-item {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+.faq-section-calc .faq-item summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 16px 20px;
+  font-weight: 600;
+  font-size: 14.5px;
+  color: var(--ink);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+.faq-section-calc .faq-item summary::-webkit-details-marker { display: none; }
+.faq-section-calc .faq-item summary::after {
+  content: "+";
+  font-size: 22px;
+  color: var(--ink-3);
+  transition: transform .2s;
+}
+.faq-section-calc .faq-item[open] summary::after {
+  transform: rotate(45deg);
+  color: var(--blue);
+}
+.faq-section-calc .faq-answer {
+  padding: 0 20px 18px;
+  font-size: 14px;
+  color: var(--ink-2);
+  line-height: 1.6;
+}
+.faq-section-calc .faq-answer p { margin: 0 0 8px; }
+.faq-section-calc .faq-answer p:last-child { margin-bottom: 0; }
+
+/* Related Cards */
+.related-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+.related-card {
+  display: flex;
+  flex-direction: column;
+  padding: 22px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  text-decoration: none;
+  color: var(--ink);
+  transition: all .2s;
+}
+.related-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+  color: var(--ink);
+  text-decoration: none;
+}
+.related-icon { font-size: 32px; margin-bottom: 10px; }
+.related-card h4 {
+  font-size: 15.5px;
+  font-weight: 700;
+  margin: 0 0 6px;
+  color: var(--ink);
+}
+.related-card p {
+  font-size: 13px;
+  color: var(--ink-3);
+  margin: 0;
+}
+
+@media print {
+  .site-header, .site-footer, .breadcrumb, .action-buttons,
+  .related-section, .faq-section-calc { display: none !important; }
+  .calc-page { padding: 0; }
+  .calc-panel-dark { background: #fff !important; color: #000 !important; border: 1px solid #ccc; }
+  .calc-panel-dark * { color: #000 !important; }
+  .result-main .value { color: #000 !important; }
+}
+</style>
+
+<script>
+import { formatRupiah, parseRupiah, formatPercent, formatNumber } from '../utils/format.js';
+
+const $ = (id) => document.getElementById(id);
+
+// === Constants: UU HPP Progressive Tax Lapisan ===
+const LAPISAN = [
+  { batas: 60_000_000, tarif: 0.05 },
+  { batas: 250_000_000, tarif: 0.15 },
+  { batas: 500_000_000, tarif: 0.25 },
+  { batas: 5_000_000_000, tarif: 0.30 },
+  { batas: Infinity, tarif: 0.35 },
+];
+
+// === Rupiah Input Formatting ===
+document.querySelectorAll('input[data-format="rupiah"]').forEach(input => {
+  input.addEventListener('input', (e) => {
+    const cursor = e.target.selectionStart;
+    const oldLen = e.target.value.length;
+    const raw = parseRupiah(e.target.value);
+    e.target.value = formatNumber(raw);
+    const newLen = e.target.value.length;
+    e.target.setSelectionRange(cursor + (newLen - oldLen), cursor + (newLen - oldLen));
+    recalculate();
+  });
+  input.addEventListener('blur', () => recalculate());
+});
+
+// === Update PTKP Display ===
+function updatePtkpDisplay() {
+  const select = $('statusPtkp');
+  const ptkp = parseInt(select.options[select.selectedIndex].dataset.ptkp);
+  $('ptkpAmount').textContent = `Rp ${formatNumber(ptkp)}/tahun`;
+}
+
+// === Calculate PPh 21 with Progressive Tariff ===
+function hitungPajakProgresif(pkp) {
+  if (pkp <= 0) return { total: 0, breakdown: [] };
+  let pajak = 0;
+  let breakdown = [];
+  let sisa = pkp;
+  let batasPrev = 0;
+  
+  for (const lap of LAPISAN) {
+    if (sisa <= 0) break;
+    const range = lap.batas - batasPrev;
+    const kena = Math.min(sisa, range);
+    const pajakLapisan = kena * lap.tarif;
+    pajak += pajakLapisan;
+    breakdown.push({
+      tarif: lap.tarif * 100,
+      batasFrom: batasPrev,
+      batasTo: lap.batas === Infinity ? null : lap.batas,
+      kena,
+      pajak: pajakLapisan,
+    });
+    sisa -= kena;
+    batasPrev = lap.batas;
+  }
+  return { total: pajak, breakdown };
+}
+
+// === Main Recalculation ===
+function recalculate() {
+  const gajiPokok = parseRupiah($('gajiPokok').value);
+  const tunjangan = parseRupiah($('tunjangan').value);
+  const bonus = parseRupiah($('bonus').value);
+  const bpjsKesehatan = parseRupiah($('bpjsKesehatan').value);
+  const bpjsKetenagakerjaan = parseRupiah($('bpjsKetenagakerjaan').value);
+  const potonganLain = parseRupiah($('potonganLain').value);
+  const select = $('statusPtkp');
+  const ptkp = parseInt(select.options[select.selectedIndex].dataset.ptkp);
+  const statusLabel = select.options[select.selectedIndex].value;
+  const metode = $('metodeHitung').value;
+
+  updatePtkpDisplay();
+
+  if (!gajiPokok) return;
+
+  // Bruto setahun
+  const brutoTahun = (gajiPokok + tunjangan) * 12 + bonus;
+
+  // Biaya jabatan: 5% dari bruto, max Rp 6jt/tahun
+  const biayaJabatan = Math.min(brutoTahun * 0.05, 6_000_000);
+
+  // BPJS Ketenagakerjaan setahun (boleh dikurangkan)
+  const bpjsTKTahun = bpjsKetenagakerjaan * 12;
+
+  // Neto setahun
+  const netoTahun = brutoTahun - biayaJabatan - bpjsTKTahun;
+
+  // PKP
+  const pkp = Math.max(0, netoTahun - ptkp);
+
+  // Hitung pajak
+  const { total: pphTahun, breakdown } = hitungPajakProgresif(pkp);
+  const pphBulan = pphTahun / 12;
+
+  // Take-home pay per bulan
+  const grossBulanan = gajiPokok + tunjangan;
+  const takeHome = grossBulanan - bpjsKesehatan - bpjsKetenagakerjaan - potonganLain - pphBulan;
+
+  // Tarif efektif
+  const effectiveTax = brutoTahun > 0 ? (pphTahun / brutoTahun) * 100 : 0;
+
+  // Update DOM
+  $('takeHomePay').textContent = formatRupiah(takeHome);
+  $('resBruto').textContent = formatRupiah(grossBulanan);
+  $('resPkp').textContent = formatRupiah(pkp);
+  $('resPphBulan').textContent = formatRupiah(pphBulan);
+  $('resPphTahun').textContent = formatRupiah(pphTahun);
+  $('effectiveTaxRate').textContent = formatPercent(effectiveTax, 2);
+  $('effectiveTaxFill').style.width = `${Math.min(effectiveTax * 3, 100)}%`;
+
+  // Update rincian
+  $('rGajiTahun').textContent = formatRupiah(gajiPokok * 12);
+  $('rTunjanganTahun').textContent = formatRupiah(tunjangan * 12);
+  $('rBonusTahun').textContent = formatRupiah(bonus);
+  $('rBrutoTotal').textContent = formatRupiah(brutoTahun);
+  $('rBiayaJabatan').textContent = formatRupiah(biayaJabatan);
+  $('rBpjsTK').textContent = formatRupiah(bpjsTKTahun);
+  $('rPengurangTotal').textContent = formatRupiah(biayaJabatan + bpjsTKTahun);
+  $('rNetoTahun').textContent = formatRupiah(netoTahun);
+  $('rStatusPtkp').textContent = statusLabel.replace('TK', 'TK/').replace('K', 'K/').replace('//', '/');
+  $('rPtkpAmount').textContent = formatRupiah(ptkp);
+  $('rPkpTotal').textContent = formatRupiah(pkp);
+
+  // Lapisan breakdown
+  let lapisanHtml = '';
+  if (breakdown.length === 0 || pkp <= 0) {
+    lapisanHtml = '<tr><td colspan="2" style="text-align:center; color:var(--ink-3); padding:16px 0;">PKP ≤ 0, tidak ada pajak terutang</td></tr>';
+  } else {
+    breakdown.forEach((lap, idx) => {
+      if (lap.kena > 0) {
+        const range = lap.batasTo 
+          ? `${formatRupiah(lap.batasFrom)} – ${formatRupiah(lap.batasTo)}` 
+          : `> ${formatRupiah(lap.batasFrom)}`;
+        lapisanHtml += `
+          <tr class="rincian-lapisan-row">
+            <td>${lap.tarif}% × ${formatRupiah(lap.kena)}<br><span class="rincian-hint">${range}</span></td>
+            <td>${formatRupiah(lap.pajak)}</td>
+          </tr>`;
+      }
+    });
+    lapisanHtml += `<tr class="rincian-total"><td>Total PPh 21 Setahun</td><td>${formatRupiah(pphTahun)}</td></tr>`;
+  }
+  $('tableLapisan').innerHTML = lapisanHtml;
+
+  // Show/hide TER table
+  $('terTable').style.display = metode === 'ter' ? 'block' : 'none';
+}
+
+// === Event Listeners ===
+$('statusPtkp').addEventListener('change', recalculate);
+$('metodeHitung').addEventListener('change', recalculate);
+
+// Initial
+updatePtkpDisplay();
+recalculate();
+</script>

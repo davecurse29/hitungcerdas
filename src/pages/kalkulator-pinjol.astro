@@ -1,0 +1,726 @@
+---
+// src/pages/kalkulator-pinjol.astro
+// Kalkulator Pinjol Pro — Bunga harian + biaya + denda + OJK check
+import CalculatorLayout from '../components/CalculatorLayout.astro';
+---
+
+<CalculatorLayout
+  title="Kalkulator Pinjol — Hitung Bunga, Biaya & Total Pinjaman Online Legal OJK"
+  description="Kalkulator pinjaman online (pinjol) gratis. Hitung bunga harian, biaya admin, denda telat, dan total bayar dari pinjol legal OJK seperti Kredivo, Akulaku, DanaRupiah."
+  icon="📱"
+  category="KALKULATOR KEUANGAN"
+  categoryColor="pink"
+  breadcrumb={[
+    { label: 'Kalkulator Keuangan', href: '/kalkulator-keuangan' },
+    { label: 'Kalkulator Pinjol' }
+  ]}
+>
+
+  <!-- Warning Banner -->
+  <div class="warning-banner">
+    <div class="warning-banner-icon">⚠️</div>
+    <div class="warning-banner-text">
+      <strong>WARNING:</strong> Pinjaman online (pinjol) punya bunga tertinggi di antara semua produk pinjaman. 
+      <strong>Cek dulu di <a href="https://www.ojk.go.id" target="_blank" rel="noopener nofollow">ojk.go.id</a></strong> apakah pinjol terdaftar legal. 
+      Hindari pinjol ilegal — bunga &gt;0,8%/hari + ancaman penagihan.
+    </div>
+  </div>
+
+  <div class="calc-grid">
+    <!-- LEFT: Input -->
+    <div class="calc-panel">
+      <h3>Detail Pinjaman Online</h3>
+
+      <div class="form-group">
+        <label class="form-label">Pilih Platform <span class="form-hint">contoh populer OJK legal</span></label>
+        <select id="platform" class="form-input">
+          <option value="custom" selected>Custom (input manual)</option>
+          <option value="kredivo">Kredivo — 2,5%/bulan (paylater)</option>
+          <option value="akulaku">Akulaku — 3-4%/bulan</option>
+          <option value="danarupiah">DanaRupiah — 0,1%/hari</option>
+          <option value="amartha">Amartha — 0,2%/hari (microfinance)</option>
+          <option value="kreditpintar">Kredit Pintar — 0,4%/hari</option>
+          <option value="rupiahcepat">RupiahCepat — 0,4%/hari</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Jumlah Pinjaman</label>
+        <div class="form-input-prefix">
+          <span class="prefix">Rp</span>
+          <input type="text" id="pinjaman" class="form-input" value="5.000.000" inputmode="numeric" data-format="rupiah" />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Tenor <span class="form-hint">hari</span></label>
+          <input type="number" id="tenor" class="form-input" value="30" min="7" max="365" step="1" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Bunga <span class="form-hint">per hari</span></label>
+          <div class="form-input-suffix">
+            <input type="number" id="bunga" class="form-input" value="0.4" min="0" max="2" step="0.05" />
+            <span class="suffix">%/hari</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Biaya Admin <span class="form-hint">% dari pinjaman</span></label>
+          <div class="form-input-suffix">
+            <input type="number" id="admin" class="form-input" value="6" min="0" max="20" step="0.5" />
+            <span class="suffix">%</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Biaya Layanan <span class="form-hint">% dari pinjaman</span></label>
+          <div class="form-input-suffix">
+            <input type="number" id="layanan" class="form-input" value="0" min="0" max="10" step="0.5" />
+            <span class="suffix">%</span>
+          </div>
+        </div>
+      </div>
+
+      <details class="advanced-toggle">
+        <summary>Simulasi Telat Bayar (penting!)</summary>
+        <div class="form-row" style="margin-top: 12px;">
+          <div class="form-group">
+            <label class="form-label">Hari Telat <span class="form-hint">jika telat</span></label>
+            <input type="number" id="hariTelat" class="form-input" value="0" min="0" max="90" step="1" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Denda/Hari <span class="form-hint">% dari pinjaman</span></label>
+            <div class="form-input-suffix">
+              <input type="number" id="dendaPersen" class="form-input" value="0.1" min="0" max="2" step="0.05" />
+              <span class="suffix">%</span>
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <div class="info-box">
+        <span class="info-box-icon">ℹ️</span>
+        <div>
+          <strong>Batas OJK:</strong> Pinjol legal max bunga <strong>0,3%/hari</strong> (sejak 2024). Pinjol ilegal sering charge 0,8-1,5%/hari + denda kasar. <strong>Selalu cek OJK whitelist sebelum pinjam!</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Results -->
+    <div class="calc-panel calc-panel-dark">
+      <h3 style="color: rgba(255,255,255,0.85);">Hasil Simulasi</h3>
+
+      <div class="result-main">
+        <span class="label">TOTAL BAYAR <span style="color: rgba(255,255,255,0.5);" id="tenorLabel">(30 hari)</span></span>
+        <div class="value" id="totalBayar">Rp 0</div>
+        <div class="cicilan-secondary" id="cicilanSecondary">
+          Pinjaman cair: <strong>Rp 0</strong>
+        </div>
+      </div>
+
+      <div class="result-grid">
+        <div class="result-card">
+          <span class="label">JUMLAH DITERIMA</span>
+          <span class="value" id="resJumlahDiterima">Rp 0</span>
+        </div>
+        <div class="result-card warning">
+          <span class="label">TOTAL BUNGA</span>
+          <span class="value" id="resTotalBunga">Rp 0</span>
+        </div>
+        <div class="result-card warning">
+          <span class="label">TOTAL BIAYA</span>
+          <span class="value" id="resTotalBiaya">Rp 0</span>
+        </div>
+        <div class="result-card warning">
+          <span class="label">APR</span>
+          <span class="value" id="resApr">0%</span>
+        </div>
+      </div>
+
+      <div class="severity-box" id="severityBox">
+        <div class="severity-label">
+          <span>Effective Cost vs Pinjaman</span>
+          <span id="severityPercent">0%</span>
+        </div>
+        <div class="severity-bar">
+          <div class="severity-fill" id="severityFill" style="width: 0%;"></div>
+        </div>
+        <div class="severity-hint" id="severityHint">Total biaya pinjaman</div>
+      </div>
+
+      <div class="warning-box" id="warningTelat" style="display:none;">
+        <span class="warning-icon">🚨</span>
+        <div id="warningTelatText"></div>
+      </div>
+
+      <div class="action-buttons">
+        <button class="btn-action primary" onclick="window.print()">🖨️ Print / Save PDF</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- OJK Check Section -->
+  <section class="ojk-section">
+    <h2>🛡️ Cek Pinjol Legal vs Ilegal</h2>
+    <p class="section-sub">Cara aman pakai pinjaman online — selalu verifikasi sebelum apply</p>
+
+    <div class="ojk-grid">
+      <div class="ojk-card ojk-legal">
+        <div class="ojk-icon">✅</div>
+        <h4>Pinjol Legal (OJK Licensed)</h4>
+        <ul>
+          <li>Terdaftar di <strong>ojk.go.id/iknb/data-dan-statistik</strong></li>
+          <li>Bunga max <strong>0,3%/hari</strong> (sesuai SE OJK 2024)</li>
+          <li>Tenor 7-365 hari</li>
+          <li>Akses HP terbatas (hanya kamera, mic, lokasi)</li>
+          <li>Penagihan max 90 hari, tidak menghubungi kontak darurat tanpa izin</li>
+          <li>Bisa ajukan keberatan ke OJK</li>
+        </ul>
+        <div class="ojk-examples">
+          <strong>Contoh:</strong> Kredivo, Akulaku, DanaRupiah, Amartha, Kredit Pintar, RupiahCepat, AdaKami, Modalku, Investree
+        </div>
+      </div>
+      <div class="ojk-card ojk-ilegal">
+        <div class="ojk-icon">❌</div>
+        <h4>Pinjol Ilegal (DANGER!)</h4>
+        <ul>
+          <li><strong>TIDAK</strong> terdaftar di OJK</li>
+          <li>Bunga <strong>0,8-1,5%/hari</strong> (3-5x lipat legal!)</li>
+          <li>Tenor singkat 7-14 hari</li>
+          <li>Akses semua data HP: kontak, SMS, galeri</li>
+          <li>Penagihan kasar, sebar data ke kontak</li>
+          <li>Sulit dilacak, sering ganti nama</li>
+        </ul>
+        <div class="ojk-warning-box">
+          <strong>⚠️ JANGAN:</strong> Apply pinjol via WhatsApp/SMS yang tidak diminta, pinjol yang minta akses semua kontak, atau pinjol yang janji "tanpa BI Checking".
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Comparison Legal vs Ilegal -->
+  <section class="comparison-section">
+    <h2>💸 Perbandingan: Pinjam Rp 5jt 30 Hari</h2>
+    <p class="section-sub">Lihat selisih biaya pinjol legal vs ilegal vs alternatif lain</p>
+
+    <div class="comparison-table-wrap">
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th>Sumber Pinjaman</th>
+            <th>Bunga</th>
+            <th>Total Bayar 30 Hari</th>
+            <th>APR Setara</th>
+            <th>Rekomendasi</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="row-good">
+            <td><strong>Pinjaman Keluarga</strong></td>
+            <td>0% (idealnya)</td>
+            <td>Rp 5.000.000</td>
+            <td>0%</td>
+            <td>⭐ Terbaik</td>
+          </tr>
+          <tr class="row-good">
+            <td><strong>Koperasi</strong></td>
+            <td>~0,8%/bulan</td>
+            <td>Rp 5.040.000</td>
+            <td>~10%</td>
+            <td>⭐ Direkomendasikan</td>
+          </tr>
+          <tr class="row-ok">
+            <td><strong>KTA Bank</strong></td>
+            <td>~1%/bulan flat</td>
+            <td>Rp 5.050.000</td>
+            <td>~12%</td>
+            <td>✓ Aman</td>
+          </tr>
+          <tr class="row-ok">
+            <td><strong>Gadai Emas</strong></td>
+            <td>~1,5%/bulan</td>
+            <td>Rp 5.075.000</td>
+            <td>~18%</td>
+            <td>✓ Aman</td>
+          </tr>
+          <tr class="row-warning">
+            <td><strong>Pinjol Legal OJK</strong></td>
+            <td>0,3%/hari max</td>
+            <td>Rp 5.450.000+</td>
+            <td>~110%</td>
+            <td>⚠️ Hanya emergency</td>
+          </tr>
+          <tr class="row-danger">
+            <td><strong>Pinjol Ilegal</strong></td>
+            <td>0,8-1,5%/hari</td>
+            <td>Rp 6.200.000+</td>
+            <td>~365%</td>
+            <td>🚫 JANGAN!</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Tips -->
+  <section class="tips-section">
+    <h2>💡 Tips Pakai Pinjol Aman</h2>
+    <div class="tips-grid">
+      <div class="tip-card">
+        <div class="tip-icon">🛡️</div>
+        <h4>Cek OJK Dulu!</h4>
+        <p>Buka <strong>ojk.go.id</strong>, cari nama pinjol. Kalau gak ada, jangan apply. Sehari 5 menit cek bisa save ratusan juta.</p>
+      </div>
+      <div class="tip-card">
+        <div class="tip-icon">📅</div>
+        <h4>Tenor Sependek Mungkin</h4>
+        <p>Bunga harian = makin lama, makin mahal. Pinjam Rp 5jt 7 hari ≠ Rp 5jt 90 hari (3x biaya).</p>
+      </div>
+      <div class="tip-card">
+        <div class="tip-icon">💰</div>
+        <h4>Cuma untuk Emergency</h4>
+        <p>Pinjol cocok untuk: sakit mendadak, kecelakaan. Tidak cocok untuk: gadget, traveling, lifestyle. Bunga 110%+ APR.</p>
+      </div>
+      <div class="tip-card">
+        <div class="tip-icon">📵</div>
+        <h4>Jangan Galbay Pinjol Legal</h4>
+        <p>Telat di pinjol legal masuk BI Checking & SLIK OJK. Susah apply KPR, KKB, KTA selama 5-10 tahun.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq-section-calc">
+    <h2>❓ Pertanyaan Umum Pinjol</h2>
+    <div class="faq-list">
+      <details class="faq-item" open>
+        <summary>Apa beda pinjol legal dan ilegal?</summary>
+        <div class="faq-answer">
+          <p><strong>Pinjol Legal:</strong> Terdaftar di OJK, ada izin usaha P2P Lending. Bunga max 0,3%/hari. Penagihan diatur ketat (max 90 hari, tidak boleh menghubungi kontak tanpa izin).</p>
+          <p><strong>Pinjol Ilegal:</strong> Tidak terdaftar OJK. Bunga 0,8-1,5%/hari (3-5x lipat legal). Penagihan brutal: ancaman, sebar data ke kontak, edit foto, pemerasan.</p>
+          <p>Cara cek: buka <strong>ojk.go.id/iknb/data-dan-statistik</strong> → filter "Fintech" → cari nama pinjol. Atau cek via aplikasi resmi OJK.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>Berapa bunga maksimum pinjol legal?</summary>
+        <div class="faq-answer">
+          <p>Berdasarkan SE OJK No. 19/SEOJK.06/2023 yang berlaku sejak 2024:</p>
+          <p><strong>Pinjaman Konsumtif:</strong> Max 0,3%/hari atau ~9%/bulan</p>
+          <p><strong>Pinjaman Produktif (UMKM):</strong> Max 0,2%/hari atau ~6%/bulan</p>
+          <p>Plus biaya lain (admin, layanan) max 0,4%/hari. Total semua biaya tidak boleh lebih dari 100% pinjaman pokok.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>Apa konsekuensi telat bayar pinjol?</summary>
+        <div class="faq-answer">
+          <p><strong>Telat 1-30 hari:</strong> Denda 0,1-0,3%/hari (max 100% dari pinjaman). Notif via SMS, email, telepon.</p>
+          <p><strong>Telat 30-90 hari:</strong> Penagihan intens. Kontak darurat dihubungi. Score SLIK OJK turun.</p>
+          <p><strong>Telat &gt;90 hari:</strong> Pinjol legal tidak boleh tagih lagi setelah 90 hari (sesuai aturan OJK). Tapi nama masuk SLIK OJK "Macet" — susah apply kredit baru 5+ tahun.</p>
+          <p>Pinjol ilegal: penagihan tidak ada batas waktu, sebar data, ancaman. Lapor polisi & OJK kalau dialami.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>Bisakah pinjol akses data HP kita?</summary>
+        <div class="faq-answer">
+          <p><strong>Pinjol Legal:</strong> Hanya boleh akses 3 hal (CAMILAN): <strong>Ca</strong>mera, <strong>Mi</strong>crophone, <strong>L</strong>ok<strong>a</strong>si, <strong>N</strong>otification. Tidak boleh akses kontak, SMS, galeri.</p>
+          <p><strong>Pinjol Ilegal:</strong> Minta akses semua: kontak, SMS, galeri, panggilan, lokasi real-time. Tujuannya untuk menagih dengan menyebar data ke kontak.</p>
+          <p>Tip: cek permission yang diminta saat install aplikasi. Kalau minta akses kontak/SMS untuk pinjam Rp 1jt, itu red flag.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>Cara melapor pinjol ilegal yang meneror?</summary>
+        <div class="faq-answer">
+          <p><strong>1. Kontak OJK:</strong> 157 atau konsumen@ojk.go.id. Lampirkan bukti screenshot ancaman.</p>
+          <p><strong>2. Lapor Polisi:</strong> Datang ke kantor polisi terdekat. Bawa bukti ancaman, sebar data, dll. UU ITE bisa jerat pelaku.</p>
+          <p><strong>3. Block dan abaikan:</strong> Pinjol ilegal tidak punya legal standing untuk menagih. Hutang pinjol ilegal secara hukum bisa dianggap "void" (tidak sah).</p>
+          <p><strong>4. AFPI:</strong> Lapor ke Asosiasi Fintech Pendanaan Bersama Indonesia.</p>
+          <p>Tip: blokir nomor, screenshot bukti, jangan transfer uang sebagai "pelunasan" kalau sudah masuk DC ilegal — itu trick biar kamu transfer terus.</p>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- Related -->
+  <section class="related-section">
+    <h2>Kalkulator Terkait</h2>
+    <div class="related-grid">
+      <a href="/kalkulator-kta" class="related-card">
+        <span class="related-icon">🏦</span>
+        <h4>Kalkulator KTA</h4>
+        <p>Alternatif lebih murah dari pinjol</p>
+      </a>
+      <a href="/kalkulator-gaji-bersih" class="related-card">
+        <span class="related-icon">💼</span>
+        <h4>Kalkulator Gaji Bersih</h4>
+        <p>Cek kemampuan bayar dari take-home pay</p>
+      </a>
+      <a href="/kalkulator-investasi" class="related-card">
+        <span class="related-icon">📈</span>
+        <h4>Kalkulator Investasi</h4>
+        <p>Bangun dana darurat agar gak perlu pinjol</p>
+      </a>
+    </div>
+  </section>
+
+</CalculatorLayout>
+
+<style>
+.warning-banner {
+  display: flex;
+  gap: 14px;
+  padding: 18px 22px;
+  background: linear-gradient(135deg, #FEF3C7, #FED7AA);
+  border: 2px solid #F59E0B;
+  border-radius: 16px;
+  margin-bottom: 32px;
+  font-size: 14px;
+  color: #78350F;
+  line-height: 1.6;
+}
+.warning-banner-icon { font-size: 28px; flex-shrink: 0; }
+.warning-banner-text strong { color: #7C2D12; }
+.warning-banner-text a { color: #B45309; text-decoration: underline; font-weight: 700; }
+
+.cicilan-secondary {
+  margin-top: 12px; padding-top: 12px;
+  border-top: 1px dashed rgba(255,255,255,0.15);
+  font-size: 13px; color: rgba(255,255,255,0.65); line-height: 1.5;
+}
+.cicilan-secondary strong { color: rgba(255,255,255,0.9); }
+
+.severity-box {
+  margin-top: 20px; padding: 14px 16px;
+  background: rgba(255,255,255,0.06); border-radius: 14px;
+}
+.severity-label {
+  display: flex; justify-content: space-between;
+  font-size: 12.5px; font-weight: 600;
+  color: rgba(255,255,255,0.85); margin-bottom: 8px;
+}
+.severity-label span:last-child { color: var(--gold); font-size: 14px; }
+.severity-bar {
+  height: 8px; background: rgba(255,255,255,0.08);
+  border-radius: 6px; overflow: hidden; margin-bottom: 6px;
+}
+.severity-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #FCD34D, #F87171, #DC2626);
+  border-radius: 6px; transition: width .4s var(--ease);
+}
+.severity-hint {
+  font-size: 11.5px; color: rgba(255,255,255,0.5); text-align: center;
+}
+
+.warning-box {
+  display: flex; gap: 12px;
+  margin-top: 16px; padding: 14px 16px;
+  background: rgba(248,113,113,0.12);
+  border-left: 3px solid #F87171;
+  border-radius: 10px;
+  font-size: 13.5px;
+  color: #FCA5A5; line-height: 1.55;
+}
+.warning-icon { flex-shrink: 0; font-size: 18px; }
+.warning-box strong { color: #FECACA; }
+
+.action-buttons {
+  display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap;
+}
+.action-buttons .btn-action.primary {
+  flex: 1; background: var(--gold); color: var(--navy);
+}
+.action-buttons .btn-action.primary:hover { background: #FCD34D; }
+
+.advanced-toggle {
+  border: 1px dashed var(--line); border-radius: 10px;
+  padding: 8px 14px; margin-bottom: 16px;
+}
+.advanced-toggle summary {
+  cursor: pointer; list-style: none;
+  font-size: 13.5px; font-weight: 600; color: var(--ink-2);
+  display: flex; align-items: center; gap: 6px;
+}
+.advanced-toggle summary::-webkit-details-marker { display: none; }
+.advanced-toggle summary::before {
+  content: "▸"; transition: transform .2s; font-size: 12px; color: var(--ink-3);
+}
+.advanced-toggle[open] summary::before { transform: rotate(90deg); }
+
+.ojk-section, .comparison-section, .tips-section,
+.faq-section-calc, .related-section {
+  margin-top: 48px; padding-top: 32px; border-top: 1px solid var(--line);
+}
+.ojk-section h2, .comparison-section h2, .tips-section h2,
+.faq-section-calc h2, .related-section h2 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(24px, 3.5vw, 32px);
+  margin: 0 0 8px; color: var(--ink);
+}
+.section-sub { font-size: 14.5px; color: var(--ink-3); margin: 0 0 24px; }
+
+/* OJK Comparison Grid */
+.ojk-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+@media (max-width: 800px) {
+  .ojk-grid { grid-template-columns: 1fr; }
+}
+.ojk-card {
+  border-radius: 18px;
+  padding: 24px;
+  border: 2px solid;
+}
+.ojk-card.ojk-legal {
+  background: #ECFDF5;
+  border-color: #10B981;
+}
+.ojk-card.ojk-ilegal {
+  background: #FEF2F2;
+  border-color: #DC2626;
+}
+.ojk-icon {
+  font-size: 32px;
+  margin-bottom: 8px;
+}
+.ojk-card h4 {
+  font-size: 17px;
+  font-weight: 700;
+  margin: 0 0 14px;
+  color: var(--ink);
+}
+.ojk-card.ojk-legal h4 { color: #065F46; }
+.ojk-card.ojk-ilegal h4 { color: #991B1B; }
+.ojk-card ul {
+  margin: 0 0 16px;
+  padding-left: 20px;
+  font-size: 13.5px;
+  color: var(--ink-2);
+  line-height: 1.7;
+}
+.ojk-card ul li { margin-bottom: 4px; }
+.ojk-card ul strong { color: var(--ink); }
+.ojk-examples {
+  padding: 12px 14px;
+  background: rgba(16,185,129,0.1);
+  border-radius: 10px;
+  font-size: 12.5px;
+  color: var(--ink-2);
+  line-height: 1.5;
+}
+.ojk-warning-box {
+  padding: 12px 14px;
+  background: rgba(220,38,38,0.1);
+  border-radius: 10px;
+  font-size: 12.5px;
+  color: #7F1D1D;
+  line-height: 1.5;
+}
+
+/* Comparison Table */
+.comparison-table-wrap {
+  overflow-x: auto;
+  border-radius: 16px;
+  border: 1px solid var(--line);
+}
+.comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.comparison-table thead {
+  background: var(--navy);
+  color: #fff;
+}
+.comparison-table th {
+  padding: 14px 16px;
+  text-align: left;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+.comparison-table td {
+  padding: 13px 16px;
+  border-top: 1px solid var(--line);
+}
+.comparison-table .row-good { background: #ECFDF5; }
+.comparison-table .row-ok { background: #FFFFFF; }
+.comparison-table .row-warning { background: #FEF3C7; }
+.comparison-table .row-danger { background: #FEF2F2; color: #991B1B; }
+
+.tips-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 18px;
+}
+.tip-card {
+  background: var(--bg-soft); border-radius: 16px;
+  padding: 22px; border: 1px solid var(--line);
+}
+.tip-icon { font-size: 28px; margin-bottom: 10px; }
+.tip-card h4 {
+  font-size: 15.5px; font-weight: 700; margin: 0 0 8px; color: var(--ink);
+}
+.tip-card p {
+  font-size: 13.5px; color: var(--ink-3); line-height: 1.55; margin: 0;
+}
+
+.faq-section-calc .faq-list { max-width: 100%; }
+.faq-section-calc .faq-item {
+  background: #fff; border: 1px solid var(--line);
+  border-radius: 14px; margin-bottom: 10px; overflow: hidden;
+}
+.faq-section-calc .faq-item summary {
+  list-style: none; cursor: pointer; padding: 16px 20px;
+  font-weight: 600; font-size: 14.5px; color: var(--ink);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.faq-section-calc .faq-item summary::-webkit-details-marker { display: none; }
+.faq-section-calc .faq-item summary::after {
+  content: "+"; font-size: 22px; color: var(--ink-3); transition: transform .2s;
+}
+.faq-section-calc .faq-item[open] summary::after {
+  transform: rotate(45deg); color: var(--blue);
+}
+.faq-section-calc .faq-answer {
+  padding: 0 20px 18px; font-size: 14px;
+  color: var(--ink-2); line-height: 1.6;
+}
+.faq-section-calc .faq-answer p { margin: 0 0 8px; }
+.faq-section-calc .faq-answer p:last-child { margin-bottom: 0; }
+
+.related-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+.related-card {
+  display: flex; flex-direction: column; padding: 22px;
+  background: #fff; border: 1px solid var(--line);
+  border-radius: 16px; text-decoration: none; color: var(--ink);
+  transition: all .2s;
+}
+.related-card:hover {
+  transform: translateY(-2px); box-shadow: var(--shadow-lg);
+  color: var(--ink); text-decoration: none;
+}
+.related-icon { font-size: 32px; margin-bottom: 10px; }
+.related-card h4 { font-size: 15.5px; font-weight: 700; margin: 0 0 6px; }
+.related-card p { font-size: 13px; color: var(--ink-3); margin: 0; }
+
+@media print {
+  .site-header, .site-footer, .breadcrumb, .action-buttons,
+  .tips-section, .faq-section-calc, .related-section { display: none !important; }
+  .calc-page { padding: 0; }
+  .calc-panel-dark { background: #fff !important; color: #000 !important; border: 1px solid #ccc; }
+  .calc-panel-dark * { color: #000 !important; }
+  .result-main .value { color: #000 !important; }
+}
+</style>
+
+<script>
+import { formatRupiah, parseRupiah, formatPercent, formatNumber } from '../utils/format.js';
+
+const $ = (id) => document.getElementById(id);
+
+const PLATFORM_PRESETS = {
+  custom: null,
+  kredivo: { bunga: 0.083, admin: 6, layanan: 0, label: 'Kredivo' },
+  akulaku: { bunga: 0.117, admin: 5, layanan: 0, label: 'Akulaku' },
+  danarupiah: { bunga: 0.1, admin: 5, layanan: 1, label: 'DanaRupiah' },
+  amartha: { bunga: 0.2, admin: 3, layanan: 0, label: 'Amartha' },
+  kreditpintar: { bunga: 0.4, admin: 6, layanan: 0, label: 'Kredit Pintar' },
+  rupiahcepat: { bunga: 0.4, admin: 8, layanan: 0, label: 'RupiahCepat' },
+};
+
+document.querySelectorAll('input[data-format="rupiah"]').forEach(input => {
+  input.addEventListener('input', (e) => {
+    const cursor = e.target.selectionStart;
+    const oldLen = e.target.value.length;
+    const raw = parseRupiah(e.target.value);
+    e.target.value = formatNumber(raw);
+    const newLen = e.target.value.length;
+    e.target.setSelectionRange(cursor + (newLen - oldLen), cursor + (newLen - oldLen));
+    recalculate();
+  });
+  input.addEventListener('blur', () => recalculate());
+});
+
+$('platform').addEventListener('change', () => {
+  const preset = PLATFORM_PRESETS[$('platform').value];
+  if (preset) {
+    $('bunga').value = preset.bunga;
+    $('admin').value = preset.admin;
+    $('layanan').value = preset.layanan;
+  }
+  recalculate();
+});
+
+function recalculate() {
+  const pinjaman = parseRupiah($('pinjaman').value);
+  const tenor = parseInt($('tenor').value) || 30;
+  const bungaPerHari = parseFloat($('bunga').value) || 0;
+  const adminPersen = parseFloat($('admin').value) || 0;
+  const layananPersen = parseFloat($('layanan').value) || 0;
+  const hariTelat = parseInt($('hariTelat').value) || 0;
+  const dendaPersen = parseFloat($('dendaPersen').value) || 0;
+
+  if (!pinjaman || pinjaman <= 0) return;
+
+  const totalBunga = pinjaman * (bungaPerHari / 100) * tenor;
+  const biayaAdmin = pinjaman * (adminPersen / 100);
+  const biayaLayanan = pinjaman * (layananPersen / 100);
+  const biayaAwal = biayaAdmin + biayaLayanan;
+  const jumlahDiterima = pinjaman - biayaAwal;
+  const totalDenda = pinjaman * (dendaPersen / 100) * hariTelat;
+  const totalBayar = pinjaman + totalBunga + totalDenda;
+  const totalBiayaSemua = totalBunga + biayaAwal + totalDenda;
+
+  // APR
+  const apr = (totalBunga / pinjaman) * (365 / tenor) * 100;
+  // Severity ratio: total cost vs principal
+  const severityRatio = (totalBiayaSemua / pinjaman) * 100;
+
+  $('totalBayar').textContent = formatRupiah(totalBayar);
+  $('tenorLabel').textContent = `(${tenor} hari)`;
+  $('cicilanSecondary').innerHTML = `Pinjaman cair (setelah biaya awal): <strong>${formatRupiah(jumlahDiterima)}</strong>`;
+  $('resJumlahDiterima').textContent = formatRupiah(jumlahDiterima);
+  $('resTotalBunga').textContent = formatRupiah(totalBunga);
+  $('resTotalBiaya').textContent = formatRupiah(totalBiayaSemua);
+  $('resApr').textContent = formatPercent(apr, 0);
+
+  $('severityPercent').textContent = formatPercent(severityRatio, 1);
+  $('severityFill').style.width = `${Math.min(severityRatio, 100)}%`;
+  
+  if (severityRatio < 20) {
+    $('severityHint').textContent = 'Biaya wajar';
+  } else if (severityRatio < 40) {
+    $('severityHint').textContent = '⚠️ Biaya tinggi — consider alternatif';
+  } else {
+    $('severityHint').textContent = '🚨 Biaya SANGAT TINGGI — kemungkinan pinjol ilegal!';
+  }
+
+  // Warning telat
+  if (hariTelat > 0) {
+    $('warningTelat').style.display = 'flex';
+    $('warningTelatText').innerHTML = `
+      <strong>🚨 Simulasi Telat ${hariTelat} hari:</strong><br>
+      Total denda: <strong>${formatRupiah(totalDenda)}</strong>. 
+      Plus pinjol legal lapor ke <strong>SLIK OJK</strong>, score kredit kamu rusak 5+ tahun.
+    `;
+  } else {
+    $('warningTelat').style.display = 'none';
+  }
+}
+
+['tenor','bunga','admin','layanan','hariTelat','dendaPersen'].forEach(id => {
+  $(id).addEventListener('input', recalculate);
+  $(id).addEventListener('change', recalculate);
+});
+
+recalculate();
+</script>
