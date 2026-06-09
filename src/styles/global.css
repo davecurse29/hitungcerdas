@@ -1561,3 +1561,524 @@ p strong {
   .faq-section { display: none !important; }
   .section { display: none !important; }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   KPR PREMIUM UPGRADE v3 — Phase 1+2 Features
+═══════════════════════════════════════════════════════════════ */
+
+/* ─── BIAYA KPR LENGKAP SECTION ─── */
+.biaya-detail-box {
+  background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+  border-radius: 12px;
+  padding: 16px 18px;
+  border-left: 4px solid #F59E0B;
+}
+
+.biaya-detail-box h4 {
+  font-size: 13px;
+  font-weight: 700;
+  color: #78350F;
+  margin: 0 0 12px;
+  letter-spacing: -.01em;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.biaya-detail-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 12.5px;
+  color: #78350F;
+}
+
+.biaya-detail-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  border-bottom: 1px dashed rgba(120,53,15,.15);
+}
+
+.biaya-detail-list li:last-child {
+  border-bottom: none;
+  padding-top: 10px;
+  margin-top: 4px;
+  border-top: 2px solid #F59E0B;
+  font-weight: 700;
+  color: #92400E;
+  font-size: 13.5px;
+}
+
+.biaya-detail-list .label {
+  flex: 1;
+}
+
+.biaya-detail-list .value {
+  font-weight: 700;
+  color: #92400E;
+}
+
+/* ─── PREPAYMENT (PELUNASAN DIPERCEPAT) ─── */
+.prepayment-box {
+  background: linear-gradient(135deg, #D1FAE5 0%, #A7F3D0 100%);
+  border-radius: 12px;
+  padding: 14px 16px;
+  border: 1px solid #10B981;
+  margin-top: 10px;
+}
+
+.prepayment-toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  color: #065F46;
+}
+
+.prepayment-toggle input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: #10B981;
+}
+
+.prepayment-options {
+  display: none;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px dashed #10B981;
+}
+
+.prepayment-box.active .prepayment-options {
+  display: block;
+}
+
+.prepayment-options label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  color: #065F46;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  margin-bottom: 6px;
+}
+
+.prepayment-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.prepayment-row .field {
+  margin: 0;
+}
+
+.prepayment-result {
+  background: #fff;
+  border-radius: 10px;
+  padding: 12px 14px;
+  border: 1px solid #10B981;
+  margin-top: 10px;
+}
+
+.prepayment-result .pr-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 0;
+  font-size: 12.5px;
+}
+
+.prepayment-result .pr-row.highlight {
+  border-top: 1px dashed #10B981;
+  padding-top: 8px;
+  margin-top: 6px;
+  font-weight: 700;
+  color: #065F46;
+  font-size: 14px;
+}
+
+/* ─── FIXED + FLOATING BUNGA TOGGLE ─── */
+.combo-bunga-box {
+  background: linear-gradient(135deg, #DBEAFE 0%, #BFDBFE 100%);
+  border-radius: 12px;
+  padding: 14px 16px;
+  border: 1px solid #2563EB;
+  margin-top: 10px;
+}
+
+.combo-bunga-toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  color: #1E40AF;
+}
+
+.combo-bunga-toggle input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: #2563EB;
+}
+
+.combo-bunga-options {
+  display: none;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px dashed #2563EB;
+}
+
+.combo-bunga-box.active .combo-bunga-options {
+  display: block;
+}
+
+.combo-bunga-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.combo-bunga-grid .field {
+  margin: 0;
+}
+
+.combo-bunga-grid label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #1E40AF;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  margin-bottom: 4px;
+  display: block;
+}
+
+.combo-note {
+  font-size: 11.5px;
+  color: #1E3A8A;
+  margin-top: 8px;
+  line-height: 1.5;
+}
+
+/* ─── CHART CONTAINER ─── */
+.chart-section {
+  margin-top: 16px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px;
+  border: 1px solid var(--border);
+}
+
+.chart-section h4 {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 0 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.chart-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+@media (max-width: 700px) {
+  .chart-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.chart-wrap {
+  position: relative;
+  background: var(--bg-soft);
+  border-radius: 10px;
+  padding: 12px;
+  min-height: 220px;
+}
+
+.chart-wrap h5 {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--text-soft);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  margin: 0 0 8px;
+  text-align: center;
+}
+
+.chart-canvas-wrap {
+  position: relative;
+  height: 180px;
+}
+
+/* ─── BANK COMPARISON ─── */
+.bank-compare-box {
+  margin-top: 16px;
+}
+
+.bank-card {
+  background: #fff;
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: var(--tx);
+}
+
+.bank-card.active {
+  border-color: var(--blue);
+  background: var(--blue-light);
+}
+
+.bank-card:hover {
+  border-color: var(--blue);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+.bank-card .bank-info {
+  flex: 1;
+}
+
+.bank-card .bank-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 2px;
+}
+
+.bank-card .bank-rate {
+  font-size: 11.5px;
+  color: var(--text-soft);
+}
+
+.bank-card .bank-result {
+  text-align: right;
+}
+
+.bank-card .bank-cicilan {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--blue-dark);
+  line-height: 1;
+}
+
+.bank-card .bank-total {
+  font-size: 10.5px;
+  color: var(--text-mute);
+  margin-top: 4px;
+}
+
+.bank-disclaimer {
+  font-size: 10.5px;
+  color: var(--text-mute);
+  margin-top: 10px;
+  padding: 8px 12px;
+  background: #FEF3C7;
+  border-radius: 8px;
+  border-left: 3px solid #F59E0B;
+  line-height: 1.5;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   TCO (Total Cost of Ownership) — Motor & Mobil Premium
+═══════════════════════════════════════════════════════════════ */
+
+.tco-box {
+  background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+  border-radius: 14px;
+  padding: 16px 18px;
+  border-left: 4px solid #F59E0B;
+  margin-top: 12px;
+}
+
+.tco-box h4 {
+  font-size: 14px;
+  font-weight: 800;
+  color: #78350F;
+  margin: 0 0 12px;
+  letter-spacing: -.01em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tco-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 12.5px;
+  color: #78350F;
+}
+
+.tco-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 7px 0;
+  border-bottom: 1px dashed rgba(120,53,15,.15);
+  gap: 8px;
+}
+
+.tco-list li.tco-cicilan {
+  background: rgba(255,255,255,.4);
+  padding: 8px 10px;
+  border-radius: 8px;
+  margin-bottom: 6px;
+  border-bottom: none;
+  font-weight: 600;
+}
+
+.tco-list li.tco-total {
+  border-bottom: none;
+  padding-top: 12px;
+  margin-top: 8px;
+  border-top: 2px solid #F59E0B;
+  font-weight: 800;
+  color: #92400E;
+  font-size: 14.5px;
+  background: rgba(255,255,255,.4);
+  padding: 12px;
+  border-radius: 10px;
+  margin-top: 8px;
+}
+
+.tco-list li .ico {
+  font-size: 16px;
+  width: 24px;
+  display: inline-flex;
+  justify-content: center;
+}
+
+.tco-list li .lbl {
+  flex: 1;
+  font-size: 12.5px;
+}
+
+.tco-list li .lbl-hint {
+  display: block;
+  font-size: 10.5px;
+  color: rgba(120,53,15,.7);
+  font-weight: 400;
+  margin-top: 1px;
+}
+
+.tco-list li .val {
+  font-weight: 700;
+  color: #92400E;
+  white-space: nowrap;
+}
+
+.tco-warning {
+  background: #FEE2E2;
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin-top: 12px;
+  font-size: 11.5px;
+  color: #991B1B;
+  line-height: 1.5;
+  border-left: 3px solid #DC2626;
+}
+
+.tco-warning.safe {
+  background: #D1FAE5;
+  color: #065F46;
+  border-left-color: #10B981;
+}
+
+.tco-pie-wrap {
+  margin-top: 12px;
+  padding: 10px;
+  background: rgba(255,255,255,.5);
+  border-radius: 10px;
+}
+
+.tco-pie-wrap h5 {
+  font-size: 11px;
+  font-weight: 700;
+  color: #78350F;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  text-align: center;
+  margin: 0 0 8px;
+}
+
+/* TCO Profile selector */
+.tco-profile-box {
+  background: #F1F5F9;
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin-top: 10px;
+  border: 1px solid var(--border);
+}
+
+.tco-profile-box label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--navy);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.tco-profile-box select {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #fff;
+  font-size: 12.5px;
+  color: var(--text);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.tco-profile-box p.hint-text {
+  font-size: 11px;
+  color: var(--text-mute);
+  margin-top: 6px;
+  line-height: 1.5;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   POLISH PATCH — 9 Juni 2026
+   Audit total: konsistensi warna teks, font, & hero
+   ═══════════════════════════════════════════════════════════ */
+
+/* FIX 1: Strong tag dalam hero subtitle (KPR, Motor, Mobil)
+   Sebelumnya <strong> tampil "lebih terang" karena opacity
+   parent 0.8 tapi strong override jadi 1.0. Sekarang seragam. */
+.calc-hero-sub strong {
+  color: inherit;
+  font-weight: 600;
+  opacity: 1;
+}
+
+/* FIX 2: Pastikan semua strong di area hero gelap (homepage)
+   konsisten dengan warna parent, tidak ada flash putih penuh. */
+.hero-sub strong {
+  color: inherit;
+  font-weight: 600;
+}
+
+/* FIX 3: Konsistensi emphasis (em/i) di hero agar tidak
+   terlihat pudar berlebihan. */
+.calc-hero-sub em,
+.hero-sub em {
+  color: inherit;
+  opacity: 1;
+  font-style: italic;
+}

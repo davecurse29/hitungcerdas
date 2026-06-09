@@ -7,7 +7,7 @@ import FAQ from '../components/FAQ.astro';
 import { CALCULATORS, CATEGORIES } from '../data/calculators';
 
 const homepageTitle = 'HitungCerdas — 18 Kalkulator Keuangan, Bisnis & Islami Online Gratis Indonesia';
-const homepageDesc = '18 kalkulator gratis tanpa login: KPR, PPh 21, gaji bersih, investasi, invoice, harga jual, zakat fitrah, mal, fidyah, warisan faraidh, dana qurban, haji & umrah. Hitung instan, mobile-friendly.';
+const homepageDesc = '18 kalkulator finansial gratis Indonesia: KPR, PPh 21, gaji bersih, investasi, zakat, warisan faraidh, dana haji. Tanpa login, mobile-friendly, hasil instan.';
 
 const faqs = [
   {
@@ -130,13 +130,14 @@ const articles = [
         </div>
 
         <h1>
-          Pusat Kalkulator <span class="hl">Keuangan, Bisnis &amp; Islami</span>
-          <br />Online Gratis
+          Kalkulator <span class="hl">Keuangan, Bisnis &amp; Islami</span>
+          <br />Online Gratis Indonesia
         </h1>
 
         <p class="hero-sub">
-          Hitung cicilan KPR, pajak, gaji, investasi, invoice, harga jual, margin, zakat, fidyah,
-          warisan faraidh, dan dana haji &amp; umrah — dalam satu website gratis, mudah di HP.
+          Hitung cicilan KPR &amp; kredit kendaraan, pajak PPh 21, gaji bersih, investasi,
+          zakat fitrah/mal/penghasilan, warisan faraidh, dan dana haji — 18 kalkulator gratis
+          dalam satu website, optimal di HP.
         </p>
 
         <div class="hero-btns">
@@ -382,7 +383,9 @@ const articles = [
     .hero-illust {
       display: block;
     }
-    .hero h1,
+    .hero h1 {
+      max-width: 720px;
+    }
     .hero-sub,
     .hero-btns,
     .hero-feats {
