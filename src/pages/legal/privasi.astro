@@ -1,139 +1,529 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import AdSlot from '../../components/AdSlot.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
 
-const today = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+const breadcrumbs = [
+  { name: 'Beranda', url: '/' },
+  { name: 'Legal', url: '/legal' },
+  { name: 'Kebijakan Privasi', url: '/legal/privasi' }
+];
+
+const lastUpdated = '9 Juni 2026';
 ---
 
 <Layout
   title="Kebijakan Privasi — HitungCerdas"
-  description="Kebijakan privasi HitungCerdas: bagaimana kami melindungi data pengguna, penggunaan cookies, Google AdSense, dan analytics."
+  description="Kebijakan Privasi HitungCerdas.net: bagaimana kami mengumpulkan, menggunakan, dan melindungi data pengguna. Termasuk informasi tentang Google AdSense, cookies, dan hak pengguna sesuai UU PDP Indonesia."
   canonical="https://hitungcerdas.net/legal/privasi"
 >
-  <section class="page-hero" style="--cat-color:#0F172A;--cat-color2:#1E293B">
-    <div class="wrap">
-      <h1>Kebijakan Privasi</h1>
-      <p>Terakhir diperbarui: {today}</p>
-    </div>
-  </section>
+  <main>
+    <section class="legal-section">
+      <div class="wrap-text">
+        <Breadcrumb items={breadcrumbs} />
 
-  <section class="content-section">
-    <div class="wrap-text">
-      <h2>1. Pendahuluan</h2>
-      <p>
-        HitungCerdas (selanjutnya disebut "Kami") berkomitmen melindungi privasi pengguna ("Anda"
-        atau "Pengguna"). Kebijakan ini menjelaskan jenis data yang kami kumpulkan, bagaimana kami
-        menggunakannya, dan hak Anda terkait data pribadi saat menggunakan website kami di
-        <strong>https://hitungcerdas.net</strong>.
-      </p>
+        <header class="legal-header">
+          <div class="legal-tag">
+            <i class="ti ti-shield-check"></i>
+            Legal & Privacy
+          </div>
+          <h1>Kebijakan Privasi</h1>
+          <p class="legal-meta">
+            <strong>Terakhir diperbarui:</strong> {lastUpdated}<br>
+            <strong>Berlaku untuk:</strong> https://hitungcerdas.net dan seluruh subdomain
+          </p>
+        </header>
 
-      <h2>2. Data yang Kami Kumpulkan</h2>
-      <p>
-        <strong>Kami TIDAK mengumpulkan data pribadi yang Anda masukkan di kalkulator.</strong>
-        Semua perhitungan (KPR, pajak, zakat, dll) dilakukan langsung di browser Anda
-        (<em>client-side</em>) dan tidak dikirim ke server kami. Begitu Anda menutup tab, data
-        tersebut hilang sepenuhnya.
-      </p>
-      <p>
-        Yang kami kumpulkan secara otomatis melalui third-party tools (untuk analitik dan iklan):
-      </p>
-      <ul class="info-list">
-        <li><strong>Cookies & similar technologies</strong> dari Google AdSense, Google Analytics, dan Cloudflare Web Analytics.</li>
-        <li><strong>Data anonim agregat</strong>: tipe device, browser, OS, halaman yang dikunjungi, durasi, dan referrer.</li>
-        <li><strong>IP address</strong> (dianonimkan oleh Cloudflare untuk keamanan dan analitik).</li>
-        <li><strong>Lokasi geografis perkiraan</strong> (negara dan kota, tidak detail).</li>
-      </ul>
-      <p>
-        Data ini bersifat anonim dan agregat — tidak terkait dengan identitas personal Anda.
-      </p>
+        <div class="legal-intro">
+          <p>
+            Selamat datang di <strong>HitungCerdas</strong> (<a href="https://hitungcerdas.net">hitungcerdas.net</a>).
+            Kebijakan Privasi ini menjelaskan bagaimana kami mengumpulkan, menggunakan, melindungi, dan
+            membagikan informasi pribadi pengguna saat mengakses website kami.
+          </p>
+          <p>
+            Dengan menggunakan HitungCerdas, kamu menyetujui pengumpulan dan penggunaan informasi
+            sesuai kebijakan ini. Kami berkomitmen melindungi privasi kamu sesuai
+            <strong>UU No. 27 Tahun 2022 tentang Pelindungan Data Pribadi (UU PDP)</strong> Indonesia dan
+            standar internasional GDPR.
+          </p>
+        </div>
 
-      <h2>3. Google AdSense</h2>
-      <p>
-        Website kami menggunakan <strong>Google AdSense</strong> untuk menampilkan iklan. Google
-        dan partner pihak ketiga menggunakan cookies untuk menyajikan iklan berdasarkan kunjungan
-        Anda ke website ini dan website lain di internet.
-      </p>
-      <p>
-        Anda dapat <strong>opt-out</strong> dari iklan yang dipersonalisasi dengan mengunjungi
-        <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener">
-          Google Ads Settings
-        </a> atau <a href="https://optout.networkadvertising.org" target="_blank" rel="noopener">
-          aboutads.info
-        </a>.
-      </p>
+        <h2>1. Informasi yang Kami Kumpulkan</h2>
 
-      <h2>4. Google Analytics & Cloudflare Web Analytics</h2>
-      <p>
-        Kami menggunakan <strong>Google Analytics</strong> dan <strong>Cloudflare Web Analytics</strong>
-        untuk memahami pola penggunaan website (jumlah pengunjung, halaman populer, durasi sesi,
-        dll). Data yang dikumpulkan adalah anonim dan tidak menyimpan informasi pribadi Anda.
-      </p>
-      <p>
-        Anda dapat menonaktifkan Google Analytics dengan menginstal
-        <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener">
-          Google Analytics Opt-out Browser Add-on
-        </a>.
-      </p>
+        <h3>1.1 Informasi yang Diberikan Langsung</h3>
+        <p>
+          HitungCerdas adalah platform kalkulator gratis yang <strong>tidak memerlukan registrasi atau login</strong>.
+          Kami tidak meminta nama, email, nomor telepon, atau identitas pribadi lainnya untuk
+          menggunakan kalkulator kami.
+        </p>
+        <p>
+          Pengecualian: Jika kamu menghubungi kami melalui halaman <a href="/kontak">Kontak</a>,
+          kami akan menerima email beserta isi pesannya. Data ini hanya digunakan untuk merespons
+          pertanyaan kamu.
+        </p>
 
-      <h2>5. Cookies</h2>
-      <p>Cookies yang digunakan di website ini:</p>
-      <ul class="info-list">
-        <li><strong>Essential cookies</strong>: untuk fungsi dasar website (tidak dapat dinonaktifkan).</li>
-        <li><strong>Analytics cookies</strong>: untuk memahami pengguna (Google Analytics, Cloudflare).</li>
-        <li><strong>Advertising cookies</strong>: untuk menyajikan iklan relevan (Google AdSense).</li>
-      </ul>
-      <p>
-        Anda dapat menonaktifkan atau menghapus cookies melalui pengaturan browser Anda. Namun,
-        beberapa fitur website mungkin tidak berfungsi optimal.
-      </p>
+        <h3>1.2 Informasi yang Dikumpulkan Otomatis</h3>
+        <p>
+          Saat kamu mengakses HitungCerdas, server kami otomatis mengumpulkan informasi standar
+          dari browser/perangkat kamu, antara lain:
+        </p>
+        <ul>
+          <li><strong>Alamat IP</strong> — untuk keamanan dan analitik</li>
+          <li><strong>Jenis browser & versi</strong> — Chrome, Safari, Edge, dll.</li>
+          <li><strong>Sistem operasi</strong> — Windows, macOS, Android, iOS</li>
+          <li><strong>Halaman yang dikunjungi</strong> — URL halaman yang kamu buka</li>
+          <li><strong>Waktu akses</strong> — kapan kamu mengunjungi website</li>
+          <li><strong>Halaman referral</strong> — dari mana kamu datang (Google, sosial media, dll.)</li>
+          <li><strong>Perkiraan lokasi geografis</strong> — kota/provinsi (bukan alamat presisi)</li>
+          <li><strong>Bahasa preferensi</strong> — bahasa browser kamu</li>
+        </ul>
 
-      <h2>6. Data yang Tidak Dikumpulkan</h2>
-      <p>
-        Kami <strong>TIDAK</strong> mengumpulkan:
-      </p>
-      <ul class="info-list">
-        <li>Nama, alamat email, nomor telepon (kecuali Anda kirimkan via email/sosmed).</li>
-        <li>Data finansial pribadi (gaji, hutang, harta) yang Anda input di kalkulator.</li>
-        <li>Detail pembayaran (kami tidak punya sistem pembayaran apapun).</li>
-        <li>Lokasi GPS akurat.</li>
-        <li>Akses ke file/folder di device Anda.</li>
-      </ul>
+        <h3>1.3 Data Kalkulator (Disimpan di Browser Kamu)</h3>
+        <p>
+          <strong>Perhitungan kalkulator dilakukan sepenuhnya di browser kamu (client-side).</strong>
+          Angka-angka yang kamu masukkan ke kalkulator KPR, PPh 21, Gaji Bersih, dan lainnya
+          <strong>TIDAK dikirim atau disimpan di server kami</strong>. Data hilang sepenuhnya begitu
+          kamu menutup halaman atau tab browser.
+        </p>
 
-      <h2>7. Hak Pengguna</h2>
-      <p>
-        Sesuai UU Pelindungan Data Pribadi Indonesia (UU PDP 2022), Anda memiliki hak:
-      </p>
-      <ul class="info-list">
-        <li><strong>Mengetahui</strong> data apa yang kami kumpulkan (sudah dijelaskan di atas).</li>
-        <li><strong>Mengakses</strong> data Anda (jika ada, hubungi kami).</li>
-        <li><strong>Menghapus</strong> data Anda dari sistem kami (hubungi kami).</li>
-        <li><strong>Menarik persetujuan</strong> kapan saja melalui pengaturan browser/cookie.</li>
-      </ul>
+        <h2>2. Cookies dan Teknologi Pelacakan</h2>
 
-      <h2>8. Kontak</h2>
-      <p>
-        Pertanyaan terkait kebijakan privasi, hubungi: <strong>hitungcerdas.id@gmail.com</strong>
-        atau melalui halaman <a href="/kontak">Kontak</a>.
-      </p>
+        <p>
+          HitungCerdas menggunakan <strong>cookies</strong>, web beacons, dan teknologi pelacakan serupa
+          untuk meningkatkan pengalaman pengguna, menganalisis trafik, dan menampilkan iklan yang relevan.
+        </p>
 
-      <h2>9. Perubahan Kebijakan</h2>
-      <p>
-        Kebijakan ini dapat diperbarui sewaktu-waktu. Versi terbaru selalu tersedia di halaman ini.
-        Tanggal pembaruan akan tertulis di bagian atas.
-      </p>
-    </div>
-  </section>
+        <h3>2.1 Jenis Cookies yang Kami Gunakan</h3>
+        <ul>
+          <li>
+            <strong>Cookies Esensial:</strong> Diperlukan untuk fungsi website seperti preferensi
+            bahasa dan tampilan. Tidak bisa dinonaktifkan.
+          </li>
+          <li>
+            <strong>Cookies Analitik:</strong> Dari Google Analytics dan Cloudflare untuk memahami
+            cara pengguna berinteraksi dengan website. Data dikumpulkan secara anonim.
+          </li>
+          <li>
+            <strong>Cookies Iklan:</strong> Dari Google AdSense untuk menampilkan iklan yang lebih
+            relevan dengan minat kamu (lihat Bagian 3).
+          </li>
+        </ul>
 
-  <AdSlot format="horizontal" />
+        <h3>2.2 Mengelola Cookies</h3>
+        <p>
+          Kamu dapat mengontrol atau menghapus cookies kapan saja melalui pengaturan browser kamu.
+          Namun, menonaktifkan cookies tertentu dapat memengaruhi fungsi website.
+        </p>
+        <p>
+          Panduan menonaktifkan cookies:
+        </p>
+        <ul>
+          <li><a href="https://support.google.com/chrome/answer/95647" target="_blank" rel="noopener">Google Chrome</a></li>
+          <li><a href="https://support.mozilla.org/id/kb/Menghapus%20kuki" target="_blank" rel="noopener">Mozilla Firefox</a></li>
+          <li><a href="https://support.apple.com/id-id/guide/safari/sfri11471/mac" target="_blank" rel="noopener">Safari</a></li>
+          <li><a href="https://support.microsoft.com/id-id/microsoft-edge/menghapus-cookie-di-microsoft-edge-63947406-40ac-c3b8-57b9-2a946a29ae09" target="_blank" rel="noopener">Microsoft Edge</a></li>
+        </ul>
+
+        <h2>3. Google AdSense dan Iklan Pihak Ketiga</h2>
+
+        <p>
+          HitungCerdas adalah layanan <strong>gratis</strong> yang didukung oleh iklan dari
+          <strong>Google AdSense</strong>. Hal ini memungkinkan kami untuk terus menyediakan
+          18+ kalkulator gratis tanpa biaya berlangganan.
+        </p>
+
+        <h3>3.1 Tentang Google AdSense</h3>
+        <p>
+          <strong>Google</strong> adalah salah satu vendor pihak ketiga yang menampilkan iklan
+          di website kami melalui program AdSense. Google menggunakan cookies untuk menampilkan
+          iklan berdasarkan kunjungan kamu ke HitungCerdas dan situs lain di internet.
+        </p>
+
+        <h3>3.2 Cookie DoubleClick DART</h3>
+        <p>
+          Google menggunakan <strong>cookie DoubleClick DART</strong> untuk:
+        </p>
+        <ul>
+          <li>Menampilkan iklan yang lebih relevan dengan minat kamu</li>
+          <li>Membatasi jumlah iklan yang sama ditampilkan berulang kali</li>
+          <li>Mengukur efektivitas iklan</li>
+          <li>Memahami interaksi pengguna dengan iklan</li>
+        </ul>
+        <p>
+          Cookie DART memungkinkan Google dan mitra-nya menyajikan iklan kepada pengguna
+          berdasarkan kunjungan ke HitungCerdas dan/atau situs lain di Internet.
+        </p>
+
+        <h3>3.3 Opt-Out dari Personalized Ads</h3>
+        <p>
+          Kamu dapat <strong>menonaktifkan iklan yang dipersonalisasi</strong> kapan saja melalui:
+        </p>
+        <ul>
+          <li>
+            <strong>Google Ads Settings:</strong>
+            <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener">
+              https://www.google.com/settings/ads
+            </a> — Nonaktifkan personalisasi iklan dari Google
+          </li>
+          <li>
+            <strong>About Ads Opt-Out:</strong>
+            <a href="https://www.aboutads.info/choices/" target="_blank" rel="noopener">
+              https://www.aboutads.info/choices/
+            </a> — Nonaktifkan iklan dari banyak penyedia iklan
+          </li>
+          <li>
+            <strong>Network Advertising Initiative:</strong>
+            <a href="https://www.networkadvertising.org/choices/" target="_blank" rel="noopener">
+              https://www.networkadvertising.org/choices/
+            </a> — Opt-out dari iklan berbasis minat (interest-based ads)
+          </li>
+        </ul>
+
+        <h3>3.4 Mitra Iklan Pihak Ketiga Lainnya</h3>
+        <p>
+          Selain Google AdSense, kami mungkin bekerja dengan jaringan iklan pihak ketiga lainnya
+          di masa depan. Setiap vendor memiliki kebijakan privasi sendiri dan menggunakan cookies
+          untuk menampilkan iklan. Kami tidak memiliki kontrol atas cookies pihak ketiga ini.
+        </p>
+        <p>
+          Untuk info lengkap kebijakan privasi Google AdSense:
+          <a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener">
+            https://policies.google.com/technologies/ads
+          </a>
+        </p>
+
+        <h2>4. Cara Kami Menggunakan Informasi</h2>
+
+        <p>Informasi yang kami kumpulkan digunakan untuk:</p>
+        <ul>
+          <li><strong>Menyediakan dan memelihara layanan</strong> kalkulator HitungCerdas</li>
+          <li><strong>Meningkatkan website</strong> berdasarkan analisis penggunaan</li>
+          <li><strong>Mencegah penyalahgunaan, fraud, dan serangan keamanan</strong></li>
+          <li><strong>Menampilkan iklan yang relevan</strong> melalui Google AdSense</li>
+          <li><strong>Merespons pertanyaan kamu</strong> melalui halaman kontak</li>
+          <li><strong>Memenuhi kewajiban hukum</strong> dan permintaan otoritas yang sah</li>
+        </ul>
+
+        <h2>5. Pembagian Informasi dengan Pihak Ketiga</h2>
+
+        <p>
+          Kami <strong>TIDAK menjual, menyewakan, atau memperdagangkan</strong> data pribadi kamu
+          ke pihak ketiga untuk tujuan komersial.
+        </p>
+
+        <p>Informasi terbatas dapat dibagikan dengan:</p>
+        <ul>
+          <li>
+            <strong>Penyedia layanan analitik</strong> — Google Analytics, Cloudflare Web Analytics
+            (data anonim agregat)
+          </li>
+          <li>
+            <strong>Penyedia iklan</strong> — Google AdSense (cookies untuk personalisasi iklan)
+          </li>
+          <li>
+            <strong>Penyedia hosting</strong> — Cloudflare Pages (untuk menjalankan website)
+          </li>
+          <li>
+            <strong>Otoritas hukum</strong> — jika diwajibkan oleh hukum yang berlaku
+          </li>
+        </ul>
+
+        <h2>6. Penyimpanan dan Keamanan Data</h2>
+
+        <h3>6.1 Lokasi Penyimpanan</h3>
+        <p>
+          Data log server disimpan di infrastruktur Cloudflare global yang aman. Data analitik
+          dikelola oleh Google sesuai kebijakan privasinya.
+        </p>
+
+        <h3>6.2 Langkah Keamanan</h3>
+        <p>
+          Kami menerapkan langkah-langkah keamanan teknis dan organisasional untuk melindungi data:
+        </p>
+        <ul>
+          <li><strong>Enkripsi HTTPS</strong> untuk semua transmisi data</li>
+          <li><strong>Perlindungan DDoS</strong> dari Cloudflare</li>
+          <li><strong>Update keamanan rutin</strong> pada infrastruktur</li>
+          <li><strong>Akses terbatas</strong> ke data backend</li>
+        </ul>
+
+        <h3>6.3 Retensi Data</h3>
+        <p>
+          Data log server disimpan maksimal <strong>90 hari</strong> sebelum dihapus otomatis.
+          Data analitik Google disimpan sesuai kebijakan retensi Google Analytics (default: 14 bulan).
+        </p>
+
+        <h2>7. Hak Kamu sebagai Pengguna</h2>
+
+        <p>
+          Sesuai <strong>UU PDP No. 27 Tahun 2022 Indonesia</strong> dan standar internasional (GDPR),
+          kamu memiliki hak-hak berikut:
+        </p>
+        <ul>
+          <li><strong>Hak Akses</strong> — meminta informasi data pribadi yang kami simpan</li>
+          <li><strong>Hak Koreksi</strong> — meminta perbaikan data yang tidak akurat</li>
+          <li><strong>Hak Penghapusan</strong> — meminta penghapusan data pribadi kamu</li>
+          <li><strong>Hak Pembatasan Pemrosesan</strong> — membatasi cara kami menggunakan data</li>
+          <li><strong>Hak Portabilitas</strong> — meminta data dalam format yang dapat dipindahkan</li>
+          <li><strong>Hak Keberatan</strong> — menolak pemrosesan data untuk tujuan tertentu</li>
+          <li><strong>Hak Mencabut Persetujuan</strong> — kapan saja</li>
+          <li><strong>Hak Mengadu</strong> — ke otoritas pengawas data pribadi</li>
+        </ul>
+        <p>
+          Untuk menggunakan hak-hak ini, hubungi kami melalui halaman
+          <a href="/kontak">Kontak</a>. Kami akan merespons dalam <strong>30 hari kerja</strong>.
+        </p>
+
+        <h2>8. Anak di Bawah Umur (COPPA Compliance)</h2>
+
+        <p>
+          HitungCerdas <strong>tidak ditujukan untuk anak-anak di bawah 13 tahun</strong>. Kami tidak
+          secara sadar mengumpulkan informasi pribadi dari anak di bawah 13 tahun. Jika kamu adalah
+          orang tua/wali dan mengetahui anak kamu telah memberikan informasi pribadi, hubungi kami
+          dan kami akan menghapus informasi tersebut.
+        </p>
+        <p>
+          Sesuai kebijakan AdSense, iklan personalisasi tidak ditampilkan kepada pengguna di bawah
+          umur yang teridentifikasi.
+        </p>
+
+        <h2>9. Tautan ke Website Pihak Ketiga</h2>
+
+        <p>
+          HitungCerdas mungkin berisi tautan ke website pihak ketiga (misalnya tautan blog, sosial media,
+          atau partner). Kami tidak bertanggung jawab atas kebijakan privasi atau praktik website
+          pihak ketiga tersebut. Kami menyarankan kamu membaca kebijakan privasi setiap website yang
+          kamu kunjungi.
+        </p>
+
+        <h2>10. Transfer Data Internasional</h2>
+
+        <p>
+          Sebagai pengguna layanan global seperti Google AdSense dan Cloudflare, data kamu mungkin
+          ditransfer ke server di luar Indonesia (termasuk Amerika Serikat dan Singapura). Kami
+          memastikan penyedia layanan ini mematuhi standar perlindungan data internasional yang
+          setara dengan UU PDP Indonesia.
+        </p>
+
+        <h2>11. Perubahan Kebijakan Privasi</h2>
+
+        <p>
+          Kami dapat memperbarui Kebijakan Privasi ini dari waktu ke waktu untuk mencerminkan
+          perubahan pada layanan kami, hukum yang berlaku, atau praktik terbaik industri.
+        </p>
+        <p>
+          Perubahan signifikan akan diumumkan dengan jelas di halaman ini melalui pembaruan
+          tanggal "Terakhir diperbarui" di bagian atas. Kami mendorong kamu untuk meninjau halaman
+          ini secara berkala.
+        </p>
+        <p>
+          Penggunaan berkelanjutan terhadap HitungCerdas setelah perubahan berlaku berarti kamu
+          menyetujui kebijakan yang telah diperbarui.
+        </p>
+
+        <h2>12. Hukum yang Berlaku</h2>
+
+        <p>
+          Kebijakan Privasi ini diatur oleh hukum <strong>Republik Indonesia</strong>, termasuk
+          tapi tidak terbatas pada UU No. 27 Tahun 2022 tentang Pelindungan Data Pribadi.
+          Sengketa yang timbul akan diselesaikan di pengadilan yang berwenang di Indonesia.
+        </p>
+
+        <h2>13. Kontak Kami</h2>
+
+        <p>
+          Jika kamu memiliki pertanyaan, masalah, atau permintaan terkait Kebijakan Privasi ini
+          atau data pribadi kamu, hubungi kami melalui:
+        </p>
+        <div class="contact-box">
+          <p>
+            <strong>HitungCerdas</strong><br>
+            Pemilik: Hendy Setiawan<br>
+            Alamat: Depok, Jawa Barat, Indonesia<br>
+            Email: <a href="mailto:dave.curse29@gmail.com">dave.curse29@gmail.com</a><br>
+            Website: <a href="https://hitungcerdas.net">https://hitungcerdas.net</a><br>
+            Halaman Kontak: <a href="/kontak">/kontak</a>
+          </p>
+        </div>
+
+        <div class="legal-footer">
+          <p>
+            <em>
+              Dengan menggunakan HitungCerdas, kamu mengakui telah membaca, memahami, dan
+              menyetujui Kebijakan Privasi ini.
+            </em>
+          </p>
+        </div>
+
+      </div>
+    </section>
+  </main>
 </Layout>
 
 <style>
-  .page-hero {
-    background: linear-gradient(135deg, var(--cat-color) 0%, var(--cat-color2) 100%);
-    color: #fff;
-    padding: 56px 0;
+  .legal-section {
+    padding: 40px 0 80px;
+    background: var(--off-white);
+  }
+
+  .wrap-text {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .legal-header {
+    margin: 24px 0 40px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .legal-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #DBEAFE;
+    color: #1E40AF;
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+
+  .legal-tag i {
+    font-size: 16px;
+  }
+
+  .legal-header h1 {
+    font-family: var(--ff-display);
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--navy);
+    margin: 0 0 16px;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+
+  .legal-meta {
+    font-size: 14px;
+    color: var(--text-soft);
+    margin: 0;
+    line-height: 1.7;
+  }
+
+  .legal-intro {
+    background: #F1F5F9;
+    border-left: 3px solid var(--blue);
+    padding: 20px 24px;
+    border-radius: 0 8px 8px 0;
+    margin-bottom: 40px;
+  }
+
+  .legal-intro p {
+    margin: 0 0 12px;
+    font-size: 15px;
+    color: var(--text-soft);
+    line-height: 1.7;
+  }
+
+  .legal-intro p:last-child {
+    margin-bottom: 0;
+  }
+
+  .wrap-text h2 {
+    font-family: var(--ff-display);
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--navy);
+    margin: 40px 0 16px;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+  }
+
+  .wrap-text h3 {
+    font-family: var(--ff-display);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--navy);
+    margin: 24px 0 12px;
+    line-height: 1.4;
+  }
+
+  .wrap-text p {
+    font-size: 15px;
+    color: var(--text-soft);
+    line-height: 1.75;
+    margin: 0 0 16px;
+  }
+
+  .wrap-text strong {
+    color: var(--navy);
+    font-weight: 600;
+  }
+
+  .wrap-text ul {
+    margin: 0 0 20px;
+    padding-left: 24px;
+  }
+
+  .wrap-text li {
+    font-size: 15px;
+    color: var(--text-soft);
+    line-height: 1.75;
+    margin-bottom: 8px;
+  }
+
+  .wrap-text a {
+    color: var(--blue);
+    text-decoration: none;
+    word-break: break-word;
+  }
+
+  .wrap-text a:hover {
+    text-decoration: underline;
+  }
+
+  .contact-box {
+    background: #F0FDF4;
+    border-left: 3px solid var(--green);
+    padding: 20px 24px;
+    border-radius: 0 8px 8px 0;
+    margin: 16px 0 32px;
+  }
+
+  .contact-box p {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.9;
+  }
+
+  .legal-footer {
+    margin-top: 48px;
+    padding: 24px;
+    background: #FEF3C7;
+    border-left: 3px solid #F59E0B;
+    border-radius: 0 8px 8px 0;
+  }
+
+  .legal-footer p {
+    margin: 0;
+    font-size: 14px;
+    color: var(--navy);
+    font-style: italic;
     text-align: center;
   }
-  .page-hero h1 { color: #fff; margin-bottom: 8px; }
-  .page-hero p { color: rgba(255, 255, 255, .7); font-size: 13px; }
+
+  @media (max-width: 640px) {
+    .legal-header h1 {
+      font-size: 28px;
+    }
+
+    .wrap-text h2 {
+      font-size: 20px;
+    }
+
+    .wrap-text h3 {
+      font-size: 16px;
+    }
+  }
 </style>
