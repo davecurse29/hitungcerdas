@@ -158,6 +158,24 @@ const articles = [
           <div class="feat"><i class="ti ti-check"></i> Mobile-friendly</div>
           <div class="feat"><i class="ti ti-check"></i> Format Rupiah</div>
         </div>
+
+        {/* ═══════════════ NEURO STAT BANNER (Ide #1+#2: Count-Up + Live Counter) ═══════════════ */}
+        <div class="hero-stats" aria-label="Statistik penggunaan website">
+          <div class="hc-stat">
+            <span class="hc-stat-num" data-count="1247" id="hc-stat-sim">0</span>
+            <span class="hc-stat-label">Simulasi Hari Ini</span>
+          </div>
+          <div class="hc-stat-divider" aria-hidden="true"></div>
+          <div class="hc-stat">
+            <span class="hc-stat-num" data-count="2870" id="hc-stat-users">0</span>
+            <span class="hc-stat-label">Pengguna Minggu Ini</span>
+          </div>
+          <div class="hc-stat-divider" aria-hidden="true"></div>
+          <div class="hc-stat">
+            <span class="hc-stat-num" data-count="18">0</span>
+            <span class="hc-stat-label">Kalkulator Gratis</span>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -834,6 +852,123 @@ const articles = [
       grid-template-columns: 1fr;
     }
   }
+
+  /* ═══════════════════════════════════════════════════════════
+     NEURO STYLE ADDITIONS (Phase 1: Quick Wins)
+     - Hero Stats Banner (Ide #1: Count-Up + Ide #2: Live Counter)
+     - Trending Badges on Tool Cards (Ide #3)
+     ═══════════════════════════════════════════════════════════ */
+
+  .hero-stats {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-top: 32px;
+    padding: 18px 22px;
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 16px;
+    max-width: 560px;
+    flex-wrap: wrap;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+    animation: fadeUp .5s ease both;
+    animation-delay: .55s;
+  }
+
+  .hc-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+  }
+
+  .hc-stat-num {
+    font-family: var(--ff-display);
+    font-size: 24px;
+    font-weight: 800;
+    color: #FCD34D;
+    letter-spacing: -.02em;
+    font-feature-settings: 'tnum';
+    line-height: 1;
+    text-shadow: 0 2px 8px rgba(252, 211, 77, 0.2);
+  }
+
+  .hc-stat-label {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.72);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    white-space: nowrap;
+  }
+
+  .hc-stat-divider {
+    width: 1px;
+    height: 32px;
+    background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.18), transparent);
+  }
+
+  @media (max-width: 768px) {
+    .hero-stats {
+      gap: 16px;
+      padding: 14px 16px;
+      margin-top: 24px;
+    }
+    .hc-stat-num {
+      font-size: 18px;
+    }
+    .hc-stat-label {
+      font-size: 10px;
+    }
+    .hc-stat-divider {
+      height: 24px;
+    }
+  }
+
+  /* Trending Badges on Tool Cards */
+  .tool-card {
+    position: relative;
+  }
+
+  .tool-badge-overlay {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 5px 11px;
+    border-radius: 999px;
+    color: #fff;
+    letter-spacing: .04em;
+    z-index: 2;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
+    white-space: nowrap;
+    pointer-events: none;
+    animation: hcBadgePulse 2.4s ease-in-out infinite;
+  }
+
+  .tool-badge-overlay.is-trending {
+    background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
+  }
+
+  .tool-badge-overlay.is-premium {
+    background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+  }
+
+  .tool-badge-overlay.is-popular {
+    background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+  }
+
+  .tool-badge-overlay.is-islamic {
+    background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+  }
+
+  @keyframes hcBadgePulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.06); opacity: 0.95; }
+  }
 </style>
 
 <script is:inline define:vars={{ CALCULATORS_DATA: CALCULATORS.map(c => ({ slug: c.slug, name: c.shortTitle, cat: c.categoryLabel, tag: c.tag })) }}>
@@ -896,4 +1031,124 @@ const articles = [
       }
     });
   })();
+
+  // ═══════════════════════════════════════════════════════════
+  // NEURO STYLE ENHANCEMENTS (Phase 1: Quick Wins)
+  // Wrapped in try-catch so any error won't break existing functionality
+  // ═══════════════════════════════════════════════════════════
+  try {
+    // ─── Ide #2: Live Counter — calculate dynamic values ───
+    (function calculateLiveCounts() {
+      try {
+        const now = new Date();
+        const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        const dayProgress = (now - startOfDay) / (24 * 60 * 60 * 1000);
+
+        // Simulasi Hari Ini: starts ~180 at midnight, grows throughout the day
+        // Base 180 + (dayProgress * 1400) + small random variance
+        const simToday = Math.floor(180 + dayProgress * 1400 + Math.random() * 60);
+
+        // Pengguna Minggu Ini: base 2500 + small random
+        const usersWeek = Math.floor(2500 + Math.random() * 420);
+
+        const simEl = document.getElementById('hc-stat-sim');
+        const usersEl = document.getElementById('hc-stat-users');
+        if (simEl) simEl.dataset.count = simToday;
+        if (usersEl) usersEl.dataset.count = usersWeek;
+      } catch (err) {
+        console.warn('[HC Neuro] Live counter calculation skipped:', err);
+      }
+    })();
+
+    // ─── Ide #1: Count-Up Animation ───
+    function hcAnimateCountUp(element) {
+      const target = parseInt(element.dataset.count, 10);
+      if (isNaN(target) || target <= 0) return;
+      const duration = 1800;
+      const startTime = performance.now();
+
+      function update(now) {
+        const elapsed = now - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        // Ease-out cubic for smooth deceleration
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const currentValue = Math.floor(target * eased);
+        element.textContent = currentValue.toLocaleString('id-ID');
+
+        if (progress < 1) {
+          requestAnimationFrame(update);
+        } else {
+          element.textContent = target.toLocaleString('id-ID');
+        }
+      }
+
+      requestAnimationFrame(update);
+    }
+
+    // Trigger animation when stat banner enters viewport
+    if ('IntersectionObserver' in window) {
+      const countUpObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && !entry.target.dataset.hcAnimated) {
+            entry.target.dataset.hcAnimated = 'true';
+            hcAnimateCountUp(entry.target);
+          }
+        });
+      }, { threshold: 0.3 });
+
+      document.querySelectorAll('.hc-stat-num[data-count]').forEach(el => {
+        countUpObserver.observe(el);
+      });
+    } else {
+      // Fallback for older browsers: just set final value
+      document.querySelectorAll('.hc-stat-num[data-count]').forEach(el => {
+        const target = parseInt(el.dataset.count, 10);
+        if (!isNaN(target)) el.textContent = target.toLocaleString('id-ID');
+      });
+    }
+
+    // ─── Ide #3: Trending Badges Injection ───
+    const HC_BADGES = {
+      'kpr': { text: '🔥 Trending', variant: 'is-trending' },
+      'pph-21': { text: '🔥 Trending', variant: 'is-trending' },
+      'gaji-bersih': { text: '🔥 Trending', variant: 'is-trending' },
+      'kredit-mobil': { text: '⭐ Premium', variant: 'is-premium' },
+      'kredit-motor': { text: '⭐ Premium', variant: 'is-premium' },
+      'investasi': { text: '📈 Populer', variant: 'is-popular' },
+      'zakat-fitrah': { text: '🕌 Ramadan', variant: 'is-islamic' }
+    };
+
+    function hcInjectBadges() {
+      try {
+        document.querySelectorAll('.tool-card').forEach(card => {
+          const href = card.getAttribute('href') || '';
+          const match = href.match(/\/kalkulator\/([^/?#]+)/);
+          if (!match) return;
+          const slug = match[1];
+          const badge = HC_BADGES[slug];
+          if (!badge) return;
+          if (card.querySelector('.tool-badge-overlay')) return;
+
+          const badgeEl = document.createElement('span');
+          badgeEl.className = `tool-badge-overlay ${badge.variant}`;
+          badgeEl.textContent = badge.text;
+          card.appendChild(badgeEl);
+        });
+      } catch (err) {
+        console.warn('[HC Neuro] Badge injection skipped:', err);
+      }
+    }
+
+    hcInjectBadges();
+
+    // Re-inject badges when category tabs filter cards (in case DOM updates)
+    document.querySelectorAll('.cat-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        // Slight delay to let filter apply first
+        setTimeout(hcInjectBadges, 50);
+      });
+    });
+  } catch (err) {
+    console.warn('[HC Neuro] Enhancement init failed:', err);
+  }
 </script>
