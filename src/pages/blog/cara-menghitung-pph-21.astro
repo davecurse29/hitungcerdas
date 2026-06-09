@@ -8,9 +8,9 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog'
 ---
 
 <Layout
-  title="Cara Menghitung PPh 21 Karyawan Sesuai UU HPP 2022 — Tarif Progresif & PTKP"
-  description="Panduan lengkap menghitung PPh 21 karyawan sesuai UU HPP 2022: 5 lapisan tarif progresif, PTKP terbaru, biaya jabatan, BPJS, contoh perhitungan."
-  keywords={['cara menghitung pph 21', 'pph 21 karyawan', 'uu hpp 2022', 'ptkp terbaru', 'pajak gaji']}
+  title="Cara Hitung PPh 21 Karyawan UU HPP 2026 — Tarif Progresif, PTKP, Contoh Lengkap"
+  description="Panduan lengkap hitung PPh 21 karyawan sesuai UU HPP 2026: 5 lapisan tarif progresif (5%-35%), PTKP terbaru, biaya jabatan, BPJS, contoh karyawan gaji Rp 8jt, Rp 15jt, Rp 25jt."
+  keywords={['cara hitung pph 21', 'pph 21 uu hpp 2026', 'tarif pajak progresif', 'ptkp 2026', 'pajak penghasilan karyawan']}
   canonical="https://hitungcerdas.net/blog/cara-menghitung-pph-21"
   ogType="article"
 >
@@ -18,10 +18,10 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog'
     <div class="wrap">
       <Breadcrumb items={bcItems} />
       <div class="article-tag">PANDUAN PAJAK</div>
-      <h1>Cara Menghitung PPh 21 Karyawan Sesuai UU HPP 2022</h1>
+      <h1>Cara Hitung PPh 21 Karyawan UU HPP 2026 — Tarif Progresif &amp; PTKP Lengkap</h1>
       <div class="article-meta">
         <span><i class="ti ti-calendar"></i> {today}</span>
-        <span><i class="ti ti-clock"></i> 7 menit baca</span>
+        <span><i class="ti ti-clock"></i> 8 menit baca</span>
         <span><i class="ti ti-user"></i> Tim HitungCerdas</span>
       </div>
     </div>
@@ -32,12 +32,13 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog'
   <article class="content-section">
     <div class="wrap-text">
       <p class="lead">
-        Sejak UU HPP 2022 disahkan, tarif PPh 21 berubah dari 4 lapisan menjadi 5 lapisan progresif
-        (5% - 35%). Untuk karyawan dengan gaji Rp 10 juta + tunjangan Rp 2 juta + THR Rp 10 juta,
-        PPh 21 setahun adalah <strong>~Rp 5,4 juta</strong>. Mari kita bedah cara hitungnya.
+        Sejak UU HPP 2022 disahkan, tarif PPh 21 berubah dari 4 lapisan menjadi <strong>5 lapisan progresif</strong>
+        (5% - 35%). Buat karyawan gaji Rp 10 juta + tunjangan Rp 2 juta + THR Rp 10 juta, PPh 21 setahun
+        adalah <strong>~Rp 5,4 juta</strong>. Artikel ini bedah cara hitungnya step-by-step plus 3 contoh
+        kasus gaji berbeda.
       </p>
 
-      <h2>1. Tarif PPh 21 Sesuai UU HPP 2022</h2>
+      <h2>1. Tarif PPh 21 Sesuai UU HPP 2022 (Berlaku 2026)</h2>
       <div class="formula-box">
         <ul>
           <li><strong>Lapisan 1</strong>: PKP 0 - Rp 60 juta → <strong>5%</strong></li>
@@ -47,62 +48,113 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog'
           <li><strong>Lapisan 5</strong>: PKP di atas 5 miliar → <strong>35%</strong></li>
         </ul>
       </div>
+      <p>PKP = Penghasilan Kena Pajak = Penghasilan Bruto - PTKP - Pengurang.</p>
 
-      <h2>2. PTKP (Penghasilan Tidak Kena Pajak) Terbaru</h2>
+      <h2>2. PTKP (Penghasilan Tidak Kena Pajak) 2026</h2>
+      <p>PTKP adalah batas penghasilan yang tidak kena pajak. Besarannya tergantung status pernikahan dan jumlah tanggungan:</p>
       <ul class="info-list">
-        <li><strong>TK/0</strong> (Lajang): Rp 54.000.000/thn</li>
-        <li><strong>K/0</strong> (Menikah, no anak): Rp 58.500.000/thn</li>
-        <li><strong>K/1</strong> (Menikah, 1 anak): Rp 63.000.000/thn</li>
-        <li><strong>K/2</strong> (Menikah, 2 anak): Rp 67.500.000/thn</li>
-        <li><strong>K/3</strong> (Menikah, 3 anak): Rp 72.000.000/thn</li>
+        <li><strong>TK/0</strong> (Tidak Kawin, 0 tanggungan): Rp 54.000.000/tahun</li>
+        <li><strong>TK/1, K/0</strong> (Kawin, 0 tanggungan): Rp 58.500.000/tahun</li>
+        <li><strong>K/1</strong> (Kawin, 1 tanggungan): Rp 63.000.000/tahun</li>
+        <li><strong>K/2</strong> (Kawin, 2 tanggungan): Rp 67.500.000/tahun</li>
+        <li><strong>K/3</strong> (Kawin, 3 tanggungan, MAX): Rp 72.000.000/tahun</li>
+      </ul>
+      <p><em>Catatan: tanggungan max 3 orang (anak, orang tua, mertua).</em></p>
+
+      <h2>3. Komponen yang Dikurangkan dari Bruto</h2>
+      <ul class="info-list">
+        <li><strong>Biaya Jabatan</strong>: 5% dari bruto, max Rp 6 juta/tahun (Rp 500rb/bulan)</li>
+        <li><strong>Iuran Pensiun</strong>: jika ada (BPJS Ketenagakerjaan JHT 2%, JP 1%)</li>
+        <li><strong>PTKP</strong>: sesuai status karyawan</li>
       </ul>
 
-      <h2>3. Langkah Menghitung PPh 21</h2>
-      <ol class="tips-list">
-        <li><strong>Hitung Penghasilan Bruto Setahun</strong> = (Gaji + Tunjangan) × 12 + THR + Bonus</li>
-        <li><strong>Kurangi Biaya Jabatan</strong> = 5% × bruto (max Rp 6 juta/thn)</li>
-        <li><strong>Kurangi BPJS Karyawan</strong> = JHT 2% + JP 1% + Kesehatan 1%</li>
-        <li><strong>Penghasilan Neto Setahun</strong></li>
-        <li><strong>Kurangi PTKP</strong> sesuai status keluarga</li>
-        <li><strong>Hasilnya = PKP</strong> (Penghasilan Kena Pajak)</li>
-        <li><strong>Kalikan Tarif Progresif</strong> per lapisan</li>
-        <li><strong>Total PPh 21 setahun</strong>, dibagi 12 = PPh per bulan</li>
-      </ol>
+      <h2>4. Contoh Kasus: 3 Skenario Gaji Karyawan</h2>
 
-      <h2>4. Contoh: Gaji Rp 10 juta, Status K/0</h2>
+      <h3>Kasus A: Karyawan Lajang, Gaji Rp 8 juta/bulan (Status TK/0)</h3>
       <ul class="info-list">
-        <li>Gaji setahun: 10jt × 12 = Rp 120.000.000</li>
-        <li>+ Tunjangan: 2jt × 12 = Rp 24.000.000</li>
-        <li>+ THR: Rp 10.000.000</li>
-        <li><strong>Bruto setahun</strong>: Rp 154.000.000</li>
-        <li>- Biaya jabatan (max): Rp 6.000.000</li>
-        <li>- BPJS karyawan: ~Rp 4.800.000</li>
-        <li><strong>Neto setahun</strong>: Rp 143.200.000</li>
-        <li>- PTKP K/0: Rp 58.500.000</li>
-        <li><strong>PKP</strong>: Rp 84.700.000</li>
-      </ul>
-      <p>Tarif progresif:</p>
-      <ul class="info-list">
-        <li>Lapisan 1 (0-60jt) × 5%: Rp 3.000.000</li>
-        <li>Lapisan 2 (60-84,7jt) × 15%: Rp 3.705.000</li>
-        <li><strong>Total PPh 21 setahun</strong>: Rp 6.705.000</li>
-        <li><strong>PPh 21 per bulan</strong>: ~Rp 558.000</li>
+        <li>Gaji setahun: Rp 96 juta</li>
+        <li>Biaya jabatan: 5% × Rp 96jt = Rp 4,8 juta (under max Rp 6jt)</li>
+        <li>PTKP TK/0: Rp 54 juta</li>
+        <li>PKP: Rp 96jt - Rp 4,8jt - Rp 54jt = Rp 37,2 juta</li>
+        <li>PPh 21 setahun: 5% × Rp 37,2jt = <strong>Rp 1,86 juta</strong></li>
+        <li>PPh 21 sebulan: <strong>Rp 155.000</strong></li>
       </ul>
 
-      <h2>5. Tips Legal Mengurangi PPh 21</h2>
-      <ol class="tips-list">
-        <li><strong>Maksimalkan PTKP</strong> — Update status jika menikah/punya anak.</li>
-        <li><strong>Bayar Zakat via Lembaga Resmi</strong> — Bisa kurangi PKP sesuai PMK 254/2010.</li>
-        <li><strong>Maksimalkan BPJS</strong> — Iuran JHT karyawan pengurang bruto.</li>
-        <li><strong>Negosiasi Komponen Gaji</strong> — Tunjangan tetap vs reimburse berbeda perpajakannya.</li>
-        <li><strong>Lapor SPT dengan Benar</strong> — Pastikan semua pengurang sah tercatat.</li>
-      </ol>
+      <h3>Kasus B: Karyawan Kawin 2 Anak, Gaji Rp 15 juta/bulan (Status K/2)</h3>
+      <ul class="info-list">
+        <li>Gaji setahun: Rp 180 juta</li>
+        <li>Biaya jabatan: 5% × Rp 180jt = Rp 9jt → capped jadi Rp 6 juta</li>
+        <li>PTKP K/2: Rp 67,5 juta</li>
+        <li>PKP: Rp 180jt - Rp 6jt - Rp 67,5jt = Rp 106,5 juta</li>
+        <li>PPh 21: 5% × 60jt + 15% × 46,5jt = Rp 3jt + Rp 6,975jt = <strong>Rp 9,975 juta/tahun</strong></li>
+        <li>PPh 21 sebulan: <strong>Rp 831.250</strong></li>
+      </ul>
+
+      <h3>Kasus C: Profesional Lajang, Gaji Rp 25 juta/bulan (Status TK/0)</h3>
+      <ul class="info-list">
+        <li>Gaji setahun: Rp 300 juta</li>
+        <li>Biaya jabatan: max Rp 6 juta</li>
+        <li>PTKP TK/0: Rp 54 juta</li>
+        <li>PKP: Rp 300jt - Rp 6jt - Rp 54jt = Rp 240 juta</li>
+        <li>PPh 21: 5% × 60jt + 15% × 180jt = Rp 3jt + Rp 27jt = <strong>Rp 30 juta/tahun</strong></li>
+        <li>PPh 21 sebulan: <strong>Rp 2,5 juta</strong></li>
+      </ul>
+
+      <AdSlot format="horizontal" />
+
+      <h2>5. Tips Hemat PPh 21 yang Legal</h2>
+      <ul class="info-list">
+        <li><strong>Pastikan status K/N benar</strong>: tambah tanggungan = PTKP lebih tinggi = PKP lebih rendah</li>
+        <li><strong>Manfaatkan tunjangan non-cash</strong>: BPJS Kesehatan/Ketenagakerjaan dibayar perusahaan tidak menambah bruto</li>
+        <li><strong>Klaim biaya jabatan max</strong>: pastikan HR menghitung 5% dengan max Rp 6 juta/tahun</li>
+        <li><strong>Iuran pensiun</strong>: kalau ikut BPJS JHT/JP, pastikan dikurangkan dari bruto</li>
+      </ul>
+
+      <h2>6. FAQ: Pertanyaan Sering Muncul</h2>
+
+      <h3>Apa beda PPh 21 dan PPh 23?</h3>
+      <p>PPh 21 untuk penghasilan karyawan (gaji, THR, bonus). PPh 23 untuk penghasilan dari jasa, sewa, royalti (umumnya untuk freelancer dan vendor).</p>
+
+      <h3>Apakah THR kena pajak?</h3>
+      <p>Ya, THR dianggap penghasilan dan masuk perhitungan PPh 21 setahun. Penambahan THR bisa memicu PKP naik ke lapisan tarif berikutnya.</p>
+
+      <h3>Bonus tahunan kena pajak juga?</h3>
+      <p>Ya. Semua penghasilan teratur dan tidak teratur (gaji, tunjangan, THR, bonus, gratifikasi) masuk perhitungan PPh 21.</p>
+
+      <h3>Bagaimana kalau saya bekerja di 2 perusahaan?</h3>
+      <p>Total penghasilan dari kedua perusahaan dijumlahkan, lalu hitung PPh 21 progresif. Pelaporan via SPT Tahunan PPh OP sebelum 31 Maret tahun berikutnya.</p>
 
       <div class="cta-box">
-        <h3>Hitung PPh 21 Kamu Sekarang</h3>
-        <p>Gunakan kalkulator PPh 21 HitungCerdas untuk hitung otomatis pajak bulananmu.</p>
-        <p style="margin-top:14px"><a href="/kalkulator/pph-21" class="btn btn-pri"><i class="ti ti-calculator"></i> Kalkulator PPh 21</a></p>
+        <h3>🧮 Coba Kalkulator PPh 21 HitungCerdas</h3>
+        <p>Daripada hitung manual (rumit & rawan salah), pakai <strong>Kalkulator PPh 21 HitungCerdas</strong> yang sudah:</p>
+        <ul>
+          <li>✅ Update sesuai UU HPP 2022 (5 lapisan tarif)</li>
+          <li>✅ PTKP terbaru 2026</li>
+          <li>✅ Auto-hitung biaya jabatan (5%, max Rp 6jt)</li>
+          <li>✅ Support gaji bulanan + THR + bonus</li>
+          <li>✅ Export hasil PNG/PDF/WhatsApp</li>
+        </ul>
+        <p style="margin-top:14px"><a href="/kalkulator/pph-21" class="btn btn-pri"><i class="ti ti-calculator"></i> Buka Kalkulator PPh 21</a></p>
       </div>
+
+      <h2>Kesimpulan</h2>
+      <p>
+        UU HPP 2022 (berlaku sampai sekarang) menerapkan 5 lapisan tarif progresif PPh 21. Yang penting
+        diingat: hitung PKP dengan akurat (bruto - biaya jabatan - PTKP), lalu apply tarif progresif
+        sesuai lapisan PKP. Untuk akurasi maksimum, gunakan kalkulator HitungCerdas yang sudah update
+        dengan aturan terbaru.
+      </p>
+
+      <h3>📚 Artikel Terkait</h3>
+      <ul class="info-list">
+        <li><a href="/blog/cara-menghitung-gaji-bersih">Cara Menghitung Gaji Bersih Karyawan</a></li>
+        <li><a href="/blog/cara-menghitung-kpr">Cara Hitung Cicilan KPR BTN 2026</a></li>
+        <li><a href="/kalkulator/zakat-penghasilan">Kalkulator Zakat Penghasilan</a></li>
+      </ul>
+
+      <p style="margin-top: 28px; padding: 16px; background: var(--bg-soft); border-radius: 10px; font-size: 13px; color: var(--text-soft); font-style: italic;">
+        <strong>Disclaimer:</strong> Artikel ini bersifat edukasi. Untuk keputusan pajak resmi, konsultasikan dengan konsultan pajak berlisensi atau langsung ke KPP terdekat. Aturan pajak dapat berubah sewaktu-waktu.
+      </p>
     </div>
   </article>
 
@@ -116,7 +168,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog'
   .article-hero :global(.breadcrumb-item span) { color: #fff; }
   .article-hero :global(.breadcrumb-item i) { color: rgba(255, 255, 255, .4); }
   .article-tag { display: inline-block; font-size: 11px; font-weight: 700; color: var(--gold-soft); letter-spacing: .1em; text-transform: uppercase; margin: 16px 0 12px; }
-  .article-hero h1 { color: #fff; font-size: clamp(26px, 3.8vw, 42px); margin: 0 0 20px; max-width: 800px; line-height: 1.2; }
+  .article-hero h1 { color: #fff; font-size: clamp(26px, 3.8vw, 42px); margin: 0 0 20px; max-width: 900px; line-height: 1.2; }
   .article-meta { display: flex; gap: 20px; color: rgba(255, 255, 255, .75); font-size: 13px; flex-wrap: wrap; }
   .article-meta span { display: inline-flex; align-items: center; gap: 6px; }
   .lead { font-size: 17px !important; line-height: 1.7 !important; color: var(--text) !important; padding: 20px 24px; background: var(--bg-soft); border-radius: 12px; border-left: 4px solid var(--red); margin-bottom: 24px !important; }

@@ -2,125 +2,45 @@
 import Layout from '../../layouts/Layout.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import AdSlot from '../../components/AdSlot.astro';
-
 const today = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
-const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'Persiapan Dana Haji & Umrah' }];
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'Cara Menghitung Dana Haji' }];
 ---
-
-<Layout
-  title="Persiapan Dana Haji & Umrah 2026 — Reguler, Plus, Furoda"
-  description="Panduan lengkap persiapan dana haji & umrah: bedanya 3 jenis haji, antrian per provinsi, tabungan haji syariah, dan strategi nabung dengan compound interest."
-  keywords={['dana haji', 'tabungan haji', 'haji reguler', 'haji plus', 'haji furoda', 'umrah']}
-  canonical="https://hitungcerdas.net/blog/cara-menghitung-dana-haji"
-  ogType="article"
->
+<Layout title="Cara Hitung Dana Haji 10-20 Tahun — Tabungan Bulanan Sampai Bisa Berangkat" description="Panduan tabungan dana haji & umrah: estimasi biaya 2026, target tabungan bulanan, simulasi 10-20 tahun, BPIH terbaru. Plus kalkulator dana haji gratis." keywords={['cara hitung dana haji', 'tabungan haji bulanan', 'bpih 2026', 'dana umrah', 'biaya haji indonesia']} canonical="https://hitungcerdas.net/blog/cara-menghitung-dana-haji" ogType="article">
   <section class="article-hero" style="--cat-color:#6D28D9;--cat-color2:#5B21B6">
-    <div class="wrap">
-      <Breadcrumb items={bcItems} />
-      <div class="article-tag">HAJI & UMRAH</div>
-      <h1>Persiapan Dana Haji & Umrah 2026: Reguler, Plus, Furoda</h1>
-      <div class="article-meta">
-        <span><i class="ti ti-calendar"></i> {today}</span>
-        <span><i class="ti ti-clock"></i> 7 menit baca</span>
-      </div>
+    <div class="wrap"><Breadcrumb items={bcItems} /><div class="article-tag">IBADAH</div>
+      <h1>Cara Hitung Dana Haji 10-20 Tahun: Tabungan Bulanan Sampai Berangkat</h1>
+      <div class="article-meta"><span><i class="ti ti-calendar"></i> {today}</span><span><i class="ti ti-clock"></i> 7 menit baca</span><span><i class="ti ti-user"></i> Tim HitungCerdas</span></div>
     </div>
   </section>
-
   <AdSlot format="horizontal" />
-
-  <article class="content-section">
-    <div class="wrap-text">
-      <p class="lead">
-        Haji adalah rukun Islam kelima, wajib bagi yang mampu. Tapi dengan biaya yang terus naik
-        (inflasi 5-7%/thn) dan antrian haji reguler 15-40 tahun, kunci utama: <strong>mulai nabung
-        sedini mungkin</strong>. Mari pelajari estimasi biaya, antrian, dan strategi nabung yang efektif.
-      </p>
-
-      <h2>1. Jenis Perjalanan Haji & Umrah</h2>
-      <ul class="info-list">
-        <li><strong>Umrah Reguler</strong> (9-12 hari): Rp 25-30 juta — Bisa kapan saja, kapasitas reguler.</li>
-        <li><strong>Umrah Plus</strong> (Mesir/Turki/Dubai): Rp 40-55 juta — Plus kunjungan kota lain.</li>
-        <li><strong>Haji Reguler</strong>: Rp 70-100 juta — Antrian 15-40 tahun, kuota pemerintah.</li>
-        <li><strong>Haji Plus / ONH Plus</strong>: Rp 250-350 juta — Antrian 5-10 tahun, fasilitas premium.</li>
-        <li><strong>Haji Furoda / Mujamalah</strong>: Rp 400-500 juta — TANPA antrian, undangan Saudi.</li>
-      </ul>
-
-      <h2>2. Estimasi Antrian Haji Reguler 2026</h2>
-      <p>
-        Karena pendaftar haji jauh lebih banyak dari kuota tahunan, antrian sangat panjang.
-        Estimasi waktu tunggu per provinsi:
-      </p>
-      <ul class="info-list">
-        <li><strong>DKI Jakarta</strong>: 25-30 tahun</li>
-        <li><strong>Jawa Barat</strong>: 25-28 tahun</li>
-        <li><strong>Jawa Tengah</strong>: 27-30 tahun</li>
-        <li><strong>Jawa Timur</strong>: 28-32 tahun</li>
-        <li><strong>Sumatera Utara</strong>: 18-22 tahun</li>
-        <li><strong>Sulawesi Selatan</strong>: 35-40 tahun (terlama)</li>
-        <li><strong>Papua</strong>: 12-15 tahun (tercepat)</li>
-      </ul>
-      <p>
-        Bayar setoran awal <strong>Rp 25 juta</strong> untuk masuk antrian. Sisa biaya dibayar
-        saat dapat porsi (~10 tahun sebelum berangkat). Cek estimasi terkini di
-        <strong>haji.kemenag.go.id</strong>.
-      </p>
-
-      <h2>3. Strategi Nabung Dana Haji</h2>
-      <ol class="tips-list">
-        <li><strong>Tabungan Haji Bank Syariah</strong> — BSI, Muamalat, Mega Syariah. Link langsung ke setoran awal Kemenag. Return 2-3%, tidak ada riba.</li>
-        <li><strong>Reksadana Syariah</strong> — Return 6-8%/thn. Manulife Syariah, Schroders Syariah, Sucorinvest Syariah.</li>
-        <li><strong>Sukuk Negara (SBSN)</strong> — Aman, dijamin negara. SR, ST, ORI Syariah. Return 5-7%.</li>
-        <li><strong>Emas/Logam Mulia</strong> — Hedge inflasi, mudah dicairkan. Antam, Galeri 24, BSI Cicil Emas.</li>
-      </ol>
-      <p>
-        <strong>Hindari</strong> deposito konvensional dan saham individual untuk dana yang harus
-        pasti tersedia. Risiko terlalu tinggi untuk dana ibadah.
-      </p>
-
-      <h2>4. Contoh Strategi Nabung</h2>
-      <p>
-        Tabungan haji reguler Rp 100 juta dalam 10 tahun, asumsi inflasi 5% dan return reksadana
-        syariah 6%/thn:
-      </p>
-      <ul class="info-list">
-        <li>Biaya saat berangkat (10 thn dari sekarang): Rp 100jt × 1.05^10 = <strong>Rp 163 juta</strong></li>
-        <li>Untuk capai Rp 163jt dengan return 6%/thn: nabung <strong>Rp 1 juta/bulan</strong></li>
-        <li>Total setoran 10 thn: Rp 120jt</li>
-        <li>Compound interest dapat: Rp 43jt extra</li>
-      </ul>
-
-      <h2>5. WASPADA Travel Umroh Bodong</h2>
-      <p>
-        Kasus First Travel dan Abu Tours merugikan jamaah miliaran rupiah. Tips aman:
-      </p>
-      <ul class="info-list">
-        <li>Pilih travel berlisensi <strong>PPIU/PIHK Kemenag</strong> (cek simpu.kemenag.go.id)</li>
-        <li>Hindari paket "promo" sangat murah (lebih murah 30%+ dari rata-rata)</li>
-        <li>Jangan setor sekaligus 100% di awal — pakai cicilan via rekening atas nama jamaah</li>
-        <li>Pastikan ada asuransi & garansi keberangkatan</li>
-        <li>Cek review di Google + grup haji/umrah Telegram</li>
-      </ul>
-
-      <h2>6. Tips Mempersiapkan Mental & Fisik</h2>
-      <ol class="tips-list">
-        <li><strong>Pelajari Manasik Haji/Umrah</strong> — Ikuti pelatihan di KBIH atau via online.</li>
-        <li><strong>Persiapkan Fisik</strong> — Olahraga rutin, terutama jalan kaki 5-10 km/hari.</li>
-        <li><strong>Cek Kesehatan</strong> — MCU, vaksin (meningitis wajib), imunisasi yang disarankan.</li>
-        <li><strong>Belajar Bahasa Dasar Arab</strong> — Frase dasar untuk komunikasi.</li>
-        <li><strong>Mental Spiritual</strong> — Tingkatkan ibadah, niat tulus, kuatkan keimanan.</li>
-      </ol>
-
-      <div class="cta-box">
-        <h3>Hitung Tabungan Haji & Umrah Sekarang</h3>
-        <p>Gunakan kalkulator dana haji HitungCerdas untuk hitung target nabung bulanan dengan compound interest syariah.</p>
-        <p style="margin-top:14px"><a href="/kalkulator/dana-haji-umrah" class="btn btn-pri"><i class="ti ti-calculator"></i> Kalkulator Dana Haji & Umrah</a></p>
-      </div>
-    </div>
-  </article>
-
+  <article class="content-section"><div class="wrap-text">
+    <p class="lead">Haji adalah rukun Islam ke-5. Tapi biaya BPIH (Biaya Penyelenggaraan Ibadah Haji) tahun 2026 sekitar <strong>Rp 50-90 juta</strong> per orang. Belum termasuk masa tunggu 15-30 tahun. Mari hitung berapa Dave harus nabung tiap bulan untuk bisa berangkat.</p>
+    <h2>1. Biaya Haji & Umrah 2026 (Estimasi)</h2>
+    <ul class="info-list"><li><strong>Haji Reguler</strong>: Rp 50-60 juta. Masa tunggu 15-30 tahun (tergantung provinsi)</li><li><strong>Haji Khusus / ONH Plus</strong>: Rp 150-250 juta. Masa tunggu 5-10 tahun</li><li><strong>Umrah Reguler</strong>: Rp 30-45 juta. Tanpa antri, kapan saja</li><li><strong>Umrah Plus Wisata</strong>: Rp 50-80 juta</li></ul>
+    <h2>2. Setoran Awal Haji Reguler</h2>
+    <p>Untuk daftar antrian haji reguler, perlu setoran awal <strong>Rp 25 juta</strong> ke bank BPS-BPIH (BSI, Mandiri Syariah, Muamalat, dll). Ini mengamankan porsi keberangkatan. Sisa BPIH bisa dicicil sampai tahun keberangkatan.</p>
+    <AdSlot format="horizontal" />
+    <h2>3. Simulasi Tabungan Bulanan</h2>
+    <h3>Skenario A: Target Setoran Awal Rp 25 juta dalam 3 tahun</h3>
+    <p>Tabungan bulanan tanpa return: 25jt / 36 bulan = <strong>Rp 695.000/bulan</strong></p>
+    <p>Kalau ditaruh di reksa dana pasar uang (return 5%/tahun): cukup ~Rp 645.000/bulan</p>
+    <h3>Skenario B: Target Total BPIH Rp 60 juta dalam 5 tahun</h3>
+    <p>Tabungan bulanan: 60jt / 60 = <strong>Rp 1 juta/bulan</strong> (tanpa return)</p>
+    <p>Dengan return 5%/tahun: cukup ~Rp 885.000/bulan</p>
+    <h3>Skenario C: Haji Khusus Rp 200 juta dalam 7 tahun</h3>
+    <p>Tabungan bulanan: 200jt / 84 = <strong>Rp 2.38 juta/bulan</strong> (tanpa return)</p>
+    <p>Dengan return 6%/tahun: cukup ~Rp 1.95 juta/bulan</p>
+    <h2>4. Instrumen Tabungan Haji Terbaik</h2>
+    <ul class="info-list"><li><strong>Tabungan Haji Bank Syariah</strong>: return rendah (~2-3%), tapi aman & bisa dipakai untuk daftar antrian</li><li><strong>Reksa Dana Syariah Pendapatan Tetap</strong>: return 5-7%/tahun</li><li><strong>Sukuk Tabungan</strong>: kupon 5-6%/tahun, dijamin negara</li><li><strong>Emas Logam Mulia</strong>: hedge inflasi, return jangka panjang ~6-8%</li></ul>
+    <p><strong>Tip</strong>: kombinasikan. 50% di tabungan haji (untuk daftar antrian), 50% di sukuk/RDPT untuk dapat return lebih tinggi.</p>
+    <h2>5. Tips Mencapai Target Lebih Cepat</h2>
+    <ul class="info-list"><li><strong>Auto debit tiap bulan</strong>: lebih disiplin, tidak skip</li><li><strong>Setor lump-sum tahunan</strong>: pakai bonus & THR</li><li><strong>Daftar antrian secepatnya</strong>: makin awal daftar, makin cepat berangkat</li><li><strong>Pertimbangkan haji berdua</strong>: target combined budget = solidaritas keluarga</li></ul>
+    <div class="cta-box"><h3>🧮 Coba Kalkulator Dana Haji HitungCerdas</h3><p>Simulasi tabungan bulanan untuk haji reguler, plus, atau umrah berdasarkan target tahun keberangkatan.</p><p style="margin-top:14px"><a href="/kalkulator/dana-haji-umrah" class="btn btn-pri"><i class="ti ti-calculator"></i> Buka Kalkulator Dana Haji</a></p></div>
+    <h2>Kesimpulan</h2><p>Berangkat haji adalah possible bagi siapa pun yang konsisten menabung. Mulai dari yang kecil, manfaatkan instrumen syariah untuk return optimal.</p>
+    <h3>📚 Artikel Terkait</h3><ul class="info-list"><li><a href="/blog/cara-menghitung-investasi">Cara Hitung Investasi Compound Interest</a></li><li><a href="/kalkulator/dana-qurban">Kalkulator Dana Qurban</a></li><li><a href="/kalkulator/zakat-penghasilan">Kalkulator Zakat Penghasilan</a></li></ul>
+  </div></article>
   <AdSlot format="horizontal" />
 </Layout>
-
 <style>
   .article-hero { background: linear-gradient(135deg, var(--cat-color) 0%, var(--cat-color2) 100%); color: #fff; padding: 20px 0 48px; }
   .article-hero :global(.breadcrumb-item), .article-hero :global(.breadcrumb-item a) { color: rgba(255, 255, 255, .7); }
@@ -128,8 +48,8 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog'
   .article-hero :global(.breadcrumb-item span) { color: #fff; }
   .article-hero :global(.breadcrumb-item i) { color: rgba(255, 255, 255, .4); }
   .article-tag { display: inline-block; font-size: 11px; font-weight: 700; color: var(--gold-soft); letter-spacing: .1em; text-transform: uppercase; margin: 16px 0 12px; }
-  .article-hero h1 { color: #fff; font-size: clamp(26px, 3.8vw, 42px); margin: 0 0 20px; max-width: 800px; line-height: 1.2; }
+  .article-hero h1 { color: #fff; font-size: clamp(26px, 3.8vw, 42px); margin: 0 0 20px; max-width: 900px; line-height: 1.2; }
   .article-meta { display: flex; gap: 20px; color: rgba(255, 255, 255, .75); font-size: 13px; flex-wrap: wrap; }
   .article-meta span { display: inline-flex; align-items: center; gap: 6px; }
-  .lead { font-size: 17px !important; line-height: 1.7 !important; color: var(--text) !important; padding: 20px 24px; background: var(--bg-soft); border-radius: 12px; border-left: 4px solid #6D28D9; margin-bottom: 24px !important; }
+  .lead { font-size: 17px !important; line-height: 1.7 !important; color: var(--text) !important; padding: 20px 24px; background: var(--bg-soft); border-radius: 12px; border-left: 4px solid var(--cat-color); margin-bottom: 24px !important; }
 </style>

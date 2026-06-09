@@ -8,20 +8,21 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog'
 ---
 
 <Layout
-  title="Cara Menghitung Gaji Bersih (Take-Home Pay) Karyawan — Komponen Lengkap"
-  description="Panduan menghitung gaji bersih (take-home pay) karyawan dari gaji bruto. Komponen BPJS, PPh 21, biaya jabatan, dan tips alokasi 50/30/20."
-  keywords={['cara menghitung gaji bersih', 'take home pay', 'gaji bersih karyawan', 'bpjs karyawan']}
+  title="Cara Hitung Gaji Bersih Take-Home Pay 2026 — BPJS, PPh 21, Potongan Lengkap"
+  description="Panduan lengkap cara hitung gaji bersih karyawan 2026: deduksi BPJS Kesehatan + Ketenagakerjaan, PPh 21, dan potongan lain. Plus simulasi gaji Rp 5jt-Rp 25jt."
+  keywords={['cara hitung gaji bersih', 'take home pay karyawan', 'bpjs kesehatan ketenagakerjaan', 'potongan gaji 2026', 'gaji netto']}
   canonical="https://hitungcerdas.net/blog/cara-menghitung-gaji-bersih"
   ogType="article"
 >
   <section class="article-hero" style="--cat-color:#059669;--cat-color2:#047857">
     <div class="wrap">
       <Breadcrumb items={bcItems} />
-      <div class="article-tag">GAJI & PENGHASILAN</div>
-      <h1>Cara Menghitung Gaji Bersih (Take-Home Pay) Karyawan</h1>
+      <div class="article-tag">GAJI &amp; PENGHASILAN</div>
+      <h1>Cara Hitung Gaji Bersih Take-Home Pay 2026 dengan Mudah</h1>
       <div class="article-meta">
         <span><i class="ti ti-calendar"></i> {today}</span>
-        <span><i class="ti ti-clock"></i> 4 menit baca</span>
+        <span><i class="ti ti-clock"></i> 6 menit baca</span>
+        <span><i class="ti ti-user"></i> Tim HitungCerdas</span>
       </div>
     </div>
   </section>
@@ -31,59 +32,116 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog'
   <article class="content-section">
     <div class="wrap-text">
       <p class="lead">
-        Gaji bersih (take-home pay) adalah uang yang benar-benar masuk rekeningmu setelah semua
-        potongan: BPJS, PPh 21, dan potongan lain. Biasanya 70-85% dari gaji bruto. Untuk gaji
-        bruto Rp 10 juta, take-home pay sekitar <strong>Rp 8-8,5 juta</strong>.
+        Gaji yang tertera di kontrak <strong>bukanlah</strong> yang masuk rekening. Setelah dipotong
+        BPJS Kesehatan, BPJS Ketenagakerjaan, dan PPh 21, gaji bruto Rp 10 juta bisa jadi gaji bersih
+        <strong>~Rp 8,7 juta</strong>. Artikel ini ngajarin cara hitung take-home pay step-by-step
+        plus simulasi untuk berbagai range gaji.
       </p>
 
-      <h2>1. Komponen Gaji Bruto</h2>
-      <ul class="info-list">
-        <li><strong>Gaji Pokok</strong> — Komponen utama, biasanya 60-80% dari total</li>
-        <li><strong>Tunjangan Tetap</strong> — Transport, makan, jabatan, perumahan</li>
-        <li><strong>Tunjangan Tidak Tetap</strong> — Lembur, insentif, komisi</li>
-        <li><strong>Bonus & THR</strong> — Tahunan, tidak masuk bulanan</li>
-      </ul>
-
-      <h2>2. Komponen Potongan</h2>
-      <p>Potongan standar karyawan di Indonesia:</p>
-      <ul class="info-list">
-        <li><strong>BPJS Kesehatan</strong>: 1% gaji (max Rp 120.000/bln)</li>
-        <li><strong>BPJS JHT</strong> (Jaminan Hari Tua): 2% gaji</li>
-        <li><strong>BPJS JP</strong> (Jaminan Pensiun): 1% gaji (max Rp 87.000/bln)</li>
-        <li><strong>PPh 21</strong>: Progresif 5-35% dari PKP</li>
-        <li><strong>Potongan Lain</strong>: Koperasi, simpanan wajib, cicilan internal</li>
-      </ul>
-
-      <h2>3. Rumus Take-Home Pay</h2>
+      <h2>1. Komponen Pengurang Gaji Bruto</h2>
       <div class="formula-box">
-        <p class="formula"><strong>THP = Bruto - BPJS Karyawan - PPh 21 - Potongan Lain</strong></p>
+        <p class="formula"><strong>Gaji Bersih = Gaji Bruto - BPJS Karyawan - PPh 21 - Potongan Lain</strong></p>
       </div>
-
-      <h2>4. Contoh Perhitungan</h2>
-      <p>Karyawan dengan gaji pokok Rp 8 juta + tunjangan Rp 1,5 juta, status K/0:</p>
+      <p>Untuk karyawan swasta umum:</p>
       <ul class="info-list">
-        <li>Bruto bulanan: <strong>Rp 9.500.000</strong></li>
-        <li>BPJS Kesehatan (1%): Rp 95.000</li>
-        <li>BPJS JHT (2%): Rp 160.000</li>
-        <li>BPJS JP (1%): Rp 80.000</li>
-        <li>PPh 21 bulanan: ~Rp 350.000</li>
-        <li>Total potongan: Rp 685.000</li>
-        <li><strong>Take-Home Pay: Rp 8.815.000</strong> (~93% dari bruto)</li>
+        <li><strong>BPJS Kesehatan</strong>: 1% dari gaji bruto (karyawan), 4% (perusahaan). Max gaji acuan: Rp 12 juta.</li>
+        <li><strong>BPJS JHT</strong>: 2% dari gaji (karyawan), 3,7% (perusahaan)</li>
+        <li><strong>BPJS JP</strong>: 1% dari gaji (karyawan), 2% (perusahaan). Max gaji acuan: Rp 10,5 juta.</li>
+        <li><strong>BPJS JKK + JKM</strong>: dibayar perusahaan 100%, tidak potong gaji karyawan</li>
+        <li><strong>PPh 21</strong>: sesuai tarif progresif UU HPP 2022 (5%-35%)</li>
       </ul>
 
-      <h2>5. Tips Alokasi 50/30/20</h2>
-      <p>Aturan klasik untuk alokasi gaji bulanan:</p>
+      <h2>2. Simulasi Gaji Bruto Rp 10 Juta (Status TK/0)</h2>
       <ul class="info-list">
-        <li><strong>50% Kebutuhan</strong>: Sewa/cicilan, listrik, transport, makan, BPJS</li>
-        <li><strong>30% Keinginan</strong>: Hiburan, makan di luar, hobby, langganan</li>
-        <li><strong>20% Tabungan & Investasi</strong>: Dana darurat, reksadana, saham, emas</li>
+        <li><strong>Gaji Bruto</strong>: Rp 10.000.000</li>
+        <li><strong>BPJS Kesehatan 1%</strong>: Rp 100.000</li>
+        <li><strong>BPJS JHT 2%</strong>: Rp 200.000</li>
+        <li><strong>BPJS JP 1%</strong>: Rp 100.000</li>
+        <li><strong>Total BPJS</strong>: Rp 400.000</li>
+        <li><strong>PPh 21 (estimasi)</strong>: Rp 313.000</li>
+        <li><strong>Gaji Bersih</strong>: Rp 10jt - Rp 400rb - Rp 313rb = <strong>Rp 9.287.000</strong></li>
       </ul>
+
+      <h2>3. Simulasi Gaji Bersih untuk Range Gaji Berbeda (Status TK/0)</h2>
+      <ul class="info-list">
+        <li><strong>Bruto Rp 5 juta</strong>: BPJS Rp 200rb, PPh 21 Rp 0 (di bawah PTKP). Bersih: <strong>~Rp 4.800.000</strong></li>
+        <li><strong>Bruto Rp 8 juta</strong>: BPJS Rp 320rb, PPh 21 Rp 155rb. Bersih: <strong>~Rp 7.525.000</strong></li>
+        <li><strong>Bruto Rp 12 juta</strong>: BPJS Rp 480rb, PPh 21 Rp 542rb. Bersih: <strong>~Rp 10.978.000</strong></li>
+        <li><strong>Bruto Rp 15 juta</strong>: BPJS Rp 565rb (capped), PPh 21 Rp 826rb. Bersih: <strong>~Rp 13.609.000</strong></li>
+        <li><strong>Bruto Rp 20 juta</strong>: BPJS Rp 615rb (capped), PPh 21 Rp 1.534rb. Bersih: <strong>~Rp 17.851.000</strong></li>
+        <li><strong>Bruto Rp 25 juta</strong>: BPJS Rp 665rb (capped), PPh 21 Rp 2.500rb. Bersih: <strong>~Rp 21.835.000</strong></li>
+      </ul>
+
+      <h2>4. Cap BPJS — Penting Diperhatikan</h2>
+      <p>
+        BPJS punya batas maksimum gaji acuan, jadi makin tinggi gaji <strong>tidak otomatis</strong>
+        makin tinggi potongan BPJS:
+      </p>
+      <ul class="info-list">
+        <li><strong>BPJS Kesehatan</strong>: max gaji acuan Rp 12 juta → max potongan karyawan Rp 120rb</li>
+        <li><strong>BPJS JP</strong>: max gaji acuan Rp 10,5 juta → max potongan karyawan Rp 105rb</li>
+        <li><strong>BPJS JHT</strong>: tidak ada cap, 2% dari gaji penuh</li>
+      </ul>
+
+      <AdSlot format="horizontal" />
+
+      <h2>5. Potongan Tambahan yang Sering Lupa Dihitung</h2>
+      <ul class="info-list">
+        <li><strong>Iuran serikat pekerja</strong>: kalau gabung serikat</li>
+        <li><strong>Pinjaman karyawan</strong>: cicilan koperasi karyawan, dll</li>
+        <li><strong>Asuransi swasta tambahan</strong>: jika perusahaan provide</li>
+        <li><strong>Mess fee / catering fee</strong>: di beberapa industri</li>
+      </ul>
+
+      <h2>6. Tips Memaksimalkan Take-Home Pay</h2>
+      <ul class="info-list">
+        <li><strong>Negosiasi tunjangan non-cash</strong>: BPJS lebih (perusahaan bayar), asuransi kesehatan keluarga, dll — naikkan total benefit tanpa naikkan PPh 21</li>
+        <li><strong>Update status pernikahan/tanggungan</strong>: PTKP naik = PPh 21 turun</li>
+        <li><strong>Manfaatkan tax planning legal</strong>: zakat penghasilan bisa jadi pengurang (kalau via lembaga zakat resmi)</li>
+        <li><strong>Klaim deductible</strong>: biaya jabatan max 5% / Rp 6jt</li>
+      </ul>
+
+      <h2>7. FAQ</h2>
+
+      <h3>BPJS Kesehatan karyawan suami-istri masuk bersama?</h3>
+      <p>Iya, BPJS Kesehatan otomatis cover seluruh keluarga (suami/istri + max 3 anak). Tidak perlu bayar terpisah. Tapi kalau kedua suami-istri kerja, bisa pilih salah satu yang jadi penanggung (yang gajinya lebih tinggi lebih hemat).</p>
+
+      <h3>BPJS JHT bisa diambil kapan?</h3>
+      <p>BPJS JHT bisa dicairkan saat pensiun (umur 56+), atau saat resign minimal 1 bulan. Saldo BPJS JHT adalah tabungan dengan return ~6%/tahun.</p>
+
+      <h3>Apakah gaji ke-13 dan ke-14 (THR) kena potongan BPJS?</h3>
+      <p>Tidak. BPJS hanya potong gaji pokok bulanan, bukan bonus/THR. Tapi THR tetap kena PPh 21.</p>
 
       <div class="cta-box">
-        <h3>Cek Take-Home Pay Kamu</h3>
-        <p>Gunakan kalkulator gaji bersih HitungCerdas untuk hitung detail bulanan.</p>
-        <p style="margin-top:14px"><a href="/kalkulator/gaji-bersih" class="btn btn-pri"><i class="ti ti-calculator"></i> Kalkulator Gaji Bersih</a></p>
+        <h3>🧮 Coba Kalkulator Gaji Bersih HitungCerdas</h3>
+        <p>Hitung take-home pay-mu dengan cepat & akurat:</p>
+        <ul>
+          <li>✅ Auto-deduksi BPJS Kesehatan + JHT + JP (sesuai cap terbaru)</li>
+          <li>✅ PPh 21 sesuai UU HPP 2022</li>
+          <li>✅ Support status K/0 sampai K/3</li>
+          <li>✅ Bisa input tunjangan dan potongan tambahan</li>
+          <li>✅ Export hasil ke PNG/PDF</li>
+        </ul>
+        <p style="margin-top:14px"><a href="/kalkulator/gaji-bersih" class="btn btn-pri"><i class="ti ti-calculator"></i> Buka Kalkulator Gaji Bersih</a></p>
       </div>
+
+      <h2>Kesimpulan</h2>
+      <p>
+        Gaji bersih take-home pay bisa <strong>10-20% lebih rendah</strong> dari gaji bruto setelah
+        potong BPJS dan PPh 21. Pahami komponen potongan untuk tahu pasti berapa yang akan masuk
+        rekening, biar bisa budgeting dengan akurat.
+      </p>
+
+      <h3>📚 Artikel Terkait</h3>
+      <ul class="info-list">
+        <li><a href="/blog/cara-menghitung-pph-21">Cara Hitung PPh 21 Karyawan UU HPP 2026</a></li>
+        <li><a href="/blog/cara-menghitung-kpr">Cara Hitung Cicilan KPR BTN 2026</a></li>
+        <li><a href="/kalkulator/zakat-penghasilan">Kalkulator Zakat Penghasilan</a></li>
+      </ul>
+
+      <p style="margin-top: 28px; padding: 16px; background: var(--bg-soft); border-radius: 10px; font-size: 13px; color: var(--text-soft); font-style: italic;">
+        <strong>Disclaimer:</strong> Persentase BPJS dan tarif PPh 21 dapat berubah sesuai regulasi pemerintah. Untuk perhitungan resmi, konfirmasi ke HR perusahaan dan/atau konsultan pajak berlisensi.
+      </p>
     </div>
   </article>
 
@@ -97,7 +155,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog'
   .article-hero :global(.breadcrumb-item span) { color: #fff; }
   .article-hero :global(.breadcrumb-item i) { color: rgba(255, 255, 255, .4); }
   .article-tag { display: inline-block; font-size: 11px; font-weight: 700; color: var(--gold-soft); letter-spacing: .1em; text-transform: uppercase; margin: 16px 0 12px; }
-  .article-hero h1 { color: #fff; font-size: clamp(26px, 3.8vw, 42px); margin: 0 0 20px; max-width: 800px; line-height: 1.2; }
+  .article-hero h1 { color: #fff; font-size: clamp(26px, 3.8vw, 42px); margin: 0 0 20px; max-width: 900px; line-height: 1.2; }
   .article-meta { display: flex; gap: 20px; color: rgba(255, 255, 255, .75); font-size: 13px; flex-wrap: wrap; }
   .article-meta span { display: inline-flex; align-items: center; gap: 6px; }
   .lead { font-size: 17px !important; line-height: 1.7 !important; color: var(--text) !important; padding: 20px 24px; background: var(--bg-soft); border-radius: 12px; border-left: 4px solid var(--green); margin-bottom: 24px !important; }

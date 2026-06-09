@@ -1,0 +1,46 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import AdSlot from '../../components/AdSlot.astro';
+const today = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'Cara Bikin Invoice Profesional' }];
+---
+<Layout title="Cara Bikin Invoice Profesional untuk UMKM 2026 — Template & Tools Gratis" description="Panduan invoice UMKM: komponen wajib, format profesional, NPWP, signature, plus invoice generator online gratis Indonesia." keywords={['cara bikin invoice', 'invoice generator gratis', 'template invoice umkm', 'invoice digital indonesia', 'faktur pajak']} canonical="https://hitungcerdas.net/blog/cara-bikin-invoice-profesional" ogType="article">
+  <section class="article-hero" style="--cat-color:#0EA5E9;--cat-color2:#0369A1">
+    <div class="wrap"><Breadcrumb items={bcItems} /><div class="article-tag">BISNIS</div>
+      <h1>Cara Bikin Invoice Profesional untuk UMKM 2026 — Template + Tools Gratis</h1>
+      <div class="article-meta"><span><i class="ti ti-calendar"></i> {today}</span><span><i class="ti ti-clock"></i> 5 menit baca</span><span><i class="ti ti-user"></i> Tim HitungCerdas</span></div>
+    </div>
+  </section>
+  <AdSlot format="horizontal" />
+  <article class="content-section"><div class="wrap-text">
+    <p class="lead">Invoice yang asal-asalan bikin bisnis kelihatan tidak profesional. Bahkan klien besar enggan transfer tanpa invoice rapi. Artikel ini panduan bikin invoice profesional Indonesia + tools gratis untuk generate dalam menit.</p>
+    <h2>1. Komponen Wajib Invoice Indonesia</h2>
+    <ul class="info-list"><li><strong>Header</strong>: Logo + nama bisnis + alamat + nomor telepon + email</li><li><strong>"INVOICE"</strong> jelas di atas (font besar)</li><li><strong>Nomor invoice</strong> unik (format INV/2026/06/001)</li><li><strong>Tanggal invoice & jatuh tempo</strong></li><li><strong>Info klien</strong>: nama, alamat, NPWP (kalau ada)</li><li><strong>Tabel barang/jasa</strong>: deskripsi, qty, unit price, total</li><li><strong>Subtotal, PPN 11% (kalau PKP), total</strong></li><li><strong>Info pembayaran</strong>: rekening bank, atau payment link</li><li><strong>Term &amp; Conditions</strong>: jangka waktu pembayaran, denda telat</li><li><strong>Signature / cap</strong></li></ul>
+    <h2>2. Format Invoice yang Profesional</h2>
+    <ul class="info-list"><li><strong>Layout bersih</strong>: max 1 halaman A4</li><li><strong>Font readable</strong>: Arial / Calibri size 10-11</li><li><strong>Color palette minimal</strong>: 2-3 warna max (primary + neutral)</li><li><strong>Logo crisp</strong>: PNG transparent, resolution tinggi</li><li><strong>Padding cukup</strong>: jangan terlalu padat</li></ul>
+    <AdSlot format="horizontal" />
+    <h2>3. PPN & PPh — Kapan Harus Dicantumkan?</h2>
+    <ul class="info-list"><li><strong>PPN 11%</strong>: wajib jika UMKM sudah PKP (omzet > Rp 4.8 miliar/tahun)</li><li><strong>PPh 23</strong>: untuk jasa konsultan / freelance (klien yang potong, bukan UMKM)</li><li><strong>PPh Final 0.5%</strong>: untuk omzet < Rp 4.8 miliar, jika pilih skema final UMKM</li></ul>
+    <h2>4. Tools Bikin Invoice Gratis</h2>
+    <ul class="info-list"><li><strong>Invoice Generator HitungCerdas</strong>: free, no login, template Indonesia</li><li><strong>Canva</strong>: banyak template, butuh akun</li><li><strong>Google Docs</strong>: template invoice built-in</li><li><strong>Software accounting</strong>: Jurnal, Accurate, BukuKas (untuk skala lebih besar)</li></ul>
+    <h2>5. Tips Pembayaran Lebih Cepat</h2>
+    <ul class="info-list"><li><strong>Jangka waktu 7-14 hari</strong>: jangan kasih 30 hari kecuali korporat besar</li><li><strong>Diskon early payment</strong>: 2% kalau bayar dalam 7 hari</li><li><strong>Penalti late payment</strong>: 1% per minggu telat</li><li><strong>Reminder otomatis</strong>: WA reminder H-3 jatuh tempo</li><li><strong>Multiple payment methods</strong>: BCA + Mandiri + QRIS + ShopeePay</li></ul>
+    <div class="cta-box"><h3>🧮 Coba Invoice Generator HitungCerdas</h3><p>Bikin invoice profesional dalam 2 menit:</p><ul><li>✅ Template Indonesia (format Rupiah, NPWP)</li><li>✅ Auto-calc PPN, PPh, diskon</li><li>✅ Export PDF siap kirim</li><li>✅ Gratis, no login</li></ul><p style="margin-top:14px"><a href="/kalkulator/invoice-generator" class="btn btn-pri"><i class="ti ti-calculator"></i> Buka Invoice Generator</a></p></div>
+    <h2>Kesimpulan</h2><p>Invoice profesional = trust dari klien = bayaran lebih cepat. Pakai tools yang tepat, jangan tulis tangan.</p>
+    <h3>📚 Artikel Terkait</h3><ul class="info-list"><li><a href="/blog/cara-menghitung-margin">Cara Hitung Margin UMKM</a></li><li><a href="/blog/cara-menentukan-harga-jual">Cara Menentukan Harga Jual</a></li><li><a href="/kalkulator/nama-bisnis-generator">Nama Bisnis Generator</a></li></ul>
+  </div></article>
+  <AdSlot format="horizontal" />
+</Layout>
+<style>
+  .article-hero { background: linear-gradient(135deg, var(--cat-color) 0%, var(--cat-color2) 100%); color: #fff; padding: 20px 0 48px; }
+  .article-hero :global(.breadcrumb-item), .article-hero :global(.breadcrumb-item a) { color: rgba(255, 255, 255, .7); }
+  .article-hero :global(.breadcrumb-item a:hover) { color: var(--gold-soft); }
+  .article-hero :global(.breadcrumb-item span) { color: #fff; }
+  .article-hero :global(.breadcrumb-item i) { color: rgba(255, 255, 255, .4); }
+  .article-tag { display: inline-block; font-size: 11px; font-weight: 700; color: var(--gold-soft); letter-spacing: .1em; text-transform: uppercase; margin: 16px 0 12px; }
+  .article-hero h1 { color: #fff; font-size: clamp(26px, 3.8vw, 42px); margin: 0 0 20px; max-width: 900px; line-height: 1.2; }
+  .article-meta { display: flex; gap: 20px; color: rgba(255, 255, 255, .75); font-size: 13px; flex-wrap: wrap; }
+  .article-meta span { display: inline-flex; align-items: center; gap: 6px; }
+  .lead { font-size: 17px !important; line-height: 1.7 !important; color: var(--text) !important; padding: 20px 24px; background: var(--bg-soft); border-radius: 12px; border-left: 4px solid var(--cat-color); margin-bottom: 24px !important; }
+</style>

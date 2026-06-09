@@ -1,0 +1,46 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import AdSlot from '../../components/AdSlot.astro';
+const today = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'Simulasi Kredit Mobil' }];
+---
+<Layout title="Cara Simulasi Kredit Mobil 2026 — TCO Lengkap 9 Komponen" description="Panduan simulasi kredit mobil: cicilan, BBM, servis, asuransi, pajak, dll (TCO). Plus tips pilih tenor optimal & bandingkan leasing." keywords={['simulasi kredit mobil', 'cicilan mobil 2026', 'tco mobil', 'asuransi all risk mobil', 'kalkulator mobil']} canonical="https://hitungcerdas.net/blog/simulasi-kredit-mobil" ogType="article">
+  <section class="article-hero" style="--cat-color:#0891B2;--cat-color2:#0E7490">
+    <div class="wrap"><Breadcrumb items={bcItems} /><div class="article-tag">KREDIT</div>
+      <h1>Cara Simulasi Kredit Mobil 2026 + Total Cost of Ownership Lengkap</h1>
+      <div class="article-meta"><span><i class="ti ti-calendar"></i> {today}</span><span><i class="ti ti-clock"></i> 8 menit baca</span><span><i class="ti ti-user"></i> Tim HitungCerdas</span></div>
+    </div>
+  </section>
+  <AdSlot format="horizontal" />
+  <article class="content-section"><div class="wrap-text">
+    <p class="lead">Mobil bukan investasi, tapi <strong>liability</strong>. Cicilan cuma 30% dari total biaya kepemilikan (TCO). Untuk mobil Rp 250 juta, TCO 5 tahun bisa <strong>Rp 450+ juta</strong>. Mari bedah angkanya.</p>
+    <h2>1. Rumus Cicilan Mobil</h2>
+    <p>Mobil pakai bunga <strong>flat</strong> (mirip motor) di leasing, atau <strong>efektif</strong> di bank. Rate flat 6-9% per tahun.</p>
+    <div class="formula-box"><p><strong>Cicilan = Pokok × (1 + flat_rate × tenor_tahun) / total_bulan</strong></p></div>
+    <h2>2. Contoh: Toyota Avanza Rp 250 juta, DP 30%, Tenor 5 tahun</h2>
+    <ul class="info-list"><li><strong>DP</strong>: Rp 75.000.000</li><li><strong>Pokok</strong>: Rp 175.000.000</li><li><strong>Bunga flat 7% × 5</strong>: 35% × 175jt = Rp 61.250.000</li><li><strong>Total bayar</strong>: Rp 236.250.000</li><li><strong>Cicilan/bulan</strong>: Rp 236.25jt / 60 = <strong>Rp 3.937.500</strong></li></ul>
+    <h2>3. TCO 5 Tahun Toyota Avanza</h2>
+    <ul class="info-list"><li><strong>Harga + bunga kredit</strong>: Rp 236.250.000</li><li><strong>BBM (12 km/L, 1500km/bulan)</strong>: 9000L × Rp 10rb = Rp 90.000.000</li><li><strong>Servis rutin 5 tahun</strong>: Rp 1.5jt × 5 = Rp 7.500.000</li><li><strong>Ganti oli + filter (10x)</strong>: Rp 600rb × 10 = Rp 6.000.000</li><li><strong>Ban (1 set ganti)</strong>: Rp 4.000.000</li><li><strong>Asuransi all-risk 5 tahun</strong>: 2.5% × 250jt × 5 = Rp 31.250.000</li><li><strong>Pajak (PKB 1.5%)</strong>: Rp 3.75jt × 5 = Rp 18.750.000</li><li><strong>Tol, parkir, cuci</strong>: ~Rp 500rb/bulan × 60 = Rp 30.000.000</li><li><strong>Depresiasi (40% nilai)</strong>: Rp 100.000.000 hilang</li><li><strong>TOTAL TCO 5 TAHUN</strong>: <strong>~Rp 523.750.000</strong></li></ul>
+    <p>Artinya all-in: <strong>~Rp 8.7 juta/bulan</strong> untuk Avanza.</p>
+    <AdSlot format="horizontal" />
+    <h2>4. Tips Kredit Mobil yang Cerdas</h2>
+    <ul class="info-list"><li><strong>DP minimum 30%</strong>: regulasi OJK + lebih sehat finansial</li><li><strong>Tenor max 5 tahun</strong>: jangan 6-7 tahun, total bunga balik bengkak</li><li><strong>Asuransi all-risk 3 tahun pertama</strong>, lalu TLO untuk mobil tua</li><li><strong>Pakai 30% rule</strong>: cicilan max 30% gaji bersih</li><li><strong>Pertimbangkan mobil bekas</strong>: depresiasi sudah lewat, harga 30-40% lebih murah</li></ul>
+    <div class="cta-box"><h3>🧮 Coba Simulasi Kredit Mobil HitungCerdas</h3><p>Fitur premium 9 komponen TCO lengkap.</p><p style="margin-top:14px"><a href="/kalkulator/kredit-mobil" class="btn btn-pri"><i class="ti ti-calculator"></i> Buka Simulasi Mobil</a></p></div>
+    <h2>Kesimpulan</h2><p>Mobil = expensive. Lihat TCO sebelum apply. Kalau cuma butuh transport, motor / Gojek bisa jauh lebih hemat.</p>
+    <h3>📚 Artikel Terkait</h3><ul class="info-list"><li><a href="/blog/simulasi-kredit-motor">Simulasi Kredit Motor + TCO</a></li><li><a href="/blog/cara-menghitung-kpr">Cara Hitung Cicilan KPR</a></li><li><a href="/blog/cara-menghitung-gaji-bersih">Cara Hitung Gaji Bersih</a></li></ul>
+  </div></article>
+  <AdSlot format="horizontal" />
+</Layout>
+<style>
+  .article-hero { background: linear-gradient(135deg, var(--cat-color) 0%, var(--cat-color2) 100%); color: #fff; padding: 20px 0 48px; }
+  .article-hero :global(.breadcrumb-item), .article-hero :global(.breadcrumb-item a) { color: rgba(255, 255, 255, .7); }
+  .article-hero :global(.breadcrumb-item a:hover) { color: var(--gold-soft); }
+  .article-hero :global(.breadcrumb-item span) { color: #fff; }
+  .article-hero :global(.breadcrumb-item i) { color: rgba(255, 255, 255, .4); }
+  .article-tag { display: inline-block; font-size: 11px; font-weight: 700; color: var(--gold-soft); letter-spacing: .1em; text-transform: uppercase; margin: 16px 0 12px; }
+  .article-hero h1 { color: #fff; font-size: clamp(26px, 3.8vw, 42px); margin: 0 0 20px; max-width: 900px; line-height: 1.2; }
+  .article-meta { display: flex; gap: 20px; color: rgba(255, 255, 255, .75); font-size: 13px; flex-wrap: wrap; }
+  .article-meta span { display: inline-flex; align-items: center; gap: 6px; }
+  .lead { font-size: 17px !important; line-height: 1.7 !important; color: var(--text) !important; padding: 20px 24px; background: var(--bg-soft); border-radius: 12px; border-left: 4px solid var(--cat-color); margin-bottom: 24px !important; }
+</style>

@@ -2,99 +2,51 @@
 import Layout from '../../layouts/Layout.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import AdSlot from '../../components/AdSlot.astro';
-
 const today = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
-const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'Beda Margin & Markup' }];
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'Cara Menghitung Margin' }];
 ---
-
-<Layout
-  title="Beda Margin dan Markup yang Sering Dibingungkan UMKM — Panduan Lengkap"
-  description="Pahami beda margin vs markup yang sering tertukar. Cara hitung profit margin yang benar untuk bisnis UMKM dengan contoh kasus."
-  keywords={['margin vs markup', 'cara menghitung margin', 'profit margin', 'markup bisnis']}
-  canonical="https://hitungcerdas.net/blog/cara-menghitung-margin"
-  ogType="article"
->
-  <section class="article-hero" style="--cat-color:#10B981;--cat-color2:#065F46">
-    <div class="wrap">
-      <Breadcrumb items={bcItems} />
-      <div class="article-tag">UMKM & BISNIS</div>
-      <h1>Beda Margin dan Markup yang Sering Dibingungkan UMKM</h1>
-      <div class="article-meta">
-        <span><i class="ti ti-calendar"></i> {today}</span>
-        <span><i class="ti ti-clock"></i> 5 menit baca</span>
-      </div>
+<Layout title="Cara Hitung Margin Profit & Markup untuk UMKM 2026 — Rumus Lengkap" description="Panduan margin untuk UMKM: beda gross margin vs markup, rumus, contoh kasus baju, kuliner, dan jasa. Plus kalkulator margin gratis Indonesia." keywords={['cara hitung margin', 'margin profit umkm', 'markup vs margin', 'gross margin', 'kalkulator margin']} canonical="https://hitungcerdas.net/blog/cara-menghitung-margin" ogType="article">
+  <section class="article-hero" style="--cat-color:#10B981;--cat-color2:#047857">
+    <div class="wrap"><Breadcrumb items={bcItems} /><div class="article-tag">UMKM</div>
+      <h1>Cara Hitung Margin Profit &amp; Markup untuk UMKM 2026</h1>
+      <div class="article-meta"><span><i class="ti ti-calendar"></i> {today}</span><span><i class="ti ti-clock"></i> 6 menit baca</span><span><i class="ti ti-user"></i> Tim HitungCerdas</span></div>
     </div>
   </section>
-
   <AdSlot format="horizontal" />
-
-  <article class="content-section">
-    <div class="wrap-text">
-      <p class="lead">
-        Banyak UMKM bilang "<strong>margin 50%</strong>" padahal yang dimaksud <strong>markup 50%</strong>.
-        Konsekuensinya: profit jauh lebih kecil dari ekspektasi. Mari pahami beda keduanya dan
-        kenapa ini penting untuk bisnismu.
-      </p>
-
-      <h2>1. Definisi Margin vs Markup</h2>
-      <div class="formula-box">
-        <p style="margin-bottom:12px"><strong>Margin</strong> = Profit ÷ <strong>Harga Jual</strong> × 100%</p>
-        <p style="margin-bottom:12px"><strong>Markup</strong> = Profit ÷ <strong>Modal/HPP</strong> × 100%</p>
-        <p style="font-size:13px;color:var(--text-soft)">Yang sama: angka profit. Yang beda: divisor.</p>
-      </div>
-
-      <h2>2. Contoh Konkret</h2>
-      <p>HPP Rp 80, harga jual Rp 100. Profit Rp 20.</p>
-      <ul class="info-list">
-        <li><strong>Margin</strong> = 20 ÷ 100 = <strong>20%</strong></li>
-        <li><strong>Markup</strong> = 20 ÷ 80 = <strong>25%</strong></li>
-      </ul>
-      <p>
-        Margin <strong>SELALU lebih kecil</strong> dari markup untuk profit yang sama.
-        Markup 100% = Margin 50%. Markup 50% = Margin 33%. Markup 25% = Margin 20%.
-      </p>
-
-      <h2>3. Mana yang Harus Dipakai?</h2>
-      <p>
-        <strong>Margin</strong>: Untuk hitung profitabilitas vs penjualan total. Lebih akurat
-        gambarkan efisiensi bisnis.
-      </p>
-      <p>
-        <strong>Markup</strong>: Untuk tentukan harga jual dari modal. Lebih mudah hitung saat
-        pricing produk baru.
-      </p>
-
-      <h2>4. Benchmark Margin per Industri</h2>
-      <ul class="info-list">
-        <li><strong>Retail/grocery</strong>: 5-15% margin (high volume)</li>
-        <li><strong>Fashion ritel</strong>: 30-50% margin</li>
-        <li><strong>Kuliner/F&B</strong>: 40-60% margin</li>
-        <li><strong>Beauty/skincare</strong>: 50-70% margin</li>
-        <li><strong>SaaS/digital</strong>: 70-90% margin</li>
-        <li><strong>Jasa profesional</strong>: 50-80% margin</li>
-      </ul>
-
-      <h2>5. Cara Naikkan Margin Tanpa Naikkan Harga</h2>
-      <ol class="tips-list">
-        <li><strong>Negosiasi Supplier</strong> — Diskon volume 5-15% mungkin didapat.</li>
-        <li><strong>Reduce Packaging Cost</strong> — Cari supplier packaging alternatif.</li>
-        <li><strong>Bulk Buying</strong> — Beli bahan saat harga turun, stock 3-6 bulan.</li>
-        <li><strong>Efisiensi Operasional</strong> — Listrik, sewa, internet, gaji.</li>
-        <li><strong>Bundling Produk</strong> — Naikkan average order value.</li>
-        <li><strong>Customer Loyalty Program</strong> — Hindari biaya akuisisi tinggi.</li>
-      </ol>
-
-      <div class="cta-box">
-        <h3>Hitung Margin Bisnismu</h3>
-        <p>Cek margin & markup produkmu dengan kalkulator HitungCerdas. Tahu pasti untung-rugimu.</p>
-        <p style="margin-top:14px"><a href="/kalkulator/margin" class="btn btn-pri"><i class="ti ti-calculator"></i> Kalkulator Margin</a></p>
-      </div>
+  <article class="content-section"><div class="wrap-text">
+    <p class="lead">Banyak UMKM bingung: barang Rp 50rb dijual Rp 100rb itu margin 50% atau markup 100%? Beda lho! Salah hitung bisa bikin rugi tanpa sadar. Artikel ini bedah margin vs markup secara jelas + 3 contoh kasus UMKM Indonesia.</p>
+    <h2>1. Beda Gross Margin vs Markup</h2>
+    <div class="formula-box">
+      <p><strong>Markup = (Harga Jual - HPP) / HPP × 100%</strong></p>
+      <p><strong>Gross Margin = (Harga Jual - HPP) / Harga Jual × 100%</strong></p>
     </div>
-  </article>
-
+    <p>Contoh: HPP Rp 50rb, harga jual Rp 100rb.</p>
+    <ul class="info-list"><li><strong>Markup</strong>: (100rb - 50rb) / 50rb × 100% = <strong>100%</strong></li><li><strong>Gross Margin</strong>: (100rb - 50rb) / 100rb × 100% = <strong>50%</strong></li></ul>
+    <p>Same product, beda angka! Banyak UMKM bilang "margin 100%" padahal yang dimaksud markup.</p>
+    <h2>2. Margin Sehat per Industri</h2>
+    <ul class="info-list"><li><strong>Kuliner / F&amp;B</strong>: gross margin 60-70%</li><li><strong>Fashion / Baju</strong>: gross margin 50-65%</li><li><strong>Elektronik retail</strong>: gross margin 15-25%</li><li><strong>Jasa konsultan</strong>: gross margin 70-90%</li><li><strong>Produk digital</strong>: gross margin 80-95%</li></ul>
+    <h2>3. Contoh Kasus UMKM</h2>
+    <h3>Kasus A: Warung Makan</h3>
+    <p>Nasi ayam: bahan baku Rp 12rb, jual Rp 25rb. Gross margin = 52%. Sehat.</p>
+    <h3>Kasus B: Dropship Baju Online</h3>
+    <p>Beli Rp 80rb, jual Rp 120rb. Gross margin = 33%. Setelah biaya iklan & ongkir, net margin bisa cuma 10-15%. Pertimbangkan markup lebih tinggi.</p>
+    <h3>Kasus C: Jasa Foto Wedding</h3>
+    <p>Cost (gear, edit, transport) Rp 2 juta per event, charge Rp 8 juta. Gross margin = 75%. Profitable.</p>
+    <AdSlot format="horizontal" />
+    <h2>4. Net Margin: Yang Sebenarnya Penting</h2>
+    <p>Gross margin belum termasuk biaya operasional. Hitung <strong>net margin</strong> dengan kurangi: sewa, gaji karyawan, iklan, listrik, dll.</p>
+    <div class="formula-box"><p><strong>Net Margin = (Revenue - HPP - Biaya Operasional) / Revenue × 100%</strong></p></div>
+    <p>Target net margin sehat UMKM: <strong>15-25%</strong>. Kalau di bawah 10%, audit biaya operasional.</p>
+    <h2>5. Tips Tingkatkan Margin</h2>
+    <ul class="info-list"><li><strong>Negosiasi supplier</strong>: beli volume lebih banyak, tawar diskon 5-10%</li><li><strong>Bundling produk</strong>: jual 3 item dapat harga psikologis</li><li><strong>Premium positioning</strong>: brand cerita kuat = bisa charge lebih</li><li><strong>Reduce waste</strong>: untuk F&amp;B, kontrol stok agar tidak expired</li><li><strong>Otomasi proses</strong>: kurangi labor cost dengan tools</li></ul>
+    <div class="cta-box"><h3>🧮 Coba Kalkulator Margin HitungCerdas</h3><p>Hitung margin profit instant:</p><ul><li>✅ Auto-calc markup dan gross margin</li><li>✅ Input HPP + biaya operasional</li><li>✅ Net margin breakdown</li></ul><p style="margin-top:14px"><a href="/kalkulator/margin" class="btn btn-pri"><i class="ti ti-calculator"></i> Buka Kalkulator Margin</a></p></div>
+    <h2>Kesimpulan</h2>
+    <p>Margin yang sehat = bisnis yang sustainable. Jangan keliru markup vs margin saat pricing. Selalu hitung net margin (bukan cuma gross) untuk tahu profit sebenarnya.</p>
+    <h3>📚 Artikel Terkait</h3>
+    <ul class="info-list"><li><a href="/blog/cara-menentukan-harga-jual">Cara Menentukan Harga Jual</a></li><li><a href="/kalkulator/invoice-generator">Invoice Generator</a></li><li><a href="/kalkulator/nama-bisnis-generator">Nama Bisnis Generator</a></li></ul>
+  </div></article>
   <AdSlot format="horizontal" />
 </Layout>
-
 <style>
   .article-hero { background: linear-gradient(135deg, var(--cat-color) 0%, var(--cat-color2) 100%); color: #fff; padding: 20px 0 48px; }
   .article-hero :global(.breadcrumb-item), .article-hero :global(.breadcrumb-item a) { color: rgba(255, 255, 255, .7); }
@@ -102,7 +54,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog'
   .article-hero :global(.breadcrumb-item span) { color: #fff; }
   .article-hero :global(.breadcrumb-item i) { color: rgba(255, 255, 255, .4); }
   .article-tag { display: inline-block; font-size: 11px; font-weight: 700; color: var(--gold-soft); letter-spacing: .1em; text-transform: uppercase; margin: 16px 0 12px; }
-  .article-hero h1 { color: #fff; font-size: clamp(26px, 3.8vw, 42px); margin: 0 0 20px; max-width: 800px; line-height: 1.2; }
+  .article-hero h1 { color: #fff; font-size: clamp(26px, 3.8vw, 42px); margin: 0 0 20px; max-width: 900px; line-height: 1.2; }
   .article-meta { display: flex; gap: 20px; color: rgba(255, 255, 255, .75); font-size: 13px; flex-wrap: wrap; }
   .article-meta span { display: inline-flex; align-items: center; gap: 6px; }
   .lead { font-size: 17px !important; line-height: 1.7 !important; color: var(--text) !important; padding: 20px 24px; background: var(--bg-soft); border-radius: 12px; border-left: 4px solid #10B981; margin-bottom: 24px !important; }

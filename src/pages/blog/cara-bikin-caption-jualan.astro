@@ -1,0 +1,55 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import AdSlot from '../../components/AdSlot.astro';
+const today = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'Caption Jualan Generator' }];
+---
+<Layout title="Cara Bikin Caption Jualan Menarik di Instagram, TikTok, Marketplace 2026" description="Panduan caption jualan: 5 formula AIDA, hook, CTA. Plus contoh untuk fashion, F&B, jasa, dan template gratis." keywords={['caption jualan menarik', 'caption instagram jualan', 'caption tiktok marketing', 'copywriting umkm', 'caption marketplace']} canonical="https://hitungcerdas.net/blog/cara-bikin-caption-jualan" ogType="article">
+  <section class="article-hero" style="--cat-color:#F43F5E;--cat-color2:#9F1239">
+    <div class="wrap"><Breadcrumb items={bcItems} /><div class="article-tag">MARKETING</div>
+      <h1>Cara Bikin Caption Jualan Menarik di Marketplace 2026</h1>
+      <div class="article-meta"><span><i class="ti ti-calendar"></i> {today}</span><span><i class="ti ti-clock"></i> 6 menit baca</span><span><i class="ti ti-user"></i> Tim HitungCerdas</span></div>
+    </div>
+  </section>
+  <AdSlot format="horizontal" />
+  <article class="content-section"><div class="wrap-text">
+    <p class="lead">Caption hambar = produk tenggelam. Caption yang catchy bisa <strong>2-5x engagement</strong>. Mari bedah 5 formula caption jualan yang proven + contoh template untuk fashion, F&amp;B, dan jasa.</p>
+    <h2>1. Formula AIDA (Klasik tapi Powerful)</h2>
+    <ul class="info-list"><li><strong>A</strong>ttention: hook 3 detik pertama</li><li><strong>I</strong>nterest: kenapa produkmu beda</li><li><strong>D</strong>esire: bayangin pakai produk ini</li><li><strong>A</strong>ction: CTA jelas (link, DM, swipe up)</li></ul>
+    <h3>Contoh Caption Baju Outfit (AIDA)</h3>
+    <p><em>"Tired of outfit yang same kayak temen kantor? 👗 [Attention]<br>This dress: linen, breathable, anti-kusut. Cocok WFO atau weekend brunch. [Interest]<br>Coba imagine pake ini ke meeting → confident, comfortable, on point. [Desire]<br>Stock limited, DM untuk order! 💌 [Action]"</em></p>
+    <h2>2. Formula PAS (Problem-Agitate-Solution)</h2>
+    <p>Cocok untuk produk yang solve specific pain. Format: Highlight problem → Bikin urgent → Tawarkan solusi.</p>
+    <h3>Contoh Sleek Tools UMKM</h3>
+    <p><em>"Capek banget hitung pajak PPh 21 manual? 😩 [Problem]<br>Salah 1 angka = harus revisi 3 hari + dimarahin atasan. [Agitate]<br>Pakai Kalkulator HitungCerdas. Update UU HPP 2026. Gratis. [Solution]"</em></p>
+    <h2>3. Formula 4U (Useful, Urgent, Unique, Ultra-Specific)</h2>
+    <p>Sangat efektif untuk headline. Tiap word harus deliver salah satu U.</p>
+    <p><strong>Contoh</strong>: "Hemat 30% Cicilan KPR dengan Trick Ini (Hanya Berlaku 24 Jam)"</p>
+    <h2>4. Formula UGC (Stori Pelanggan)</h2>
+    <p>Re-share testimoni pelanggan + thanks message. Authentic > polished.</p>
+    <h2>5. Formula List / Numbered</h2>
+    <p>"5 Reasons Kenapa Kamu Wajib Coba Produk Ini" — easy to read, scannable.</p>
+    <AdSlot format="horizontal" />
+    <h2>6. Tips Caption Per Platform</h2>
+    <ul class="info-list"><li><strong>Instagram</strong>: 100-150 kata, 5-10 hashtag, line break setiap 2-3 kalimat</li><li><strong>TikTok</strong>: 50-100 kata, 3-5 hashtag, hook dalam 5 huruf pertama</li><li><strong>Shopee / Tokopedia</strong>: bullet point list, fokus features + benefits, harga clear</li><li><strong>Facebook</strong>: longer narrative OK, ada Story format</li><li><strong>WhatsApp Status</strong>: pendek + emoji + link</li></ul>
+    <h2>7. Common Mistakes Caption Jualan</h2>
+    <ul class="info-list"><li><strong>Hard sell tanpa value</strong>: "Beli! Beli! Beli!" = unfollow</li><li><strong>Caption terlalu panjang tanpa hook</strong>: orang scroll lewat</li><li><strong>No CTA</strong>: audience bingung what to do next</li><li><strong>Generic & copy-paste</strong>: terdeteksi inauthentic</li></ul>
+    <div class="cta-box"><h3>🧮 Coba Caption Jualan Generator HitungCerdas</h3><p>Generate 5 variasi caption jualan menarik dalam detik:</p><ul><li>✅ 5 formula (AIDA, PAS, 4U, UGC, List)</li><li>✅ Optimized per platform</li><li>✅ Hashtag suggestion</li><li>✅ Gratis</li></ul><p style="margin-top:14px"><a href="/kalkulator/caption-jualan" class="btn btn-pri"><i class="ti ti-calculator"></i> Buka Caption Generator</a></p></div>
+    <h2>Kesimpulan</h2><p>Caption = 80% sales psychology, 20% product info. Hook menarik, fokus benefit, CTA jelas.</p>
+    <h3>📚 Artikel Terkait</h3><ul class="info-list"><li><a href="/blog/cara-menentukan-nama-bisnis">Cara Menentukan Nama Bisnis</a></li><li><a href="/blog/cara-menentukan-harga-jual">Cara Menentukan Harga Jual</a></li><li><a href="/kalkulator/invoice-generator">Invoice Generator</a></li></ul>
+  </div></article>
+  <AdSlot format="horizontal" />
+</Layout>
+<style>
+  .article-hero { background: linear-gradient(135deg, var(--cat-color) 0%, var(--cat-color2) 100%); color: #fff; padding: 20px 0 48px; }
+  .article-hero :global(.breadcrumb-item), .article-hero :global(.breadcrumb-item a) { color: rgba(255, 255, 255, .7); }
+  .article-hero :global(.breadcrumb-item a:hover) { color: var(--gold-soft); }
+  .article-hero :global(.breadcrumb-item span) { color: #fff; }
+  .article-hero :global(.breadcrumb-item i) { color: rgba(255, 255, 255, .4); }
+  .article-tag { display: inline-block; font-size: 11px; font-weight: 700; color: var(--gold-soft); letter-spacing: .1em; text-transform: uppercase; margin: 16px 0 12px; }
+  .article-hero h1 { color: #fff; font-size: clamp(26px, 3.8vw, 42px); margin: 0 0 20px; max-width: 900px; line-height: 1.2; }
+  .article-meta { display: flex; gap: 20px; color: rgba(255, 255, 255, .75); font-size: 13px; flex-wrap: wrap; }
+  .article-meta span { display: inline-flex; align-items: center; gap: 6px; }
+  .lead { font-size: 17px !important; line-height: 1.7 !important; color: var(--text) !important; padding: 20px 24px; background: var(--bg-soft); border-radius: 12px; border-left: 4px solid var(--cat-color); margin-bottom: 24px !important; }
+</style>

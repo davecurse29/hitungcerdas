@@ -1,0 +1,50 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import AdSlot from '../../components/AdSlot.astro';
+const today = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'Cara Hitung Zakat Fitrah' }];
+---
+<Layout title="Cara Hitung Zakat Fitrah 2026 — Beras 2.5 kg per Jiwa, Tunai, Sekeluarga" description="Panduan zakat fitrah Indonesia: takaran beras 2.5 kg/3.5 liter, konversi tunai sesuai harga beras lokal, kapan & ke mana bayar, dasar hukum." keywords={['cara hitung zakat fitrah', 'zakat fitrah 2026', 'zakat fitrah keluarga', 'takaran zakat fitrah beras', 'zakat fitrah tunai']} canonical="https://hitungcerdas.net/blog/cara-hitung-zakat-fitrah" ogType="article">
+  <section class="article-hero" style="--cat-color:#059669;--cat-color2:#047857">
+    <div class="wrap"><Breadcrumb items={bcItems} /><div class="article-tag">ZAKAT</div>
+      <h1>Cara Hitung Zakat Fitrah 2026 untuk Keluarga (Beras 2.5 kg/jiwa)</h1>
+      <div class="article-meta"><span><i class="ti ti-calendar"></i> {today}</span><span><i class="ti ti-clock"></i> 5 menit baca</span><span><i class="ti ti-user"></i> Tim HitungCerdas</span></div>
+    </div>
+  </section>
+  <AdSlot format="horizontal" />
+  <article class="content-section"><div class="wrap-text">
+    <p class="lead">Zakat fitrah wajib bagi setiap muslim, termasuk bayi yang lahir sebelum maghrib Idul Fitri. Takaran: <strong>2.5 kg beras (atau 3.5 liter)</strong> per jiwa. Tunai? Sekitar <strong>Rp 35.000 - 50.000/jiwa</strong> di 2026, sesuai harga beras lokal.</p>
+    <h2>1. Dasar Hukum Zakat Fitrah</h2>
+    <ul class="info-list"><li><strong>Hadits Rasulullah SAW</strong>: "Rasulullah mewajibkan zakat fitrah satu sha gandum atau satu sha kurma untuk setiap muslim" (HR Bukhari Muslim)</li><li><strong>1 sha</strong> = sekitar 2.5 kg / 3.5 liter beras</li><li><strong>Fatwa MUI</strong>: boleh dengan tunai senilai 2.5 kg beras kualitas yang dikonsumsi sehari-hari</li></ul>
+    <h2>2. Takaran Zakat Fitrah per Jiwa</h2>
+    <ul class="info-list"><li><strong>Beras</strong>: 2.5 kg per orang</li><li><strong>Beras (volume)</strong>: 3.5 liter per orang</li><li><strong>Tunai</strong>: harga beras lokal × 2.5 kg</li></ul>
+    <h2>3. Simulasi Zakat Fitrah Keluarga (2026)</h2>
+    <p>Asumsi harga beras Rp 14.000/kg:</p>
+    <ul class="info-list"><li><strong>Per jiwa (tunai)</strong>: 2.5 × Rp 14.000 = <strong>Rp 35.000</strong></li><li><strong>Keluarga 4 orang</strong>: 4 × Rp 35.000 = <strong>Rp 140.000</strong></li><li><strong>Keluarga 6 orang</strong>: 6 × Rp 35.000 = <strong>Rp 210.000</strong></li></ul>
+    <p>Untuk beras premium (Rp 18.000/kg): per jiwa = Rp 45.000.</p>
+    <AdSlot format="horizontal" />
+    <h2>4. Siapa Wajib Bayar Zakat Fitrah</h2>
+    <ul class="info-list"><li>Semua muslim, termasuk bayi yang lahir sebelum maghrib Idul Fitri</li><li>Wajib dibayar oleh kepala keluarga untuk seluruh tanggungan</li><li>Tidak ada syarat nisab (jumlah harta minimum)</li><li>Wajib selama punya kelebihan makanan untuk diri & keluarga di hari raya</li></ul>
+    <h2>5. Kapan Bayar Zakat Fitrah</h2>
+    <ul class="info-list"><li><strong>Waktu wajib</strong>: dari awal Ramadan sampai sebelum sholat Idul Fitri</li><li><strong>Waktu sunnah</strong>: 1-2 hari sebelum Idul Fitri</li><li><strong>Waktu makruh</strong>: setelah sholat Idul Fitri (jadi sedekah biasa, bukan zakat fitrah)</li></ul>
+    <h2>6. Ke Mana Bayar Zakat Fitrah</h2>
+    <ul class="info-list"><li><strong>BAZNAS</strong>: baznas.go.id (online + offline)</li><li><strong>Dompet Dhuafa</strong>: dompetdhuafa.org</li><li><strong>Rumah Zakat</strong>: rumahzakat.org</li><li><strong>Masjid setempat</strong>: panitia zakat fitrah</li><li><strong>Langsung ke 8 asnaf</strong>: fakir, miskin, amil, mualaf, riqab, gharim, fisabilillah, ibnu sabil</li></ul>
+    <div class="cta-box"><h3>🧮 Coba Kalkulator Zakat Fitrah HitungCerdas</h3><p>Hitung zakat fitrah keluarga dengan harga beras terbaru 2026.</p><p style="margin-top:14px"><a href="/kalkulator/zakat-fitrah" class="btn btn-pri"><i class="ti ti-calculator"></i> Buka Kalkulator Zakat Fitrah</a></p></div>
+    <h2>Kesimpulan</h2><p>Zakat fitrah = kewajiban tiap muslim. Bayar tepat waktu (sebelum sholat Ied), nominal sesuai harga beras lokal yang sehari-hari dikonsumsi keluarga.</p>
+    <h3>📚 Artikel Terkait</h3><ul class="info-list"><li><a href="/kalkulator/zakat-mal">Kalkulator Zakat Mal</a></li><li><a href="/kalkulator/zakat-penghasilan">Kalkulator Zakat Penghasilan</a></li><li><a href="/blog/cara-menghitung-dana-haji">Cara Hitung Dana Haji</a></li></ul>
+  </div></article>
+  <AdSlot format="horizontal" />
+</Layout>
+<style>
+  .article-hero { background: linear-gradient(135deg, var(--cat-color) 0%, var(--cat-color2) 100%); color: #fff; padding: 20px 0 48px; }
+  .article-hero :global(.breadcrumb-item), .article-hero :global(.breadcrumb-item a) { color: rgba(255, 255, 255, .7); }
+  .article-hero :global(.breadcrumb-item a:hover) { color: var(--gold-soft); }
+  .article-hero :global(.breadcrumb-item span) { color: #fff; }
+  .article-hero :global(.breadcrumb-item i) { color: rgba(255, 255, 255, .4); }
+  .article-tag { display: inline-block; font-size: 11px; font-weight: 700; color: var(--gold-soft); letter-spacing: .1em; text-transform: uppercase; margin: 16px 0 12px; }
+  .article-hero h1 { color: #fff; font-size: clamp(26px, 3.8vw, 42px); margin: 0 0 20px; max-width: 900px; line-height: 1.2; }
+  .article-meta { display: flex; gap: 20px; color: rgba(255, 255, 255, .75); font-size: 13px; flex-wrap: wrap; }
+  .article-meta span { display: inline-flex; align-items: center; gap: 6px; }
+  .lead { font-size: 17px !important; line-height: 1.7 !important; color: var(--text) !important; padding: 20px 24px; background: var(--bg-soft); border-radius: 12px; border-left: 4px solid var(--cat-color); margin-bottom: 24px !important; }
+</style>

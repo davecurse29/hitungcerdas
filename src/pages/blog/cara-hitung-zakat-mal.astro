@@ -1,0 +1,55 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import AdSlot from '../../components/AdSlot.astro';
+const today = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'Cara Hitung Zakat Mal' }];
+---
+<Layout title="Cara Hitung Zakat Mal 2026 — Emas, Tabungan, Investasi (Nisab 85 gr Emas)" description="Panduan zakat mal: nisab 85 gr emas, haul 1 tahun, tarif 2.5%. Plus simulasi zakat tabungan, investasi, emas, properti." keywords={['cara hitung zakat mal', 'zakat mal 2026', 'nisab zakat 85 gram emas', 'zakat tabungan', 'zakat investasi']} canonical="https://hitungcerdas.net/blog/cara-hitung-zakat-mal" ogType="article">
+  <section class="article-hero" style="--cat-color:#D97706;--cat-color2:#92400E">
+    <div class="wrap"><Breadcrumb items={bcItems} /><div class="article-tag">ZAKAT</div>
+      <h1>Cara Hitung Zakat Mal 2026: Emas, Tabungan, Investasi (Nisab 85 gr Emas)</h1>
+      <div class="article-meta"><span><i class="ti ti-calendar"></i> {today}</span><span><i class="ti ti-clock"></i> 7 menit baca</span><span><i class="ti ti-user"></i> Tim HitungCerdas</span></div>
+    </div>
+  </section>
+  <AdSlot format="horizontal" />
+  <article class="content-section"><div class="wrap-text">
+    <p class="lead">Zakat mal wajib bagi muslim yang harta-nya capai nisab <strong>85 gram emas</strong> (~Rp 102 juta di 2026) dan sudah <strong>1 tahun (haul)</strong>. Tarif: <strong>2.5%</strong>. Mari hitung untuk berbagai jenis harta.</p>
+    <h2>1. Syarat Wajib Zakat Mal</h2>
+    <ul class="info-list"><li><strong>Muslim</strong>: non-muslim tidak wajib</li><li><strong>Harta milik penuh</strong>: bukan kredit, bukan amanah</li><li><strong>Nisab</strong>: minimum 85 gram emas (~Rp 102 juta di 2026, asumsi Rp 1.2jt/gram)</li><li><strong>Haul</strong>: harta sudah disimpan minimum 1 tahun (kecuali emas trading)</li><li><strong>Bersifat berkembang</strong>: bukan pakai harian (rumah huni, mobil pakai, dll bukan obyek zakat)</li></ul>
+    <h2>2. Tarif Zakat Mal</h2>
+    <div class="formula-box"><p><strong>Zakat Mal = 2.5% × Harta yang Wajib Dizakati</strong></p></div>
+    <h2>3. Jenis Harta yang Dizakati</h2>
+    <ul class="info-list"><li><strong>Emas & perak</strong>: hanya yang disimpan (bukan pakai sehari-hari)</li><li><strong>Tabungan & deposito</strong>: termasuk valas</li><li><strong>Investasi</strong>: saham, reksa dana, obligasi, sukuk</li><li><strong>Properti investasi</strong>: rumah/tanah/ruko untuk disewakan</li><li><strong>Stok dagangan</strong>: hitung dari nilai aset stok</li><li><strong>Piutang yang pasti dilunasi</strong>: wajib dizakati</li><li><strong>Hewan ternak</strong>: punya nisab khusus</li></ul>
+    <h2>4. Yang TIDAK Wajib Dizakati</h2>
+    <ul class="info-list"><li>Rumah yang ditinggali</li><li>Kendaraan pribadi (mobil, motor)</li><li>Perhiasan emas yang dipakai (max wajar)</li><li>Pakaian & alat rumah tangga</li><li>Hutang produktif</li></ul>
+    <AdSlot format="horizontal" />
+    <h2>5. Simulasi Zakat Mal</h2>
+    <h3>Kasus A: Tabungan + Emas</h3>
+    <p>Tabungan Rp 80 juta + Emas 50 gram (~Rp 60 juta) = Total Rp 140 juta. Di atas nisab Rp 102 juta. Zakat: 2.5% × Rp 140 juta = <strong>Rp 3.500.000</strong>.</p>
+    <h3>Kasus B: Saham + Reksa Dana</h3>
+    <p>Saham Rp 50 juta + Reksa Dana Rp 70 juta = Rp 120 juta. Di atas nisab. Zakat: 2.5% × Rp 120 juta = <strong>Rp 3.000.000</strong>.</p>
+    <h3>Kasus C: Properti Investasi</h3>
+    <p>Rumah disewakan, nilai pasar Rp 800 juta. Zakat dari nilai sewa tahunan (Rp 24 juta/tahun): 2.5% × Rp 24 juta = <strong>Rp 600.000</strong>. (Bukan dari nilai properti karena untuk produktif.)</p>
+    <h2>6. Cara Hitung Haul</h2>
+    <p>Haul dimulai sejak harta capai nisab. Setelah 1 tahun (kalender Hijriah), wajib bayar zakat. Kalau di tengah tahun nominal turun di bawah nisab, haul reset.</p>
+    <h2>7. Ke Mana Bayar Zakat Mal</h2>
+    <ul class="info-list"><li><strong>BAZNAS</strong>: baznas.go.id</li><li><strong>Lembaga zakat resmi</strong>: Dompet Dhuafa, Rumah Zakat, ACT</li><li><strong>Langsung ke 8 asnaf</strong>: fakir, miskin, dll</li></ul>
+    <div class="cta-box"><h3>🧮 Coba Kalkulator Zakat Mal HitungCerdas</h3><p>Hitung zakat dari semua jenis harta dalam satu tools.</p><p style="margin-top:14px"><a href="/kalkulator/zakat-mal" class="btn btn-pri"><i class="ti ti-calculator"></i> Buka Kalkulator Zakat Mal</a></p></div>
+    <h2>Kesimpulan</h2><p>Zakat mal = ibadah harta untuk berbagi rezeki. Hitung dengan akurat, bayar via lembaga resmi yang transparan.</p>
+    <h3>📚 Artikel Terkait</h3><ul class="info-list"><li><a href="/kalkulator/zakat-fitrah">Kalkulator Zakat Fitrah</a></li><li><a href="/kalkulator/zakat-penghasilan">Kalkulator Zakat Penghasilan</a></li><li><a href="/blog/panduan-warisan-faraidh">Panduan Warisan Faraidh</a></li></ul>
+  </div></article>
+  <AdSlot format="horizontal" />
+</Layout>
+<style>
+  .article-hero { background: linear-gradient(135deg, var(--cat-color) 0%, var(--cat-color2) 100%); color: #fff; padding: 20px 0 48px; }
+  .article-hero :global(.breadcrumb-item), .article-hero :global(.breadcrumb-item a) { color: rgba(255, 255, 255, .7); }
+  .article-hero :global(.breadcrumb-item a:hover) { color: var(--gold-soft); }
+  .article-hero :global(.breadcrumb-item span) { color: #fff; }
+  .article-hero :global(.breadcrumb-item i) { color: rgba(255, 255, 255, .4); }
+  .article-tag { display: inline-block; font-size: 11px; font-weight: 700; color: var(--gold-soft); letter-spacing: .1em; text-transform: uppercase; margin: 16px 0 12px; }
+  .article-hero h1 { color: #fff; font-size: clamp(26px, 3.8vw, 42px); margin: 0 0 20px; max-width: 900px; line-height: 1.2; }
+  .article-meta { display: flex; gap: 20px; color: rgba(255, 255, 255, .75); font-size: 13px; flex-wrap: wrap; }
+  .article-meta span { display: inline-flex; align-items: center; gap: 6px; }
+  .lead { font-size: 17px !important; line-height: 1.7 !important; color: var(--text) !important; padding: 20px 24px; background: var(--bg-soft); border-radius: 12px; border-left: 4px solid var(--cat-color); margin-bottom: 24px !important; }
+</style>

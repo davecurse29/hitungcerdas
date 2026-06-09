@@ -1,0 +1,57 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import AdSlot from '../../components/AdSlot.astro';
+const today = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'Cara Hitung Fidyah' }];
+---
+<Layout title="Cara Hitung Fidyah Ramadan 2026 — Hamil, Menyusui, Sakit Permanen, Lansia" description="Panduan fidyah ganti puasa: takaran 1 mud (~7.5 ons) per hari, tunai. Untuk ibu hamil, menyusui, sakit permanen, lansia." keywords={['cara hitung fidyah', 'fidyah ramadan 2026', 'fidyah ibu hamil', 'fidyah menyusui', 'fidyah lansia']} canonical="https://hitungcerdas.net/blog/cara-hitung-fidyah-ramadan" ogType="article">
+  <section class="article-hero" style="--cat-color:#7C3AED;--cat-color2:#5B21B6">
+    <div class="wrap"><Breadcrumb items={bcItems} /><div class="article-tag">IBADAH</div>
+      <h1>Cara Hitung Fidyah Ramadan 2026 (Hamil, Menyusui, Sakit Permanen)</h1>
+      <div class="article-meta"><span><i class="ti ti-calendar"></i> {today}</span><span><i class="ti ti-clock"></i> 5 menit baca</span><span><i class="ti ti-user"></i> Tim HitungCerdas</span></div>
+    </div>
+  </section>
+  <AdSlot format="horizontal" />
+  <article class="content-section"><div class="wrap-text">
+    <p class="lead">Fidyah = ganti puasa dengan memberi makan orang miskin. Wajib bagi yang tidak mampu puasa permanen: ibu hamil/menyusui yang khawatir, lansia, sakit kronis. Takaran: <strong>1 mud beras (~7.5 ons) per hari</strong>, atau tunai senilai itu.</p>
+    <h2>1. Siapa yang Wajib Fidyah</h2>
+    <ul class="info-list"><li><strong>Ibu hamil/menyusui</strong>: yang khawatir kesehatan diri atau bayi</li><li><strong>Lansia</strong>: yang tidak mampu puasa karena fisik melemah</li><li><strong>Sakit kronis</strong>: yang tidak bisa diharapkan sembuh (diabetes berat, kanker stadium lanjut, dll)</li><li><strong>Almarhum yang punya utang puasa</strong>: ahli waris bayar fidyah dari harta peninggalan</li></ul>
+    <h2>2. Takaran Fidyah</h2>
+    <ul class="info-list"><li><strong>Beras</strong>: 1 mud = ~0.75 kg per hari puasa yang ditinggal</li><li><strong>Makanan jadi</strong>: 1 porsi nasi + lauk per hari</li><li><strong>Tunai</strong>: senilai 1 mud beras lokal</li></ul>
+    <h2>3. Simulasi Fidyah Tunai 2026</h2>
+    <p>Asumsi harga beras Rp 14.000/kg:</p>
+    <ul class="info-list"><li><strong>Per hari</strong>: 0.75 × Rp 14.000 = <strong>Rp 10.500</strong> (atau Rp 11.000 di-rounded)</li><li><strong>30 hari Ramadan penuh</strong>: 30 × Rp 11.000 = <strong>Rp 330.000</strong></li><li><strong>15 hari saja</strong>: 15 × Rp 11.000 = <strong>Rp 165.000</strong></li></ul>
+    <p>Untuk beras premium (Rp 18.000/kg): per hari = Rp 13.500.</p>
+    <AdSlot format="horizontal" />
+    <h2>4. Kasus Khusus: Ibu Hamil & Menyusui</h2>
+    <p>Ulama beda pendapat:</p>
+    <ul class="info-list"><li><strong>Pendapat 1</strong>: kalau khawatir untuk DIRI SENDIRI → qadha saja (ganti puasa di luar Ramadan)</li><li><strong>Pendapat 2</strong>: kalau khawatir untuk BAYI → qadha + fidyah</li><li><strong>Pendapat 3 (paling hati-hati)</strong>: keduanya pakai qadha + fidyah</li></ul>
+    <p>Konsultasi ke ulama setempat untuk kasus spesifik.</p>
+    <h2>5. Kapan Bayar Fidyah</h2>
+    <ul class="info-list"><li><strong>Selama Ramadan</strong>: bayar per hari saat tidak puasa</li><li><strong>Akhir Ramadan</strong>: total semua hari yang ditinggal</li><li><strong>Bahkan setelah Ramadan</strong>: masih boleh, tidak ada batas waktu</li></ul>
+    <h2>6. Ke Mana Bayar Fidyah</h2>
+    <ul class="info-list"><li><strong>Langsung ke fakir/miskin</strong>: paling ideal, lihat penerimanya</li><li><strong>BAZNAS</strong>: punya program fidyah</li><li><strong>Dompet Dhuafa / Rumah Zakat</strong>: program peduli fakir miskin</li><li><strong>Lembaga ZIS resmi lain</strong></li></ul>
+    <h2>7. FAQ</h2>
+    <h3>Apakah bisa pakai uang ke restoran kasih makan miskin?</h3>
+    <p>Bisa. Asalkan benar-benar untuk fakir/miskin, bukan untuk diri sendiri/keluarga.</p>
+    <h3>Saya hamil tahun lalu skip puasa tapi belum bayar fidyah, gimana?</h3>
+    <p>Bayar sekarang. Tidak ada batas waktu. Tambah sedekah sebagai kafarah (penyesalan).</p>
+    <div class="cta-box"><h3>🧮 Coba Kalkulator Fidyah HitungCerdas</h3><p>Hitung fidyah berdasarkan jumlah hari + harga beras terbaru.</p><p style="margin-top:14px"><a href="/kalkulator/fidyah" class="btn btn-pri"><i class="ti ti-calculator"></i> Buka Kalkulator Fidyah</a></p></div>
+    <h2>Kesimpulan</h2><p>Fidyah = solusi untuk yang tidak mampu puasa permanen. Tidak ribet, tunai juga OK. Yang penting: berikan kepada yang berhak.</p>
+    <h3>📚 Artikel Terkait</h3><ul class="info-list"><li><a href="/kalkulator/zakat-fitrah">Kalkulator Zakat Fitrah</a></li><li><a href="/kalkulator/zakat-penghasilan">Kalkulator Zakat Penghasilan</a></li><li><a href="/blog/cara-menghitung-dana-haji">Cara Hitung Dana Haji</a></li></ul>
+  </div></article>
+  <AdSlot format="horizontal" />
+</Layout>
+<style>
+  .article-hero { background: linear-gradient(135deg, var(--cat-color) 0%, var(--cat-color2) 100%); color: #fff; padding: 20px 0 48px; }
+  .article-hero :global(.breadcrumb-item), .article-hero :global(.breadcrumb-item a) { color: rgba(255, 255, 255, .7); }
+  .article-hero :global(.breadcrumb-item a:hover) { color: var(--gold-soft); }
+  .article-hero :global(.breadcrumb-item span) { color: #fff; }
+  .article-hero :global(.breadcrumb-item i) { color: rgba(255, 255, 255, .4); }
+  .article-tag { display: inline-block; font-size: 11px; font-weight: 700; color: var(--gold-soft); letter-spacing: .1em; text-transform: uppercase; margin: 16px 0 12px; }
+  .article-hero h1 { color: #fff; font-size: clamp(26px, 3.8vw, 42px); margin: 0 0 20px; max-width: 900px; line-height: 1.2; }
+  .article-meta { display: flex; gap: 20px; color: rgba(255, 255, 255, .75); font-size: 13px; flex-wrap: wrap; }
+  .article-meta span { display: inline-flex; align-items: center; gap: 6px; }
+  .lead { font-size: 17px !important; line-height: 1.7 !important; color: var(--text) !important; padding: 20px 24px; background: var(--bg-soft); border-radius: 12px; border-left: 4px solid var(--cat-color); margin-bottom: 24px !important; }
+</style>

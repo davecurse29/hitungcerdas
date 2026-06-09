@@ -3,26 +3,43 @@ import Layout from '../../layouts/Layout.astro';
 import AdSlot from '../../components/AdSlot.astro';
 
 const articles = [
-  { slug: 'cara-menghitung-kpr', title: 'Cara Menghitung Cicilan KPR yang Benar di 2026', category: 'PANDUAN KPR', readTime: '5 min', color: '#2563EB', color2: '#1E40AF', excerpt: 'Pahami rumus anuitas KPR, simulasi tenor 5-30 tahun, dan tips negosiasi bunga dengan bank.' },
-  { slug: 'cara-menghitung-pph-21', title: 'Cara Menghitung PPh 21 Karyawan Sesuai UU HPP 2022', category: 'PANDUAN PAJAK', readTime: '7 min', color: '#DC2626', color2: '#991B1B', excerpt: 'Tarif progresif baru 5 lapisan, PTKP terbaru, dan tips legal mengurangi pajak penghasilan.' },
-  { slug: 'cara-menghitung-gaji-bersih', title: 'Cara Menghitung Gaji Bersih (Take-Home Pay) Karyawan', category: 'GAJI & PENGHASILAN', readTime: '4 min', color: '#059669', color2: '#047857', excerpt: 'Dari gaji bruto ke gaji bersih: BPJS, PPh 21, biaya jabatan, dan aturan alokasi 50/30/20.' },
-  { slug: 'cara-menentukan-harga-jual', title: 'Cara Menentukan Harga Jual Produk UMKM agar Untung', category: 'UMKM & BISNIS', readTime: '6 min', color: '#EC4899', color2: '#9D174D', excerpt: 'Rumus HPP, target margin sehat 30-50%, dan strategi pricing untuk marketplace Shopee/Tokopedia.' },
-  { slug: 'cara-menghitung-margin', title: 'Beda Margin dan Markup yang Sering Dibingungkan UMKM', category: 'UMKM & BISNIS', readTime: '5 min', color: '#10B981', color2: '#065F46', excerpt: 'Pahami beda margin vs markup, benchmark per industri, dan cara naikkan margin tanpa naikkan harga.' },
-  { slug: 'cara-menghitung-investasi', title: 'Kekuatan Compound Interest dalam Investasi Jangka Panjang', category: 'INVESTASI', readTime: '6 min', color: '#0891B2', color2: '#155E75', excerpt: 'Mengenal compound interest, instrumen investasi Indonesia, dan strategi Dollar Cost Averaging (DCA).' },
-  { slug: 'panduan-warisan-faraidh', title: 'Panduan Lengkap Pembagian Warisan Faraidh Sesuai QS An-Nisa', category: 'WARISAN ISLAM', readTime: '8 min', color: '#DC2626', color2: '#991B1B', excerpt: 'Dasar hukum waris Islam, urutan kewajiban sebelum pembagian, dan bagian masing-masing ahli waris.' },
-  { slug: 'cara-menghitung-dana-haji', title: 'Persiapan Dana Haji & Umrah: Reguler, Plus, Furoda', category: 'HAJI & UMRAH', readTime: '7 min', color: '#6D28D9', color2: '#5B21B6', excerpt: 'Bedanya 3 jenis haji, antrian per provinsi, tabungan haji syariah, dan strategi compound interest.' },
+  // === KEUANGAN PRIBADI ===
+  { slug: 'cara-menghitung-kpr', title: 'Cara Hitung Cicilan KPR BTN 2026: Simulasi Lengkap + 5 Tips Hemat Ratusan Juta', category: 'KEUANGAN', readTime: '8 min', color: '#2563EB', color2: '#1E40AF', excerpt: 'Rumus anuitas, simulasi KPR BTN Rp 500jt, combo bunga fixed+floating, pelunasan dipercepat, dan bandingkan 6 bank besar Indonesia.' },
+  { slug: 'simulasi-kredit-motor', title: 'Cara Simulasi Kredit Motor 2026 + Total Cost of Ownership (TCO)', category: 'KEUANGAN', readTime: '7 min', color: '#7C3AED', color2: '#5B21B6', excerpt: 'Bunga flat motor, simulasi Honda BeAT 36 bulan, plus TCO 8 komponen — bukan cuma cicilan tapi all-in biaya kepemilikan 5 tahun.' },
+  { slug: 'simulasi-kredit-mobil', title: 'Cara Simulasi Kredit Mobil 2026 + Total Cost of Ownership Lengkap', category: 'KEUANGAN', readTime: '8 min', color: '#0891B2', color2: '#0E7490', excerpt: 'Cicilan Toyota Avanza, TCO 9 komponen 5 tahun mencapai Rp 500+ juta, plus tips kredit mobil cerdas dan asuransi all-risk.' },
+  { slug: 'cara-menghitung-investasi', title: 'Cara Hitung Investasi: Compound Interest & Top-Up Bulanan', category: 'INVESTASI', readTime: '7 min', color: '#10B981', color2: '#047857', excerpt: 'Rumus FV, simulasi reksa dana & saham, dampak inflasi, dan tips investasi pemula dengan top-up bulanan untuk maksimalkan return.' },
+
+  // === PAJAK & GAJI ===
+  { slug: 'cara-menghitung-pph-21', title: 'Cara Hitung PPh 21 Karyawan UU HPP 2026 — Tarif Progresif & PTKP Lengkap', category: 'PAJAK', readTime: '8 min', color: '#DC2626', color2: '#991B1B', excerpt: '5 lapisan tarif progresif, PTKP terbaru, biaya jabatan, plus 3 contoh kasus karyawan gaji Rp 8jt, 15jt, dan 25jt sebulan.' },
+  { slug: 'cara-menghitung-gaji-bersih', title: 'Cara Hitung Gaji Bersih Take-Home Pay 2026 dengan Mudah', category: 'GAJI', readTime: '6 min', color: '#059669', color2: '#047857', excerpt: 'BPJS Kesehatan + JHT + JP dengan cap terbaru, PPh 21, dan simulasi take-home pay untuk gaji bruto Rp 5jt sampai Rp 25jt.' },
+
+  // === UMKM & BISNIS ===
+  { slug: 'cara-menentukan-harga-jual', title: 'Cara Menentukan Harga Jual Produk UMKM 2026 — Strategi Profitable', category: 'UMKM', readTime: '7 min', color: '#EC4899', color2: '#9D174D', excerpt: '4 strategi pricing: cost-plus, value-based, competitor-based, dan psychological pricing. Plus 3 contoh kasus UMKM Indonesia.' },
+  { slug: 'cara-menghitung-margin', title: 'Cara Hitung Margin Profit & Markup untuk UMKM 2026', category: 'UMKM', readTime: '6 min', color: '#10B981', color2: '#047857', excerpt: 'Beda gross margin vs markup, benchmark per industri, dan tips naikkan net margin sampai 25% untuk bisnis UMKM yang sustainable.' },
+  { slug: 'cara-bikin-invoice-profesional', title: 'Cara Bikin Invoice Profesional untuk UMKM 2026 — Template + Tools Gratis', category: 'UMKM', readTime: '5 min', color: '#0EA5E9', color2: '#0369A1', excerpt: 'Komponen wajib invoice Indonesia, format profesional, PPN/PPh, plus tools gratis untuk generate invoice dalam 2 menit.' },
+  { slug: 'cara-menentukan-nama-bisnis', title: 'Cara Menentukan Nama Bisnis Catchy yang Menjual', category: 'UMKM', readTime: '6 min', color: '#8B5CF6', color2: '#6D28D9', excerpt: '5 formula naming: deskriptif, akronim, founder, abstract, bahasa daerah. Plus checklist cek domain, medsos, dan HKI sebelum dipakai.' },
+  { slug: 'cara-bikin-caption-jualan', title: 'Cara Bikin Caption Jualan Menarik di Marketplace 2026', category: 'MARKETING', readTime: '6 min', color: '#F43F5E', color2: '#9F1239', excerpt: '5 formula caption: AIDA, PAS, 4U, UGC, list. Plus contoh untuk fashion, F&B, jasa, dan tips per platform Instagram/TikTok/Shopee.' },
+
+  // === ISLAMI ===
+  { slug: 'cara-hitung-zakat-fitrah', title: 'Cara Hitung Zakat Fitrah 2026 untuk Keluarga (Beras 2.5 kg/jiwa)', category: 'ZAKAT', readTime: '5 min', color: '#059669', color2: '#047857', excerpt: 'Takaran 2.5 kg beras atau tunai Rp 35-50rb per jiwa, simulasi keluarga 4-6 orang, plus dasar hukum dan ke mana bayar.' },
+  { slug: 'cara-hitung-zakat-mal', title: 'Cara Hitung Zakat Mal 2026: Emas, Tabungan, Investasi (Nisab 85 gr Emas)', category: 'ZAKAT', readTime: '7 min', color: '#D97706', color2: '#92400E', excerpt: 'Nisab 85 gr emas (~Rp 102jt), haul 1 tahun, tarif 2.5%. Simulasi zakat tabungan, saham, reksa dana, dan properti investasi.' },
+  { slug: 'cara-hitung-zakat-penghasilan', title: 'Cara Hitung Zakat Penghasilan 2.5% untuk Karyawan & Profesional', category: 'ZAKAT', readTime: '6 min', color: '#0891B2', color2: '#0E7490', excerpt: 'Nisab tahunan Rp 102jt (Rp 8.5jt/bulan), bruto vs neto, simulasi gaji Rp 10-25jt, dan zakat sebagai pengurang pajak.' },
+  { slug: 'cara-hitung-fidyah-ramadan', title: 'Cara Hitung Fidyah Ramadan 2026 (Hamil, Menyusui, Sakit Permanen)', category: 'IBADAH', readTime: '5 min', color: '#7C3AED', color2: '#5B21B6', excerpt: 'Takaran 1 mud beras (~7.5 ons) per hari, tunai Rp 11rb/hari. Untuk ibu hamil, menyusui, lansia, sakit kronis.' },
+  { slug: 'cara-tabungan-dana-qurban', title: 'Cara Tabungan Dana Qurban 2026: Kambing & Sapi Berapa Nabung/Bulan?', category: 'QURBAN', readTime: '6 min', color: '#047857', color2: '#065F46', excerpt: 'Harga kambing Rp 3-5jt, sapi Rp 18-25jt. Nabung kambing mulai Rp 167rb/bulan, patungan sapi mulai Rp 125rb/bulan.' },
+  { slug: 'panduan-warisan-faraidh', title: 'Cara Hitung Warisan Faraidh Sesuai Hukum Islam — Panduan Lengkap', category: 'FARAIDH', readTime: '9 min', color: '#DC2626', color2: '#991B1B', excerpt: 'Dasar Al-Quran An-Nisa, urutan kewajiban, furudh muqaddarah, dan 3 contoh kasus pembagian warisan istri + anak + orang tua.' },
+  { slug: 'cara-menghitung-dana-haji', title: 'Cara Hitung Dana Haji 10-20 Tahun: Tabungan Bulanan Sampai Berangkat', category: 'HAJI', readTime: '7 min', color: '#6D28D9', color2: '#5B21B6', excerpt: 'BPIH 2026 Rp 50-90jt, masa tunggu 15-30 tahun, simulasi tabungan bulanan, dan instrumen syariah untuk return optimal.' },
 ];
 ---
 
 <Layout
-  title="Blog & Panduan HitungCerdas — Tips Keuangan, Bisnis & Islami"
-  description="Artikel & panduan lengkap seputar perhitungan KPR, PPh 21, gaji bersih, harga jual UMKM, zakat, warisan, haji, dan investasi untuk masyarakat Indonesia."
+  title="Blog & Panduan HitungCerdas — Tips Keuangan, Bisnis, Pajak & Islami 2026"
+  description="18 panduan lengkap perhitungan KPR, PPh 21, gaji bersih, UMKM, invoice, marketing, zakat, warisan, haji, dan investasi untuk masyarakat Indonesia."
   canonical="https://hitungcerdas.net/blog"
 >
   <section class="page-hero" style="--cat-color:#2563EB;--cat-color2:#1E40AF">
     <div class="wrap">
-      <h1>Blog & Panduan</h1>
-      <p>Tips, edukasi, dan panduan seputar keuangan, bisnis, dan ibadah islami untuk masyarakat Indonesia</p>
+      <h1>Blog &amp; Panduan</h1>
+      <p>18 artikel edukasi seputar keuangan, bisnis, pajak, dan ibadah islami untuk masyarakat Indonesia</p>
     </div>
   </section>
 
@@ -53,115 +70,19 @@ const articles = [
 </Layout>
 
 <style>
-  .page-hero {
-    background: linear-gradient(135deg, var(--cat-color) 0%, var(--cat-color2) 100%);
-    color: #fff;
-    padding: 56px 0;
-    text-align: center;
-  }
+  .page-hero { background: linear-gradient(135deg, var(--cat-color) 0%, var(--cat-color2) 100%); color: #fff; padding: 56px 0; text-align: center; }
   .page-hero h1 { color: #fff; margin-bottom: 12px; }
   .page-hero p { color: rgba(255, 255, 255, .85); font-size: 16px; max-width: 700px; margin: 0 auto; }
-
-  .art-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 18px;
-  }
-
-  .art-card {
-    background: #fff;
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    overflow: hidden;
-    transition: var(--tx);
-    cursor: pointer;
-    text-decoration: none;
-    color: inherit;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .art-card:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-lg);
-    border-color: var(--art-color);
-  }
-
-  .art-img {
-    height: 140px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, var(--art-color), var(--art-color2));
-    color: #fff;
-    font-size: 60px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .art-img::before {
-    content: '';
-    position: absolute;
-    top: -30%;
-    right: -20%;
-    width: 140px;
-    height: 140px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, .1);
-    transition: transform .5s;
-  }
-
+  .art-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px; }
+  .art-card { background: #fff; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; transition: var(--tx); cursor: pointer; text-decoration: none; color: inherit; display: flex; flex-direction: column; }
+  .art-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); border-color: var(--art-color); }
+  .art-img { height: 140px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--art-color), var(--art-color2)); color: #fff; font-size: 60px; position: relative; overflow: hidden; }
+  .art-img::before { content: ''; position: absolute; top: -30%; right: -20%; width: 140px; height: 140px; border-radius: 50%; background: rgba(255, 255, 255, .1); transition: transform .5s; }
   .art-card:hover .art-img::before { transform: scale(1.2); }
-
-  .art-body {
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    flex: 1;
-  }
-
-  .art-cat {
-    font-size: 10px;
-    font-weight: 700;
-    color: var(--blue);
-    letter-spacing: .08em;
-    text-transform: uppercase;
-  }
-
-  .art-title {
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--navy);
-    line-height: 1.35;
-    letter-spacing: -.01em;
-    margin: 0;
-    font-family: var(--ff-display);
-  }
-
-  .art-excerpt {
-    font-size: 13px;
-    color: var(--text-soft);
-    line-height: 1.55;
-    margin: 4px 0 8px;
-    flex: 1;
-  }
-
-  .art-meta {
-    font-size: 11px;
-    color: var(--text-mute);
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-
-  .art-link {
-    font-size: 12px;
-    color: var(--blue);
-    font-weight: 600;
-    display: inline-flex;
-    align-items: center;
-    gap: 3px;
-    margin-top: 6px;
-  }
+  .art-body { padding: 20px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+  .art-cat { font-size: 10px; font-weight: 700; color: var(--blue); letter-spacing: .08em; text-transform: uppercase; }
+  .art-title { font-size: 16px; font-weight: 700; color: var(--navy); line-height: 1.35; letter-spacing: -.01em; margin: 0; font-family: var(--ff-display); }
+  .art-excerpt { font-size: 13px; color: var(--text-soft); line-height: 1.55; margin: 4px 0 8px; flex: 1; }
+  .art-meta { font-size: 11px; color: var(--text-mute); display: flex; align-items: center; gap: 6px; }
+  .art-link { font-size: 12px; color: var(--blue); font-weight: 600; display: inline-flex; align-items: center; gap: 3px; margin-top: 6px; }
 </style>

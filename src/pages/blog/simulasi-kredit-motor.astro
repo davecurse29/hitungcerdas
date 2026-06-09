@@ -1,0 +1,47 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import AdSlot from '../../components/AdSlot.astro';
+const today = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'Simulasi Kredit Motor' }];
+---
+<Layout title="Cara Simulasi Kredit Motor 2026 — Total Cost of Ownership Lengkap" description="Panduan simulasi kredit motor: cicilan, BBM, servis, asuransi, pajak (TCO). Plus tips memilih tenor & DP optimal." keywords={['simulasi kredit motor', 'cicilan motor honda yamaha', 'tco motor', 'kredit motor 36 bulan', 'kalkulator motor']} canonical="https://hitungcerdas.net/blog/simulasi-kredit-motor" ogType="article">
+  <section class="article-hero" style="--cat-color:#7C3AED;--cat-color2:#5B21B6">
+    <div class="wrap"><Breadcrumb items={bcItems} /><div class="article-tag">KREDIT</div>
+      <h1>Cara Simulasi Kredit Motor 2026 + Total Cost of Ownership (TCO)</h1>
+      <div class="article-meta"><span><i class="ti ti-calendar"></i> {today}</span><span><i class="ti ti-clock"></i> 7 menit baca</span><span><i class="ti ti-user"></i> Tim HitungCerdas</span></div>
+    </div>
+  </section>
+  <AdSlot format="horizontal" />
+  <article class="content-section"><div class="wrap-text">
+    <p class="lead">Beli motor kredit, cuma lihat cicilan bulanan, kemudian tabok pas tahu biaya total kepemilikan (TCO). BBM, servis, asuransi, pajak — total bisa <strong>2x harga motor</strong> selama 5 tahun. Mari hitung TCO motor secara realistis.</p>
+    <h2>1. Rumus Cicilan Motor</h2>
+    <div class="formula-box"><p><strong>Cicilan = Pokok × (1 + flat_rate × tenor) / total_bulan</strong></p></div>
+    <p>Motor umumnya pakai <strong>bunga flat</strong> (bukan anuitas). Misal bunga flat 8%, tenor 3 tahun: total bunga = 8% × 3 = 24% dari pokok.</p>
+    <h2>2. Contoh: Honda BeAT Rp 18 juta, DP 20%, Tenor 36 bulan</h2>
+    <ul class="info-list"><li><strong>DP</strong>: Rp 3.600.000</li><li><strong>Pokok</strong>: Rp 14.400.000</li><li><strong>Bunga flat 8%/tahun × 3</strong>: 24% × Rp 14.4jt = Rp 3.456.000</li><li><strong>Total bayar</strong>: Rp 17.856.000</li><li><strong>Cicilan/bulan</strong>: Rp 17.856.000 / 36 = <strong>Rp 496.000</strong></li></ul>
+    <h2>3. TCO 5 Tahun (Total Cost of Ownership)</h2>
+    <p>Komponen biaya kepemilikan motor 5 tahun (estimasi Honda BeAT):</p>
+    <ul class="info-list"><li><strong>Harga + bunga kredit</strong>: Rp 17.856.000</li><li><strong>BBM (40km/L, 30km/hari)</strong>: 5400L × Rp 10.000 = Rp 54.000.000</li><li><strong>Servis rutin (12x/tahun)</strong>: Rp 100rb × 60 = Rp 6.000.000</li><li><strong>Ganti oli (24x)</strong>: Rp 60rb × 24 = Rp 1.440.000</li><li><strong>Ban (2 set)</strong>: Rp 800rb × 2 = Rp 1.600.000</li><li><strong>Asuransi TLO (5 tahun)</strong>: Rp 500rb × 5 = Rp 2.500.000</li><li><strong>Pajak (PKB)</strong>: Rp 250rb × 5 = Rp 1.250.000</li><li><strong>STNK 5 tahun</strong>: Rp 200rb</li><li><strong>TOTAL TCO 5 TAHUN</strong>: <strong>~Rp 84.846.000</strong></li></ul>
+    <p>Artinya rata-rata <strong>Rp 1.414.000/bulan</strong> all-in untuk motor — bukan cuma Rp 496rb cicilan!</p>
+    <AdSlot format="horizontal" />
+    <h2>4. Tips Memilih Kredit Motor</h2>
+    <ul class="info-list"><li><strong>DP minimum 20-30%</strong>: cicilan lebih ringan, total bunga lebih kecil</li><li><strong>Tenor 24-36 bulan</strong>: balance cicilan vs total cost. Hindari 48-60 bulan</li><li><strong>Cek flat rate vs effective</strong>: flat 8% = effective ~14%. Yang penting total bayar</li><li><strong>Bandingkan minimal 3 leasing</strong>: Adira, FIF, BAF, MCF</li><li><strong>Asuransi all-risk</strong> untuk motor di atas Rp 25jt, TLO untuk motor lebih murah</li></ul>
+    <div class="cta-box"><h3>🧮 Coba Simulasi Kredit Motor HitungCerdas</h3><p>Fitur unggulan TCO 8 komponen — bukan cuma cicilan, tapi all-in biaya kepemilikan.</p><p style="margin-top:14px"><a href="/kalkulator/kredit-motor" class="btn btn-pri"><i class="ti ti-calculator"></i> Buka Simulasi Motor</a></p></div>
+    <h2>Kesimpulan</h2><p>Lihat total cost, bukan cuma cicilan bulanan. Motor yang awalnya keliatan murah bisa makan budget besar selama kepemilikan.</p>
+    <h3>📚 Artikel Terkait</h3><ul class="info-list"><li><a href="/blog/cara-menghitung-kpr">Cara Hitung Cicilan KPR BTN 2026</a></li><li><a href="/kalkulator/kredit-mobil">Simulasi Kredit Mobil</a></li><li><a href="/blog/cara-menghitung-gaji-bersih">Cara Hitung Gaji Bersih</a></li></ul>
+  </div></article>
+  <AdSlot format="horizontal" />
+</Layout>
+<style>
+  .article-hero { background: linear-gradient(135deg, var(--cat-color) 0%, var(--cat-color2) 100%); color: #fff; padding: 20px 0 48px; }
+  .article-hero :global(.breadcrumb-item), .article-hero :global(.breadcrumb-item a) { color: rgba(255, 255, 255, .7); }
+  .article-hero :global(.breadcrumb-item a:hover) { color: var(--gold-soft); }
+  .article-hero :global(.breadcrumb-item span) { color: #fff; }
+  .article-hero :global(.breadcrumb-item i) { color: rgba(255, 255, 255, .4); }
+  .article-tag { display: inline-block; font-size: 11px; font-weight: 700; color: var(--gold-soft); letter-spacing: .1em; text-transform: uppercase; margin: 16px 0 12px; }
+  .article-hero h1 { color: #fff; font-size: clamp(26px, 3.8vw, 42px); margin: 0 0 20px; max-width: 900px; line-height: 1.2; }
+  .article-meta { display: flex; gap: 20px; color: rgba(255, 255, 255, .75); font-size: 13px; flex-wrap: wrap; }
+  .article-meta span { display: inline-flex; align-items: center; gap: 6px; }
+  .lead { font-size: 17px !important; line-height: 1.7 !important; color: var(--text) !important; padding: 20px 24px; background: var(--bg-soft); border-radius: 12px; border-left: 4px solid var(--cat-color); margin-bottom: 24px !important; }
+</style>
