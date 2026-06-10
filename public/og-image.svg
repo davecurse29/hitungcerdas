@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <title>HitungCerdas - 18 Kalkulator Finansial Indonesia</title>
+  
+  <!-- Background gradient effect (solid color for SVG simplicity) -->
+  <rect x="0" y="0" width="1200" height="630" fill="#0A2540"/>
+  
+  <!-- Subtle pattern dots -->
+  <g opacity="0.05" fill="#F59E0B">
+    <circle cx="100" cy="80" r="2"/>
+    <circle cx="200" cy="120" r="2"/>
+    <circle cx="300" cy="60" r="2"/>
+    <circle cx="900" cy="540" r="2"/>
+    <circle cx="1000" cy="500" r="2"/>
+    <circle cx="1100" cy="560" r="2"/>
+    <circle cx="1050" cy="80" r="2"/>
+    <circle cx="150" cy="540" r="2"/>
+  </g>
+  
+  <!-- Logo Section (left) -->
+  <g transform="translate(80, 200)">
+    <!-- Calculator Icon -->
+    <rect x="0" y="0" width="140" height="140" rx="20" fill="#fff"/>
+    <rect x="16" y="16" width="108" height="30" rx="6" fill="#F59E0B"/>
+    <circle cx="30" cy="68" r="7" fill="#0A2540"/>
+    <circle cx="55" cy="68" r="7" fill="#0A2540"/>
+    <circle cx="80" cy="68" r="7" fill="#0A2540"/>
+    <circle cx="105" cy="68" r="7" fill="#2563EB"/>
+    <circle cx="30" cy="92" r="7" fill="#0A2540"/>
+    <circle cx="55" cy="92" r="7" fill="#0A2540"/>
+    <circle cx="80" cy="92" r="7" fill="#0A2540"/>
+    <circle cx="105" cy="92" r="7" fill="#F59E0B"/>
+    <circle cx="30" cy="116" r="7" fill="#0A2540"/>
+    <circle cx="55" cy="116" r="7" fill="#0A2540"/>
+    <circle cx="80" cy="116" r="7" fill="#0A2540"/>
+    <circle cx="105" cy="116" r="7" fill="#10B981"/>
+  </g>
+  
+  <!-- Main Content -->
+  <g transform="translate(280, 200)">
+    <!-- Brand name -->
+    <text x="0" y="40" font-family="Inter, Poppins, Arial, sans-serif" font-size="32" font-weight="600" fill="#94A3B8" letter-spacing="3">HITUNGCERDAS.NET</text>
+    
+    <!-- Main headline -->
+    <text x="0" y="120" font-family="Inter, Poppins, Arial, sans-serif" font-size="72" font-weight="800" fill="#fff" letter-spacing="-2">18 Kalkulator</text>
+    <text x="0" y="190" font-family="Inter, Poppins, Arial, sans-serif" font-size="72" font-weight="800" fill="#F59E0B" letter-spacing="-2">Finansial Indonesia</text>
+    
+    <!-- Subline -->
+    <text x="0" y="240" font-family="Inter, Arial, sans-serif" font-size="26" fill="#94A3B8">Keuangan · Bisnis · Islami · 100% Gratis</text>
+  </g>
+  
+  <!-- Bottom badges -->
+  <g transform="translate(80, 520)">
+    <rect x="0" y="0" width="120" height="44" rx="22" fill="#2563EB"/>
+    <text x="60" y="28" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="600" fill="#fff">KPR</text>
+    
+    <rect x="135" y="0" width="120" height="44" rx="22" fill="#DC2626"/>
+    <text x="195" y="28" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="600" fill="#fff">PPh 21</text>
+    
+    <rect x="270" y="0" width="160" height="44" rx="22" fill="#059669"/>
+    <text x="350" y="28" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="600" fill="#fff">Gaji Bersih</text>
+    
+    <rect x="445" y="0" width="100" height="44" rx="22" fill="#F59E0B"/>
+    <text x="495" y="28" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="600" fill="#0A2540">Zakat</text>
+    
+    <rect x="560" y="0" width="130" height="44" rx="22" fill="#7C3AED"/>
+    <text x="625" y="28" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="600" fill="#fff">Investasi</text>
+  </g>
+  
+  <!-- Top right brand mark -->
+  <g transform="translate(1080, 80)">
+    <rect x="-50" y="-30" width="100" height="60" rx="14" fill="#F59E0B"/>
+    <text x="0" y="8" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="700" fill="#0A2540">HC</text>
+  </g>
+</svg>
