@@ -17,7 +17,7 @@ const navItems = [
 <header role="banner">
   <div class="hdr">
     <a href="/" class="logo" aria-label="HitungCerdas Beranda">
-      <img src="/logo.svg" alt="HitungCerdas" class="logo-ic" width="34" height="34" />
+      <div class="logo-ic">HC</div>
       <div class="logo-text">Hitung<span>Cerdas</span></div>
     </a>
 
@@ -69,22 +69,22 @@ const navItems = [
     align-items: center;
     gap: 8px;
     flex-shrink: 0;
-    text-decoration: none;
   }
 
   .logo-ic {
     width: 34px;
     height: 34px;
     border-radius: 9px;
-    display: block;
-    object-fit: contain;
+    background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: 800;
+    font-size: 14px;
+    letter-spacing: -.04em;
     box-shadow: 0 4px 12px rgba(37, 99, 235, .25);
-    transition: var(--tx);
-  }
-
-  .logo:hover .logo-ic {
-    transform: translateY(-1px);
-    box-shadow: 0 6px 16px rgba(37, 99, 235, .35);
+    font-family: var(--ff-display);
   }
 
   .logo-text {

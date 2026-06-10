@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <title>HitungCerdas</title>
+  
+  <!-- Gradient definition (Navy to Blue) -->
+  <defs>
+    <linearGradient id="hcGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0A2540"/>
+      <stop offset="100%" stop-color="#2563EB"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Background rounded square with gradient -->
+  <rect x="0" y="0" width="64" height="64" rx="14" fill="url(#hcGrad)"/>
+  
+  <!-- "HC" monogram -->
+  <text x="32" y="42" text-anchor="middle" font-family="Inter, Poppins, Arial, sans-serif" font-size="26" font-weight="800" fill="#ffffff" letter-spacing="-0.05em">HC</text>
+  
+  <!-- Gold accent dot (top right) -->
+  <circle cx="52" cy="12" r="3.5" fill="#F59E0B"/>
+</svg>
