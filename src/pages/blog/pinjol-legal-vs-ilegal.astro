@@ -1,0 +1,142 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import AdSlot from '../../components/AdSlot.astro';
+
+const today = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'Pinjol Legal vs Ilegal 2026' }];
+---
+
+<Layout
+  title="Pinjol Legal vs Ilegal 2026 — Cara Cek OJK, Batas Bunga, & Hindari Debt Trap"
+  description="Panduan lengkap pinjol 2026: cara bedakan legal vs ilegal, aturan bunga OJK terbaru (maks 0,1%/hari + Lock Cap 100%), cara cek legalitas, dan hindari jeratan utang."
+  keywords={['pinjol legal ojk 2026', 'cek pinjol legal', 'bunga pinjol ojk', 'pinjol ilegal', 'debt trap pinjol']}
+  canonical="https://hitungcerdas.net/blog/pinjol-legal-vs-ilegal"
+  ogType="article"
+>
+  <section class="article-hero" style="--cat-color:#DC2626;--cat-color2:#B91C1C">
+    <div class="wrap">
+      <Breadcrumb items={bcItems} />
+      <div class="article-tag">KEUANGAN &amp; KREDIT</div>
+      <h1>Pinjol Legal vs Ilegal 2026: Panduan Lengkap & Aman</h1>
+      <div class="article-meta">
+        <span><i class="ti ti-calendar"></i> {today}</span>
+        <span><i class="ti ti-clock"></i> 8 menit baca</span>
+        <span><i class="ti ti-user"></i> Tim HitungCerdas</span>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+
+  <article class="content-section">
+    <div class="wrap-text">
+      <p class="lead">
+        Pinjaman online (pinjol) bisa jadi penyelamat saat darurat, tapi juga bisa jadi jebakan kalau
+        salah pilih. Banyak korban terjerat pinjol ilegal dengan bunga mencekik. Artikel ini mengajarkan
+        cara membedakan pinjol legal dan ilegal, aturan bunga OJK terbaru 2026, dan cara menghindari
+        debt trap. <strong>Tujuannya edukasi dan melindungi kamu.</strong>
+      </p>
+
+      <div class="info-list" style="background:#FEE2E2;padding:16px;border-radius:12px;margin:16px 0">
+        <strong>🛡️ Aturan OJK 2026:</strong> Bunga pinjol konsumtif dibatasi maksimal <strong>0,1% per hari</strong>
+        (turun dari 0,4% di 2024). Ada <strong>Lock Cap 100%</strong> — total seluruh biaya tidak boleh
+        melebihi pokok pinjaman. Biaya admin maksimal 4%.
+      </div>
+
+      <h2>1. Apa Beda Pinjol Legal dan Ilegal?</h2>
+      <p>Perbedaan paling mendasar ada di legalitas dan perlindungan:</p>
+      <ul class="info-list">
+        <li><strong>Pinjol Legal</strong>: Terdaftar & berizin OJK, bunga transparan & dibatasi, penagihan etis, hanya akses CAMILAN (Camera, Microphone, Location).</li>
+        <li><strong>Pinjol Ilegal</strong>: Tidak terdaftar OJK, bunga mencekik tidak transparan, minta akses seluruh kontak & galeri HP, menagih dengan teror dan intimidasi.</li>
+      </ul>
+
+      <h2>2. Cara Cek Legalitas Pinjol</h2>
+      <p>Selalu cek sebelum meminjam — caranya mudah:</p>
+      <ul class="tips-list">
+        <li>Kunjungi <strong>ojk.go.id</strong> → menu Fintech → daftar penyelenggara berizin</li>
+        <li>Hubungi <strong>kontak OJK 157</strong> atau WhatsApp <strong>081-157-157-157</strong></li>
+        <li>Cek apakah nama platform ada di daftar resmi OJK</li>
+        <li>Perhatikan izin yang tertera di aplikasi/website pinjol</li>
+      </ul>
+
+      <div class="cta-box">
+        <h3>⚠️ Hitung Biaya Pinjol Sebenarnya</h3>
+        <p>Pakai kalkulator pinjol HitungCerdas — lihat APR sesungguhnya, cek aturan Lock Cap OJK, simulasi keterlambatan, dan bandingkan dengan KTA bank.</p>
+        <a href="/kalkulator/pinjol-legal" class="cta-btn">Buka Kalkulator Pinjol →</a>
+      </div>
+
+      <AdSlot format="horizontal" />
+
+      <h2>3. Berapa Bunga Pinjol yang Wajar?</h2>
+      <p>
+        Aturan OJK 2026 membatasi bunga konsumtif maksimal 0,1%/hari, atau sekitar 3%/bulan (~36%/tahun).
+        Untuk pinjaman produktif (UMKM), batas lebih rendah yaitu 0,067%/hari. Jika ada pinjol mengenakan
+        bunga lebih dari ini, kemungkinan besar <strong>ilegal</strong>.
+      </p>
+      <div class="formula-box">
+        <p class="formula"><strong>Total Bayar = Pokok + (Pokok × Bunga Harian × Jumlah Hari) + Admin</strong></p>
+      </div>
+      <p>Contoh: pinjam Rp 2 juta, tenor 30 hari, bunga 0,1%/hari:</p>
+      <ul class="info-list">
+        <li>Bunga: Rp 2jt × 0,1% × 30 = Rp 60.000</li>
+        <li>Total bayar: Rp 2.060.000</li>
+        <li>Masih dalam Lock Cap 100% ✓</li>
+      </ul>
+
+      <h2>4. Ciri Pinjol Ilegal yang Wajib Dihindari</h2>
+      <ul class="info-list">
+        <li>🚩 Tidak terdaftar OJK</li>
+        <li>🚩 Minta akses kontak & galeri HP</li>
+        <li>🚩 Bunga lebih dari 0,1%/hari</li>
+        <li>🚩 Tenor sangat pendek (7-14 hari)</li>
+        <li>🚩 Potong admin besar di awal (pinjam 1jt, cair 800rb)</li>
+        <li>🚩 Penagihan dengan ancaman & teror</li>
+      </ul>
+
+      <h2>5. Jika Terjerat Pinjol Ilegal</h2>
+      <ul class="tips-list">
+        <li>Jangan bayar ke rekening tidak resmi</li>
+        <li>Laporkan ke Satgas PASTI OJK: 157</li>
+        <li>Screenshot semua ancaman sebagai bukti</li>
+        <li>Blokir nomor penagih yang mengancam</li>
+        <li>Lapor polisi jika ada ancaman fisik atau penyebaran data</li>
+      </ul>
+      <p>
+        <strong>Penting:</strong> Gagal bayar (galbay) adalah ranah perdata, bukan pidana. Kamu tidak bisa
+        dipenjara karena utang. Tapi tetap ada risiko blacklist SLIK OJK.
+      </p>
+
+      <h2>6. Alternatif Lebih Aman dari Pinjol</h2>
+      <ul class="info-list">
+        <li><strong>Dana darurat</strong> — solusi terbaik, tanpa bunga (<a href="/kalkulator/dana-darurat">hitung di sini</a>)</li>
+        <li><strong>KTA bank</strong> — bunga ~16-26%/tahun, jauh lebih murah (<a href="/kalkulator/kta">simulasi KTA</a>)</li>
+        <li><strong>Koperasi simpan pinjam</strong> — bunga rendah, terdaftar resmi</li>
+        <li><strong>Pinjam keluarga/sahabat</strong> — bunga 0%, fleksibel</li>
+      </ul>
+
+      <h2>Kesimpulan</h2>
+      <p>
+        Pinjol legal yang terdaftar OJK relatif aman karena diawasi dan ada batas bunga. Yang berbahaya
+        adalah pinjol ilegal. Selalu cek legalitas di OJK, hitung biaya sebenarnya, dan pertimbangkan
+        alternatif lebih aman dulu. Bangun dana darurat agar tidak bergantung pada pinjaman.
+      </p>
+
+      <div class="info-list" style="background:#F1F5F9;padding:16px;border-radius:12px;margin-top:24px;font-size:13px;color:#64748B">
+        <strong>⚠️ Disclaimer:</strong> Artikel ini bersifat edukatif dan perlindungan konsumen. HitungCerdas
+        TIDAK berafiliasi, mempromosikan, atau menerima komisi dari platform pinjol manapun. Daftar pinjol
+        legal dan aturan bunga dapat berubah — selalu cek terbaru di OJK.go.id atau hubungi 157. Informasi
+        per Juni 2026.
+      </div>
+
+      <div class="related-tools" style="margin-top:24px">
+        <h3>🔗 Kalkulator Terkait</h3>
+        <ul class="info-list">
+          <li><a href="/kalkulator/pinjol-legal">Kalkulator Pinjol Legal</a> — hitung biaya sebenarnya</li>
+          <li><a href="/kalkulator/dana-darurat">Kalkulator Dana Darurat</a> — solusi anti-pinjol</li>
+          <li><a href="/kalkulator/kta">Kalkulator KTA</a> — alternatif lebih murah</li>
+        </ul>
+      </div>
+    </div>
+  </article>
+</Layout>

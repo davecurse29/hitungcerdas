@@ -1,0 +1,128 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import AdSlot from '../../components/AdSlot.astro';
+
+const today = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'Panduan Dana Darurat' }];
+---
+
+<Layout
+  title="Cara Hitung Dana Darurat Ideal 2026 — Berapa Kali Gaji & Cara Menabungnya"
+  description="Panduan lengkap dana darurat: berapa idealnya (3-12x pengeluaran), cara menghitung sesuai status & pekerjaan, di mana menyimpannya, dan strategi menabung cepat."
+  keywords={['dana darurat', 'cara hitung dana darurat', 'berapa dana darurat ideal', 'dana darurat berapa kali gaji', 'cara nabung dana darurat']}
+  canonical="https://hitungcerdas.net/blog/cara-hitung-dana-darurat"
+  ogType="article"
+>
+  <section class="article-hero" style="--cat-color:#F59E0B;--cat-color2:#D97706">
+    <div class="wrap">
+      <Breadcrumb items={bcItems} />
+      <div class="article-tag">PERENCANAAN KEUANGAN</div>
+      <h1>Cara Hitung Dana Darurat Ideal 2026</h1>
+      <div class="article-meta">
+        <span><i class="ti ti-calendar"></i> {today}</span>
+        <span><i class="ti ti-clock"></i> 6 menit baca</span>
+        <span><i class="ti ti-user"></i> Tim HitungCerdas</span>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+
+  <article class="content-section">
+    <div class="wrap-text">
+      <p class="lead">
+        Dana darurat adalah fondasi keuangan yang sehat. Tanpa dana darurat, satu kejadian tak terduga —
+        PHK, sakit, atau kerusakan mendadak — bisa membuatmu terjerat utang atau pinjol. Artikel ini
+        mengajarkan cara menghitung dana darurat ideal sesuai kondisimu, dan strategi menabungnya.
+      </p>
+
+      <h2>1. Apa itu Dana Darurat?</h2>
+      <p>
+        Dana darurat adalah uang yang sengaja disisihkan untuk menghadapi kejadian tak terduga. Tujuannya
+        agar kamu <strong>tidak perlu berutang atau menjual aset investasi</strong> saat krisis datang.
+        Ini berbeda dari tabungan biasa karena khusus untuk darurat, bukan untuk liburan atau beli barang.
+      </p>
+
+      <h2>2. Berapa Dana Darurat yang Ideal?</h2>
+      <p>Besarnya tergantung status dan stabilitas penghasilanmu:</p>
+      <ul class="info-list">
+        <li><strong>Single, karyawan tetap</strong>: 3-6× pengeluaran bulanan</li>
+        <li><strong>Menikah, karyawan tetap</strong>: 6-9× pengeluaran bulanan</li>
+        <li><strong>Ada tanggungan / punya anak</strong>: 9-12× pengeluaran bulanan</li>
+        <li><strong>Freelance / wirausaha</strong>: +3 bulan ekstra (penghasilan tidak tetap)</li>
+      </ul>
+
+      <div class="formula-box">
+        <p class="formula"><strong>Target Dana Darurat = Pengeluaran Bulanan × Multiplier (3-12)</strong></p>
+      </div>
+
+      <h2>3. Contoh Perhitungan</h2>
+      <p>Keluarga muda dengan 1 anak, pengeluaran Rp 5 juta/bulan:</p>
+      <ul class="info-list">
+        <li>Status: menikah + 1 tanggungan → multiplier 7×</li>
+        <li>Target dana darurat: Rp 5jt × 7 = <strong>Rp 35.000.000</strong></li>
+        <li>Jika nabung Rp 1,5jt/bulan → tercapai dalam ~24 bulan</li>
+      </ul>
+
+      <div class="cta-box">
+        <h3>🛡️ Hitung Dana Darurat Idealmu</h3>
+        <p>Pakai kalkulator dana darurat HitungCerdas — sesuaikan dengan status, pekerjaan, dan tanggunganmu. Plus timeline & tips menabung.</p>
+        <a href="/kalkulator/dana-darurat" class="cta-btn">Buka Kalkulator Dana Darurat →</a>
+      </div>
+
+      <AdSlot format="horizontal" />
+
+      <h2>4. Di Mana Menyimpan Dana Darurat?</h2>
+      <p>Dana darurat harus <strong>likuid</strong> (mudah dicairkan) dan <strong>aman</strong>:</p>
+      <ul class="info-list">
+        <li><strong>Reksa Dana Pasar Uang (RDPU)</strong> — return ~4-5%/tahun, bisa cair 1-2 hari, terbaik!</li>
+        <li><strong>Deposito</strong> — aman & dijamin LPS, tapi ada jangka waktu</li>
+        <li><strong>Tabungan terpisah</strong> — paling likuid tapi return rendah</li>
+      </ul>
+      <p>
+        Hindari menyimpan dana darurat di saham atau properti — keduanya tidak likuid dan nilainya bisa
+        turun saat kamu butuh.
+      </p>
+
+      <h2>5. Strategi Menabung Dana Darurat</h2>
+      <ul class="tips-list">
+        <li>Auto-debit 10-20% gaji ke rekening khusus tiap gajian</li>
+        <li>Pisahkan rekening dana darurat dari rekening harian</li>
+        <li>Mulai dari target kecil (1 bulan pengeluaran) lalu tingkatkan</li>
+        <li>Manfaatkan THR & bonus untuk top-up cepat</li>
+        <li>Setelah dipakai, segera isi kembali</li>
+      </ul>
+
+      <h2>6. Kesalahan Umum</h2>
+      <ul class="info-list">
+        <li>Memakai dana darurat untuk kebutuhan konsumtif</li>
+        <li>Menyimpan di instrumen tidak likuid (saham, properti)</li>
+        <li>Mencampur dengan rekening harian</li>
+        <li>Tidak pernah mengisi kembali setelah dipakai</li>
+      </ul>
+
+      <h2>Kesimpulan</h2>
+      <p>
+        Dana darurat adalah prioritas pertama dalam keuangan sehat — bahkan sebelum investasi. Hitung
+        targetmu sesuai kondisi, simpan di instrumen likuid, dan menabung secara konsisten. Dengan dana
+        darurat yang cukup, kamu tidak perlu bergantung pada pinjol saat krisis.
+      </p>
+
+      <div class="info-list" style="background:#F1F5F9;padding:16px;border-radius:12px;margin-top:24px;font-size:13px;color:#64748B">
+        <strong>⚠️ Disclaimer:</strong> Artikel ini bersifat edukatif dan bukan nasihat keuangan personal.
+        Setiap kondisi finansial berbeda. Angka multiplier adalah panduan umum. Untuk perencanaan keuangan
+        yang sesuai kondisimu, pertimbangkan konsultasi dengan perencana keuangan bersertifikat.
+      </div>
+
+      <div class="related-tools" style="margin-top:24px">
+        <h3>🔗 Kalkulator Terkait</h3>
+        <ul class="info-list">
+          <li><a href="/kalkulator/dana-darurat">Kalkulator Dana Darurat</a> — hitung target idealmu</li>
+          <li><a href="/kalkulator/investasi">Kalkulator Investasi</a> — setelah dana darurat cukup</li>
+          <li><a href="/kalkulator/gaji-bersih">Kalkulator Gaji Bersih</a> — atur budget menabung</li>
+        </ul>
+      </div>
+    </div>
+  </article>
+</Layout>

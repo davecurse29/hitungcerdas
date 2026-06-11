@@ -1,0 +1,622 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import AdSlot from '../../components/AdSlot.astro';
+
+const title = "Kalkulator KTA 2026 - Simulasi Kredit Tanpa Agunan Terlengkap";
+const description = "Simulasi KTA terlengkap 2026: hitung cicilan flat/efektif/anuitas, bandingkan 6 bank (BCA, CIMB, Mandiri, BNI, BRI, Danamon) dengan bunga terupdate, cek DTI ratio, amortisasi, dan scorecard share. Data sesuai BI Rate 5.5%.";
+const breadcrumbs = [
+  { label: "Beranda", href: "/" },
+  { label: "Kalkulator", href: "/#kalkulator" },
+  { label: "KTA" }
+];
+
+// DATA BANK UPDATE JUNI 2026 (BI Rate 5.5%)
+// Bunga dikonversi dari flat per bulan ke efektif per tahun untuk perbandingan adil
+const bankData = [
+  { name: "CIMB Niaga", produk: "Xtra Dana", flatBulan: 0.79, efektifThn: 16.5, minP: 5000000, maxP: 300000000, maxTenor: 60, metode: "flat", catatan: "Bunga terendah, proses cepat" },
+  { name: "BCA", produk: "Personal Loan / Xtra Cash", flatBulan: 0.88, efektifThn: 18.2, minP: 5000000, maxP: 100000000, maxTenor: 36, metode: "flat", catatan: "Butuh kartu kredit/payroll BCA" },
+  { name: "Bank Mandiri", produk: "KSM / KTA Tunas", flatBulan: 0.95, efektifThn: 19.5, minP: 5000000, maxP: 300000000, maxTenor: 60, metode: "flat", catatan: "Terbaik untuk nasabah payroll" },
+  { name: "BNI", produk: "Flexi / Fleksi Payroll", flatBulan: 1.05, efektifThn: 21.3, minP: 5000000, maxP: 500000000, maxTenor: 60, metode: "flat", catatan: "Plafon tertinggi (Rp 500jt)" },
+  { name: "BRI", produk: "Briguna", flatBulan: 1.15, efektifThn: 23.0, minP: 5000000, maxP: 200000000, maxTenor: 36, metode: "flat", catatan: "Jaringan cabang terluas" },
+  { name: "Danamon", produk: "Dana Pinjaman / DCash", flatBulan: 1.35, efektifThn: 26.5, minP: 5000000, maxP: 200000000, maxTenor: 48, metode: "flat", catatan: "Proses cepat, syarat fleksibel" }
+];
+---
+
+<Layout title={title} description={description} catColor="#4F46E5" catColor2="#3730A3">
+  <Breadcrumb items={breadcrumbs} />
+
+  <main class="calc-page">
+    <section class="calc-hero" style="--cat-color:#4F46E5;--cat-color2:#3730A3">
+      <div class="hero-inner">
+        <div class="hero-badge"><i class="ti ti-cash"></i><span>Kalkulator Finansial</span></div>
+        <h1>Kalkulator KTA 2026</h1>
+        <p class="hero-sub">Simulasi Kredit Tanpa Agunan terlengkap di Indonesia. Bunga terupdate Juni 2026, bandingkan 6 bank, cek kemampuan bayar (DTI), jadwal amortisasi, dan kartu hasil siap-share.</p>
+        <div class="trust-row">
+          <span class="trust-item"><i class="ti ti-check"></i> Flat / Efektif / Anuitas</span>
+          <span class="trust-item"><i class="ti ti-check"></i> 6 Bank Update 2026</span>
+          <span class="trust-item"><i class="ti ti-check"></i> Cek DTI Ratio</span>
+          <span class="trust-item"><i class="ti ti-check"></i> Semua Bisa Diedit</span>
+        </div>
+        <div class="bi-rate-badge">
+          <i class="ti ti-building-bank"></i>
+          <span>BI Rate Juni 2026: <strong>5,5%</strong> — bunga KTA naik mengikuti kondisi ekonomi</span>
+        </div>
+      </div>
+    </section>
+
+    <div class="calc-container">
+      <div class="wizard-progress" id="wizardProgress">
+        <div class="progress-steps">
+          <div class="step active" id="s1"><div class="step-dot">1</div><span>Pinjaman</span></div>
+          <div class="step-line"></div>
+          <div class="step" id="s2"><div class="step-dot">2</div><span>Profil</span></div>
+          <div class="step-line"></div>
+          <div class="step" id="s3"><div class="step-dot">3</div><span>Hasil</span></div>
+        </div>
+        <p class="progress-hint" id="progHint">Langkah 1 dari 2 — Isi detail pinjaman</p>
+      </div>
+
+      <!-- STEP 1 -->
+      <div class="calc-card" id="step1">
+        <h2 class="card-title"><i class="ti ti-cash"></i> Detail Pinjaman</h2>
+
+        <div class="form-group">
+          <label>Jumlah Pinjaman</label>
+          <div class="slider-wrap">
+            <input type="range" id="slPinjaman" min="5000000" max="300000000" step="1000000" value="50000000" oninput="onSliderChange()">
+            <div class="slider-info"><span>Rp 5jt</span><strong id="valPinjaman">Rp 50.000.000</strong><span>Rp 300jt</span></div>
+          </div>
+          <div class="input-prefix" style="margin-top:8px">
+            <span>Rp</span>
+            <input type="text" id="inPinjaman" value="50.000.000" inputmode="numeric" oninput="onInputChange()">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Tenor Pinjaman</label>
+          <div class="tenor-grid">
+            {[6,12,18,24,36,48,60].map(t => (
+              <button class={`tenor-btn${t===24?' active':''}`} data-tenor={t} onclick="setTenor(this)">{t} bln</button>
+            ))}
+          </div>
+          <div class="custom-tenor">
+            <label class="sub-label">Atau tenor custom:</label>
+            <div class="input-with-unit small">
+              <input type="number" id="customTenor" min="1" max="120" placeholder="cth: 30" oninput="setCustomTenor()">
+              <span>bulan</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Metode Perhitungan Bunga <button class="info-link" onclick="toggleBungaModal()">ℹ️ Apa bedanya?</button></label>
+          <div class="option-grid">
+            <button class="opt-btn active" data-group="bunga" data-val="flat" onclick="setBunga(this)">Flat Rate</button>
+            <button class="opt-btn" data-group="bunga" data-val="efektif" onclick="setBunga(this)">Efektif</button>
+            <button class="opt-btn" data-group="bunga" data-val="anuitas" onclick="setBunga(this)">Anuitas</button>
+          </div>
+          <div class="bunga-info" id="bungaInfo">
+            <strong>Flat Rate</strong>: Bunga dihitung dari pokok awal setiap bulan. Cicilan tetap. Umum dipakai KTA bank Indonesia. Persentase terlihat kecil tapi efektifnya lebih tinggi.
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Suku Bunga per Tahun (%) <span class="editable-hint">✏️ bisa diedit</span></label>
+          <div class="slider-wrap">
+            <input type="range" id="slBunga" min="6" max="40" step="0.1" value="18" oninput="onBungaChange()">
+            <div class="slider-info"><span>6%</span><strong id="valBunga">18%/thn</strong><span>40%</span></div>
+          </div>
+          <div class="input-with-unit" style="margin-top:8px">
+            <input type="number" id="inBunga" value="18" step="0.1" min="1" max="60" oninput="onBungaInput()">
+            <span>% / tahun</span>
+          </div>
+          <p class="field-hint">💡 Default 18%/tahun = rata-rata KTA bank 2026 (setelah BI Rate naik ke 5,5%). Sesuaikan dengan penawaran bank kamu.</p>
+        </div>
+
+        <button class="btn-primary" onclick="goKtaStep(2)">Lanjut — Profil Keuangan <i class="ti ti-arrow-right"></i></button>
+      </div>
+
+      <!-- STEP 2 -->
+      <div class="calc-card hidden" id="step2">
+        <h2 class="card-title"><i class="ti ti-user-check"></i> Profil Keuangan</h2>
+        <p class="card-sub">Untuk cek kemampuan bayar (DTI) — opsional tapi sangat disarankan</p>
+
+        <div class="form-group">
+          <label>Penghasilan Bulanan (Gaji + Tunjangan)</label>
+          <div class="input-prefix"><span>Rp</span><input type="text" id="inPenghasilan" placeholder="Contoh: 10.000.000" inputmode="numeric" oninput="formatRupiahInput(this)"></div>
+        </div>
+
+        <div class="form-group">
+          <label>Cicilan Existing (kalau ada)</label>
+          <div class="input-prefix"><span>Rp</span><input type="text" id="inCicilanExisting" placeholder="0 kalau tidak ada" inputmode="numeric" oninput="formatRupiahInput(this)"></div>
+          <p class="field-hint">KPR, kredit motor/mobil, pinjaman lain yang masih berjalan</p>
+        </div>
+
+        <div class="form-group">
+          <label>Biaya Provisi / Admin (opsional)</label>
+          <div class="input-with-unit"><input type="number" id="inProvisi" value="1" step="0.1" min="0" max="10" oninput="onProvisiChange()"><span>% dari pinjaman</span></div>
+          <p class="field-hint">Umumnya 1-3% dipotong di awal. Bunga ini mengurangi dana cair yang kamu terima.</p>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn-secondary" onclick="goKtaStep(1)"><i class="ti ti-arrow-left"></i> Kembali</button>
+          <button class="btn-primary" onclick="hitungKTA()"><i class="ti ti-calculator"></i> Hitung KTA</button>
+        </div>
+      </div>
+
+      <!-- STEP 3: HASIL -->
+      <div class="hidden" id="step3">
+        <div class="result-hero kta-hero">
+          <div class="kta-hero-inner">
+            <div class="kta-hero-main">
+              <div class="result-tag">💳 Cicilan per Bulan</div>
+              <div class="result-big" id="resCicilan">Rp 0</div>
+              <div class="result-sub" id="resTenorInfo">selama 24 bulan</div>
+            </div>
+            <div class="kta-hero-stats">
+              <div class="kta-stat"><span class="kstat-label">Total Bayar</span><span class="kstat-val" id="resTotalBayar">—</span></div>
+              <div class="kta-stat warning"><span class="kstat-label">Total Bunga</span><span class="kstat-val" id="resTotalBunga">—</span></div>
+              <div class="kta-stat"><span class="kstat-label">Dana Cair</span><span class="kstat-val" id="resDanaCair">—</span></div>
+            </div>
+          </div>
+        </div>
+
+        <AdSlot position="after-result" />
+
+        <div class="calc-card" id="dtiCard">
+          <h3 class="card-title"><i class="ti ti-activity"></i> Debt-to-Income Ratio (DTI)</h3>
+          <div class="dti-wrap">
+            <div class="dti-track"><div class="dti-fill" id="dtiFill"></div></div>
+            <div class="dti-zones"><span class="dti-zone green">Sehat &lt;30%</span><span class="dti-zone yellow">Waspada 30-40%</span><span class="dti-zone red">Bahaya &gt;40%</span></div>
+            <div class="dti-msg" id="dtiMsg"></div>
+          </div>
+          <div class="why-box"><strong>ℹ️ Apa itu DTI?</strong><p>DTI = total cicilan ÷ penghasilan × 100%. Bank Indonesia menyarankan DTI maksimal 30% agar keuangan sehat. Di atas 40% = berisiko gagal bayar dan biasanya ditolak bank.</p></div>
+        </div>
+
+        <div class="calc-card">
+          <h3 class="card-title"><i class="ti ti-coins"></i> Total Bunga Kamu Setara...</h3>
+          <div class="relatable-grid" id="ktaRelatable"></div>
+          <div class="bunga-compare" id="bungaCompare"></div>
+        </div>
+
+        <div class="calc-card">
+          <h3 class="card-title"><i class="ti ti-chart-bar"></i> Grafik Amortisasi</h3>
+          <div class="chart-wrap"><canvas id="amorChart" height="280"></canvas></div>
+          <p class="chart-hint">Batang biru = pokok, kuning = bunga. Di awal cicilan, porsi bunga lebih besar (untuk efektif/anuitas).</p>
+        </div>
+
+        <!-- BANK COMPARISON -->
+        <div class="calc-card">
+          <h3 class="card-title"><i class="ti ti-building-bank"></i> Bandingkan 6 Bank (Update 2026)</h3>
+          <p class="card-sub">Bunga terupdate Juni 2026 — dengan jumlah & tenor yang sama. Klik bank untuk pakai bunganya.</p>
+          <div class="bank-table" id="bankTable"></div>
+          <div class="bank-insight" id="bankInsight"></div>
+          <details class="bank-detail">
+            <summary>📋 Lihat aturan & metode bunga tiap bank</summary>
+            <div class="bank-rules" id="bankRules"></div>
+          </details>
+        </div>
+
+        <AdSlot position="mid-content" />
+
+        <div class="calc-card">
+          <h3 class="card-title"><i class="ti ti-table"></i> Jadwal Amortisasi</h3>
+          <div class="amor-table-wrap">
+            <table class="amor-table"><thead><tr><th>Bln</th><th>Cicilan</th><th>Pokok</th><th>Bunga</th><th>Sisa</th></tr></thead><tbody id="amorBody"></tbody></table>
+          </div>
+          <div id="amorShowMore" style="text-align:center;margin-top:10px;display:none"><button class="btn-secondary" onclick="showAllAmor()">Tampilkan Semua Bulan</button></div>
+        </div>
+
+        <!-- SCORECARD PREVIEW (Interactive, neuroscience) -->
+        <div class="calc-card scorecard-section">
+          <h3 class="card-title"><i class="ti ti-photo"></i> Kartu Hasil — Siap Share!</h3>
+          <p class="card-sub">Bagikan ke teman & keluarga. Tampil keren di Status WA, IG Story, FB, atau TikTok.</p>
+          <div class="sc-preview-wrap">
+            <div class="sc-preview" id="scPreview">
+              <div class="sc-grad-overlay"></div>
+              <div class="sc-content">
+                <div class="sc-top">
+                  <span class="sc-brand">HitungCerdas<span class="sc-dot">.net</span></span>
+                  <span class="sc-pill">💳 SIMULASI KTA</span>
+                </div>
+                <div class="sc-main">
+                  <div class="sc-label">Cicilan per Bulan</div>
+                  <div class="sc-big" id="scBigCicilan">Rp 0</div>
+                  <div class="sc-meta" id="scMeta">Pinjaman Rp 50jt • 24 bulan • 18%/thn</div>
+                </div>
+                <div class="sc-stats">
+                  <div class="sc-stat"><span class="sc-stat-lbl">Total Bayar</span><span class="sc-stat-val" id="scTotalBayar">—</span></div>
+                  <div class="sc-stat"><span class="sc-stat-lbl">Total Bunga</span><span class="sc-stat-val gold" id="scTotalBunga">—</span></div>
+                </div>
+                <div class="sc-dti" id="scDtiBox">
+                  <div class="sc-dti-bar"><div class="sc-dti-fill" id="scDtiFill"></div></div>
+                  <span class="sc-dti-text" id="scDtiText">DTI: Sehat ✓</span>
+                </div>
+                <div class="sc-quote" id="scQuote">"Rencanakan kreditmu dengan cerdas 💡"</div>
+                <div class="sc-foot">
+                  <span class="sc-tags">#HitungCerdas #SimulasiKTA</span>
+                  <span class="sc-url">hitungcerdas.net</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="sc-format-row">
+            <button class="sc-fmt active" data-fmt="square" onclick="setScFormat(this,'square')">⬜ Square (IG/FB)</button>
+            <button class="sc-fmt" data-fmt="story" onclick="setScFormat(this,'story')">📱 Story (WA/IG/TikTok)</button>
+          </div>
+          <div class="export-grid">
+            <button class="export-btn primary" onclick="exportScorecard()"><i class="ti ti-download"></i> Download Kartu</button>
+            <button class="export-btn wa" onclick="shareKtaWA()"><i class="ti ti-brand-whatsapp"></i> Share WhatsApp</button>
+            <button class="export-btn" onclick="copyKtaResult()"><i class="ti ti-copy"></i> Copy Teks</button>
+          </div>
+        </div>
+
+        <div class="calc-card rec-card">
+          <h3 class="card-title"><i class="ti ti-compass"></i> Langkah Selanjutnya</h3>
+          <div class="rec-grid">
+            <a href="/kalkulator/dana-darurat" class="rec-item">
+              <div class="rec-icon" style="color:#F59E0B"><i class="ti ti-shield-check"></i></div>
+              <div class="rec-text"><strong>Punya Dana Darurat Dulu?</strong><p>Sebelum ambil KTA, pastikan dana darurat aman. KTA untuk produktif, bukan tambal darurat.</p><span class="rec-cta">Cek Dana Darurat →</span></div>
+            </a>
+            <a href="/kalkulator/kpr" class="rec-item">
+              <div class="rec-icon" style="color:#2563EB"><i class="ti ti-home"></i></div>
+              <div class="rec-text"><strong>Untuk Renovasi Rumah?</strong><p>KPR renovasi bisa lebih murah dari KTA. Bandingkan dulu.</p><span class="rec-cta">Simulasi KPR →</span></div>
+            </a>
+            <a href="/kalkulator/pinjol-legal" class="rec-item urgent">
+              <div class="rec-icon" style="color:#DC2626"><i class="ti ti-alert-triangle"></i></div>
+              <div class="rec-text"><strong>Hindari Pinjol Bunga Tinggi</strong><p>KTA bank ~16-26%/tahun jauh lebih murah dari pinjol. Pahami bedanya.</p><span class="rec-cta">Bandingkan Pinjol →</span></div>
+            </a>
+          </div>
+        </div>
+
+        <div style="text-align:center;margin:1rem 0"><button class="btn-secondary" onclick="resetKTA()"><i class="ti ti-refresh"></i> Hitung Ulang</button></div>
+        <AdSlot position="before-footer" />
+      </div>
+
+      <!-- EDUCATIONAL -->
+      <div class="calc-card edu-card">
+        <h2><i class="ti ti-book"></i> Panduan Lengkap KTA 2026</h2>
+        <h3>Apa itu KTA?</h3>
+        <p>KTA (Kredit Tanpa Agunan) adalah pinjaman bank tanpa jaminan aset. Prosesnya cepat (1-7 hari) tapi bunga lebih tinggi karena risiko bank lebih besar. Cocok untuk modal usaha, pendidikan, renovasi, atau biaya pernikahan.</p>
+
+        <div class="info-callout">
+          <i class="ti ti-trending-up"></i>
+          <div><strong>Update Juni 2026:</strong> Bank Indonesia menaikkan BI Rate ke 5,5% (dari 4,75%) akibat kondisi ekonomi memburuk. Akibatnya, bunga KTA ikut naik — rata-rata kini 16-26% efektif per tahun. Selalu cek penawaran terbaru langsung ke bank.</div>
+        </div>
+
+        <h3>Flat vs Efektif vs Anuitas — Apa Bedanya?</h3>
+        <div class="edu-compare">
+          <div class="edu-compare-item"><h4>Flat Rate</h4><p>Bunga dari pokok awal setiap bulan. Cicilan tetap. Persentase terlihat kecil tapi total bunga lebih mahal. Umum di KTA.</p><div class="edu-example">1% flat/bulan ≈ 18-20% efektif/tahun</div></div>
+          <div class="edu-compare-item"><h4>Efektif</h4><p>Bunga dari sisa pokok. Cicilan bunga mengecil seiring waktu. Lebih adil. Umum di KPR.</p><div class="edu-example">18% efektif = 18% efektif sebenarnya</div></div>
+          <div class="edu-compare-item"><h4>Anuitas</h4><p>Total cicilan tetap, tapi komposisi pokok-bunga berubah. Mirip efektif tapi cicilan flat. Umum di KPR & sebagian KTA.</p><div class="edu-example">Cicilan tetap, bunga depan lebih besar</div></div>
+        </div>
+
+        <h3>Perbandingan KTA 6 Bank Besar (Juni 2026)</h3>
+        <div class="edu-table">
+          <div class="edu-row header"><span>Bank</span><span>Bunga Flat/bln</span><span>~Efektif/thn</span><span>Plafon Max</span></div>
+          <div class="edu-row"><span>CIMB Niaga</span><span>0,79%</span><span>~16,5%</span><span>Rp 300jt</span></div>
+          <div class="edu-row"><span>BCA</span><span>0,88%</span><span>~18,2%</span><span>Rp 100jt</span></div>
+          <div class="edu-row"><span>Mandiri</span><span>0,95%</span><span>~19,5%</span><span>Rp 300jt</span></div>
+          <div class="edu-row"><span>BNI</span><span>1,05%</span><span>~21,3%</span><span>Rp 500jt</span></div>
+          <div class="edu-row"><span>BRI</span><span>1,15%</span><span>~23,0%</span><span>Rp 200jt</span></div>
+          <div class="edu-row"><span>Danamon</span><span>1,35%</span><span>~26,5%</span><span>Rp 200jt</span></div>
+        </div>
+        <p class="edu-note">*Bunga aktual bisa berbeda tergantung profil kredit (SLIK OJK), penghasilan, dan status nasabah. Nasabah payroll/prioritas biasanya dapat bunga lebih rendah.</p>
+
+        <h3>Tips Approval KTA</h3>
+        <ul class="edu-list">
+          <li><strong>Jaga DTI di bawah 30%</strong> — bank cek semua cicilan kamu</li>
+          <li><strong>Riwayat kredit bersih</strong> — cek SLIK OJK (dulu BI Checking)</li>
+          <li><strong>Slip gaji 3 bulan terakhir</strong> — dokumen utama</li>
+          <li><strong>Masa kerja minimal 1 tahun</strong> — untuk karyawan tetap</li>
+          <li><strong>Jangan ajukan banyak bank sekaligus</strong> — bisa turunkan skor kredit</li>
+          <li><strong>Jadi nasabah payroll</strong> — bunga lebih rendah & approval lebih mudah</li>
+        </ul>
+
+        <h3>FAQ KTA</h3>
+        <div class="faq-list">
+          <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Kenapa bunga KTA naik di 2026? <i class="ti ti-chevron-down"></i></button><div class="faq-a"><p>Bank Indonesia menaikkan suku bunga acuan (BI Rate) ke 5,5% pada Juni 2026 untuk menstabilkan ekonomi yang memburuk. Saat BI Rate naik, biaya dana bank ikut naik, sehingga bunga kredit termasuk KTA otomatis naik. Bank biasanya merespons kenaikan BI Rate dengan cepat.</p></div></div>
+          <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">KTA bisa untuk modal usaha? <i class="ti ti-chevron-down"></i></button><div class="faq-a"><p>Bisa, dan ini penggunaan paling produktif. Pastikan return usaha lebih tinggi dari bunga KTA. Misal bunga KTA 18%/tahun, usaha harus menghasilkan minimal 22%/tahun agar worth it.</p></div></div>
+          <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Berapa maksimal KTA yang bisa diajukan? <i class="ti ti-chevron-down"></i></button><div class="faq-a"><p>Umumnya 8-12× penghasilan bulanan, max bervariasi per bank (Rp 100-500 juta). BNI punya plafon tertinggi (Rp 500jt). Tergantung riwayat kredit dan DTI.</p></div></div>
+          <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Lebih baik KTA atau pinjol? <i class="ti ti-chevron-down"></i></button><div class="faq-a"><p>KTA bank hampir selalu lebih baik. Bunga KTA 16-26%/tahun vs pinjol bisa setara 36-60%/tahun (0,1%/hari) atau lebih. KTA lebih lambat (1-7 hari) tapi jauh lebih murah dan terlindungi OJK.</p></div></div>
+        </div>
+
+        <div class="disclaimer-box edu-disclaimer">
+          <i class="ti ti-info-circle"></i>
+          <div><strong>Disclaimer:</strong> Kalkulator ini alat bantu simulasi dan edukasi. Hasil perhitungan adalah estimasi. Bunga, biaya, dan ketentuan aktual ditentukan oleh masing-masing bank berdasarkan profil kredit kamu. HitungCerdas tidak berafiliasi dengan bank manapun dan tidak menerima komisi. Selalu konsultasi langsung ke bank sebelum mengambil keputusan kredit. Data bunga per Juni 2026, dapat berubah sewaktu-waktu.</div>
+        </div>
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<!-- BUNGA MODAL -->
+<div class="modal-overlay hidden" id="bungaModal" onclick="toggleBungaModal()">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="toggleBungaModal()"><i class="ti ti-x"></i></button>
+    <h3>Flat vs Efektif vs Anuitas</h3>
+    <div class="modal-content">
+      <div class="modal-item"><strong>🔵 Flat Rate</strong><p>Bunga dihitung dari pokok awal sepanjang tenor. Contoh: pinjam Rp 12jt, bunga 1%/bulan flat = bunga Rp 120rb tiap bulan (tetap). Total bunga setahun Rp 1,44jt. Cicilan tetap, tapi efektifnya bisa 2× lipat angka flat.</p></div>
+      <div class="modal-item"><strong>🟢 Efektif</strong><p>Bunga dihitung dari sisa pokok. Contoh: pinjam Rp 12jt, bunga 12%/tahun. Bulan 1: bunga Rp 120rb. Bulan 2: bunga dari sisa pokok (lebih kecil). Cicilan bunga makin mengecil. Lebih adil.</p></div>
+      <div class="modal-item"><strong>🟡 Anuitas</strong><p>Kombinasi: total cicilan tetap tiap bulan, tapi komposisi berubah — awalnya bunga besar, lama-lama pokok besar. Dipakai KPR & sebagian KTA.</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- SCORECARD CANVAS (hidden, for export) -->
+<div id="ktaScExport" class="sc-export-hidden"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+
+<script define:vars={{ bankData }}>
+const ktaState = { pinjaman:50000000, tenor:24, bungaType:'flat', bunga:18, penghasilan:0, cicilanExisting:0, provisi:1, result:{}, amorSchedule:[], scFormat:'square' };
+
+function fmtRp(n){return 'Rp '+Math.round(n).toLocaleString('id-ID');}
+function fmtCompact(n){if(n>=1e9)return 'Rp '+(n/1e9).toFixed(1)+'M';if(n>=1e6)return 'Rp '+(n/1e6).toFixed(1)+'jt';if(n>=1e3)return 'Rp '+(n/1e3).toFixed(0)+'rb';return 'Rp '+n;}
+function formatRupiahInput(el){let v=el.value.replace(/\D/g,'');el.value=v?parseInt(v).toLocaleString('id-ID'):'';}
+function parseRupiah(s){return parseInt((s||'0').replace(/\D/g,''))||0;}
+
+function onSliderChange(){const v=parseInt(document.getElementById('slPinjaman').value);ktaState.pinjaman=v;document.getElementById('valPinjaman').textContent=fmtRp(v);document.getElementById('inPinjaman').value=v.toLocaleString('id-ID');}
+function onInputChange(){const v=parseRupiah(document.getElementById('inPinjaman').value);const c=Math.max(5000000,Math.min(300000000,v));ktaState.pinjaman=c;document.getElementById('slPinjaman').value=c;document.getElementById('valPinjaman').textContent=fmtRp(c);const el=document.getElementById('inPinjaman');el.value=v?v.toLocaleString('id-ID'):'';}
+function onBungaChange(){const v=parseFloat(document.getElementById('slBunga').value);ktaState.bunga=v;document.getElementById('valBunga').textContent=v+'%/thn';document.getElementById('inBunga').value=v;}
+function onBungaInput(){const v=parseFloat(document.getElementById('inBunga').value)||18;ktaState.bunga=v;document.getElementById('slBunga').value=Math.min(40,Math.max(6,v));document.getElementById('valBunga').textContent=v+'%/thn';}
+function setTenor(btn){document.querySelectorAll('.tenor-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');ktaState.tenor=parseInt(btn.dataset.tenor);document.getElementById('customTenor').value='';}
+function setCustomTenor(){const v=parseInt(document.getElementById('customTenor').value);if(v>0){ktaState.tenor=v;document.querySelectorAll('.tenor-btn').forEach(b=>b.classList.remove('active'));}}
+function setBunga(btn){document.querySelectorAll('[data-group="bunga"]').forEach(b=>b.classList.remove('active'));btn.classList.add('active');ktaState.bungaType=btn.dataset.val;const info={flat:'<strong>Flat Rate</strong>: Bunga dari pokok awal setiap bulan. Cicilan tetap. Umum di KTA bank. Persentase kecil tapi efektifnya lebih tinggi.',efektif:'<strong>Efektif</strong>: Bunga dari sisa pokok. Cicilan bunga mengecil seiring waktu. Lebih adil. Umum di KPR.',anuitas:'<strong>Anuitas</strong>: Total cicilan tetap, komposisi pokok-bunga berubah. Awalnya bunga besar. Umum di KPR & sebagian KTA.'};document.getElementById('bungaInfo').innerHTML=info[btn.dataset.val];}
+function onProvisiChange(){ktaState.provisi=parseFloat(document.getElementById('inProvisi').value)||0;}
+function toggleBungaModal(){document.getElementById('bungaModal').classList.toggle('hidden');}
+
+function goKtaStep(n){document.getElementById('step1').classList.toggle('hidden',n!==1);document.getElementById('step2').classList.toggle('hidden',n!==2);['s1','s2','s3'].forEach((id,i)=>{document.getElementById(id).classList.toggle('active',i<n);document.getElementById(id).classList.toggle('done',i<n-1);});const h=['','Langkah 1 dari 2 — Isi detail pinjaman','Langkah 2 dari 2 — Isi profil keuangan'];document.getElementById('progHint').textContent=h[n]||'';}
+
+function calcCicilan(pinjaman,tenor,bunga,type){
+  if(type==='flat'){const bungaTotal=pinjaman*(bunga/100)*(tenor/12);const totalBayar=pinjaman+bungaTotal;return{cicilan:totalBayar/tenor,totalBayar,bungaTotal};}
+  else{const r=bunga/100/12;const cicilan=pinjaman*(r*Math.pow(1+r,tenor))/(Math.pow(1+r,tenor)-1);const totalBayar=cicilan*tenor;return{cicilan,totalBayar,bungaTotal:totalBayar-pinjaman};}
+}
+function genAmortization(pinjaman,tenor,bunga,type){
+  const s=[];
+  if(type==='flat'){const r=bunga/100/12;const bb=pinjaman*r;const pb=pinjaman/tenor;const cic=pb+bb;let sisa=pinjaman;for(let i=1;i<=tenor;i++){sisa-=pb;s.push({bulan:i,cicilan:cic,pokok:pb,bunga:bb,sisa:Math.max(0,sisa)});}}
+  else{const r=bunga/100/12;const cic=pinjaman*(r*Math.pow(1+r,tenor))/(Math.pow(1+r,tenor)-1);let sisa=pinjaman;for(let i=1;i<=tenor;i++){const bb=sisa*r;const pb=cic-bb;sisa-=pb;s.push({bulan:i,cicilan:cic,pokok:pb,bunga:bb,sisa:Math.max(0,sisa)});}}
+  return s;
+}
+
+function hitungKTA(){
+  ktaState.penghasilan=parseRupiah(document.getElementById('inPenghasilan').value);
+  ktaState.cicilanExisting=parseRupiah(document.getElementById('inCicilanExisting').value);
+  const{cicilan,totalBayar,bungaTotal}=calcCicilan(ktaState.pinjaman,ktaState.tenor,ktaState.bunga,ktaState.bungaType);
+  const danaCair=ktaState.pinjaman-(ktaState.pinjaman*ktaState.provisi/100);
+  const efektifRate=ktaState.bungaType==='flat'?(bungaTotal/ktaState.pinjaman/(ktaState.tenor/12)*100*1.82).toFixed(1):ktaState.bunga.toFixed(1);
+  ktaState.result={cicilan,totalBayar,bungaTotal,danaCair,efektifRate};
+  ktaState.amorSchedule=genAmortization(ktaState.pinjaman,ktaState.tenor,ktaState.bunga,ktaState.bungaType);
+  renderKtaResult();
+}
+
+function renderKtaResult(){
+  const r=ktaState.result;
+  document.getElementById('resCicilan').textContent=fmtRp(r.cicilan);
+  document.getElementById('resTenorInfo').textContent=`selama ${ktaState.tenor} bulan • ${fmtCompact(ktaState.pinjaman)} • ${ktaState.bunga}%/thn ${ktaState.bungaType}`;
+  document.getElementById('resTotalBayar').textContent=fmtRp(r.totalBayar);
+  document.getElementById('resTotalBunga').textContent=fmtRp(r.bungaTotal);
+  document.getElementById('resDanaCair').textContent=fmtRp(r.danaCair);
+
+  let dtiVal=0,dtiStatus='';
+  if(ktaState.penghasilan>0){
+    const dti=((r.cicilan+ktaState.cicilanExisting)/ktaState.penghasilan)*100;dtiVal=dti;
+    const fill=document.getElementById('dtiFill'),msg=document.getElementById('dtiMsg');
+    fill.style.width=Math.min(100,dti)+'%';
+    if(dti<=30){fill.style.background='#10B981';msg.className='dti-msg success';msg.innerHTML=`✅ DTI ${dti.toFixed(1)}% — Sehat! Cicilan aman untuk penghasilan kamu.`;dtiStatus='Sehat ✓';}
+    else if(dti<=40){fill.style.background='#EF9F27';msg.className='dti-msg warning';msg.innerHTML=`⚠️ DTI ${dti.toFixed(1)}% — Waspada. Pertimbangkan pinjaman lebih kecil atau tenor lebih panjang.`;dtiStatus='Waspada ⚠';}
+    else{fill.style.background='#E24B4A';msg.className='dti-msg danger';msg.innerHTML=`🚨 DTI ${dti.toFixed(1)}% — Bahaya! Cicilan terlalu besar. Kurangi pinjaman atau perpanjang tenor.`;dtiStatus='Bahaya 🚨';}
+  }else{document.getElementById('dtiMsg').innerHTML='ℹ️ Isi penghasilan di Step 2 untuk lihat analisis DTI.';dtiStatus='';}
+
+  const items=[{icon:'☕',label:'gelas kopi',val:Math.round(r.bungaTotal/20000)},{icon:'🍛',label:'makan warteg',val:Math.round(r.bungaTotal/15000)},{icon:'⛽',label:'liter bensin',val:Math.round(r.bungaTotal/12000)},{icon:'📱',label:'bln paket data',val:Math.round(r.bungaTotal/70000)}];
+  document.getElementById('ktaRelatable').innerHTML=items.map(i=>`<div class="rel-item"><span class="rel-icon">${i.icon}</span><strong>${i.val.toLocaleString('id-ID')}</strong><span>${i.label}</span></div>`).join('');
+  document.getElementById('bungaCompare').innerHTML=`<div class="compare-note">💡 Total bunga ${fmtRp(r.bungaTotal)} (${(r.bungaTotal/ktaState.pinjaman*100).toFixed(0)}% dari pokok). Bandingkan: pinjol 0,1%/hari = ~36%/tahun. KTA ini ${ktaState.bunga}%/tahun.</div>`;
+
+  renderAmorChart();renderBankTable();renderBankRules();renderAmorTable();renderScorecard(dtiVal,dtiStatus);
+  showKtaStep3();
+}
+
+function showKtaStep3(){document.getElementById('step1').classList.add('hidden');document.getElementById('step2').classList.add('hidden');document.getElementById('step3').classList.remove('hidden');document.getElementById('wizardProgress').style.display='none';document.getElementById('step3').scrollIntoView({behavior:'smooth',block:'start'});}
+
+function renderAmorChart(){const s=ktaState.amorSchedule;const ctx=document.getElementById('amorChart').getContext('2d');if(window._amorChart)window._amorChart.destroy();window._amorChart=new Chart(ctx,{type:'bar',data:{labels:s.map(r=>`Bln ${r.bulan}`),datasets:[{label:'Pokok',data:s.map(r=>r.pokok),backgroundColor:'#4F46E5',stack:'s'},{label:'Bunga',data:s.map(r=>r.bunga),backgroundColor:'#F59E0B',stack:'s'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom'},tooltip:{callbacks:{label:c=>c.dataset.label+': '+fmtRp(c.parsed.y)}}},scales:{x:{stacked:true,ticks:{maxTicksLimit:10}},y:{stacked:true,ticks:{callback:v=>fmtCompact(v)}}}}});}
+
+function renderBankTable(){
+  const rows=bankData.map(b=>{const{cicilan,totalBayar,bungaTotal}=calcCicilan(ktaState.pinjaman,ktaState.tenor,b.efektifThn,'efektif');return{...b,cicilan,totalBayar,bungaTotal};}).sort((a,b)=>a.efektifThn-b.efektifThn);
+  const cheapest=rows[0],mostExp=rows[rows.length-1];const selisih=mostExp.bungaTotal-cheapest.bungaTotal;
+  document.getElementById('bankTable').innerHTML=`<div class="bank-table-inner"><div class="bank-row header"><span>Bank</span><span>~Efektif/thn</span><span>Cicilan/bln</span><span>Total Bunga</span></div>${rows.map((b,i)=>`<div class="bank-row ${i===0?'best':''}" onclick="useBank(${b.efektifThn})"><span>${b.name} ${i===0?'<span class="best-tag">TERMURAH</span>':''}<br><small>${b.produk}</small></span><span>${b.efektifThn}%</span><span>${fmtRp(b.cicilan)}</span><span class="${i===0?'green':i===rows.length-1?'red':''}">${fmtRp(b.bungaTotal)}</span></div>`).join('')}</div>`;
+  document.getElementById('bankInsight').innerHTML=`<div class="insight-box">💡 Pilih bank termurah (CIMB Niaga), hemat <strong>${fmtRp(selisih)}</strong> total bunga vs bank termahal! Selisih bunga kecil = beda jutaan rupiah.</div>`;
+}
+function useBank(efektif){ktaState.bunga=efektif;ktaState.bungaType='efektif';document.getElementById('inBunga').value=efektif;document.getElementById('slBunga').value=Math.min(40,efektif);document.getElementById('valBunga').textContent=efektif+'%/thn';document.querySelectorAll('[data-group="bunga"]').forEach(b=>b.classList.toggle('active',b.dataset.val==='efektif'));hitungKTA();}
+
+function renderBankRules(){document.getElementById('bankRules').innerHTML=bankData.map(b=>`<div class="rule-item"><strong>${b.name} — ${b.produk}</strong><div class="rule-meta"><span>Bunga: ${b.flatBulan}%/bln flat (~${b.efektifThn}% efektif/thn)</span><span>Plafon: ${fmtCompact(b.minP)} - ${fmtCompact(b.maxP)}</span><span>Tenor max: ${b.maxTenor} bulan</span><span>Metode: ${b.metode}</span></div><p class="rule-note">${b.catatan}</p></div>`).join('');}
+
+function renderAmorTable(showAll){const s=ktaState.amorSchedule;const limit=showAll?s.length:Math.min(12,s.length);document.getElementById('amorBody').innerHTML=s.slice(0,limit).map(r=>`<tr><td>${r.bulan}</td><td>${fmtRp(r.cicilan)}</td><td>${fmtRp(r.pokok)}</td><td>${fmtRp(r.bunga)}</td><td>${fmtRp(r.sisa)}</td></tr>`).join('');document.getElementById('amorShowMore').style.display=(s.length>12&&!showAll)?'':'none';}
+function showAllAmor(){renderAmorTable(true);}
+
+function renderScorecard(dtiVal,dtiStatus){
+  const r=ktaState.result;
+  document.getElementById('scBigCicilan').textContent=fmtRp(r.cicilan);
+  document.getElementById('scMeta').textContent=`Pinjaman ${fmtCompact(ktaState.pinjaman)} • ${ktaState.tenor} bulan • ${ktaState.bunga}%/thn`;
+  document.getElementById('scTotalBayar').textContent=fmtRp(r.totalBayar);
+  document.getElementById('scTotalBunga').textContent=fmtRp(r.bungaTotal);
+  const scDti=document.getElementById('scDtiBox');
+  if(dtiStatus){scDti.style.display='';document.getElementById('scDtiFill').style.width=Math.min(100,dtiVal)+'%';document.getElementById('scDtiFill').style.background=dtiVal<=30?'#10B981':dtiVal<=40?'#F59E0B':'#DC2626';document.getElementById('scDtiText').textContent=`DTI ${dtiVal.toFixed(0)}%: ${dtiStatus}`;}
+  else{scDti.style.display='none';}
+  const quotes=['"Rencanakan kreditmu dengan cerdas 💡"','"Pinjam bijak, hidup tenang 🌿","Cicilan terukur, masa depan aman ✨"'];
+  document.getElementById('scQuote').textContent=dtiVal>40?'"Pikirkan ulang sebelum berutang 🤔"':dtiVal>0&&dtiVal<=30?'"Keuanganmu sehat, lanjutkan! 💪"':'"Rencanakan kreditmu dengan cerdas 💡"';
+}
+
+function setScFormat(btn,fmt){document.querySelectorAll('.sc-fmt').forEach(b=>b.classList.remove('active'));btn.classList.add('active');ktaState.scFormat=fmt;document.getElementById('scPreview').className='sc-preview '+(fmt==='story'?'story-mode':'');}
+
+async function loadHtml2Canvas(){if(!window.html2canvas){const s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';document.head.appendChild(s);await new Promise(r=>s.onload=r);}}
+async function exportScorecard(){await loadHtml2Canvas();const el=document.getElementById('scPreview');const canvas=await html2canvas(el,{backgroundColor:null,scale:3,useCORS:true});const a=document.createElement('a');a.download=`HitungCerdas-KTA-${ktaState.scFormat}.png`;a.href=canvas.toDataURL('image/png');a.click();}
+
+function shareKtaWA(){const r=ktaState.result;const msg=`💳 *Simulasi KTA 2026* via HitungCerdas.net\n\n💰 Pinjaman: ${fmtRp(ktaState.pinjaman)}\n📅 Tenor: ${ktaState.tenor} bulan\n📈 Bunga: ${ktaState.bunga}%/thn (${ktaState.bungaType})\n\n📊 *Cicilan: ${fmtRp(r.cicilan)}/bulan*\n💸 Total Bunga: ${fmtRp(r.bungaTotal)}\n🏦 Total Bayar: ${fmtRp(r.totalBayar)}\n\n_BI Rate Juni 2026: 5,5%_\n\nHitung simulasi KTA kamu:\n👉 https://hitungcerdas.net/kalkulator/kta`;window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');}
+function copyKtaResult(){const r=ktaState.result;navigator.clipboard.writeText(`KTA ${fmtRp(ktaState.pinjaman)} / ${ktaState.tenor} bln / ${ktaState.bunga}% = cicilan ${fmtRp(r.cicilan)}/bln, total bunga ${fmtRp(r.bungaTotal)}. Source: hitungcerdas.net`).then(()=>alert('Tersalin!'));}
+function resetKTA(){document.getElementById('step3').classList.add('hidden');document.getElementById('step1').classList.remove('hidden');document.getElementById('wizardProgress').style.display='';goKtaStep(1);window.scrollTo({top:0,behavior:'smooth'});}
+function toggleFaq(btn){const a=btn.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block';btn.querySelector('i').style.transform=a.style.display==='block'?'rotate(180deg)':'';}
+</script>
+
+<style>
+:root { --cat-color:#4F46E5; --cat-color2:#3730A3; }
+.bi-rate-badge{display:flex;align-items:center;gap:8px;margin-top:14px;padding:10px 14px;background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.3);border-radius:10px;font-size:13px;color:#fff}
+.bi-rate-badge i{color:#F59E0B;font-size:18px}
+.bi-rate-badge strong{color:#F59E0B}
+.tenor-grid{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.tenor-btn{padding:7px 14px;border:1.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-secondary);font-size:13px;cursor:pointer;transition:all .2s}
+.tenor-btn:hover,.tenor-btn.active{border-color:var(--cat-color);background:rgba(79,70,229,.08);color:var(--cat-color);font-weight:500}
+.custom-tenor{margin-top:10px}
+.input-with-unit{display:flex;align-items:center;border:1.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);overflow:hidden}
+.input-with-unit.small{max-width:160px}
+.input-with-unit input{flex:1;border:none;padding:10px 12px;font-size:15px;background:transparent;color:var(--color-text-primary);outline:none}
+.input-with-unit span{padding:0 12px;color:var(--color-text-tertiary);font-size:13px}
+.editable-hint{font-size:11px;color:#10B981;font-weight:500;margin-left:6px}
+.info-link{background:none;border:none;color:var(--cat-color);font-size:12px;cursor:pointer;text-decoration:underline;padding:0}
+.bunga-info{margin-top:8px;padding:10px 14px;background:var(--color-background-secondary);border-radius:var(--border-radius-md);font-size:13px;color:var(--color-text-secondary)}
+.kta-hero{background:linear-gradient(135deg,#0A2540 0%,#1E1B4B 100%);border-radius:var(--border-radius-lg);padding:2rem;margin-bottom:1.25rem;color:#fff}
+.kta-hero-inner{display:flex;gap:2rem;align-items:center;flex-wrap:wrap}
+.kta-hero-main{flex:1}
+.kta-hero-stats{display:flex;flex-direction:column;gap:10px;min-width:200px}
+.kta-stat{padding:12px 16px;background:rgba(255,255,255,.06);border-radius:10px}
+.kta-stat.warning{background:rgba(245,158,11,.1)}
+.kstat-label{font-size:11px;color:#94A3B8;display:block;margin-bottom:2px}
+.kstat-val{font-size:18px;font-weight:600;font-family:var(--font-mono);color:#fff}
+.kta-stat.warning .kstat-val{color:#F59E0B}
+.dti-wrap{margin:12px 0}
+.dti-track{height:14px;background:var(--color-background-tertiary);border-radius:999px;overflow:hidden}
+.dti-fill{height:100%;border-radius:999px;transition:width .6s,background .4s;width:0}
+.dti-zones{display:flex;justify-content:space-between;font-size:11px;color:var(--color-text-tertiary);margin-top:4px}
+.dti-msg{padding:10px 14px;border-radius:var(--border-radius-md);margin-top:10px;font-size:13px;font-weight:500;background:var(--color-background-secondary)}
+.dti-msg.success{background:var(--color-background-success);color:var(--color-text-success)}
+.dti-msg.warning{background:var(--color-background-warning);color:var(--color-text-warning)}
+.dti-msg.danger{background:var(--color-background-danger);color:var(--color-text-danger)}
+.why-box{margin-top:12px;padding:12px 14px;background:var(--color-background-secondary);border-radius:var(--border-radius-md);font-size:13px}
+.why-box p{margin:4px 0 0;color:var(--color-text-secondary)}
+.relatable-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.rel-item{display:flex;flex-direction:column;align-items:center;text-align:center;padding:10px;background:var(--color-background-secondary);border-radius:var(--border-radius-sm)}
+.rel-icon{font-size:22px}
+.rel-item strong{font-size:14px;font-family:var(--font-mono);color:var(--cat-color)}
+.rel-item span{font-size:11px;color:var(--color-text-tertiary)}
+.bunga-compare{margin-top:10px}
+.compare-note{padding:10px 14px;background:var(--color-background-success);border-radius:var(--border-radius-md);font-size:13px;color:var(--color-text-success)}
+.bank-table-inner{display:flex;flex-direction:column;gap:2px}
+.bank-row{display:grid;grid-template-columns:2fr 1fr 1.3fr 1.3fr;gap:8px;padding:10px 14px;background:var(--color-background-secondary);border-radius:var(--border-radius-sm);font-size:13px;align-items:center;cursor:pointer;transition:all .2s}
+.bank-row:not(.header):hover{background:rgba(79,70,229,.06)}
+.bank-row.header{font-weight:600;font-size:12px;color:var(--color-text-tertiary);background:transparent;cursor:default}
+.bank-row small{color:var(--color-text-tertiary);font-size:11px}
+.bank-row.best{background:rgba(79,70,229,.08);border:1px solid rgba(79,70,229,.2)}
+.best-tag{font-size:10px;background:var(--cat-color);color:#fff;padding:1px 7px;border-radius:99px;margin-left:6px}
+.bank-row .green{color:#10B981;font-weight:500}
+.bank-row .red{color:#E24B4A}
+.insight-box{margin-top:10px;padding:12px 14px;background:var(--color-background-info);border-radius:var(--border-radius-md);font-size:13px}
+.bank-detail{margin-top:12px}
+.bank-detail summary{cursor:pointer;font-size:13px;color:var(--cat-color);font-weight:500;padding:8px 0}
+.bank-rules{display:flex;flex-direction:column;gap:10px;margin-top:8px}
+.rule-item{padding:12px 14px;background:var(--color-background-secondary);border-radius:var(--border-radius-md)}
+.rule-item strong{font-size:13px}
+.rule-meta{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0;font-size:11px;color:var(--color-text-tertiary)}
+.rule-meta span{background:var(--color-background-primary);padding:2px 8px;border-radius:4px}
+.rule-note{font-size:12px;color:var(--color-text-secondary);margin:0}
+.amor-table-wrap{overflow-x:auto}
+.amor-table{width:100%;border-collapse:collapse;font-size:13px}
+.amor-table th{padding:8px 12px;text-align:left;font-size:12px;color:var(--color-text-tertiary);border-bottom:1px solid var(--color-border-tertiary)}
+.amor-table td{padding:8px 12px;border-bottom:.5px solid var(--color-border-tertiary);font-family:var(--font-mono)}
+.amor-table tr:hover td{background:var(--color-background-secondary)}
+/* SCORECARD */
+.scorecard-section{border:1px solid rgba(79,70,229,.2)}
+.sc-preview-wrap{display:flex;justify-content:center;padding:1rem;background:var(--color-background-secondary);border-radius:var(--border-radius-md);margin:12px 0}
+.sc-preview{width:340px;height:340px;background:linear-gradient(145deg,#0A2540 0%,#1E1B4B 60%,#312E81 100%);border-radius:20px;position:relative;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,.3);transition:all .4s}
+.sc-preview.story-mode{width:280px;height:460px}
+.sc-grad-overlay{position:absolute;inset:0;background:radial-gradient(circle at 80% 20%,rgba(79,70,229,.4) 0%,transparent 50%),radial-gradient(circle at 20% 80%,rgba(245,158,11,.15) 0%,transparent 50%)}
+.sc-content{position:relative;z-index:2;padding:24px;height:100%;display:flex;flex-direction:column;color:#fff}
+.sc-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:auto}
+.sc-brand{font-size:14px;font-weight:600;color:#fff}
+.sc-dot{color:#4F46E5}
+.sc-pill{font-size:10px;background:rgba(79,70,229,.3);color:#C7D2FE;padding:4px 10px;border-radius:99px}
+.sc-main{text-align:center;margin:auto 0}
+.sc-label{font-size:12px;color:#94A3B8;margin-bottom:6px}
+.sc-big{font-size:34px;font-weight:700;font-family:var(--font-mono);color:#fff;line-height:1;letter-spacing:-.02em}
+.sc-preview.story-mode .sc-big{font-size:40px}
+.sc-meta{font-size:11px;color:#A5B4FC;margin-top:8px}
+.sc-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0}
+.sc-stat{background:rgba(255,255,255,.06);border-radius:10px;padding:10px;text-align:center}
+.sc-stat-lbl{font-size:10px;color:#94A3B8;display:block}
+.sc-stat-val{font-size:14px;font-weight:600;font-family:var(--font-mono);color:#fff}
+.sc-stat-val.gold{color:#FBBF24}
+.sc-dti{margin:8px 0}
+.sc-dti-bar{height:8px;background:rgba(255,255,255,.1);border-radius:99px;overflow:hidden;margin-bottom:4px}
+.sc-dti-fill{height:100%;border-radius:99px;width:0;transition:width .6s}
+.sc-dti-text{font-size:11px;color:#CBD5E1}
+.sc-quote{font-size:13px;font-style:italic;color:#FBBF24;text-align:center;margin:12px 0}
+.sc-foot{display:flex;justify-content:space-between;align-items:center;margin-top:auto;padding-top:12px;border-top:1px solid rgba(255,255,255,.1)}
+.sc-tags{font-size:10px;color:#64748B}
+.sc-url{font-size:11px;color:#A5B4FC;font-weight:500}
+.sc-format-row{display:flex;gap:8px;justify-content:center;margin-bottom:12px}
+.sc-fmt{padding:7px 14px;border:1.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-secondary);font-size:12px;cursor:pointer;transition:all .2s}
+.sc-fmt.active{border-color:var(--cat-color);background:rgba(79,70,229,.08);color:var(--cat-color);font-weight:500}
+.sc-export-hidden{position:fixed;left:-9999px;top:0}
+/* shared */
+.option-grid{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.opt-btn{display:flex;align-items:center;gap:6px;padding:8px 16px;border:1.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-secondary);font-size:13px;cursor:pointer;transition:all .2s}
+.opt-btn.active{border-color:var(--cat-color);background:rgba(79,70,229,.08);color:var(--cat-color);font-weight:500}
+.rec-grid{display:flex;flex-direction:column;gap:10px}
+.rec-item{display:flex;gap:14px;align-items:flex-start;padding:14px;border:1.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);text-decoration:none;color:inherit;transition:all .2s}
+.rec-item:hover{border-color:var(--cat-color);transform:translateX(3px)}
+.rec-item.urgent{border-color:#E24B4A}
+.rec-icon{width:40px;height:40px;border-radius:var(--border-radius-md);background:var(--color-background-secondary);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.rec-text strong{font-size:14px;font-weight:600;display:block;margin-bottom:3px}
+.rec-text p{font-size:12px;color:var(--color-text-secondary);margin:0 0 6px}
+.rec-cta{font-size:12px;color:var(--cat-color);font-weight:500}
+.export-grid{display:flex;flex-wrap:wrap;gap:10px}
+.export-btn{flex:1;min-width:120px;padding:11px 16px;border:1.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-primary);font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:all .2s}
+.export-btn:hover{border-color:var(--cat-color);color:var(--cat-color)}
+.export-btn.primary{background:var(--cat-color);color:#fff;border-color:var(--cat-color)}
+.export-btn.wa{background:#25D366;color:#fff;border-color:#25D366}
+.info-callout{display:flex;gap:12px;padding:14px;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25);border-radius:var(--border-radius-md);margin:12px 0;font-size:13px}
+.info-callout i{font-size:20px;color:#F59E0B;flex-shrink:0}
+.edu-compare{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:12px 0}
+.edu-compare-item{padding:16px;background:var(--color-background-secondary);border-radius:var(--border-radius-md)}
+.edu-compare-item h4{font-size:14px;font-weight:600;margin-bottom:6px}
+.edu-compare-item p{font-size:13px;color:var(--color-text-secondary);margin:0 0 8px}
+.edu-example{font-size:12px;color:var(--cat-color);background:rgba(79,70,229,.08);padding:4px 8px;border-radius:4px}
+.edu-table{display:flex;flex-direction:column;gap:2px;margin:12px 0}
+.edu-row{display:grid;grid-template-columns:2fr 1.3fr 1.3fr 1.3fr;gap:8px;padding:8px 12px;background:var(--color-background-secondary);border-radius:var(--border-radius-sm);font-size:13px}
+.edu-row.header{font-weight:600;font-size:12px;color:var(--color-text-secondary)}
+.edu-note{font-size:12px;color:var(--color-text-tertiary);font-style:italic;margin-top:6px}
+.edu-list{padding-left:1.2rem}
+.edu-list li{margin-bottom:8px;font-size:14px}
+.faq-list{display:flex;flex-direction:column;gap:6px}
+.faq-item{border:.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);overflow:hidden}
+.faq-q{width:100%;text-align:left;padding:14px 16px;background:var(--color-background-primary);border:none;font-size:14px;font-weight:500;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:8px;color:var(--color-text-primary)}
+.faq-q i{transition:transform .3s;flex-shrink:0}
+.faq-a{display:none;padding:12px 16px;background:var(--color-background-secondary)}
+.faq-a p{margin:0;font-size:13px;color:var(--color-text-secondary)}
+.disclaimer-box{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;background:var(--color-background-secondary);border-radius:var(--border-radius-md);font-size:12px;color:var(--color-text-secondary)}
+.disclaimer-box i{font-size:20px;color:var(--color-text-tertiary);flex-shrink:0}
+.edu-disclaimer{margin-top:16px}
+.btn-row{display:flex;gap:10px}
+.chart-wrap{height:280px}
+.chart-hint{font-size:12px;color:var(--color-text-tertiary);text-align:center;margin-top:6px}
+.hidden{display:none!important}
+.trust-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:12px}
+.trust-item{font-size:12px;color:rgba(255,255,255,.7);display:flex;align-items:center;gap:4px}
+.trust-item i{color:#10B981}
+.wizard-progress{background:var(--color-background-primary);border:.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1.25rem;margin-bottom:1.25rem}
+.progress-steps{display:flex;align-items:center;justify-content:center;margin-bottom:8px}
+.step{display:flex;flex-direction:column;align-items:center;gap:4px}
+.step-dot{width:32px;height:32px;border-radius:50%;background:var(--color-background-tertiary);color:var(--color-text-tertiary);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;transition:all .3s}
+.step span{font-size:11px;color:var(--color-text-tertiary)}
+.step.active .step-dot{background:var(--cat-color);color:#fff}
+.step.active span{color:var(--cat-color);font-weight:500}
+.step.done .step-dot{background:#10B981;color:#fff}
+.step-line{flex:1;height:2px;background:var(--color-border-tertiary);margin:0 8px 20px;min-width:40px}
+.progress-hint{text-align:center;font-size:13px;color:var(--color-text-secondary);margin:0}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:1000;padding:1rem}
+.modal-box{background:var(--color-background-primary);border-radius:var(--border-radius-lg);padding:1.5rem;max-width:480px;width:100%;position:relative;max-height:85vh;overflow-y:auto}
+.modal-close{position:absolute;top:12px;right:12px;background:none;border:none;cursor:pointer;font-size:20px;color:var(--color-text-tertiary)}
+.modal-content{display:flex;flex-direction:column;gap:12px;margin-top:12px}
+.modal-item{padding:12px;background:var(--color-background-secondary);border-radius:var(--border-radius-md)}
+.modal-item p{font-size:13px;color:var(--color-text-secondary);margin:4px 0 0}
+@media (max-width:480px){.kta-hero-inner{flex-direction:column}.relatable-grid{grid-template-columns:repeat(2,1fr)}.bank-row{grid-template-columns:1.5fr .9fr 1.1fr;font-size:12px}.bank-row span:nth-child(3){display:none}.edu-row{grid-template-columns:1fr 1fr;font-size:12px}}
+</style>

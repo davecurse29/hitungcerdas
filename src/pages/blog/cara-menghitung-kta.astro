@@ -1,0 +1,136 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import AdSlot from '../../components/AdSlot.astro';
+
+const today = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'Panduan KTA 2026' }];
+---
+
+<Layout
+  title="Cara Hitung Cicilan KTA 2026 — Bunga, Flat vs Efektif, Tips Approval Lengkap"
+  description="Panduan lengkap KTA 2026: cara hitung cicilan, beda bunga flat/efektif/anuitas, perbandingan 6 bank, dan tips approval. Update setelah BI Rate naik ke 5,5%."
+  keywords={['cara hitung kta', 'simulasi kta 2026', 'bunga kta bank', 'kta bunga terendah', 'flat vs efektif kta']}
+  canonical="https://hitungcerdas.net/blog/cara-menghitung-kta"
+  ogType="article"
+>
+  <section class="article-hero" style="--cat-color:#4F46E5;--cat-color2:#3730A3">
+    <div class="wrap">
+      <Breadcrumb items={bcItems} />
+      <div class="article-tag">KEUANGAN &amp; KREDIT</div>
+      <h1>Cara Hitung Cicilan KTA 2026 dengan Akurat</h1>
+      <div class="article-meta">
+        <span><i class="ti ti-calendar"></i> {today}</span>
+        <span><i class="ti ti-clock"></i> 7 menit baca</span>
+        <span><i class="ti ti-user"></i> Tim HitungCerdas</span>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+
+  <article class="content-section">
+    <div class="wrap-text">
+      <p class="lead">
+        KTA (Kredit Tanpa Agunan) jadi solusi populer untuk dana cepat tanpa jaminan. Tapi banyak yang
+        kaget saat tahu total bunga yang dibayar. Artikel ini mengajarkan cara hitung cicilan KTA
+        dengan benar, beda bunga flat dan efektif, plus perbandingan 6 bank terupdate 2026 setelah
+        <strong>BI Rate naik ke 5,5%</strong>.
+      </p>
+
+      <div class="info-list" style="background:#FEF3C7;padding:16px;border-radius:12px;margin:16px 0">
+        <strong>⚡ Update Juni 2026:</strong> Bank Indonesia menaikkan suku bunga acuan (BI Rate) dari
+        4,75% ke 5,5% akibat kondisi ekonomi yang memburuk. Akibatnya bunga KTA ikut naik — rata-rata
+        kini di kisaran 16-26% efektif per tahun.
+      </div>
+
+      <h2>1. Apa itu KTA?</h2>
+      <p>
+        KTA adalah pinjaman bank yang <strong>tidak memerlukan jaminan aset</strong> seperti rumah atau
+        kendaraan. Karena tanpa agunan, risiko bagi bank lebih besar, sehingga bunganya lebih tinggi
+        dibanding KPR. KTA cocok untuk kebutuhan: modal usaha, biaya pendidikan, renovasi ringan, atau
+        biaya pernikahan.
+      </p>
+
+      <h2>2. Flat vs Efektif vs Anuitas</h2>
+      <p>Ini bagian terpenting yang sering bikin orang salah paham:</p>
+      <ul class="info-list">
+        <li><strong>Bunga Flat</strong>: Dihitung dari pokok awal sepanjang tenor. Cicilan tetap. Angka terlihat kecil (misal 1%/bulan) tapi efektifnya bisa 18-22%/tahun. Umum dipakai KTA.</li>
+        <li><strong>Bunga Efektif</strong>: Dihitung dari sisa pokok. Cicilan bunga mengecil seiring waktu. Lebih adil. Umum dipakai KPR.</li>
+        <li><strong>Bunga Anuitas</strong>: Total cicilan tetap, tapi komposisi pokok-bunga berubah (awal bunga besar, lama-lama pokok besar).</li>
+      </ul>
+
+      <div class="formula-box">
+        <p class="formula"><strong>Cicilan Flat = (Pokok + (Pokok × Bunga × Tahun)) ÷ Jumlah Bulan</strong></p>
+      </div>
+
+      <h2>3. Contoh Perhitungan KTA</h2>
+      <p>Pinjaman Rp 50 juta, tenor 24 bulan, bunga 1%/bulan flat (≈18% efektif):</p>
+      <ul class="info-list">
+        <li><strong>Pokok</strong>: Rp 50.000.000</li>
+        <li><strong>Bunga flat</strong>: Rp 50jt × 12% × 2 tahun = Rp 12.000.000</li>
+        <li><strong>Total bayar</strong>: Rp 62.000.000</li>
+        <li><strong>Cicilan/bulan</strong>: Rp 62jt ÷ 24 = ~Rp 2.583.000</li>
+      </ul>
+
+      <div class="cta-box">
+        <h3>💳 Hitung Cicilan KTA Kamu Sekarang</h3>
+        <p>Pakai kalkulator KTA HitungCerdas — bunga terupdate 2026, bandingkan 6 bank, cek kemampuan bayar (DTI), dan jadwal amortisasi lengkap.</p>
+        <a href="/kalkulator/kta" class="cta-btn">Buka Kalkulator KTA →</a>
+      </div>
+
+      <AdSlot format="horizontal" />
+
+      <h2>4. Perbandingan KTA 6 Bank (Juni 2026)</h2>
+      <ul class="info-list">
+        <li><strong>CIMB Niaga Xtra Dana</strong>: 0,79%/bulan (~16,5% efektif) — terendah, plafon Rp 300jt</li>
+        <li><strong>BCA Personal Loan</strong>: 0,88%/bulan (~18,2%) — butuh kartu kredit/payroll BCA</li>
+        <li><strong>Mandiri KSM</strong>: 0,95%/bulan (~19,5%) — terbaik untuk nasabah payroll</li>
+        <li><strong>BNI Flexi</strong>: 1,05%/bulan (~21,3%) — plafon tertinggi Rp 500jt</li>
+        <li><strong>BRI Briguna</strong>: 1,15%/bulan (~23%) — jaringan cabang terluas</li>
+        <li><strong>Danamon</strong>: 1,35%/bulan (~26,5%) — proses cepat</li>
+      </ul>
+      <p><em>*Bunga aktual tergantung profil kredit (SLIK OJK), penghasilan, dan status nasabah.</em></p>
+
+      <h2>5. Cara DTI Menentukan Approval</h2>
+      <p>
+        Bank cek <strong>Debt-to-Income Ratio (DTI)</strong> = total cicilan ÷ penghasilan. Bank Indonesia
+        menyarankan DTI maksimal 30%. Jika DTI kamu di atas 40%, kemungkinan besar ditolak. Pastikan
+        total cicilan (termasuk KTA baru) tidak melebihi 30% gaji.
+      </p>
+
+      <h2>6. Tips Approval KTA</h2>
+      <ul class="tips-list">
+        <li>Jaga DTI di bawah 30%</li>
+        <li>Pastikan riwayat kredit bersih (cek SLIK OJK)</li>
+        <li>Siapkan slip gaji 3 bulan terakhir</li>
+        <li>Masa kerja minimal 1 tahun</li>
+        <li>Jadi nasabah payroll untuk bunga lebih rendah</li>
+        <li>Jangan ajukan banyak bank sekaligus</li>
+      </ul>
+
+      <h2>Kesimpulan</h2>
+      <p>
+        KTA bisa jadi solusi dana cepat jika digunakan untuk hal produktif dan kemampuan bayar terjaga.
+        Selalu bandingkan bunga efektif (bukan flat) antar bank, dan pastikan DTI sehat. Gunakan
+        <a href="/kalkulator/kta">kalkulator KTA</a> untuk simulasi akurat sebelum mengajukan.
+      </p>
+
+      <div class="info-list" style="background:#F1F5F9;padding:16px;border-radius:12px;margin-top:24px;font-size:13px;color:#64748B">
+        <strong>⚠️ Disclaimer:</strong> Artikel ini bersifat edukatif. Angka bunga adalah estimasi per
+        Juni 2026 dan dapat berubah. HitungCerdas tidak berafiliasi dengan bank manapun dan tidak
+        menerima komisi. Keputusan kredit sepenuhnya tanggung jawab pembaca. Konsultasikan ke bank resmi
+        sebelum mengambil keputusan finansial.
+      </div>
+
+      <div class="related-tools" style="margin-top:24px">
+        <h3>🔗 Kalkulator Terkait</h3>
+        <ul class="info-list">
+          <li><a href="/kalkulator/kta">Kalkulator KTA</a> — simulasi cicilan lengkap</li>
+          <li><a href="/kalkulator/dana-darurat">Kalkulator Dana Darurat</a> — siapkan sebelum berutang</li>
+          <li><a href="/kalkulator/pinjol-legal">Kalkulator Pinjol Legal</a> — bandingkan dengan pinjol</li>
+        </ul>
+      </div>
+    </div>
+  </article>
+</Layout>
