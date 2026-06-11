@@ -2,10 +2,24 @@
 import Layout from '../../layouts/Layout.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import AdSlot from '../../components/AdSlot.astro';
-const today = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+import ArticleSchema from '../../components/ArticleSchema.astro';
+const datePublished = '2026-06-08';
+const dateModified = '2026-06-11';
+const today = new Date(datePublished).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
 const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'Cara Hitung Zakat Mal' }];
 ---
 <Layout title="Cara Hitung Zakat Mal 2026 — Emas, Tabungan, Investasi (Nisab 85 gr Emas)" description="Panduan zakat mal: nisab 85 gr emas, haul 1 tahun, tarif 2.5%. Plus simulasi zakat tabungan, investasi, emas, properti." keywords={['cara hitung zakat mal', 'zakat mal 2026', 'nisab zakat 85 gram emas', 'zakat tabungan', 'zakat investasi']} canonical="https://hitungcerdas.net/blog/cara-hitung-zakat-mal" ogType="article">
+  <ArticleSchema
+    headline="Cara Hitung Zakat Mal 2026 — Emas, Tabungan, Investasi (Nisab 85 gr Emas)"
+    description="Panduan zakat mal: nisab 85 gr emas, haul 1 tahun, tarif 2.5%. Plus simulasi zakat tabungan, investasi, emas, properti."
+    datePublished={datePublished}
+    dateModified={dateModified}
+    slug="cara-hitung-zakat-mal"
+    articleSection="Zakat"
+    keywords={['cara hitung zakat mal', 'zakat mal 2026', 'nisab zakat 85 gram emas', 'zakat tabungan', 'zakat investasi']}
+    wordCount={500}
+  />
+
   <section class="article-hero" style="--cat-color:#D97706;--cat-color2:#92400E">
     <div class="wrap"><Breadcrumb items={bcItems} /><div class="article-tag">ZAKAT</div>
       <h1>Cara Hitung Zakat Mal 2026: Emas, Tabungan, Investasi (Nisab 85 gr Emas)</h1>

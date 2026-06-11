@@ -2,10 +2,24 @@
 import Layout from '../../layouts/Layout.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import AdSlot from '../../components/AdSlot.astro';
-const today = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+import ArticleSchema from '../../components/ArticleSchema.astro';
+const datePublished = '2026-06-08';
+const dateModified = '2026-06-11';
+const today = new Date(datePublished).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
 const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'Cara Hitung Fidyah' }];
 ---
 <Layout title="Cara Hitung Fidyah Ramadan 2026 — Hamil, Menyusui, Sakit Permanen, Lansia" description="Panduan fidyah ganti puasa: takaran 1 mud (~7.5 ons) per hari, tunai. Untuk ibu hamil, menyusui, sakit permanen, lansia." keywords={['cara hitung fidyah', 'fidyah ramadan 2026', 'fidyah ibu hamil', 'fidyah menyusui', 'fidyah lansia']} canonical="https://hitungcerdas.net/blog/cara-hitung-fidyah-ramadan" ogType="article">
+  <ArticleSchema
+    headline="Cara Hitung Fidyah Ramadan 2026 — Hamil, Menyusui, Sakit Permanen, Lansia"
+    description="Panduan fidyah ganti puasa: takaran 1 mud (~7.5 ons) per hari, tunai. Untuk ibu hamil, menyusui, sakit permanen, lansia."
+    datePublished={datePublished}
+    dateModified={dateModified}
+    slug="cara-hitung-fidyah-ramadan"
+    articleSection="Ibadah"
+    keywords={['cara hitung fidyah', 'fidyah ramadan 2026', 'fidyah ibu hamil', 'fidyah menyusui', 'fidyah lansia']}
+    wordCount={400}
+  />
+
   <section class="article-hero" style="--cat-color:#7C3AED;--cat-color2:#5B21B6">
     <div class="wrap"><Breadcrumb items={bcItems} /><div class="article-tag">IBADAH</div>
       <h1>Cara Hitung Fidyah Ramadan 2026 (Hamil, Menyusui, Sakit Permanen)</h1>

@@ -2,8 +2,11 @@
 import Layout from '../../layouts/Layout.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import AdSlot from '../../components/AdSlot.astro';
+import ArticleSchema from '../../components/ArticleSchema.astro';
 
-const today = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+const datePublished = '2026-06-08';
+const dateModified = '2026-06-11';
+const today = new Date(datePublished).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
 const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'Cara Menghitung Gaji Bersih' }];
 ---
 
@@ -14,6 +17,17 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog'
   canonical="https://hitungcerdas.net/blog/cara-menghitung-gaji-bersih"
   ogType="article"
 >
+  <ArticleSchema
+    headline="Cara Hitung Gaji Bersih Take-Home Pay 2026 — BPJS, PPh 21, Potongan Lengkap"
+    description="Panduan lengkap cara hitung gaji bersih karyawan 2026: deduksi BPJS Kesehatan + Ketenagakerjaan, PPh 21, dan potongan lain. Plus simulasi gaji Rp 5jt-Rp 25jt."
+    datePublished={datePublished}
+    dateModified={dateModified}
+    slug="cara-menghitung-gaji-bersih"
+    articleSection="Gaji"
+    keywords={['cara hitung gaji bersih', 'take home pay karyawan', 'bpjs kesehatan ketenagakerjaan', 'potongan gaji 2026', 'gaji netto']}
+    wordCount={700}
+  />
+
   <section class="article-hero" style="--cat-color:#059669;--cat-color2:#047857">
     <div class="wrap">
       <Breadcrumb items={bcItems} />

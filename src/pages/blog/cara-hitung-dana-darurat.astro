@@ -2,8 +2,11 @@
 import Layout from '../../layouts/Layout.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import AdSlot from '../../components/AdSlot.astro';
+import ArticleSchema from '../../components/ArticleSchema.astro';
 
-const today = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+const datePublished = '2026-06-08';
+const dateModified = '2026-06-11';
+const today = new Date(datePublished).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
 const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'Panduan Dana Darurat' }];
 ---
 
@@ -14,6 +17,17 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog'
   canonical="https://hitungcerdas.net/blog/cara-hitung-dana-darurat"
   ogType="article"
 >
+  <ArticleSchema
+    headline="Cara Hitung Dana Darurat Ideal 2026 — Berapa Kali Gaji & Cara Menabungnya"
+    description="Panduan lengkap dana darurat: berapa idealnya (3-12x pengeluaran), cara menghitung sesuai status & pekerjaan, di mana menyimpannya, dan strategi menabung cepat."
+    datePublished={datePublished}
+    dateModified={dateModified}
+    slug="cara-hitung-dana-darurat"
+    articleSection="Keuangan"
+    keywords={['dana darurat', 'cara hitung dana darurat', 'berapa dana darurat ideal', 'dana darurat berapa kali gaji', 'cara nabung dana darurat']}
+    wordCount={500}
+  />
+
   <section class="article-hero" style="--cat-color:#F59E0B;--cat-color2:#D97706">
     <div class="wrap">
       <Breadcrumb items={bcItems} />

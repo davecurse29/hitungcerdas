@@ -2,10 +2,24 @@
 import Layout from '../../layouts/Layout.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import AdSlot from '../../components/AdSlot.astro';
-const today = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+import ArticleSchema from '../../components/ArticleSchema.astro';
+const datePublished = '2026-06-08';
+const dateModified = '2026-06-11';
+const today = new Date(datePublished).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
 const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'Cara Hitung Zakat Penghasilan' }];
 ---
 <Layout title="Cara Hitung Zakat Penghasilan 2.5% — Karyawan, Profesional 2026" description="Panduan zakat penghasilan karyawan: rumus 2.5%, nisab tahunan setara 85 gr emas, contoh gaji Rp 5-25 juta. Plus pendapat ulama bruto vs neto." keywords={['cara hitung zakat penghasilan', 'zakat profesi 2.5', 'nisab zakat penghasilan', 'zakat gaji karyawan', 'zakat penghasilan bulanan']} canonical="https://hitungcerdas.net/blog/cara-hitung-zakat-penghasilan" ogType="article">
+  <ArticleSchema
+    headline="Cara Hitung Zakat Penghasilan 2.5% — Karyawan, Profesional 2026"
+    description="Panduan zakat penghasilan karyawan: rumus 2.5%, nisab tahunan setara 85 gr emas, contoh gaji Rp 5-25 juta. Plus pendapat ulama bruto vs neto."
+    datePublished={datePublished}
+    dateModified={dateModified}
+    slug="cara-hitung-zakat-penghasilan"
+    articleSection="Zakat"
+    keywords={['cara hitung zakat penghasilan', 'zakat profesi 2.5', 'nisab zakat penghasilan', 'zakat gaji karyawan', 'zakat penghasilan bulanan']}
+    wordCount={500}
+  />
+
   <section class="article-hero" style="--cat-color:#0891B2;--cat-color2:#0E7490">
     <div class="wrap"><Breadcrumb items={bcItems} /><div class="article-tag">ZAKAT</div>
       <h1>Cara Hitung Zakat Penghasilan 2.5% untuk Karyawan & Profesional</h1>

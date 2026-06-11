@@ -2,10 +2,24 @@
 import Layout from '../../layouts/Layout.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import AdSlot from '../../components/AdSlot.astro';
-const today = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+import ArticleSchema from '../../components/ArticleSchema.astro';
+const datePublished = '2026-06-08';
+const dateModified = '2026-06-11';
+const today = new Date(datePublished).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
 const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'Simulasi Kredit Motor' }];
 ---
 <Layout title="Cara Simulasi Kredit Motor 2026 — Total Cost of Ownership Lengkap" description="Panduan simulasi kredit motor: cicilan, BBM, servis, asuransi, pajak (TCO). Plus tips memilih tenor & DP optimal." keywords={['simulasi kredit motor', 'cicilan motor honda yamaha', 'tco motor', 'kredit motor 36 bulan', 'kalkulator motor']} canonical="https://hitungcerdas.net/blog/simulasi-kredit-motor" ogType="article">
+  <ArticleSchema
+    headline="Cara Simulasi Kredit Motor 2026 — Total Cost of Ownership Lengkap"
+    description="Panduan simulasi kredit motor: cicilan, BBM, servis, asuransi, pajak (TCO). Plus tips memilih tenor & DP optimal."
+    datePublished={datePublished}
+    dateModified={dateModified}
+    slug="simulasi-kredit-motor"
+    articleSection="Keuangan"
+    keywords={['simulasi kredit motor', 'cicilan motor honda yamaha', 'tco motor', 'kredit motor 36 bulan', 'kalkulator motor']}
+    wordCount={400}
+  />
+
   <section class="article-hero" style="--cat-color:#7C3AED;--cat-color2:#5B21B6">
     <div class="wrap"><Breadcrumb items={bcItems} /><div class="article-tag">KREDIT</div>
       <h1>Cara Simulasi Kredit Motor 2026 + Total Cost of Ownership (TCO)</h1>

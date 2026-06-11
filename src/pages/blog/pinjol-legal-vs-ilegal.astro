@@ -2,8 +2,11 @@
 import Layout from '../../layouts/Layout.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import AdSlot from '../../components/AdSlot.astro';
+import ArticleSchema from '../../components/ArticleSchema.astro';
 
-const today = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+const datePublished = '2026-06-08';
+const dateModified = '2026-06-11';
+const today = new Date(datePublished).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
 const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'Pinjol Legal vs Ilegal 2026' }];
 ---
 
@@ -14,6 +17,17 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog'
   canonical="https://hitungcerdas.net/blog/pinjol-legal-vs-ilegal"
   ogType="article"
 >
+  <ArticleSchema
+    headline="Pinjol Legal vs Ilegal 2026 — Cara Cek OJK, Batas Bunga, & Hindari Debt Trap"
+    description="Panduan lengkap pinjol 2026: cara bedakan legal vs ilegal, aturan bunga OJK terbaru (maks 0,1%/hari + Lock Cap 100%), cara cek legalitas, dan hindari jeratan utang."
+    datePublished={datePublished}
+    dateModified={dateModified}
+    slug="pinjol-legal-vs-ilegal"
+    articleSection="Keuangan"
+    keywords={['pinjol legal ojk 2026', 'cek pinjol legal', 'bunga pinjol ojk', 'pinjol ilegal', 'debt trap pinjol']}
+    wordCount={600}
+  />
+
   <section class="article-hero" style="--cat-color:#DC2626;--cat-color2:#B91C1C">
     <div class="wrap">
       <Breadcrumb items={bcItems} />

@@ -2,10 +2,24 @@
 import Layout from '../../layouts/Layout.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import AdSlot from '../../components/AdSlot.astro';
-const today = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+import ArticleSchema from '../../components/ArticleSchema.astro';
+const datePublished = '2026-06-08';
+const dateModified = '2026-06-11';
+const today = new Date(datePublished).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
 const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'Cara Menghitung Margin' }];
 ---
 <Layout title="Cara Hitung Margin Profit & Markup untuk UMKM 2026 — Rumus Lengkap" description="Panduan margin untuk UMKM: beda gross margin vs markup, rumus, contoh kasus baju, kuliner, dan jasa. Plus kalkulator margin gratis Indonesia." keywords={['cara hitung margin', 'margin profit umkm', 'markup vs margin', 'gross margin', 'kalkulator margin']} canonical="https://hitungcerdas.net/blog/cara-menghitung-margin" ogType="article">
+  <ArticleSchema
+    headline="Cara Hitung Margin Profit & Markup untuk UMKM 2026 — Rumus Lengkap"
+    description="Panduan margin untuk UMKM: beda gross margin vs markup, rumus, contoh kasus baju, kuliner, dan jasa. Plus kalkulator margin gratis Indonesia."
+    datePublished={datePublished}
+    dateModified={dateModified}
+    slug="cara-menghitung-margin"
+    articleSection="UMKM"
+    keywords={['cara hitung margin', 'margin profit umkm', 'markup vs margin', 'gross margin', 'kalkulator margin']}
+    wordCount={500}
+  />
+
   <section class="article-hero" style="--cat-color:#10B981;--cat-color2:#047857">
     <div class="wrap"><Breadcrumb items={bcItems} /><div class="article-tag">UMKM</div>
       <h1>Cara Hitung Margin Profit &amp; Markup untuk UMKM 2026</h1>

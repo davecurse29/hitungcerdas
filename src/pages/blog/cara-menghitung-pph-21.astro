@@ -2,8 +2,11 @@
 import Layout from '../../layouts/Layout.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import AdSlot from '../../components/AdSlot.astro';
+import ArticleSchema from '../../components/ArticleSchema.astro';
 
-const today = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+const datePublished = '2026-06-08';
+const dateModified = '2026-06-11';
+const today = new Date(datePublished).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
 const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'Cara Menghitung PPh 21' }];
 ---
 
@@ -14,6 +17,17 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog'
   canonical="https://hitungcerdas.net/blog/cara-menghitung-pph-21"
   ogType="article"
 >
+  <ArticleSchema
+    headline="Cara Hitung PPh 21 Karyawan UU HPP 2026 — Tarif Progresif, PTKP, Contoh Lengkap"
+    description="Panduan lengkap hitung PPh 21 karyawan sesuai UU HPP 2026: 5 lapisan tarif progresif (5%-35%), PTKP terbaru, biaya jabatan, BPJS, contoh karyawan gaji Rp 8jt, Rp 15jt, Rp 25jt."
+    datePublished={datePublished}
+    dateModified={dateModified}
+    slug="cara-menghitung-pph-21"
+    articleSection="Pajak"
+    keywords={['cara hitung pph 21', 'pph 21 uu hpp 2026', 'tarif pajak progresif', 'ptkp 2026', 'pajak penghasilan karyawan']}
+    wordCount={800}
+  />
+
   <section class="article-hero" style="--cat-color:#DC2626;--cat-color2:#991B1B">
     <div class="wrap">
       <Breadcrumb items={bcItems} />

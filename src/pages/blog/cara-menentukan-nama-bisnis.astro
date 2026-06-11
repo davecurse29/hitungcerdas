@@ -2,10 +2,24 @@
 import Layout from '../../layouts/Layout.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import AdSlot from '../../components/AdSlot.astro';
-const today = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+import ArticleSchema from '../../components/ArticleSchema.astro';
+const datePublished = '2026-06-08';
+const dateModified = '2026-06-11';
+const today = new Date(datePublished).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
 const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'Cara Menentukan Nama Bisnis' }];
 ---
 <Layout title="Cara Menentukan Nama Bisnis Catchy yang Menjual — Panduan UMKM 2026" description="Panduan nama bisnis: 5 formula (deskriptif, akronim, founder, eponymous, abstract), cek domain & medsos, plus tools generator gratis." keywords={['cara menentukan nama bisnis', 'nama bisnis catchy', 'nama brand umkm', 'naming strategy', 'business name generator']} canonical="https://hitungcerdas.net/blog/cara-menentukan-nama-bisnis" ogType="article">
+  <ArticleSchema
+    headline="Cara Menentukan Nama Bisnis Catchy yang Menjual — Panduan UMKM 2026"
+    description="Panduan nama bisnis: 5 formula (deskriptif, akronim, founder, eponymous, abstract), cek domain & medsos, plus tools generator gratis."
+    datePublished={datePublished}
+    dateModified={dateModified}
+    slug="cara-menentukan-nama-bisnis"
+    articleSection="UMKM"
+    keywords={['cara menentukan nama bisnis', 'nama bisnis catchy', 'nama brand umkm', 'naming strategy', 'business name generator']}
+    wordCount={500}
+  />
+
   <section class="article-hero" style="--cat-color:#8B5CF6;--cat-color2:#6D28D9">
     <div class="wrap"><Breadcrumb items={bcItems} /><div class="article-tag">BISNIS</div>
       <h1>Cara Menentukan Nama Bisnis Catchy yang Menjual</h1>

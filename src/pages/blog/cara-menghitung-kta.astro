@@ -2,8 +2,11 @@
 import Layout from '../../layouts/Layout.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import AdSlot from '../../components/AdSlot.astro';
+import ArticleSchema from '../../components/ArticleSchema.astro';
 
-const today = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+const datePublished = '2026-06-08';
+const dateModified = '2026-06-11';
+const today = new Date(datePublished).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
 const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'Panduan KTA 2026' }];
 ---
 
@@ -14,6 +17,17 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog'
   canonical="https://hitungcerdas.net/blog/cara-menghitung-kta"
   ogType="article"
 >
+  <ArticleSchema
+    headline="Cara Hitung Cicilan KTA 2026 — Bunga, Flat vs Efektif, Tips Approval Lengkap"
+    description="Panduan lengkap KTA 2026: cara hitung cicilan, beda bunga flat/efektif/anuitas, perbandingan 6 bank, dan tips approval. Update setelah BI Rate naik ke 5,5%."
+    datePublished={datePublished}
+    dateModified={dateModified}
+    slug="cara-menghitung-kta"
+    articleSection="Keuangan"
+    keywords={['cara hitung kta', 'simulasi kta 2026', 'bunga kta bank', 'kta bunga terendah', 'flat vs efektif kta']}
+    wordCount={600}
+  />
+
   <section class="article-hero" style="--cat-color:#4F46E5;--cat-color2:#3730A3">
     <div class="wrap">
       <Breadcrumb items={bcItems} />

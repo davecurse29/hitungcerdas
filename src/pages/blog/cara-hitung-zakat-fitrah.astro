@@ -2,10 +2,24 @@
 import Layout from '../../layouts/Layout.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import AdSlot from '../../components/AdSlot.astro';
-const today = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+import ArticleSchema from '../../components/ArticleSchema.astro';
+const datePublished = '2026-06-08';
+const dateModified = '2026-06-11';
+const today = new Date(datePublished).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
 const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'Cara Hitung Zakat Fitrah' }];
 ---
 <Layout title="Cara Hitung Zakat Fitrah 2026 — Beras 2.5 kg per Jiwa, Tunai, Sekeluarga" description="Panduan zakat fitrah Indonesia: takaran beras 2.5 kg/3.5 liter, konversi tunai sesuai harga beras lokal, kapan & ke mana bayar, dasar hukum." keywords={['cara hitung zakat fitrah', 'zakat fitrah 2026', 'zakat fitrah keluarga', 'takaran zakat fitrah beras', 'zakat fitrah tunai']} canonical="https://hitungcerdas.net/blog/cara-hitung-zakat-fitrah" ogType="article">
+  <ArticleSchema
+    headline="Cara Hitung Zakat Fitrah 2026 — Beras 2.5 kg per Jiwa, Tunai, Sekeluarga"
+    description="Panduan zakat fitrah Indonesia: takaran beras 2.5 kg/3.5 liter, konversi tunai sesuai harga beras lokal, kapan & ke mana bayar, dasar hukum."
+    datePublished={datePublished}
+    dateModified={dateModified}
+    slug="cara-hitung-zakat-fitrah"
+    articleSection="Zakat"
+    keywords={['cara hitung zakat fitrah', 'zakat fitrah 2026', 'zakat fitrah keluarga', 'takaran zakat fitrah beras', 'zakat fitrah tunai']}
+    wordCount={400}
+  />
+
   <section class="article-hero" style="--cat-color:#059669;--cat-color2:#047857">
     <div class="wrap"><Breadcrumb items={bcItems} /><div class="article-tag">ZAKAT</div>
       <h1>Cara Hitung Zakat Fitrah 2026 untuk Keluarga (Beras 2.5 kg/jiwa)</h1>

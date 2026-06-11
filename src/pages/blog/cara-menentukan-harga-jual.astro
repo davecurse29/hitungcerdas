@@ -2,10 +2,24 @@
 import Layout from '../../layouts/Layout.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import AdSlot from '../../components/AdSlot.astro';
-const today = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+import ArticleSchema from '../../components/ArticleSchema.astro';
+const datePublished = '2026-06-08';
+const dateModified = '2026-06-11';
+const today = new Date(datePublished).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
 const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'Cara Menentukan Harga Jual' }];
 ---
 <Layout title="Cara Menentukan Harga Jual Produk UMKM 2026 — Strategi Profitable" description="Panduan menentukan harga jual produk UMKM: rumus cost-plus, value-based, competitor-based, dan psychological pricing. Plus 3 contoh kasus UMKM." keywords={['cara menentukan harga jual', 'harga jual produk umkm', 'cost plus pricing', 'value based pricing', 'strategi harga umkm']} canonical="https://hitungcerdas.net/blog/cara-menentukan-harga-jual" ogType="article">
+  <ArticleSchema
+    headline="Cara Menentukan Harga Jual Produk UMKM 2026 — Strategi Profitable"
+    description="Panduan menentukan harga jual produk UMKM: rumus cost-plus, value-based, competitor-based, dan psychological pricing. Plus 3 contoh kasus UMKM."
+    datePublished={datePublished}
+    dateModified={dateModified}
+    slug="cara-menentukan-harga-jual"
+    articleSection="UMKM"
+    keywords={['cara menentukan harga jual', 'harga jual produk umkm', 'cost plus pricing', 'value based pricing', 'strategi harga umkm']}
+    wordCount={500}
+  />
+
   <section class="article-hero" style="--cat-color:#EC4899;--cat-color2:#9D174D">
     <div class="wrap"><Breadcrumb items={bcItems} /><div class="article-tag">UMKM</div>
       <h1>Cara Menentukan Harga Jual Produk UMKM 2026 — Strategi Profitable</h1>

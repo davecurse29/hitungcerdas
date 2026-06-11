@@ -2,10 +2,24 @@
 import Layout from '../../layouts/Layout.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import AdSlot from '../../components/AdSlot.astro';
-const today = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+import ArticleSchema from '../../components/ArticleSchema.astro';
+const datePublished = '2026-06-08';
+const dateModified = '2026-06-11';
+const today = new Date(datePublished).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
 const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'Caption Jualan Generator' }];
 ---
 <Layout title="Cara Bikin Caption Jualan Menarik di Instagram, TikTok, Marketplace 2026" description="Panduan caption jualan: 5 formula AIDA, hook, CTA. Plus contoh untuk fashion, F&B, jasa, dan template gratis." keywords={['caption jualan menarik', 'caption instagram jualan', 'caption tiktok marketing', 'copywriting umkm', 'caption marketplace']} canonical="https://hitungcerdas.net/blog/cara-bikin-caption-jualan" ogType="article">
+  <ArticleSchema
+    headline="Cara Bikin Caption Jualan Menarik di Instagram, TikTok, Marketplace 2026"
+    description="Panduan caption jualan: 5 formula AIDA, hook, CTA. Plus contoh untuk fashion, F&B, jasa, dan template gratis."
+    datePublished={datePublished}
+    dateModified={dateModified}
+    slug="cara-bikin-caption-jualan"
+    articleSection="Marketing"
+    keywords={['caption jualan menarik', 'caption instagram jualan', 'caption tiktok marketing', 'copywriting umkm', 'caption marketplace']}
+    wordCount={400}
+  />
+
   <section class="article-hero" style="--cat-color:#F43F5E;--cat-color2:#9F1239">
     <div class="wrap"><Breadcrumb items={bcItems} /><div class="article-tag">MARKETING</div>
       <h1>Cara Bikin Caption Jualan Menarik di Marketplace 2026</h1>

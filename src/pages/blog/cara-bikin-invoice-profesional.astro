@@ -2,10 +2,24 @@
 import Layout from '../../layouts/Layout.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import AdSlot from '../../components/AdSlot.astro';
-const today = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+import ArticleSchema from '../../components/ArticleSchema.astro';
+const datePublished = '2026-06-08';
+const dateModified = '2026-06-11';
+const today = new Date(datePublished).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
 const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'Cara Bikin Invoice Profesional' }];
 ---
 <Layout title="Cara Bikin Invoice Profesional untuk UMKM 2026 — Template & Tools Gratis" description="Panduan invoice UMKM: komponen wajib, format profesional, NPWP, signature, plus invoice generator online gratis Indonesia." keywords={['cara bikin invoice', 'invoice generator gratis', 'template invoice umkm', 'invoice digital indonesia', 'faktur pajak']} canonical="https://hitungcerdas.net/blog/cara-bikin-invoice-profesional" ogType="article">
+  <ArticleSchema
+    headline="Cara Bikin Invoice Profesional untuk UMKM 2026 — Template & Tools Gratis"
+    description="Panduan invoice UMKM: komponen wajib, format profesional, NPWP, signature, plus invoice generator online gratis Indonesia."
+    datePublished={datePublished}
+    dateModified={dateModified}
+    slug="cara-bikin-invoice-profesional"
+    articleSection="UMKM"
+    keywords={['cara bikin invoice', 'invoice generator gratis', 'template invoice umkm', 'invoice digital indonesia', 'faktur pajak']}
+    wordCount={400}
+  />
+
   <section class="article-hero" style="--cat-color:#0EA5E9;--cat-color2:#0369A1">
     <div class="wrap"><Breadcrumb items={bcItems} /><div class="article-tag">BISNIS</div>
       <h1>Cara Bikin Invoice Profesional untuk UMKM 2026 — Template + Tools Gratis</h1>

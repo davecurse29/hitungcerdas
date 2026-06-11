@@ -2,10 +2,24 @@
 import Layout from '../../layouts/Layout.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import AdSlot from '../../components/AdSlot.astro';
-const today = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+import ArticleSchema from '../../components/ArticleSchema.astro';
+const datePublished = '2026-06-08';
+const dateModified = '2026-06-11';
+const today = new Date(datePublished).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
 const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'Cara Menghitung Dana Haji' }];
 ---
 <Layout title="Cara Hitung Dana Haji 10-20 Tahun — Tabungan Bulanan Sampai Bisa Berangkat" description="Panduan tabungan dana haji & umrah: estimasi biaya 2026, target tabungan bulanan, simulasi 10-20 tahun, BPIH terbaru. Plus kalkulator dana haji gratis." keywords={['cara hitung dana haji', 'tabungan haji bulanan', 'bpih 2026', 'dana umrah', 'biaya haji indonesia']} canonical="https://hitungcerdas.net/blog/cara-menghitung-dana-haji" ogType="article">
+  <ArticleSchema
+    headline="Cara Hitung Dana Haji 10-20 Tahun — Tabungan Bulanan Sampai Bisa Berangkat"
+    description="Panduan tabungan dana haji & umrah: estimasi biaya 2026, target tabungan bulanan, simulasi 10-20 tahun, BPIH terbaru. Plus kalkulator dana haji gratis."
+    datePublished={datePublished}
+    dateModified={dateModified}
+    slug="cara-menghitung-dana-haji"
+    articleSection="Haji"
+    keywords={['cara hitung dana haji', 'tabungan haji bulanan', 'bpih 2026', 'dana umrah', 'biaya haji indonesia']}
+    wordCount={400}
+  />
+
   <section class="article-hero" style="--cat-color:#6D28D9;--cat-color2:#5B21B6">
     <div class="wrap"><Breadcrumb items={bcItems} /><div class="article-tag">IBADAH</div>
       <h1>Cara Hitung Dana Haji 10-20 Tahun: Tabungan Bulanan Sampai Berangkat</h1>

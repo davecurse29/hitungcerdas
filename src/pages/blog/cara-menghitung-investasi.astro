@@ -2,8 +2,11 @@
 import Layout from '../../layouts/Layout.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import AdSlot from '../../components/AdSlot.astro';
+import ArticleSchema from '../../components/ArticleSchema.astro';
 
-const today = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+const datePublished = '2026-06-08';
+const dateModified = '2026-06-11';
+const today = new Date(datePublished).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
 const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'Cara Menghitung Investasi' }];
 ---
 
@@ -14,6 +17,17 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog'
   canonical="https://hitungcerdas.net/blog/cara-menghitung-investasi"
   ogType="article"
 >
+  <ArticleSchema
+    headline="Cara Hitung Investasi 2026 — Compound Interest, Top-Up Bulanan, Simulasi 10 Tahun"
+    description="Panduan investasi pemula: rumus compound interest, simulasi reksa dana & saham, top-up bulanan, dampak inflasi. Plus kalkulator investasi gratis Indonesia."
+    datePublished={datePublished}
+    dateModified={dateModified}
+    slug="cara-menghitung-investasi"
+    articleSection="Investasi"
+    keywords={['cara hitung investasi', 'compound interest indonesia', 'investasi reksa dana', 'simulasi investasi 10 tahun', 'top up bulanan']}
+    wordCount={600}
+  />
+
   <section class="article-hero" style="--cat-color:#10B981;--cat-color2:#047857">
     <div class="wrap">
       <Breadcrumb items={bcItems} />

@@ -2,10 +2,24 @@
 import Layout from '../../layouts/Layout.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import AdSlot from '../../components/AdSlot.astro';
-const today = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+import ArticleSchema from '../../components/ArticleSchema.astro';
+const datePublished = '2026-06-08';
+const dateModified = '2026-06-11';
+const today = new Date(datePublished).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
 const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'Panduan Warisan Faraidh' }];
 ---
 <Layout title="Cara Hitung Warisan Faraidh Sesuai Hukum Islam — Panduan Lengkap 2026" description="Panduan lengkap cara hitung warisan faraidh sesuai hukum Islam: dasar Al-Quran, bagian ahli waris, contoh kasus istri + 4 anak. Plus kalkulator faraidh online." keywords={['cara hitung warisan faraidh', 'pembagian warisan islam', 'hukum waris islam', 'faraidh online', 'pembagian harta islam']} canonical="https://hitungcerdas.net/blog/panduan-warisan-faraidh" ogType="article">
+  <ArticleSchema
+    headline="Cara Hitung Warisan Faraidh Sesuai Hukum Islam — Panduan Lengkap 2026"
+    description="Panduan lengkap cara hitung warisan faraidh sesuai hukum Islam: dasar Al-Quran, bagian ahli waris, contoh kasus istri + 4 anak. Plus kalkulator faraidh online."
+    datePublished={datePublished}
+    dateModified={dateModified}
+    slug="panduan-warisan-faraidh"
+    articleSection="Faraidh"
+    keywords={['cara hitung warisan faraidh', 'pembagian warisan islam', 'hukum waris islam', 'faraidh online', 'pembagian harta islam']}
+    wordCount={500}
+  />
+
   <section class="article-hero" style="--cat-color:#DC2626;--cat-color2:#991B1B">
     <div class="wrap"><Breadcrumb items={bcItems} /><div class="article-tag">FARAIDH</div>
       <h1>Cara Hitung Warisan Faraidh Sesuai Hukum Islam — Panduan Lengkap</h1>

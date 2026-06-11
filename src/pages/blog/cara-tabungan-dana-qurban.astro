@@ -2,10 +2,24 @@
 import Layout from '../../layouts/Layout.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import AdSlot from '../../components/AdSlot.astro';
-const today = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+import ArticleSchema from '../../components/ArticleSchema.astro';
+const datePublished = '2026-06-08';
+const dateModified = '2026-06-11';
+const today = new Date(datePublished).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
 const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'Cara Tabungan Dana Qurban' }];
 ---
 <Layout title="Cara Tabungan Dana Qurban 2026 — Kambing & Sapi (Berapa Nabung/Bulan?)" description="Panduan tabungan dana qurban kambing & sapi: estimasi harga 2026, simulasi tabungan bulanan 1-3 tahun, tips pilih hewan qurban." keywords={['cara tabungan dana qurban', 'harga kambing qurban 2026', 'harga sapi qurban', 'tabungan qurban bulanan', 'dana qurban patungan']} canonical="https://hitungcerdas.net/blog/cara-tabungan-dana-qurban" ogType="article">
+  <ArticleSchema
+    headline="Cara Tabungan Dana Qurban 2026 — Kambing & Sapi (Berapa Nabung/Bulan?)"
+    description="Panduan tabungan dana qurban kambing & sapi: estimasi harga 2026, simulasi tabungan bulanan 1-3 tahun, tips pilih hewan qurban."
+    datePublished={datePublished}
+    dateModified={dateModified}
+    slug="cara-tabungan-dana-qurban"
+    articleSection="Qurban"
+    keywords={['cara tabungan dana qurban', 'harga kambing qurban 2026', 'harga sapi qurban', 'tabungan qurban bulanan', 'dana qurban patungan']}
+    wordCount={500}
+  />
+
   <section class="article-hero" style="--cat-color:#047857;--cat-color2:#065F46">
     <div class="wrap"><Breadcrumb items={bcItems} /><div class="article-tag">QURBAN</div>
       <h1>Cara Tabungan Dana Qurban 2026: Kambing & Sapi Berapa Nabung/Bulan?</h1>
