@@ -1,535 +1,344 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
+import FAQ from '../../components/FAQ.astro';
 import AdSlot from '../../components/AdSlot.astro';
+import CalculatorCard from '../../components/CalculatorCard.astro';
+import { getCalculatorBySlug, getRelatedCalculators } from '../../data/calculators';
 
-const title = "Kalkulator Pinjol Legal 2026 - Hitung Biaya Sebenarnya + Aturan OJK";
-const description = "Hitung biaya pinjaman online sebenarnya sesuai aturan OJK 2026: bunga max 0,1%/hari, Lock Cap 100%, APR transparan, simulasi keterlambatan, debt trap warning. Bandingkan pinjol legal & cek OJK.";
-const breadcrumbs = [
-  { label: "Beranda", href: "/" },
-  { label: "Kalkulator", href: "/#kalkulator" },
-  { label: "Pinjol Legal" }
+const calc = getCalculatorBySlug('pinjol-legal')!;
+const related = getRelatedCalculators('pinjol-legal', 3);
+
+const faqs = [
+  { question: 'Berapa batas bunga pinjol legal OJK 2026?', answer: 'OJK 2026: bunga konsumtif <strong>maksimal 0,1%/hari</strong> (≈3%/bulan, ≈36%/tahun). Bunga produktif maksimal 0,067%/hari. Plus <strong>Lock Cap 100%</strong> — total biaya tidak boleh lebih dari pokok pinjaman. Biaya admin maks 4%. Aturan ini melindungi peminjam dari jeratan utang.' },
+  { question: 'Apakah semua pinjol berbahaya?', answer: 'Tidak. <strong>Pinjol legal terdaftar OJK aman</strong> selama dipakai dengan bijak — pinjam sesuai kemampuan, baca syarat, dan bayar tepat waktu. Yang berbahaya: pinjol <strong>ilegal</strong> dengan bunga 0,5-1%/hari, akses semua data HP, dan penagihan brutal.' },
+  { question: 'Kalau gagal bayar (galbay), bisa dipenjara?', answer: 'TIDAK. Gagal bayar pinjol murni urusan perdata, <strong>bukan pidana</strong>. Pinjol tidak bisa langsung penjarakan kamu. Tapi konsekuensinya: nama masuk blacklist SLIK OJK, sulit dapat kredit di masa depan, dan ditagih terus. Yang bisa dipidana: kalau kamu menipu/dokumen palsu saat ajukan.' },
+  { question: 'Kapan pinjol bisa jadi pilihan?', answer: 'Pinjol legal cocok untuk: <strong>kebutuhan urgent jangka pendek</strong> (1-3 bulan), pinjaman kecil (Rp 500rb-5jt), dan kamu yakin bisa bayar tepat waktu. <strong>Hindari pinjol</strong> untuk: konsumtif gaya hidup, judi/investasi, atau menutup pinjol lain (rotasi gali-tutup-lubang).' },
 ];
 
-// DATA PINJOL LEGAL POPULER + ATURAN OJK 2026
-const pinjolData = [
-  { name: "Kredivo", tipe: "Paylater + Cash", bungaBulan: 2.6, bungaHari: 0.087, limit: 50000000, tenorMax: 12, catatan: "Cicilan e-commerce & dana tunai" },
-  { name: "AdaKami", tipe: "Cash Loan", bungaBulan: 3.0, bungaHari: 0.1, limit: 80000000, tenorMax: 12, catatan: "Pinjaman tunai, verifikasi digital" },
-  { name: "Kredit Pintar", tipe: "Cash Loan", bungaBulan: 3.0, bungaHari: 0.1, limit: 50000000, tenorMax: 12, catatan: "Credit scoring berbasis data" },
-  { name: "JULO", tipe: "Cash Loan", bungaBulan: 1.75, bungaHari: 0.058, limit: 50000000, tenorMax: 24, catatan: "Bunga rendah untuk nasabah disiplin" },
-  { name: "Tunaiku (Amar Bank)", tipe: "KTA Digital", bungaBulan: 3.0, bungaHari: 0.1, limit: 20000000, tenorMax: 20, catatan: "Produk bank, tenor panjang" },
-  { name: "Indodana", tipe: "Paylater + Cash", bungaBulan: 2.5, bungaHari: 0.083, limit: 50000000, tenorMax: 12, catatan: "Belanja & pencairan dana" }
-];
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '/#tools' }, { label: calc.shortTitle }];
 ---
 
-<Layout title={title} description={description} catColor="#DC2626" catColor2="#B91C1C">
-  <Breadcrumb items={breadcrumbs} />
-
-  <main class="calc-page">
-    <section class="calc-hero pinjol-hero" style="--cat-color:#DC2626;--cat-color2:#B91C1C">
-      <div class="hero-inner">
-        <div class="hero-badge warning-badge"><i class="ti ti-shield-check"></i><span>Kalkulator Edukatif</span></div>
-        <h1>Kalkulator Pinjol Legal 2026</h1>
-        <p class="hero-sub">Pahami biaya pinjaman online yang sebenarnya sebelum meminjam. Sesuai aturan OJK terbaru 2026: bunga maksimal 0,1%/hari & Lock Cap 100%. Transparan, edukatif, melindungi kamu.</p>
-        <div class="trust-row">
-          <span class="trust-item"><i class="ti ti-check"></i> Aturan OJK 2026</span>
-          <span class="trust-item"><i class="ti ti-check"></i> APR Transparan</span>
-          <span class="trust-item"><i class="ti ti-check"></i> Cek Legalitas OJK</span>
-          <span class="trust-item"><i class="ti ti-check"></i> Semua Bisa Diedit</span>
+<Layout title={calc.title} description={calc.metaDescription} keywords={calc.keywords} canonical={`https://hitungcerdas.net/kalkulator/${calc.slug}`}>
+  <section class="calc-hero" style="--cat-color:#DC2626;--cat-color2:#991B1B">
+    <div class="wrap">
+      <Breadcrumb items={bcItems} />
+      <div class="calc-hero-grid">
+        <div class="calc-hero-text">
+          <div class="calc-hero-tag" style="background:#FEE2E2;color:#991B1B"><i class="ti ti-alert-triangle"></i> {calc.categoryLabel}</div>
+          <h1 class="calc-hero-title">{calc.h1}</h1>
+          <p class="calc-hero-sub">{calc.introText}</p>
+          <ul class="calc-hero-benefits">{calc.benefits.map(b => <li><i class="ti ti-check"></i> {b}</li>)}</ul>
         </div>
-        <div class="ojk-rate-badge">
-          <i class="ti ti-gavel"></i>
-          <span>Aturan OJK 2026: bunga konsumtif <strong>maks 0,1%/hari</strong> • biaya total <strong>maks 100% pokok</strong> (Lock Cap)</span>
-        </div>
-      </div>
-    </section>
-
-    <div class="calc-container">
-      <div class="disclaimer-box">
-        <i class="ti ti-info-circle"></i>
-        <p><strong>Tujuan kalkulator ini EDUKASI & PERLINDUNGAN konsumen.</strong> Kami tidak mempromosikan atau berafiliasi dengan platform pinjol manapun. Selalu pertimbangkan alternatif lebih aman dan cek legalitas di OJK sebelum meminjam.</p>
-      </div>
-
-      <div class="calc-card">
-        <h2 class="card-title"><i class="ti ti-calculator"></i> Simulasi Pinjaman Online</h2>
-
-        <div class="form-group">
-          <label>Jumlah Pinjaman</label>
-          <div class="input-prefix"><span>Rp</span><input type="text" id="inJumlah" placeholder="Contoh: 2.000.000" inputmode="numeric" oninput="formatRupiahInput(this)"></div>
-        </div>
-
-        <div class="form-group">
-          <label>Tenor</label>
-          <div class="tenor-type-grid">
-            <div>
-              <label class="sub-label">Jenis Tenor</label>
-              <div class="option-grid">
-                <button class="opt-btn active" data-group="tenorType" data-val="hari" onclick="setOpt(this,'tenorType')">Harian</button>
-                <button class="opt-btn" data-group="tenorType" data-val="bulan" onclick="setOpt(this,'tenorType')">Bulanan</button>
-              </div>
-            </div>
-            <div>
-              <label class="sub-label">Durasi</label>
-              <div class="input-with-unit"><input type="number" id="inTenor" value="30" min="1" max="365"><span id="tenorUnit">hari</span></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label>Bunga Harian (%) <span class="editable-hint">✏️ bisa diedit</span></label>
-          <div class="slider-wrap">
-            <input type="range" id="slBunga" min="0.05" max="2" step="0.01" value="0.1" oninput="onPinjolBunga()">
-            <div class="slider-info"><span>0,05%</span><strong id="valBunga">0,1% / hari</strong><span>2%</span></div>
-          </div>
-          <div class="preset-row">
-            <button class="preset-btn active" onclick="setBungaPreset(0.1,this)">OJK Legal Maks (0,1%)</button>
-            <button class="preset-btn" onclick="setBungaPreset(0.067,this)">Produktif (0,067%)</button>
-            <button class="preset-btn danger" onclick="setBungaPreset(0.8,this)">Ilegal (0,8%)</button>
-          </div>
-          <p class="field-hint">💡 OJK 2026 batasi bunga konsumtif max 0,1%/hari (≈3%/bulan). Pinjol ilegal sering 0,5-1%/hari — hindari!</p>
-        </div>
-
-        <div class="form-group">
-          <label>Biaya Admin / Provisi</label>
-          <div class="input-prefix"><span>Rp</span><input type="text" id="inAdmin" placeholder="Contoh: 80.000" inputmode="numeric" oninput="formatRupiahInput(this)"></div>
-          <p class="field-hint">OJK batasi maks 4% dari plafon. Biaya ini dipotong dari dana cair (kamu terima lebih sedikit!).</p>
-        </div>
-
-        <div class="form-group">
-          <label>Penghasilan Bulanan (opsional)</label>
-          <div class="input-prefix"><span>Rp</span><input type="text" id="inPenghasilan" placeholder="Untuk analisis debt trap" inputmode="numeric" oninput="formatRupiahInput(this)"></div>
-        </div>
-
-        <button class="btn-primary btn-red" onclick="hitungPinjol()"><i class="ti ti-search"></i> Hitung Biaya Sebenarnya</button>
-      </div>
-
-      <div class="hidden" id="hasilSection">
-        <div class="result-hero pinjol-result-hero">
-          <div class="shock-badge">⚠️ TRANSPARANSI BIAYA SEBENARNYA</div>
-          <div class="pinjol-hero-inner">
-            <div class="pinjol-hero-main">
-              <div class="result-tag">💸 Total Yang Harus Dibayar</div>
-              <div class="result-big red-num" id="resTotalBayar">Rp 0</div>
-              <div class="result-sub" id="resSubInfo">untuk pinjaman Rp 0</div>
-            </div>
-            <div class="apr-shock">
-              <div class="apr-label">APR Sesungguhnya</div>
-              <div class="apr-val" id="resAPR">0%</div>
-              <div class="apr-compare" id="resAPRCompare"></div>
-            </div>
-          </div>
-        </div>
-
-        <AdSlot position="after-result" />
-
-        <!-- LOCK CAP CHECK -->
-        <div class="calc-card" id="lockCapCard">
-          <h3 class="card-title"><i class="ti ti-lock"></i> Cek Aturan Lock Cap 100% OJK</h3>
-          <div class="lockcap-box" id="lockCapBox"></div>
-        </div>
-
-        <div class="calc-card">
-          <h3 class="card-title"><i class="ti ti-list-details"></i> Bedah Biaya (Transparan)</h3>
-          <div class="breakdown-table" id="breakdownTable"></div>
-          <div class="uang-diterima" id="uangDiterima"></div>
-        </div>
-
-        <div class="calc-card" id="debtTrapCard">
-          <h3 class="card-title"><i class="ti ti-alert-triangle"></i> Debt Trap Risk Meter</h3>
-          <div class="trap-meter"><div class="trap-track"><div class="trap-fill" id="trapFill"></div></div><div class="trap-zones"><span>Aman</span><span>Waspada</span><span>Bahaya</span><span>🚨 Jebakan!</span></div></div>
-          <div class="trap-msg" id="trapMsg"></div>
-        </div>
-
-        <div class="calc-card">
-          <h3 class="card-title"><i class="ti ti-clock-exclamation"></i> Simulasi Keterlambatan</h3>
-          <p class="card-sub">Geser untuk lihat dampak telat bayar (denda OJK maks 0,1%/hari)</p>
-          <div class="slider-wrap"><input type="range" id="slTelat" min="0" max="60" step="1" value="0" oninput="onTelatChange()"><div class="slider-info"><span>0 hari</span><strong id="valTelat">0 hari telat</strong><span>60 hari</span></div></div>
-          <div class="late-result"><div class="late-row"><span>Total tagihan normal</span><span id="lrNormal">—</span></div><div class="late-row warning"><span>Denda keterlambatan</span><span id="lrDenda">Rp 0</span></div><div class="late-row danger"><span>TOTAL dengan denda</span><span id="lrTotal">—</span></div></div>
-          <div class="snowball-warning" id="snowballWarn"></div>
-        </div>
-
-        <div class="calc-card">
-          <h3 class="card-title"><i class="ti ti-coins"></i> Biaya Pinjol Kamu Setara...</h3>
-          <div class="relatable-grid" id="pinjolRelatable"></div>
-        </div>
-
-        <AdSlot position="mid-content" />
-
-        <!-- PINJOL COMPARISON -->
-        <div class="calc-card">
-          <h3 class="card-title"><i class="ti ti-versions"></i> Bandingkan Pinjol Legal (Update 2026)</h3>
-          <p class="card-sub">Semua terdaftar OJK. Bunga & aturan terupdate. Pilih yang sesuai kebutuhan.</p>
-          <div class="pinjol-table" id="pinjolTable"></div>
-          <details class="bank-detail"><summary>📋 Lihat aturan & detail tiap pinjol</summary><div class="pinjol-rules" id="pinjolRules"></div></details>
-        </div>
-
-        <!-- OJK CHECK -->
-        <div class="calc-card ojk-card">
-          <h3 class="card-title"><i class="ti ti-building-bank"></i> Cek Legalitas Pinjol</h3>
-          <div class="ojk-alert"><i class="ti ti-shield-check"></i><p><strong>SELALU cek legalitas pinjol di OJK sebelum meminjam!</strong> Pinjol ilegal tidak diatur UU dan tidak bisa kamu laporkan jika bermasalah.</p></div>
-          <a href="https://www.ojk.go.id/id/kanal/iknb/financial-technology/Default.aspx" class="ojk-btn" target="_blank" rel="noopener noreferrer"><i class="ti ti-external-link"></i> Cek Daftar Pinjol Legal di OJK.go.id</a>
-          <a href="https://wa.me/6281157157157" class="ojk-btn secondary" target="_blank" rel="noopener noreferrer"><i class="ti ti-brand-whatsapp"></i> WhatsApp Resmi OJK: 081-157-157-157</a>
-          <div class="signs-wrap">
-            <div class="ilegal-signs">
-              <h4>🚩 Ciri Pinjol ILEGAL</h4>
-              <div class="signs-grid">
-                <div class="sign-item red"><i class="ti ti-x"></i> Tidak terdaftar OJK</div>
-                <div class="sign-item red"><i class="ti ti-x"></i> Minta akses kontak & galeri HP</div>
-                <div class="sign-item red"><i class="ti ti-x"></i> Bunga &gt;0,1%/hari (tidak transparan)</div>
-                <div class="sign-item red"><i class="ti ti-x"></i> Teror & intimidasi saat tagih</div>
-                <div class="sign-item red"><i class="ti ti-x"></i> Tenor sangat pendek (7-14 hari)</div>
-                <div class="sign-item red"><i class="ti ti-x"></i> Potong biaya admin besar di awal</div>
-              </div>
-            </div>
-            <div class="legal-signs">
-              <h4>✅ Ciri Pinjol LEGAL (Aturan OJK 2026)</h4>
-              <div class="signs-grid">
-                <div class="sign-item green"><i class="ti ti-check"></i> Terdaftar & berizin OJK</div>
-                <div class="sign-item green"><i class="ti ti-check"></i> Bunga max 0,1%/hari (konsumtif)</div>
-                <div class="sign-item green"><i class="ti ti-check"></i> Lock Cap 100% (biaya ≤ pokok)</div>
-                <div class="sign-item green"><i class="ti ti-check"></i> Admin max 4% dari plafon</div>
-                <div class="sign-item green"><i class="ti ti-check"></i> Hanya akses CAMILAN (Camera, Mic, Location)</div>
-                <div class="sign-item green"><i class="ti ti-check"></i> Penagihan etis (jam 08-20)</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- ALTERNATIVES -->
-        <div class="calc-card alt-card">
-          <h3 class="card-title"><i class="ti ti-bulb"></i> Alternatif Lebih Aman dari Pinjol</h3>
-          <div class="alt-grid">
-            <a href="/kalkulator/dana-darurat" class="alt-item best"><div class="alt-icon">🛡️</div><div class="alt-text"><strong>Bangun Dana Darurat</strong><p>Solusi terbaik jangka panjang. Tanpa bunga, tanpa risiko debt trap.</p><span class="alt-cta">Hitung Dana Darurat →</span></div></a>
-            <a href="/kalkulator/kta" class="alt-item"><div class="alt-icon">🏦</div><div class="alt-text"><strong>KTA Bank Resmi</strong><p>Bunga ~16-26%/tahun vs pinjol ~36%/tahun. Lebih lambat tapi jauh lebih murah.</p><span class="alt-cta">Simulasi KTA →</span></div></a>
-            <div class="alt-item"><div class="alt-icon">👥</div><div class="alt-text"><strong>Koperasi Simpan Pinjam</strong><p>Bunga rendah (1-2%/bulan), terdaftar resmi, bantu komunitas.</p></div></div>
-            <div class="alt-item"><div class="alt-icon">💚</div><div class="alt-text"><strong>Pinjam Keluarga / Sahabat</strong><p>Bunga 0% dan fleksibel. Jaga kepercayaan dengan bayar tepat waktu.</p></div></div>
-          </div>
-        </div>
-
-        <!-- SCORECARD -->
-        <div class="calc-card scorecard-section">
-          <h3 class="card-title"><i class="ti ti-photo"></i> Kartu Edukasi — Siap Share!</h3>
-          <p class="card-sub">Bantu teman & keluarga pahami biaya pinjol. Share ke Status WA, IG/FB/TikTok Story.</p>
-          <div class="sc-preview-wrap">
-            <div class="sc-preview" id="scPreview">
-              <div class="sc-grad-overlay"></div>
-              <div class="sc-content">
-                <div class="sc-top"><span class="sc-brand">HitungCerdas<span class="sc-dot">.net</span></span><span class="sc-pill">⚠️ CEK PINJOL</span></div>
-                <div class="sc-main">
-                  <div class="sc-label">Pinjam <span id="scJumlah">Rp 0</span>, harus bayar</div>
-                  <div class="sc-big red" id="scBigTotal">Rp 0</div>
-                  <div class="sc-apr-box"><span class="sc-apr-lbl">APR Sesungguhnya</span><span class="sc-apr-val" id="scAPR">0%/tahun</span></div>
-                </div>
-                <div class="sc-compare-box">
-                  <div class="sc-compare-row"><span>Pinjol ini</span><span class="sc-bad" id="scPinjolRate">0%/thn</span></div>
-                  <div class="sc-compare-row"><span>KTA Bank</span><span class="sc-good">~18%/thn</span></div>
-                </div>
-                <div class="sc-quote" id="scQuote">"Pahami biaya sebelum meminjam 💡"</div>
-                <div class="sc-foot"><span class="sc-tags">#PahamiSebelumPinjam</span><span class="sc-url">hitungcerdas.net</span></div>
-              </div>
-            </div>
-          </div>
-          <div class="sc-format-row">
-            <button class="sc-fmt active" data-fmt="square" onclick="setScFormat(this,'square')">⬜ Square (IG/FB)</button>
-            <button class="sc-fmt" data-fmt="story" onclick="setScFormat(this,'story')">📱 Story (WA/IG/TikTok)</button>
-          </div>
-          <div class="export-grid">
-            <button class="export-btn primary" onclick="exportScorecard()"><i class="ti ti-download"></i> Download Kartu</button>
-            <button class="export-btn wa" onclick="sharePinjolWA()"><i class="ti ti-brand-whatsapp"></i> Share WhatsApp</button>
-            <button class="export-btn" onclick="copyPinjolResult()"><i class="ti ti-copy"></i> Copy Teks</button>
-          </div>
-        </div>
-
-        <div style="text-align:center;margin:1rem 0"><button class="btn-secondary" onclick="resetPinjol()"><i class="ti ti-refresh"></i> Hitung Ulang</button></div>
-        <AdSlot position="before-footer" />
-      </div>
-
-      <!-- EDUCATIONAL -->
-      <div class="calc-card edu-card">
-        <h2><i class="ti ti-book"></i> Panduan Lengkap Pinjaman Online 2026</h2>
-        <h3>Apa itu Pinjol?</h3>
-        <p>Pinjaman Online (Pinjol) atau Fintech Lending adalah layanan pinjam-meminjam berbasis teknologi. Prosesnya cepat (menit-jam) tapi biayanya lebih mahal dari bank. Diatur OJK melalui POJK terbaru.</p>
-
-        <div class="info-callout">
-          <i class="ti ti-gavel"></i>
-          <div><strong>Aturan Baru OJK 2026:</strong> Bunga pinjol konsumtif diturunkan jadi maks <strong>0,1%/hari</strong> (dari 0,4% di 2024). Ada <strong>Lock Cap 100%</strong> — total biaya tidak boleh lebih dari pokok pinjaman. Biaya admin maks 4%. Aturan ini melindungi peminjam dari jeratan utang.</div>
-        </div>
-
-        <h3>Kenapa APR Pinjol Bisa Tinggi?</h3>
-        <p>Pinjol pakai bunga harian. Bunga 0,1%/hari terlihat kecil, tapi disetahunkan jadi ~36%/tahun. Ditambah admin, APR bisa lebih tinggi. Bandingkan KTA bank yang ~16-26%/tahun. Pinjol ilegal bahkan 0,5-1%/hari (180-365%/tahun)!</p>
-
-        <h3>Hak-Hak Kamu sebagai Peminjam (OJK)</h3>
-        <ul class="edu-list">
-          <li>Berhak info biaya lengkap & transparan sebelum tandatangan</li>
-          <li>Penagihan hanya boleh jam 08.00-20.00 waktu setempat</li>
-          <li>Penagih dilarang mengancam, intimidasi, atau permalukan</li>
-          <li>Pinjol legal hanya akses CAMILAN (Camera, Microphone, Location)</li>
-          <li>Total biaya tidak boleh lebih dari 100% pokok (Lock Cap)</li>
-          <li>Bisa lapor ke OJK: 157 atau WA 081-157-157-157</li>
-        </ul>
-
-        <h3>Jika Terjerat Pinjol Ilegal</h3>
-        <ul class="edu-list">
-          <li><strong>Jangan bayar</strong> ke rekening tidak resmi</li>
-          <li><strong>Laporkan</strong> ke Satgas PASTI OJK: 157 atau waspadainvestasi.ojk.go.id</li>
-          <li><strong>Blokir & screenshot</strong> semua ancaman sebagai bukti</li>
-          <li><strong>Lapor polisi</strong> jika ada ancaman fisik atau penyebaran data</li>
-        </ul>
-
-        <h3>FAQ Pinjol</h3>
-        <div class="faq-list">
-          <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Berapa batas bunga pinjol legal OJK 2026? <i class="ti ti-chevron-down"></i></button><div class="faq-a"><p>Per 2026, OJK batasi bunga konsumtif maks 0,1%/hari (≈3%/bulan atau ~36%/tahun) dan produktif 0,067%/hari. Ada juga Lock Cap 100%: total seluruh biaya (bunga+denda+admin) tidak boleh melebihi pokok pinjaman.</p></div></div>
-          <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Apakah semua pinjol berbahaya? <i class="ti ti-chevron-down"></i></button><div class="faq-a"><p>Tidak. Pinjol terdaftar & berizin OJK diawasi ketat dan ada batas bunga. Yang berbahaya adalah pinjol ILEGAL — tidak terdaftar, bunga mencekik, dan menagih dengan intimidasi. Selalu cek legalitas di OJK dulu.</p></div></div>
-          <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Kalau gagal bayar (galbay), bisa dipenjara? <i class="ti ti-chevron-down"></i></button><div class="faq-a"><p>Tidak. Utang-piutang adalah ranah perdata, bukan pidana. Tidak ada penjara untuk galbay. Tapi risikonya: masuk blacklist SLIK OJK (susah dapat kredit), denda menumpuk, dan penagihan intensif. Untuk pinjol legal, denda dibatasi Lock Cap 100%.</p></div></div>
-          <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Kapan pinjol bisa jadi pilihan? <i class="ti ti-chevron-down"></i></button><div class="faq-a"><p>Pinjol legal bisa dipertimbangkan hanya jika: (1) benar-benar darurat tanpa pilihan lain, (2) jumlah kecil & yakin bisa bayar tepat waktu, (3) platform terdaftar OJK, (4) biaya sudah dihitung & sanggup. Tapi selalu pertimbangkan dana darurat, KTA bank, atau koperasi dulu.</p></div></div>
-        </div>
-
-        <div class="disclaimer-box edu-disclaimer">
-          <i class="ti ti-info-circle"></i>
-          <div><strong>Disclaimer:</strong> Kalkulator ini alat edukasi & perlindungan konsumen. Hasil adalah estimasi. HitungCerdas TIDAK berafiliasi, mempromosikan, atau menerima komisi dari platform pinjol manapun. Daftar pinjol legal dapat berubah — selalu cek terbaru di OJK.go.id atau hubungi 157. Aturan & bunga per Juni 2026, dapat berubah sesuai kebijakan OJK.</div>
+        <div class="calc-hero-illust">
+          <svg viewBox="0 0 200 200" fill="none">
+            <circle cx="100" cy="100" r="85" fill="rgba(255,255,255,.08)"/>
+            <path d="M100 40L165 155H35L100 40Z" fill="#FFF" stroke="#FBBF24" stroke-width="3" stroke-linejoin="round"/>
+            <rect x="95" y="80" width="10" height="40" rx="3" fill="#DC2626"/>
+            <circle cx="100" cy="135" r="6" fill="#DC2626"/>
+          </svg>
         </div>
       </div>
     </div>
-  </main>
+  </section>
+
+  <AdSlot format="horizontal" />
+
+  <section class="calc-section">
+    <div class="wrap">
+      <div class="calc-card">
+        <div class="calc-card-hdr">
+          <div class="calc-card-hdr-ic" style="background:linear-gradient(135deg,#DC2626 0%,#991B1B 100%)"><i class="ti ti-alert-triangle"></i></div>
+          <div><h2 class="calc-card-title">Kalkulator Pinjol Legal 2026</h2><p class="calc-card-sub">OJK 2026: bunga maks 0,1%/hari · Lock Cap 100% · admin maks 4%</p></div>
+        </div>
+
+        <div class="calc-grid">
+          <div class="calc-input">
+            <div class="field"><label>Jumlah Pinjaman</label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span>
+                <input type="text" id="pinjaman" class="has-prefix" value="2.000.000" inputmode="numeric" /></div>
+              <p class="hint" style="margin-top:6px">Pinjol legal biasanya Rp 500rb - Rp 20jt</p>
+            </div>
+
+            <div class="field">
+              <label>Tenor (Durasi Pinjam)</label>
+              <select id="tenor">
+                <option value="7">7 hari</option>
+                <option value="14">14 hari</option>
+                <option value="30" selected>30 hari (1 bulan)</option>
+                <option value="60">60 hari (2 bulan)</option>
+                <option value="90">90 hari (3 bulan)</option>
+                <option value="180">180 hari (6 bulan)</option>
+              </select>
+            </div>
+
+            <div class="field"><label>Bunga Harian</label>
+              <div class="input-wrap"><span class="input-suffix">%/hari</span>
+                <input type="number" id="bunga" class="has-suffix" value="0.1" min="0.01" max="2" step="0.01" /></div>
+              <p class="hint" style="margin-top:6px">⚠️ OJK 2026 max <strong>0,1%/hari konsumtif</strong>. Pinjol ilegal sering 0,5-1%/hari — hindari!</p>
+            </div>
+
+            <div class="field">
+              <label>Preset Bunga</label>
+              <select id="preset">
+                <option value="custom">Custom (gunakan input di atas)</option>
+                <option value="ojk">OJK Legal Maks (0,1%/hari)</option>
+                <option value="produktif">Produktif (0,067%/hari)</option>
+                <option value="rendah">Pinjol Murah (0,05%/hari)</option>
+                <option value="ilegal">⚠️ Ilegal (0,8%/hari) - JANGAN!</option>
+              </select>
+            </div>
+
+            <div class="field"><label>Biaya Admin / Provisi</label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span>
+                <input type="text" id="admin" class="has-prefix" value="80.000" inputmode="numeric" /></div>
+              <p class="hint" style="margin-top:6px">OJK batasi maks <strong>4% dari plafon</strong>. Dipotong dari dana cair (kamu terima lebih sedikit!).</p>
+            </div>
+
+            <div class="field"><label>Penghasilan Bulanan <span class="hint">(opsional - untuk debt trap analysis)</span></label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span>
+                <input type="text" id="gaji" class="has-prefix" value="5.000.000" inputmode="numeric" /></div>
+            </div>
+
+            <div class="calc-action-bar">
+              <button type="button" class="btn-hitung" id="btnHitung"><i class="ti ti-calculator"></i> Hitung Biaya Sebenarnya</button>
+              <button type="button" class="btn-reset" id="btnReset"><i class="ti ti-refresh"></i> Reset</button>
+            </div>
+          </div>
+
+          <div class="calc-output">
+            <div class="result-placeholder" id="placeholder">
+              <i class="ti ti-alert-triangle result-placeholder-icon"></i>
+              <div class="result-placeholder-title">Biaya Pinjol Sebenarnya akan muncul</div>
+              <div class="result-placeholder-desc">Isi pinjaman, tenor, bunga, klik <strong>"Hitung"</strong>. Lihat APR sebenarnya & cek apakah sesuai OJK.</div>
+            </div>
+
+            <div class="result-wrapper" id="results">
+              <div class="result-main">
+                <div class="result-label">Total Harus Dibayar</div>
+                <div class="result-value" id="totalBayar">Rp 0</div>
+                <div class="result-meta"><i class="ti ti-info-circle"></i> <span id="aprLabel">APR: 0%/tahun</span></div>
+              </div>
+
+              <div class="result-grid">
+                <div class="result-item"><div class="result-item-label">Pokok Pinjaman</div><div class="result-item-value" id="pokokVal">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">Total Bunga</div><div class="result-item-value result-warn" id="totalBunga">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">Biaya Admin</div><div class="result-item-value result-warn" id="adminVal">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">Dana Cair (Diterima)</div><div class="result-item-value" id="danaCair">Rp 0</div></div>
+              </div>
+
+              <div class="adv-section" id="ojkSection">
+                <div class="adv-toggle"><span><i class="ti ti-shield-check"></i>&nbsp; Cek Kepatuhan OJK 2026</span><i class="ti ti-chevron-down chev"></i></div>
+                <div class="adv-content">
+                  <table class="compare-table">
+                    <thead><tr><th>Aturan OJK</th><th>Batas</th><th>Status</th></tr></thead>
+                    <tbody id="ojkBody"></tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div class="adv-section">
+                <div class="adv-toggle"><span><i class="ti ti-chart-bar"></i>&nbsp; Debt Trap Analysis</span><i class="ti ti-chevron-down chev"></i></div>
+                <div class="adv-content">
+                  <div id="debtTrapInfo"></div>
+                </div>
+              </div>
+
+              <div class="export-row">
+                <button type="button" class="export-btn img" id="exportImg"><i class="ti ti-photo-down"></i><span>Save Image</span></button>
+                <button type="button" class="export-btn wa" id="exportWa"><i class="ti ti-brand-whatsapp"></i><span>Share WA</span></button>
+                <button type="button" class="export-btn pdf" id="exportPdf"><i class="ti ti-printer"></i><span>Print/PDF</span></button>
+                <button type="button" class="export-btn copy" id="exportCopy"><i class="ti ti-copy"></i><span>Copy Teks</span></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="content-section">
+    <div class="wrap-text">
+      <h2>Aturan OJK 2026 untuk Pinjol Legal</h2>
+      <p>OJK menerbitkan POJK terbaru 2026 yang memperketat aturan pinjol untuk melindungi peminjam dari jeratan utang. Berikut aturan utama:</p>
+      <ul>
+        <li><strong>Bunga konsumtif maks 0,1%/hari</strong> (≈3%/bulan, ≈36%/tahun) — turun dari 0,4% di 2024</li>
+        <li><strong>Bunga produktif maks 0,067%/hari</strong> — untuk pinjaman usaha</li>
+        <li><strong>Lock Cap 100%</strong> — total biaya tidak boleh lebih dari pokok pinjaman</li>
+        <li><strong>Biaya admin maks 4%</strong> dari plafon pinjaman</li>
+        <li><strong>Akses HP hanya CAMILAN</strong> (Camera, Microphone, Location) — bukan kontak, galeri, dll</li>
+        <li><strong>Penagihan jam 08:00-20:00</strong> waktu setempat, dilarang mengancam</li>
+      </ul>
+
+      <h3>Cara Cek Pinjol Legal vs Ilegal</h3>
+      <ul>
+        <li>Cek di <strong>OJK.go.id</strong> bagian "Fintech Lending" → ada daftar resmi</li>
+        <li>Hubungi OJK 157 atau WA <strong>081-157-157-157</strong></li>
+        <li>Pinjol legal punya alamat kantor jelas & terdaftar di app store resmi</li>
+        <li>Ciri ilegal: bunga gila (0,5-1%/hari), akses semua data HP, ancam sebar foto/data</li>
+      </ul>
+
+      <h3>Jika Terjerat Pinjol Ilegal</h3>
+      <ul>
+        <li><strong>Jangan bayar</strong> ke rekening tidak resmi</li>
+        <li>Laporkan ke Satgas PASTI OJK: <strong>157</strong> atau waspadainvestasi.ojk.go.id</li>
+        <li>Blokir & screenshot semua ancaman sebagai bukti</li>
+        <li>Lapor polisi jika ada ancaman fisik atau penyebaran data</li>
+      </ul>
+
+      <div class="cta-box">
+        <h3>Disclaimer & Tujuan Edukasi</h3>
+        <p>Kalkulator ini alat edukasi & perlindungan konsumen. HitungCerdas <strong>TIDAK berafiliasi, mempromosikan, atau menerima komisi</strong> dari platform pinjol manapun. Daftar pinjol legal dapat berubah — selalu cek terbaru di OJK.go.id atau hubungi 157.</p>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+  <FAQ title="Pertanyaan Seputar Pinjol Legal" items={faqs} />
+
+  <section class="section"><div class="wrap">
+    <div class="section-hdr"><div class="section-eyebrow">Kalkulator Lainnya</div><h2 class="section-title">Hitung Juga yang Lain</h2></div>
+    <div class="related-grid">{related.map(c => <CalculatorCard calc={c} />)}</div>
+  </div></section>
 </Layout>
 
-<div id="pinjolScExport" class="sc-export-hidden"></div>
+<script is:inline>
+  (function() {
+    function ready(fn) { if (window.HC && window.html2canvas) fn(); else setTimeout(() => ready(fn), 100); }
+    ready(() => {
+      const $ = id => document.getElementById(id);
+      const els = { pinjaman: $('pinjaman'), tenor: $('tenor'), bunga: $('bunga'), preset: $('preset'), admin: $('admin'), gaji: $('gaji') };
+      [els.pinjaman, els.admin, els.gaji].forEach(el => el.addEventListener('input', HC.fmtInput));
+      document.querySelectorAll('.adv-toggle').forEach(t => t.addEventListener('click', () => t.parentElement.classList.toggle('open')));
 
-<script define:vars={{ pinjolData }}>
-const pinjolState = { jumlah:0, tenorType:'hari', tenor:30, bunga:0.1, admin:0, penghasilan:0, result:{}, scFormat:'square' };
+      els.preset.addEventListener('change', () => {
+        const v = els.preset.value;
+        const map = { ojk: '0.1', produktif: '0.067', rendah: '0.05', ilegal: '0.8' };
+        if (map[v]) els.bunga.value = map[v];
+      });
 
-function fmtRp(n){return 'Rp '+Math.round(n).toLocaleString('id-ID');}
-function fmtCompact(n){if(n>=1e9)return 'Rp '+(n/1e9).toFixed(1)+'M';if(n>=1e6)return 'Rp '+(n/1e6).toFixed(1)+'jt';if(n>=1e3)return 'Rp '+(n/1e3).toFixed(0)+'rb';return 'Rp '+n;}
-function formatRupiahInput(el){let v=el.value.replace(/\D/g,'');el.value=v?parseInt(v).toLocaleString('id-ID'):'';}
-function parseRupiah(s){return parseInt((s||'0').replace(/\D/g,''))||0;}
-function setOpt(btn,group){document.querySelectorAll(`[data-group="${group}"]`).forEach(b=>b.classList.remove('active'));btn.classList.add('active');pinjolState.tenorType=btn.dataset.val;document.getElementById('tenorUnit').textContent=btn.dataset.val;}
-function onPinjolBunga(){const v=parseFloat(document.getElementById('slBunga').value);pinjolState.bunga=v;document.getElementById('valBunga').textContent=v+'% / hari';document.querySelectorAll('.preset-btn').forEach(b=>b.classList.remove('active'));}
-function setBungaPreset(val,btn){pinjolState.bunga=val;document.getElementById('slBunga').value=val;document.getElementById('valBunga').textContent=val+'% / hari';document.querySelectorAll('.preset-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
+      let lastCalc = null;
 
-function hitungPinjol(){
-  const jumlah=parseRupiah(document.getElementById('inJumlah').value);
-  if(!jumlah){alert('Masukkan jumlah pinjaman dulu!');return;}
-  const tenor=parseInt(document.getElementById('inTenor').value)||30;
-  const admin=parseRupiah(document.getElementById('inAdmin').value);
-  const penghasilan=parseRupiah(document.getElementById('inPenghasilan').value);
-  const bungaHarian=pinjolState.bunga/100;
-  const tenorHari=pinjolState.tenorType==='bulan'?tenor*30:tenor;
-  const bungaTotal=jumlah*bungaHarian*tenorHari;
-  const totalBayar=jumlah+bungaTotal+admin;
-  const apr=((bungaTotal+admin)/jumlah)*(365/tenorHari)*100;
-  const uangDiterima=jumlah-admin;
-  const biayaRatio=((totalBayar-jumlah)/jumlah)*100;
-  pinjolState.jumlah=jumlah;pinjolState.tenor=tenorHari;pinjolState.admin=admin;pinjolState.penghasilan=penghasilan;
-  pinjolState.result={jumlah,bungaTotal,admin,totalBayar,apr,uangDiterima,biayaRatio,tenorHari};
-  renderPinjolResult();
-}
+      function hitung() {
+        const pokok = HC.parseRp(els.pinjaman.value);
+        const tenor = parseInt(els.tenor.value);
+        const bungaHarian = parseFloat(els.bunga.value);
+        const admin = HC.parseRp(els.admin.value);
+        const gaji = HC.parseRp(els.gaji.value);
 
-function renderPinjolResult(){
-  const r=pinjolState.result;
-  document.getElementById('resTotalBayar').textContent=fmtRp(r.totalBayar);
-  document.getElementById('resSubInfo').textContent=`untuk pinjaman ${fmtRp(r.jumlah)} selama ${r.tenorHari} hari`;
-  document.getElementById('resAPR').textContent=r.apr.toFixed(0)+'%/thn';
-  document.getElementById('resAPRCompare').innerHTML=`KTA bank ~18%/tahun<br><strong>Pinjol ini ${(r.apr/18).toFixed(1)}× lebih mahal!</strong>`;
+        if (pokok === 0) { HC.toast('Masukkan jumlah pinjaman dulu', 'error'); return; }
 
-  // Lock Cap check
-  const biayaTotal=r.bungaTotal+r.admin;
-  const capRatio=(biayaTotal/r.jumlah)*100;
-  const lockBox=document.getElementById('lockCapBox');
-  if(capRatio<=100){lockBox.className='lockcap-box ok';lockBox.innerHTML=`✅ <strong>Sesuai aturan OJK.</strong> Total biaya ${fmtRp(biayaTotal)} = ${capRatio.toFixed(0)}% dari pokok (batas maks 100%). Masih dalam Lock Cap.`;}
-  else{lockBox.className='lockcap-box bad';lockBox.innerHTML=`🚨 <strong>MELEBIHI batas OJK!</strong> Total biaya ${fmtRp(biayaTotal)} = ${capRatio.toFixed(0)}% dari pokok. Aturan OJK maks 100%. Ini ciri pinjol ILEGAL — hindari!`;}
+        const bunga = pokok * (bungaHarian / 100) * tenor;
+        const totalBayar = pokok + bunga + admin;
+        const danaCair = pokok - admin;
+        const apr = (bungaHarian * 365);
+        const totalBiaya = bunga + admin;
+        const biayaPctPokok = (totalBiaya / pokok) * 100;
 
-  // Breakdown
-  document.getElementById('breakdownTable').innerHTML=`<div class="bd-row"><span>Pinjaman Pokok</span><span>${fmtRp(r.jumlah)}</span></div><div class="bd-row warning"><span>+ Bunga (${pinjolState.bunga}%/hari × ${r.tenorHari} hari)</span><span>${fmtRp(r.bungaTotal)}</span></div>${r.admin>0?`<div class="bd-row warning"><span>+ Biaya Admin</span><span>${fmtRp(r.admin)}</span></div>`:''}<div class="bd-row total"><span>= TOTAL HARUS BAYAR</span><span>${fmtRp(r.totalBayar)}</span></div><div class="bd-insight">💸 Kamu membayar <strong>${fmtRp(r.totalBayar-r.jumlah)}</strong> lebih dari yang dipinjam (${r.biayaRatio.toFixed(0)}% lebih mahal)</div>`;
-  if(r.admin>0)document.getElementById('uangDiterima').innerHTML=`<div class="terima-box"><span>💰 Uang yang BENAR-BENAR diterima:</span><strong>${fmtRp(r.uangDiterima)}</strong></div>`;
-  else document.getElementById('uangDiterima').innerHTML='';
+        // OJK Compliance Check
+        let ojkHtml = '';
+        const checks = [
+          { rule: 'Bunga konsumtif', limit: 'max 0,1%/hari', ok: bungaHarian <= 0.1, current: bungaHarian + '%/hari' },
+          { rule: 'Lock Cap (Total biaya ≤ Pokok)', limit: 'max 100%', ok: biayaPctPokok <= 100, current: biayaPctPokok.toFixed(1) + '%' },
+          { rule: 'Biaya admin', limit: 'max 4% pokok', ok: (admin / pokok * 100) <= 4, current: (admin / pokok * 100).toFixed(1) + '%' },
+        ];
+        checks.forEach(c => {
+          ojkHtml += `<tr${c.ok ? '' : ' class="active"'}><td>${c.rule}</td><td>${c.limit}</td><td style="color:${c.ok ? 'var(--green-dark)' : 'var(--red)'};font-weight:700">${c.ok ? '✅ ' : '❌ '}${c.current}</td></tr>`;
+        });
+        $('ojkBody').innerHTML = ojkHtml;
 
-  // Debt trap
-  if(pinjolState.penghasilan>0){const ratio=(r.totalBayar/pinjolState.penghasilan)*100;const fill=document.getElementById('trapFill'),msg=document.getElementById('trapMsg');fill.style.width=Math.min(100,ratio)+'%';if(ratio<20){fill.style.background='#10B981';msg.className='trap-msg success';msg.innerHTML=`✅ ${ratio.toFixed(0)}% penghasilan — Masih terjangkau. Tetap hati-hati!`;}else if(ratio<50){fill.style.background='#EF9F27';msg.className='trap-msg warning';msg.innerHTML=`⚠️ ${ratio.toFixed(0)}% penghasilan — Cukup berat! Pastikan bisa bayar tepat waktu.`;}else{fill.style.background='#E24B4A';msg.className='trap-msg danger';msg.innerHTML=`🚨 ${ratio.toFixed(0)}% penghasilan — DEBT TRAP RISK TINGGI! Total bayar lebih dari setengah gajimu. Cari alternatif!`;}}else{document.getElementById('trapMsg').innerHTML='ℹ️ Isi penghasilan untuk lihat analisis debt trap.';}
+        // Debt Trap Analysis
+        let debtHtml = '';
+        if (gaji > 0) {
+          const pctGaji = (totalBayar / gaji) * 100;
+          let debtStatus = '', debtColor = '';
+          if (pctGaji < 20) { debtStatus = '✅ Aman'; debtColor = 'var(--green-dark)'; }
+          else if (pctGaji < 40) { debtStatus = '⚠️ Hati-hati'; debtColor = 'var(--gold)'; }
+          else { debtStatus = '❌ Bahaya - Debt Trap!'; debtColor = 'var(--red)'; }
+          debtHtml = `
+            <table class="compare-table">
+              <tbody>
+                <tr><td>Total bayar / penghasilan</td><td class="right" style="color:${debtColor};font-weight:700">${pctGaji.toFixed(1)}%</td></tr>
+                <tr><td>Status</td><td class="right" style="color:${debtColor};font-weight:700">${debtStatus}</td></tr>
+              </tbody>
+            </table>
+            <p style="font-size:12px;color:var(--text-soft);margin-top:10px;line-height:1.6">💡 <strong>Aturan emas:</strong> total cicilan pinjol tidak boleh lebih dari <strong>20% gaji</strong>. Kalau sudah 40%+, hentikan pinjam baru dan fokus lunasi yang ada.</p>
+          `;
+        } else {
+          debtHtml = '<p style="font-size:13px;color:var(--text-soft)">Masukkan penghasilan bulanan untuk analisis debt trap.</p>';
+        }
+        $('debtTrapInfo').innerHTML = debtHtml;
 
-  onTelatChange();
+        $('totalBayar').textContent = HC.fmt(totalBayar);
+        $('aprLabel').textContent = `APR: ${apr.toFixed(1)}%/tahun · ${tenor} hari`;
+        $('pokokVal').textContent = HC.fmt(pokok);
+        $('totalBunga').textContent = HC.fmt(bunga);
+        $('adminVal').textContent = HC.fmt(admin);
+        $('danaCair').textContent = HC.fmt(danaCair);
 
-  const items=[{icon:'☕',label:'gelas kopi',val:Math.round((r.totalBayar-r.jumlah)/20000)},{icon:'🍛',label:'makan warteg',val:Math.round((r.totalBayar-r.jumlah)/15000)},{icon:'⛽',label:'liter bensin',val:Math.round((r.totalBayar-r.jumlah)/12000)},{icon:'📱',label:'bln paket data',val:Math.round((r.totalBayar-r.jumlah)/70000)}];
-  document.getElementById('pinjolRelatable').innerHTML=items.map(i=>`<div class="rel-item"><span class="rel-icon">${i.icon}</span><strong>${i.val.toLocaleString('id-ID')}</strong><span>${i.label}</span></div>`).join('');
+        lastCalc = { pokok, tenor, bungaHarian, admin, gaji, bunga, totalBayar, danaCair, apr, biayaPctPokok };
+        $('placeholder').style.display = 'none';
+        $('results').classList.add('show');
+        $('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
-  renderPinjolTable();renderPinjolRules();renderScorecard();
-  document.getElementById('hasilSection').classList.remove('hidden');
-  document.getElementById('hasilSection').scrollIntoView({behavior:'smooth',block:'start'});
-}
+        if (bungaHarian > 0.1) {
+          HC.toast('⚠️ Bunga melebihi batas OJK 2026!', 'error');
+        } else {
+          HC.toast('Biaya pinjol berhasil dihitung!');
+        }
+      }
 
-function onTelatChange(){const r=pinjolState.result;if(!r.jumlah)return;const hari=parseInt(document.getElementById('slTelat').value);document.getElementById('valTelat').textContent=hari+' hari telat';const dendaRate=0.001;const denda=r.totalBayar*dendaRate*hari;const totalDenda=r.totalBayar+denda;document.getElementById('lrNormal').textContent=fmtRp(r.totalBayar);document.getElementById('lrDenda').textContent=fmtRp(denda);document.getElementById('lrTotal').textContent=fmtRp(totalDenda);if(hari>0)document.getElementById('snowballWarn').innerHTML=`<div class="snowball-box">🚨 Telat ${hari} hari = denda ${fmtRp(denda)}! Denda OJK legal maks 0,1%/hari. Pinjol ilegal bisa berkali lipat. Bayar tepat waktu!</div>`;else document.getElementById('snowballWarn').innerHTML='';}
+      function reset() {
+        els.pinjaman.value = '2.000.000'; els.tenor.value = '30'; els.bunga.value = '0.1';
+        els.preset.value = 'custom'; els.admin.value = '80.000'; els.gaji.value = '5.000.000';
+        $('placeholder').style.display = ''; $('results').classList.remove('show');
+        lastCalc = null; HC.toast('Form direset', 'info');
+      }
 
-function renderPinjolTable(){
-  const r=pinjolState.result;
-  const rows=pinjolData.map(p=>{const bungaTotal=r.jumlah*(p.bungaHari/100)*r.tenorHari;const total=r.jumlah+bungaTotal;return{...p,bungaTotal,total};}).sort((a,b)=>a.bungaHari-b.bungaHari);
-  document.getElementById('pinjolTable').innerHTML=`<div class="pinjol-table-inner"><div class="ptable-row header"><span>Platform</span><span>Bunga/hari</span><span>~/bulan</span><span>Total (simulasi)</span></div>${rows.map((p,i)=>`<div class="ptable-row ${i===0?'best':''}"><span>${p.name} ${i===0?'<span class="best-tag green-tag">TERENDAH</span>':''}<br><small>${p.tipe}</small></span><span>${p.bungaHari}%</span><span>${p.bungaBulan}%</span><span>${fmtRp(p.total)}</span></div>`).join('')}</div><div class="insight-box">💡 Semua terdaftar OJK. JULO bunga terendah (0,058%/hari). Bunga aktual tergantung skor kredit & profil kamu.</div>`;
-}
-function renderPinjolRules(){document.getElementById('pinjolRules').innerHTML=pinjolData.map(p=>`<div class="rule-item"><strong>${p.name} — ${p.tipe}</strong><div class="rule-meta"><span>Bunga: ${p.bungaHari}%/hari (~${p.bungaBulan}%/bln)</span><span>Limit: ${fmtCompact(p.limit)}</span><span>Tenor max: ${p.tenorMax} bulan</span></div><p class="rule-note">${p.catatan}</p></div>`).join('');}
+      function buildReport() {
+        if (!lastCalc) return null;
+        const c = lastCalc;
+        const ojkOk = c.bungaHarian <= 0.1;
+        const insight = ojkOk
+          ? `Bunga ${c.bungaHarian}%/hari sesuai aturan OJK 2026. APR ${c.apr.toFixed(0)}%/tahun. Tetap pinjam bijak dan bayar tepat waktu.`
+          : `⚠️ Bunga ${c.bungaHarian}%/hari MELEBIHI batas OJK 2026 (max 0,1%). Kemungkinan pinjol ilegal — lapor ke OJK 157!`;
 
-function renderScorecard(){const r=pinjolState.result;document.getElementById('scJumlah').textContent=fmtCompact(r.jumlah);document.getElementById('scBigTotal').textContent=fmtRp(r.totalBayar);document.getElementById('scAPR').textContent=r.apr.toFixed(0)+'%/thn';document.getElementById('scPinjolRate').textContent=r.apr.toFixed(0)+'%/thn';document.getElementById('scQuote').textContent=r.apr>100?'"Hati-hati jebakan bunga tinggi! 🚨"':'"Pahami biaya sebelum meminjam 💡"';}
-function setScFormat(btn,fmt){document.querySelectorAll('.sc-fmt').forEach(b=>b.classList.remove('active'));btn.classList.add('active');pinjolState.scFormat=fmt;document.getElementById('scPreview').className='sc-preview '+(fmt==='story'?'story-mode':'');}
+        return HC.buildReportCard({
+          title: '⚠️ Simulasi Biaya Pinjol',
+          color: '#DC2626', color2: '#991B1B',
+          heroLabel: 'Total Harus Dibayar',
+          heroValue: HC.fmt(c.totalBayar),
+          heroSubtext: `APR ${c.apr.toFixed(0)}%/thn · ${c.tenor} hari`,
+          inputs: [
+            { label: '💰 Pinjaman', value: HC.fmt(c.pokok) },
+            { label: '📅 Tenor', value: c.tenor + ' hari' },
+            { label: '📊 Bunga', value: c.bungaHarian + '%/hari' },
+            { label: '🧾 Admin', value: HC.fmt(c.admin) },
+          ],
+          results: [
+            { label: 'Total Bayar', value: HC.fmt(c.totalBayar), highlight: true },
+            { label: 'Total Bunga', value: HC.fmt(c.bunga) },
+            { label: 'Dana Cair', value: HC.fmt(c.danaCair) },
+            { label: 'APR/Tahun', value: c.apr.toFixed(1) + '%' },
+            { label: 'Status OJK', value: ojkOk ? '✅ Sesuai aturan' : '❌ Melebihi batas', highlight: true },
+          ],
+          insight, slug: 'pinjol-legal',
+        });
+      }
 
-async function loadH2C(){if(!window.html2canvas){const s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';document.head.appendChild(s);await new Promise(r=>s.onload=r);}}
-async function exportScorecard(){await loadH2C();const el=document.getElementById('scPreview');const canvas=await html2canvas(el,{backgroundColor:null,scale:3,useCORS:true});const a=document.createElement('a');a.download=`HitungCerdas-Pinjol-${pinjolState.scFormat}.png`;a.href=canvas.toDataURL('image/png');a.click();}
-function sharePinjolWA(){const r=pinjolState.result;const msg=`⚠️ *Tau gak biaya SEBENARNYA pinjol?*\n\n💰 Pinjam: ${fmtRp(r.jumlah)}\n💸 Total bayar: ${fmtRp(r.totalBayar)}\n📈 APR sesungguhnya: *${r.apr.toFixed(0)}%/tahun* 😱\n\nBandingkan: KTA bank cuma ~18%/tahun\n\n_Aturan OJK 2026: pinjol legal maks 0,1%/hari_\n\nHitung & cek sendiri:\n👉 https://hitungcerdas.net/kalkulator/pinjol-legal\n\n#PahamiSebelumPinjam`;window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');}
-function copyPinjolResult(){const r=pinjolState.result;navigator.clipboard.writeText(`Pinjol ${fmtRp(r.jumlah)}: total bayar ${fmtRp(r.totalBayar)}, APR ${r.apr.toFixed(0)}%/tahun. Bandingkan KTA bank ~18%/thn. Source: hitungcerdas.net`).then(()=>alert('Tersalin!'));}
-function resetPinjol(){document.getElementById('hasilSection').classList.add('hidden');window.scrollTo({top:0,behavior:'smooth'});}
-function toggleFaq(btn){const a=btn.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block';btn.querySelector('i').style.transform=a.style.display==='block'?'rotate(180deg)':'';}
+      function summaryText() {
+        if (!lastCalc) return '';
+        const c = lastCalc;
+        const ojkOk = c.bungaHarian <= 0.1;
+        return `⚠️ *Simulasi Pinjol - HitungCerdas*\n\nPinjaman: ${HC.fmt(c.pokok)}\nTenor: ${c.tenor} hari\nBunga: ${c.bungaHarian}%/hari (APR ${c.apr.toFixed(0)}%/thn)\n\n💵 *Total Bayar: ${HC.fmt(c.totalBayar)}*\n📥 Dana Cair: ${HC.fmt(c.danaCair)}\n📊 Total Biaya: ${HC.fmt(c.bunga + c.admin)}\n\n${ojkOk ? '✅ Sesuai aturan OJK 2026' : '❌ Melebihi batas OJK!'}\n\nCek legalitas pinjol: OJK 157\nHitung di: https://hitungcerdas.net/kalkulator/pinjol-legal`;
+      }
+
+      $('btnHitung').addEventListener('click', hitung);
+      $('btnReset').addEventListener('click', reset);
+      $('exportImg').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToImage(c, 'pinjol-' + Date.now()); });
+      $('exportWa').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.shareWhatsApp(c, summaryText(), 'pinjol-legal'); });
+      $('exportPdf').addEventListener('click', () => { if (!lastCalc) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToPDF(); });
+      $('exportCopy').addEventListener('click', () => { if (!lastCalc) { HC.toast('Hitung dulu', 'error'); return; } HC.copyText(summaryText(), 'Tersalin!'); });
+    });
+  })();
 </script>
-
-<style>
-:root{--cat-color:#DC2626;--cat-color2:#B91C1C}
-.pinjol-hero{background:linear-gradient(135deg,#1A0505 0%,#2D0A0A 100%)!important}
-.warning-badge{background:rgba(220,38,38,.15)!important;color:#FCA5A5!important}
-.btn-red{background:#DC2626!important}
-.btn-red:hover{background:#B91C1C!important}
-.ojk-rate-badge{display:flex;align-items:center;gap:8px;margin-top:14px;padding:10px 14px;background:rgba(220,38,38,.12);border:1px solid rgba(220,38,38,.3);border-radius:10px;font-size:13px;color:#fff}
-.ojk-rate-badge i{color:#FCA5A5;font-size:18px}
-.ojk-rate-badge strong{color:#FCA5A5}
-.disclaimer-box{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;background:rgba(79,70,229,.06);border:1px solid rgba(79,70,229,.2);border-radius:var(--border-radius-md);margin-bottom:1.25rem;font-size:13px;color:var(--color-text-primary)}
-.disclaimer-box i{font-size:20px;color:#4F46E5;flex-shrink:0;margin-top:1px}
-.edu-disclaimer{background:var(--color-background-secondary);border-color:transparent;color:var(--color-text-secondary);font-size:12px}
-.edu-disclaimer i{color:var(--color-text-tertiary)}
-.tenor-type-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.sub-label{font-size:12px;color:var(--color-text-secondary);display:block;margin-bottom:6px}
-.input-with-unit{display:flex;align-items:center;border:1.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);overflow:hidden}
-.input-with-unit input{flex:1;border:none;padding:10px 12px;font-size:15px;background:transparent;color:var(--color-text-primary);outline:none}
-.input-with-unit span{padding:0 12px;color:var(--color-text-tertiary);font-size:13px}
-.editable-hint{font-size:11px;color:#10B981;font-weight:500;margin-left:6px}
-.preset-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
-.preset-btn{padding:6px 12px;border:1.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-secondary);font-size:12px;cursor:pointer;transition:all .2s}
-.preset-btn.active{border-color:var(--cat-color);background:rgba(220,38,38,.08);color:var(--cat-color);font-weight:500}
-.preset-btn.danger{border-color:rgba(220,38,38,.3)}
-.preset-btn.danger.active{background:rgba(220,38,38,.15);color:#DC2626}
-.pinjol-result-hero{background:linear-gradient(135deg,#1A0505 0%,#2D0A0A 100%);border-radius:var(--border-radius-lg);padding:2rem;margin-bottom:1.25rem;color:#fff}
-.shock-badge{display:inline-block;font-size:11px;font-weight:500;padding:4px 12px;background:rgba(220,38,38,.2);color:#FCA5A5;border-radius:999px;margin-bottom:14px}
-.pinjol-hero-inner{display:flex;gap:2rem;align-items:center;flex-wrap:wrap}
-.pinjol-hero-main{flex:1}
-.red-num{color:#FCA5A5!important}
-.apr-shock{text-align:center;min-width:180px;padding:16px;background:rgba(220,38,38,.1);border-radius:12px}
-.apr-label{font-size:12px;color:#94A3B8;margin-bottom:4px}
-.apr-val{font-size:32px;font-weight:700;color:#FCA5A5;font-family:var(--font-mono);line-height:1}
-.apr-compare{font-size:12px;color:#94A3B8;margin-top:8px;line-height:1.5}
-.apr-compare strong{color:#FCA5A5}
-.lockcap-box{padding:14px 16px;border-radius:var(--border-radius-md);font-size:14px}
-.lockcap-box.ok{background:var(--color-background-success);color:var(--color-text-success)}
-.lockcap-box.bad{background:var(--color-background-danger);color:var(--color-text-danger)}
-.bd-row{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--color-background-secondary);border-radius:var(--border-radius-sm);margin-bottom:2px;font-size:14px}
-.bd-row.warning{background:rgba(245,158,11,.08)}
-.bd-row.total{background:rgba(220,38,38,.08);font-weight:600}
-.bd-row.total span:last-child{color:#DC2626;font-size:16px}
-.bd-insight{padding:10px 14px;background:var(--color-background-warning);border-radius:var(--border-radius-sm);font-size:13px;margin-top:8px}
-.terima-box{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;background:rgba(220,38,38,.06);border-radius:var(--border-radius-md);margin-top:10px;font-size:14px}
-.terima-box strong{color:#DC2626;font-size:16px;font-family:var(--font-mono)}
-.trap-meter{margin:12px 0}
-.trap-track{height:14px;background:var(--color-background-tertiary);border-radius:999px;overflow:hidden}
-.trap-fill{height:100%;border-radius:999px;transition:width .6s,background .4s;width:0}
-.trap-zones{display:flex;justify-content:space-between;font-size:11px;color:var(--color-text-tertiary);margin-top:4px}
-.trap-msg{padding:10px 14px;border-radius:var(--border-radius-md);margin-top:10px;font-size:13px;font-weight:500;background:var(--color-background-secondary)}
-.trap-msg.success{background:var(--color-background-success);color:var(--color-text-success)}
-.trap-msg.warning{background:var(--color-background-warning);color:var(--color-text-warning)}
-.trap-msg.danger{background:var(--color-background-danger);color:var(--color-text-danger)}
-.late-result{display:flex;flex-direction:column;gap:2px;margin-top:12px}
-.late-row{display:flex;justify-content:space-between;padding:10px 14px;background:var(--color-background-secondary);border-radius:var(--border-radius-sm);font-size:14px}
-.late-row.warning{background:rgba(245,158,11,.08)}
-.late-row.danger{background:rgba(220,38,38,.08);font-weight:600}
-.late-row.danger span:last-child{color:#DC2626}
-.snowball-box{margin-top:10px;padding:12px 14px;background:rgba(220,38,38,.08);border-radius:var(--border-radius-md);font-size:13px}
-.relatable-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-.rel-item{display:flex;flex-direction:column;align-items:center;text-align:center;padding:10px;background:var(--color-background-secondary);border-radius:var(--border-radius-sm)}
-.rel-icon{font-size:22px}
-.rel-item strong{font-size:14px;font-family:var(--font-mono);color:#DC2626}
-.rel-item span{font-size:11px;color:var(--color-text-tertiary)}
-.pinjol-table-inner{display:flex;flex-direction:column;gap:2px}
-.ptable-row{display:grid;grid-template-columns:2fr 1fr 1fr 1.3fr;gap:8px;padding:10px 14px;background:var(--color-background-secondary);border-radius:var(--border-radius-sm);font-size:13px;align-items:center}
-.ptable-row.header{font-weight:600;font-size:12px;color:var(--color-text-tertiary);background:transparent}
-.ptable-row small{color:var(--color-text-tertiary);font-size:11px}
-.ptable-row.best{background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.2)}
-.best-tag{font-size:10px;color:#fff;padding:1px 7px;border-radius:99px;margin-left:6px}
-.green-tag{background:#10B981}
-.insight-box{margin-top:10px;padding:12px 14px;background:var(--color-background-info);border-radius:var(--border-radius-md);font-size:13px}
-.bank-detail{margin-top:12px}
-.bank-detail summary{cursor:pointer;font-size:13px;color:var(--cat-color);font-weight:500;padding:8px 0}
-.pinjol-rules{display:flex;flex-direction:column;gap:10px;margin-top:8px}
-.rule-item{padding:12px 14px;background:var(--color-background-secondary);border-radius:var(--border-radius-md)}
-.rule-item strong{font-size:13px}
-.rule-meta{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0;font-size:11px;color:var(--color-text-tertiary)}
-.rule-meta span{background:var(--color-background-primary);padding:2px 8px;border-radius:4px}
-.rule-note{font-size:12px;color:var(--color-text-secondary);margin:0}
-.ojk-card{border:1px solid rgba(220,38,38,.2)}
-.ojk-alert{display:flex;gap:12px;padding:14px;background:rgba(220,38,38,.06);border-radius:var(--border-radius-md);margin-bottom:14px}
-.ojk-alert i{font-size:20px;color:#DC2626;flex-shrink:0}
-.ojk-alert p{font-size:13px;margin:0}
-.ojk-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px 20px;background:#DC2626;color:#fff;border-radius:var(--border-radius-md);text-decoration:none;font-size:14px;font-weight:500;margin-bottom:10px;transition:background .2s}
-.ojk-btn:hover{background:#B91C1C}
-.ojk-btn.secondary{background:#25D366}
-.ojk-btn.secondary:hover{background:#1da851}
-.signs-wrap{margin-top:14px}
-.signs-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:6px;margin-top:8px}
-.sign-item{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:var(--border-radius-sm);font-size:13px}
-.sign-item.red{background:rgba(220,38,38,.06);color:#DC2626}
-.sign-item.green{background:rgba(16,185,129,.06);color:#10B981}
-.ilegal-signs,.legal-signs{margin-top:12px}
-.ilegal-signs h4,.legal-signs h4{font-size:14px;font-weight:600;margin-bottom:8px}
-.alt-grid{display:flex;flex-direction:column;gap:10px}
-.alt-item{display:flex;gap:14px;align-items:flex-start;padding:14px;border:1.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);text-decoration:none;color:inherit;transition:all .2s}
-.alt-item:hover{border-color:var(--cat-color)}
-.alt-item.best{border-color:#10B981;background:rgba(16,185,129,.04)}
-.alt-icon{font-size:28px;flex-shrink:0}
-.alt-text strong{font-size:14px;font-weight:600;display:block;margin-bottom:3px}
-.alt-text p{font-size:12px;color:var(--color-text-secondary);margin:0 0 6px}
-.alt-cta{font-size:12px;color:#10B981;font-weight:500}
-/* SCORECARD */
-.scorecard-section{border:1px solid rgba(220,38,38,.2)}
-.sc-preview-wrap{display:flex;justify-content:center;padding:1rem;background:var(--color-background-secondary);border-radius:var(--border-radius-md);margin:12px 0}
-.sc-preview{width:340px;height:340px;background:linear-gradient(145deg,#1A0505 0%,#2D0A0A 60%,#450A0A 100%);border-radius:20px;position:relative;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,.3);transition:all .4s}
-.sc-preview.story-mode{width:280px;height:460px}
-.sc-grad-overlay{position:absolute;inset:0;background:radial-gradient(circle at 80% 20%,rgba(220,38,38,.35) 0%,transparent 50%),radial-gradient(circle at 20% 80%,rgba(245,158,11,.12) 0%,transparent 50%)}
-.sc-content{position:relative;z-index:2;padding:24px;height:100%;display:flex;flex-direction:column;color:#fff}
-.sc-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:auto}
-.sc-brand{font-size:14px;font-weight:600;color:#fff}
-.sc-dot{color:#FCA5A5}
-.sc-pill{font-size:10px;background:rgba(220,38,38,.3);color:#FCA5A5;padding:4px 10px;border-radius:99px}
-.sc-main{text-align:center;margin:auto 0}
-.sc-label{font-size:12px;color:#94A3B8;margin-bottom:6px}
-.sc-big{font-size:32px;font-weight:700;font-family:var(--font-mono);color:#fff;line-height:1}
-.sc-big.red{color:#FCA5A5}
-.sc-preview.story-mode .sc-big{font-size:38px}
-.sc-apr-box{margin-top:12px;padding:10px;background:rgba(220,38,38,.15);border-radius:10px}
-.sc-apr-lbl{font-size:10px;color:#94A3B8;display:block}
-.sc-apr-val{font-size:20px;font-weight:700;color:#FCA5A5;font-family:var(--font-mono)}
-.sc-compare-box{margin:14px 0;background:rgba(255,255,255,.05);border-radius:10px;padding:10px}
-.sc-compare-row{display:flex;justify-content:space-between;font-size:12px;padding:3px 0;color:#CBD5E1}
-.sc-bad{color:#FCA5A5;font-weight:600;font-family:var(--font-mono)}
-.sc-good{color:#6EE7B7;font-weight:600;font-family:var(--font-mono)}
-.sc-quote{font-size:13px;font-style:italic;color:#FBBF24;text-align:center;margin:10px 0}
-.sc-foot{display:flex;justify-content:space-between;align-items:center;margin-top:auto;padding-top:12px;border-top:1px solid rgba(255,255,255,.1)}
-.sc-tags{font-size:10px;color:#64748B}
-.sc-url{font-size:11px;color:#FCA5A5;font-weight:500}
-.sc-format-row{display:flex;gap:8px;justify-content:center;margin-bottom:12px}
-.sc-fmt{padding:7px 14px;border:1.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-secondary);font-size:12px;cursor:pointer;transition:all .2s}
-.sc-fmt.active{border-color:var(--cat-color);background:rgba(220,38,38,.08);color:var(--cat-color);font-weight:500}
-.sc-export-hidden{position:fixed;left:-9999px;top:0}
-.export-grid{display:flex;flex-wrap:wrap;gap:10px}
-.export-btn{flex:1;min-width:120px;padding:11px 16px;border:1.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-primary);font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:all .2s}
-.export-btn:hover{border-color:var(--cat-color)}
-.export-btn.primary{background:var(--cat-color);color:#fff;border-color:var(--cat-color)}
-.export-btn.wa{background:#25D366;color:#fff;border-color:#25D366}
-.info-callout{display:flex;gap:12px;padding:14px;background:rgba(220,38,38,.06);border:1px solid rgba(220,38,38,.25);border-radius:var(--border-radius-md);margin:12px 0;font-size:13px}
-.info-callout i{font-size:20px;color:#DC2626;flex-shrink:0}
-.edu-list{padding-left:1.2rem}
-.edu-list li{margin-bottom:8px;font-size:14px}
-.faq-list{display:flex;flex-direction:column;gap:6px}
-.faq-item{border:.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);overflow:hidden}
-.faq-q{width:100%;text-align:left;padding:14px 16px;background:var(--color-background-primary);border:none;font-size:14px;font-weight:500;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:8px;color:var(--color-text-primary)}
-.faq-q i{transition:transform .3s;flex-shrink:0}
-.faq-a{display:none;padding:12px 16px;background:var(--color-background-secondary)}
-.faq-a p{margin:0;font-size:13px;color:var(--color-text-secondary)}
-.option-grid{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
-.opt-btn{padding:8px 16px;border:1.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-secondary);font-size:13px;cursor:pointer;transition:all .2s}
-.opt-btn.active{border-color:var(--cat-color);color:var(--cat-color);font-weight:500}
-.trust-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:12px}
-.trust-item{font-size:12px;color:rgba(255,255,255,.7);display:flex;align-items:center;gap:4px}
-.trust-item i{color:#10B981}
-.hidden{display:none!important}
-@media (max-width:480px){.tenor-type-grid{grid-template-columns:1fr}.pinjol-hero-inner{flex-direction:column}.relatable-grid{grid-template-columns:repeat(2,1fr)}.signs-grid{grid-template-columns:1fr}.ptable-row{grid-template-columns:1.5fr .9fr 1.1fr;font-size:12px}.ptable-row span:nth-child(3){display:none}}
-</style>

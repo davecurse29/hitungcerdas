@@ -1,787 +1,313 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
+import FAQ from '../../components/FAQ.astro';
 import AdSlot from '../../components/AdSlot.astro';
+import CalculatorCard from '../../components/CalculatorCard.astro';
+import { getCalculatorBySlug, getRelatedCalculators } from '../../data/calculators';
 
-const title = "Kalkulator Dana Darurat - Berapa yang Kamu Butuhkan?";
-const description = "Hitung target dana darurat idealmu berdasarkan status, pekerjaan, dan tanggungan. Lengkap dengan timeline, tips menabung, dan strategi parkir dana darurat.";
-const breadcrumbs = [
-  { label: "Beranda", href: "/" },
-  { label: "Kalkulator", href: "/#kalkulator" },
-  { label: "Dana Darurat" }
+const calc = getCalculatorBySlug('dana-darurat')!;
+const related = getRelatedCalculators('dana-darurat', 3);
+
+const faqs = [
+  { question: 'Apakah dana darurat harus di rekening terpisah?', answer: 'Sangat dianjurkan. Pisahkan dari rekening operasional harian agar tidak tergoda dipakai. Bisa pakai rekening tabungan biasa, e-wallet (DANA, GoPay), atau rekening bank digital (Jenius, Blu, SeaBank) yang punya bunga 2-5% dan likuid 24 jam.' },
+  { question: 'Boleh investasi dulu sebelum dana darurat cukup?', answer: 'TIDAK. Dana darurat adalah pondasi keuangan. Tanpa dana darurat, ketika krisis datang kamu akan jual aset investasi dalam keadaan rugi atau berutang. Selesaikan dana darurat dulu (min 3 bulan), baru mulai investasi.' },
+  { question: 'Kalau punya asuransi, dana darurat masih perlu?', answer: 'Tetap perlu. Asuransi cuma cover hal spesifik (kesehatan, jiwa, mobil), sementara dana darurat menutupi <strong>semua</strong> jenis darurat: PHK, kerusakan rumah mendadak, biaya keluarga sakit, atau kebutuhan tak terduga lainnya yang tidak ditanggung asuransi.' },
+  { question: 'Dana darurat untuk karyawan sama dengan freelancer?', answer: 'Beda. Karyawan tetap = 3-6× pengeluaran cukup (penghasilan stabil). Freelancer/wirausaha = 9-12× pengeluaran (penghasilan fluktuatif, risiko kehilangan klien tinggi). Yang punya tanggungan juga butuh lebih besar.' },
 ];
+
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '/#tools' }, { label: calc.shortTitle }];
 ---
 
-<Layout title={title} description={description} catColor="#F59E0B" catColor2="#D97706">
-  <Breadcrumb items={breadcrumbs} />
-
-  <main class="calc-page">
-    <!-- HERO SECTION -->
-    <section class="calc-hero" style="--cat-color:#F59E0B;--cat-color2:#D97706">
-      <div class="hero-inner">
-        <div class="hero-badge">
-          <i class="ti ti-shield-check"></i>
-          <span>Kalkulator Finansial</span>
+<Layout title={calc.title} description={calc.metaDescription} keywords={calc.keywords} canonical={`https://hitungcerdas.net/kalkulator/${calc.slug}`}>
+  <section class="calc-hero" style="--cat-color:#F59E0B;--cat-color2:#D97706">
+    <div class="wrap">
+      <Breadcrumb items={bcItems} />
+      <div class="calc-hero-grid">
+        <div class="calc-hero-text">
+          <div class="calc-hero-tag" style="background:#FEF3C7;color:#92400E"><i class="ti ti-shield-check"></i> {calc.categoryLabel}</div>
+          <h1 class="calc-hero-title">{calc.h1}</h1>
+          <p class="calc-hero-sub">{calc.introText}</p>
+          <ul class="calc-hero-benefits">{calc.benefits.map(b => <li><i class="ti ti-check"></i> {b}</li>)}</ul>
         </div>
-        <h1>Kalkulator Dana Darurat</h1>
-        <p class="hero-sub">Hitung berapa dana darurat ideal untuk kondisimu — dan kapan bisa tercapai. Gratis, akurat, 100% Indonesia.</p>
-        <div class="trust-row">
-          <span class="trust-item"><i class="ti ti-check"></i> Sesuai standar OJK</span>
-          <span class="trust-item"><i class="ti ti-check"></i> 100% Format Indonesia</span>
-          <span class="trust-item"><i class="ti ti-check"></i> Gratis Selamanya</span>
+        <div class="calc-hero-illust">
+          <svg viewBox="0 0 200 200" fill="none">
+            <circle cx="100" cy="100" r="85" fill="rgba(255,255,255,.08)"/>
+            <path d="M100 40L160 60V100C160 135 130 160 100 170C70 160 40 135 40 100V60L100 40Z" fill="#FFF" stroke="#FBBF24" stroke-width="3" stroke-linejoin="round"/>
+            <circle cx="100" cy="100" r="22" fill="none" stroke="#D97706" stroke-width="3"/>
+            <text x="100" y="107" text-anchor="middle" font-size="16" font-weight="900" fill="#D97706" font-family="Inter">Rp</text>
+            <path d="M75 130L90 115L100 125L125 100" stroke="#059669" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          </svg>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <div class="calc-container">
-      <!-- PROGRESS BAR -->
-      <div class="wizard-progress" id="wizardProgress">
-        <div class="progress-steps">
-          <div class="step active" id="stepDot1">
-            <div class="step-dot">1</div>
-            <span>Profil</span>
-          </div>
-          <div class="step-line"></div>
-          <div class="step" id="stepDot2">
-            <div class="step-dot">2</div>
-            <span>Keuangan</span>
-          </div>
-          <div class="step-line"></div>
-          <div class="step" id="stepDot3">
-            <div class="step-dot">3</div>
-            <span>Hasil</span>
-          </div>
-        </div>
-        <p class="progress-hint" id="progressHint">Langkah 1 dari 2 — Isi profil kamu dulu</p>
-      </div>
+  <AdSlot format="horizontal" />
 
-      <!-- STEP 1: PROFIL -->
-      <div class="calc-card" id="step1">
-        <h2 class="card-title"><i class="ti ti-user"></i> Profil Kamu</h2>
-
-        <div class="form-group">
-          <label for="statusPernikahan">Status Pernikahan</label>
-          <div class="option-grid">
-            <button class="opt-btn active" data-group="status" data-val="single" onclick="setOption(this,'status')">
-              <i class="ti ti-user"></i> Single
-            </button>
-            <button class="opt-btn" data-group="status" data-val="menikah" onclick="setOption(this,'status')">
-              <i class="ti ti-heart"></i> Menikah
-            </button>
-            <button class="opt-btn" data-group="status" data-val="tanggungan" onclick="setOption(this,'status')">
-              <i class="ti ti-users"></i> Ada Tanggungan
-            </button>
-          </div>
+  <section class="calc-section">
+    <div class="wrap">
+      <div class="calc-card">
+        <div class="calc-card-hdr">
+          <div class="calc-card-hdr-ic" style="background:linear-gradient(135deg,#F59E0B 0%,#D97706 100%)"><i class="ti ti-shield-check"></i></div>
+          <div><h2 class="calc-card-title">Kalkulator Dana Darurat</h2><p class="calc-card-sub">Hitung target ideal sesuai status, pekerjaan, & tanggungan</p></div>
         </div>
 
-        <div class="form-group">
-          <label for="jenisKerja">Jenis Pekerjaan</label>
-          <div class="option-grid">
-            <button class="opt-btn active" data-group="kerja" data-val="tetap" onclick="setOption(this,'kerja')">
-              <i class="ti ti-building"></i> Karyawan Tetap
-            </button>
-            <button class="opt-btn" data-group="kerja" data-val="freelance" onclick="setOption(this,'kerja')">
-              <i class="ti ti-device-laptop"></i> Freelance
-            </button>
-            <button class="opt-btn" data-group="kerja" data-val="wirausaha" onclick="setOption(this,'kerja')">
-              <i class="ti ti-briefcase"></i> Wirausaha
-            </button>
-          </div>
-          <p class="field-hint" id="kerjaHint">Karyawan tetap = penghasilan stabil = kebutuhan buffer lebih kecil</p>
-        </div>
+        <div class="calc-grid">
+          <div class="calc-input">
+            <div class="field">
+              <label>Status Pernikahan</label>
+              <select id="status">
+                <option value="single">Single / Belum Menikah</option>
+                <option value="married">Menikah, Belum Ada Anak</option>
+                <option value="family">Menikah, Ada Anak / Tanggungan</option>
+              </select>
+            </div>
 
-        <div class="form-group" id="tanggunganGroup" style="display:none">
-          <label for="jumlahTanggungan">Jumlah Tanggungan</label>
-          <div class="slider-wrap">
-            <input type="range" id="jumlahTanggungan" min="1" max="5" step="1" value="2" oninput="updateSlider('jumlahTanggungan','tanggunganVal',null,null,' orang')">
-            <div class="slider-info">
-              <span>1 orang</span>
-              <strong id="tanggunganVal">2 orang</strong>
-              <span>5 orang</span>
+            <div class="field">
+              <label>Jenis Pekerjaan</label>
+              <select id="pekerjaan">
+                <option value="karyawan">Karyawan Tetap</option>
+                <option value="kontrak">Karyawan Kontrak</option>
+                <option value="freelance">Freelance / Pekerja Lepas</option>
+                <option value="wirausaha">Wirausaha / UMKM</option>
+              </select>
+            </div>
+
+            <div class="field"><label>Pengeluaran Rutin per Bulan</label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span>
+                <input type="text" id="pengeluaran" class="has-prefix" value="5.000.000" inputmode="numeric" /></div>
+              <p class="hint" style="margin-top:6px">Total semua: sewa, makan, transport, listrik, cicilan, dll</p>
+            </div>
+
+            <div class="field"><label>Dana Darurat Saat Ini <span class="hint">(opsional)</span></label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span>
+                <input type="text" id="dananow" class="has-prefix" value="0" inputmode="numeric" /></div>
+            </div>
+
+            <div class="field"><label>Kemampuan Nabung per Bulan</label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span>
+                <input type="text" id="nabung" class="has-prefix" value="1.000.000" inputmode="numeric" /></div>
+              <p class="hint" style="margin-top:6px">Maksimal 20-30% dari pengeluaran rutin</p>
+            </div>
+
+            <div class="calc-action-bar">
+              <button type="button" class="btn-hitung" id="btnHitung"><i class="ti ti-calculator"></i> Hitung Sekarang</button>
+              <button type="button" class="btn-reset" id="btnReset"><i class="ti ti-refresh"></i> Reset</button>
             </div>
           </div>
-        </div>
 
-        <button class="btn-primary" onclick="goStep(2)">
-          Lanjut — Isi Data Keuangan <i class="ti ti-arrow-right"></i>
-        </button>
-      </div>
+          <div class="calc-output">
+            <div class="result-placeholder" id="placeholder">
+              <i class="ti ti-shield-check result-placeholder-icon"></i>
+              <div class="result-placeholder-title">Target Dana Darurat akan muncul di sini</div>
+              <div class="result-placeholder-desc">Isi profil & pengeluaran, klik <strong>"Hitung Sekarang"</strong>.</div>
+            </div>
 
-      <!-- STEP 2: KEUANGAN -->
-      <div class="calc-card hidden" id="step2">
-        <h2 class="card-title"><i class="ti ti-wallet"></i> Data Keuangan</h2>
+            <div class="result-wrapper" id="results">
+              <div class="result-main">
+                <div class="result-label">Target Dana Darurat Ideal</div>
+                <div class="result-value" id="target">Rp 0</div>
+                <div class="result-meta"><i class="ti ti-info-circle"></i> <span id="multiplier">0× pengeluaran bulanan</span></div>
+              </div>
 
-        <div class="form-group">
-          <label for="pengeluaran">Pengeluaran Bulanan <span class="required">*</span></label>
-          <div class="input-prefix">
-            <span>Rp</span>
-            <input type="text" id="pengeluaran" placeholder="Contoh: 5.000.000" inputmode="numeric" oninput="formatRupiahInput(this)" />
-          </div>
-          <p class="field-hint">Semua pengeluaran rutin: makan, transport, tagihan, cicilan, dll</p>
-        </div>
+              <div class="result-grid">
+                <div class="result-item"><div class="result-item-label">Sudah Terkumpul</div><div class="result-item-value" id="terkumpul">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">Masih Kurang</div><div class="result-item-value result-warn" id="kurang">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">Progress Tercapai</div><div class="result-item-value" id="progress">0%</div></div>
+                <div class="result-item"><div class="result-item-label">Estimasi Tercapai</div><div class="result-item-value" id="estimasi">0 bulan</div></div>
+              </div>
 
-        <div class="form-group">
-          <label for="danaSaatIni">Dana Darurat yang Sudah Punya</label>
-          <div class="input-prefix">
-            <span>Rp</span>
-            <input type="text" id="danaSaatIni" placeholder="0 kalau belum ada" inputmode="numeric" oninput="formatRupiahInput(this)" />
-          </div>
-          <p class="field-hint">Tabungan yang memang dikhususkan untuk darurat</p>
-        </div>
+              <div class="adv-section">
+                <div class="adv-toggle"><span><i class="ti ti-chart-bar"></i>&nbsp; Roadmap Tabungan Bulanan</span><i class="ti ti-chevron-down chev"></i></div>
+                <div class="adv-content">
+                  <table class="compare-table">
+                    <thead><tr><th>Bulan</th><th class="right">Total Nabung</th><th class="right">% Target</th></tr></thead>
+                    <tbody id="roadmapBody"></tbody>
+                  </table>
+                </div>
+              </div>
 
-        <div class="form-group">
-          <label for="kemampuanNabung">Kemampuan Menabung per Bulan</label>
-          <div class="input-prefix">
-            <span>Rp</span>
-            <input type="text" id="kemampuanNabung" placeholder="Contoh: 500.000" inputmode="numeric" oninput="formatRupiahInput(this)" />
-          </div>
-          <p class="field-hint">Berapa yang bisa kamu sisihkan khusus untuk dana darurat</p>
-        </div>
+              <div class="adv-section">
+                <div class="adv-toggle"><span><i class="ti ti-bulb"></i>&nbsp; Di Mana Simpan Dana Darurat?</span><i class="ti ti-chevron-down chev"></i></div>
+                <div class="adv-content">
+                  <table class="compare-table">
+                    <thead><tr><th>Instrumen</th><th class="right">Return/Thn</th><th>Likuiditas</th></tr></thead>
+                    <tbody>
+                      <tr><td>Tabungan Bank Konvensional</td><td class="right">~2%</td><td>Instan ✅</td></tr>
+                      <tr class="active"><td>Bank Digital (Jenius/Blu/SeaBank)</td><td class="right">~5%</td><td>Instan ✅</td></tr>
+                      <tr><td>Deposito 1 Bulan</td><td class="right">~5-6%</td><td>30 hari ⚠️</td></tr>
+                      <tr><td>Reksa Dana Pasar Uang (RDPU)</td><td class="right">~5-7%</td><td>1-2 hari ✅</td></tr>
+                      <tr><td>E-Wallet (DANA/GoPay)</td><td class="right">~3-4%</td><td>Instan ✅</td></tr>
+                    </tbody>
+                  </table>
+                  <p style="font-size:11.5px;color:var(--text-mute);margin-top:8px;line-height:1.5">💡 <strong>Rekomendasi:</strong> Split 50% di bank digital (instan), 50% di RDPU (return lebih tinggi). Hindari saham, properti, crypto — tidak likuid saat darurat!</p>
+                </div>
+              </div>
 
-        <div class="btn-row">
-          <button class="btn-secondary" onclick="goStep(1)">
-            <i class="ti ti-arrow-left"></i> Kembali
-          </button>
-          <button class="btn-primary" onclick="hitungDanaDarurat()">
-            <i class="ti ti-shield-check"></i> Hitung Dana Darurat
-          </button>
-        </div>
-      </div>
-
-      <!-- STEP 3: HASIL -->
-      <div class="hidden" id="step3">
-
-        <!-- RESULT HERO -->
-        <div class="result-hero" style="--cat-color:#F59E0B">
-          <div class="result-hero-inner">
-            <div class="result-ring-wrap">
-              <svg class="progress-ring" width="160" height="160" viewBox="0 0 160 160">
-                <circle cx="80" cy="80" r="68" fill="none" stroke="rgba(245,158,11,0.15)" stroke-width="12"/>
-                <circle id="progressRingCircle" cx="80" cy="80" r="68" fill="none" stroke="#F59E0B" stroke-width="12" stroke-linecap="round" stroke-dasharray="427" stroke-dashoffset="427" transform="rotate(-90 80 80)" style="transition:stroke-dashoffset 1.2s ease"/>
-              </svg>
-              <div class="ring-center">
-                <span class="ring-pct" id="ringPct">0%</span>
-                <span class="ring-label">tercapai</span>
+              <div class="export-row">
+                <button type="button" class="export-btn img" id="exportImg"><i class="ti ti-photo-down"></i><span>Save Image</span></button>
+                <button type="button" class="export-btn wa" id="exportWa"><i class="ti ti-brand-whatsapp"></i><span>Share WA</span></button>
+                <button type="button" class="export-btn pdf" id="exportPdf"><i class="ti ti-printer"></i><span>Print/PDF</span></button>
+                <button type="button" class="export-btn copy" id="exportCopy"><i class="ti ti-copy"></i><span>Copy Teks</span></button>
               </div>
             </div>
-            <div class="result-hero-text">
-              <div class="result-tag" id="resultTag">🛡️ Dana Darurat Ideal</div>
-              <div class="result-big" id="resultTarget">Rp 0</div>
-              <div class="result-sub" id="resultMultiplier">= 6× pengeluaran bulanan</div>
-              <div id="easterEgg" class="easter-egg hidden"></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- AD SLOT 1 -->
-        <AdSlot position="after-result" />
-
-        <!-- GAP ANALYSIS -->
-        <div class="calc-card" id="gapCard">
-          <h3 class="card-title"><i class="ti ti-chart-bar"></i> Analisis Gap</h3>
-          <div class="gap-table">
-            <div class="gap-row">
-              <span class="gap-label">🎯 Target Dana Darurat</span>
-              <span class="gap-value" id="gapTarget">—</span>
-            </div>
-            <div class="gap-row success">
-              <span class="gap-label">✅ Sudah Terkumpul</span>
-              <span class="gap-value" id="gapSudah">—</span>
-            </div>
-            <div class="gap-row warning" id="gapKurangRow">
-              <span class="gap-label">📊 Masih Kurang</span>
-              <span class="gap-value" id="gapKurang">—</span>
-            </div>
-            <div class="gap-row highlight" id="gapTimelineRow">
-              <span class="gap-label">⏰ Tercapai dalam</span>
-              <span class="gap-value" id="gapTimeline">—</span>
-            </div>
-          </div>
-
-          <!-- RELATABLE CONVERSION -->
-          <div class="relatable-box" id="relatableBox">
-            <div class="relatable-title">💡 Dana darurat ini setara dengan...</div>
-            <div class="relatable-grid" id="relatableGrid"></div>
-          </div>
-        </div>
-
-        <!-- CHART -->
-        <div class="calc-card">
-          <h3 class="card-title"><i class="ti ti-trending-up"></i> Proyeksi Tabungan</h3>
-          <div class="chart-wrap">
-            <canvas id="growthChart" height="280"></canvas>
-          </div>
-          <p class="chart-hint">Garis hijau = tabungan kamu tumbuh. Garis putus = target dana darurat.</p>
-        </div>
-
-        <!-- STRATEGY -->
-        <div class="calc-card">
-          <h3 class="card-title"><i class="ti ti-bulb"></i> Parkir Dana Darurat di Mana?</h3>
-          <div class="strategy-grid">
-            <div class="strategy-card best">
-              <div class="strategy-badge">⭐ TERBAIK</div>
-              <h4>Reksa Dana Pasar Uang</h4>
-              <div class="strategy-return">~4-5% / tahun</div>
-              <p>Likuid (bisa cairkan kapan saja), return lebih tinggi dari tabungan biasa, aman OJK.</p>
-            </div>
-            <div class="strategy-card">
-              <h4>Deposito</h4>
-              <div class="strategy-return">~3-4% / tahun</div>
-              <p>Aman, dijamin LPS, tapi ada jangka waktu (kurang fleksibel).</p>
-            </div>
-            <div class="strategy-card">
-              <h4>Tabungan Biasa</h4>
-              <div class="strategy-return">~0.5-2% / tahun</div>
-              <p>Paling likuid, tapi return rendah & godaan pakai lebih tinggi.</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- AD SLOT 2 -->
-        <AdSlot position="mid-content" />
-
-        <!-- RECOMMENDATION ENGINE -->
-        <div class="calc-card rec-card">
-          <h3 class="card-title"><i class="ti ti-compass"></i> Langkah Selanjutnya</h3>
-          <div class="rec-grid">
-            <a href="/kalkulator/kta" class="rec-item urgent">
-              <div class="rec-icon"><i class="ti ti-cash"></i></div>
-              <div class="rec-text">
-                <strong>Butuh Dana Mendesak Sekarang?</strong>
-                <p>Dana darurat belum cukup tapi ada kebutuhan urgent? Pahami dulu simulasi KTA sebelum memutuskan.</p>
-                <span class="rec-cta">Simulasi KTA →</span>
-              </div>
-            </a>
-            <a href="/kalkulator/investasi" class="rec-item">
-              <div class="rec-icon"><i class="ti ti-trending-up"></i></div>
-              <div class="rec-text">
-                <strong>Dana Darurat Sudah Cukup?</strong>
-                <p>Saatnya investasikan sisa penghasilan agar uangmu bekerja lebih keras.</p>
-                <span class="rec-cta">Hitung Investasi →</span>
-              </div>
-            </a>
-            <a href="/kalkulator/gaji-bersih" class="rec-item">
-              <div class="rec-icon"><i class="ti ti-wallet"></i></div>
-              <div class="rec-text">
-                <strong>Mau Tahu Gaji Bersih?</strong>
-                <p>Hitung take-home pay setelah BPJS dan pajak — bantu atur budget nabung.</p>
-                <span class="rec-cta">Cek Gaji Bersih →</span>
-              </div>
-            </a>
-          </div>
-        </div>
-
-        <!-- EXPORT -->
-        <div class="calc-card export-card">
-          <h3 class="card-title"><i class="ti ti-share"></i> Simpan & Bagikan</h3>
-          <div class="export-grid">
-            <button class="export-btn" onclick="exportPNG()">
-              <i class="ti ti-download"></i> Simpan PNG
-            </button>
-            <button class="export-btn wa" onclick="shareWA()">
-              <i class="ti ti-brand-whatsapp"></i> Share WhatsApp
-            </button>
-            <button class="export-btn" onclick="copyResult()">
-              <i class="ti ti-copy"></i> Copy Hasil
-            </button>
-          </div>
-        </div>
-
-        <!-- HITUNG ULANG -->
-        <div style="text-align:center;margin:1rem 0">
-          <button class="btn-secondary" onclick="resetCalc()">
-            <i class="ti ti-refresh"></i> Hitung Ulang
-          </button>
-        </div>
-
-        <!-- AD SLOT 3 -->
-        <AdSlot position="before-footer" />
-      </div>
-
-      <!-- EDUCATIONAL CONTENT -->
-      <div class="calc-card edu-card">
-        <h2><i class="ti ti-book"></i> Panduan Lengkap Dana Darurat</h2>
-
-        <h3>Apa itu Dana Darurat?</h3>
-        <p>Dana darurat adalah uang yang sengaja disisihkan untuk menghadapi kejadian tak terduga — seperti PHK, sakit, kecelakaan, atau kerusakan mendadak. Tujuannya agar kamu tidak perlu berutang atau menjual aset investasi saat krisis datang.</p>
-
-        <h3>Berapa Idealnya Dana Darurat?</h3>
-        <div class="edu-table">
-          <div class="edu-row header">
-            <span>Kondisi</span><span>Multiplier</span><span>Contoh (Pengeluaran Rp 5jt)</span>
-          </div>
-          <div class="edu-row">
-            <span>Single, karyawan tetap</span><span>3× pengeluaran</span><span>Rp 15 juta</span>
-          </div>
-          <div class="edu-row">
-            <span>Menikah, karyawan tetap</span><span>6× pengeluaran</span><span>Rp 30 juta</span>
-          </div>
-          <div class="edu-row">
-            <span>Ada tanggungan / freelance</span><span>9-12× pengeluaran</span><span>Rp 45-60 juta</span>
-          </div>
-        </div>
-
-        <h3>Kesalahan Umum Dana Darurat</h3>
-        <ul class="edu-list">
-          <li><strong>Dipakai untuk kebutuhan konsumtif</strong> — Dana darurat bukan tabungan liburan atau beli gadget.</li>
-          <li><strong>Ditaruh di instrumen tidak likuid</strong> — Saham atau properti tidak bisa dicairkan cepat saat darurat.</li>
-          <li><strong>Dicampur dengan rekening harian</strong> — Pisahkan rekening dana darurat agar tidak tergoda pakai.</li>
-          <li><strong>Tidak pernah di-top up</strong> — Setelah dipakai, segera isi kembali.</li>
-        </ul>
-
-        <h3>FAQ Dana Darurat</h3>
-        <div class="faq-list">
-          <div class="faq-item">
-            <button class="faq-q" onclick="toggleFaq(this)">
-              Apakah dana darurat harus di rekening terpisah?
-              <i class="ti ti-chevron-down"></i>
-            </button>
-            <div class="faq-a">
-              <p>Sangat disarankan. Rekening terpisah mencegah godaan untuk memakainya sehari-hari dan memudahkan tracking progress. Pilih bank yang berbeda dari rekening utama agar tidak mudah transfer.</p>
-            </div>
-          </div>
-          <div class="faq-item">
-            <button class="faq-q" onclick="toggleFaq(this)">
-              Boleh investasi dulu sebelum dana darurat cukup?
-              <i class="ti ti-chevron-down"></i>
-            </button>
-            <div class="faq-a">
-              <p>Tidak disarankan. Dana darurat adalah fondasi keuangan. Tanpanya, saat krisis datang kamu terpaksa jual investasi di waktu yang tidak tepat (mungkin rugi). Selesaikan dana darurat dulu, baru investasi.</p>
-            </div>
-          </div>
-          <div class="faq-item">
-            <button class="faq-q" onclick="toggleFaq(this)">
-              Kalau punya asuransi, dana darurat masih perlu?
-              <i class="ti ti-chevron-down"></i>
-            </button>
-            <div class="faq-a">
-              <p>Tetap perlu. Asuransi menanggung kejadian spesifik dan ada proses klaim yang butuh waktu. Dana darurat untuk kebutuhan kas segera — misal bayar tagihan saat menunggu klaim cair.</p>
-            </div>
-          </div>
-          <div class="faq-item">
-            <button class="faq-q" onclick="toggleFaq(this)">
-              Dana darurat untuk karyawan sama dengan freelancer?
-              <i class="ti ti-chevron-down"></i>
-            </button>
-            <div class="faq-a">
-              <p>Berbeda. Freelancer dan wirausaha membutuhkan buffer lebih besar (9-12 bulan) karena penghasilan tidak tetap. Karyawan tetap bisa lebih rendah (3-6 bulan) karena ada kepastian gaji.</p>
-            </div>
           </div>
         </div>
       </div>
+    </div>
+  </section>
 
-    </div><!-- end calc-container -->
-  </main>
+  <section class="content-section">
+    <div class="wrap-text">
+      <h2>Apa itu Dana Darurat?</h2>
+      <p>Dana darurat adalah uang yang sengaja disisihkan untuk menghadapi kejadian tak terduga — PHK, sakit, kecelakaan, atau kerusakan mendadak. Tujuannya agar kamu <strong>tidak perlu berutang</strong> atau menjual aset investasi saat krisis datang.</p>
+
+      <h3>Berapa Idealnya Multiplier Dana Darurat?</h3>
+      <table class="compare-table" style="margin:14px 0">
+        <thead><tr><th>Kondisi</th><th class="right">Multiplier</th><th class="right">Contoh (Pengeluaran Rp 5jt)</th></tr></thead>
+        <tbody>
+          <tr><td>Single, karyawan tetap</td><td class="right"><strong>3×</strong> pengeluaran</td><td class="right">Rp 15 juta</td></tr>
+          <tr><td>Menikah, karyawan tetap</td><td class="right"><strong>6×</strong> pengeluaran</td><td class="right">Rp 30 juta</td></tr>
+          <tr class="active"><td>Ada tanggungan / freelance</td><td class="right"><strong>9-12×</strong> pengeluaran</td><td class="right">Rp 45-60 juta</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Kesalahan Umum Dana Darurat</h3>
+      <ul>
+        <li><strong>Dipakai untuk konsumtif</strong> — bukan tabungan liburan atau beli gadget.</li>
+        <li><strong>Ditaruh di instrumen tidak likuid</strong> — saham/properti tidak bisa dicairkan cepat.</li>
+        <li><strong>Dicampur rekening harian</strong> — pisahkan agar tidak tergoda dipakai.</li>
+        <li><strong>Tidak pernah di-top up</strong> — setelah dipakai, segera isi kembali.</li>
+      </ul>
+
+      <div class="cta-box">
+        <h3>Coba Sekarang</h3>
+        <p>Isi status, pekerjaan, dan pengeluaran kamu. Klik "Hitung Sekarang" untuk dapat target dana darurat ideal plus roadmap nabung bulanan.</p>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+  <FAQ title="Pertanyaan Seputar Dana Darurat" items={faqs} />
+
+  <section class="section"><div class="wrap">
+    <div class="section-hdr"><div class="section-eyebrow">Kalkulator Lainnya</div><h2 class="section-title">Hitung Juga yang Lain</h2></div>
+    <div class="related-grid">{related.map(c => <CalculatorCard calc={c} />)}</div>
+  </div></section>
 </Layout>
 
-<!-- SCORECARD (hidden, for export) -->
-<div id="scorecard" style="position:fixed;left:-9999px;top:0;width:540px;background:#0A2540;padding:40px;border-radius:20px;color:#fff;font-family:'Poppins',sans-serif;">
-  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px">
-    <div style="font-size:13px;font-weight:500;color:#2563EB">HitungCerdas.net</div>
-    <div style="font-size:11px;background:rgba(245,158,11,0.2);color:#F59E0B;padding:4px 12px;border-radius:99px">🛡️ DANA DARURAT</div>
-  </div>
-  <div style="font-size:13px;color:#94A3B8;margin-bottom:4px">Target Dana Darurat Ideal</div>
-  <div id="scTarget" style="font-size:36px;font-weight:700;color:#fff;margin-bottom:8px;font-family:monospace">Rp 0</div>
-  <div id="scMultiplier" style="font-size:13px;color:#F59E0B;margin-bottom:20px"></div>
-  <div style="background:rgba(255,255,255,0.05);border-radius:12px;padding:16px;margin-bottom:20px">
-    <div id="scProgress" style="font-size:24px;font-weight:700;color:#10B981;margin-bottom:4px">0%</div>
-    <div style="font-size:12px;color:#94A3B8">Progress tercapai</div>
-  </div>
-  <div id="scTimeline" style="font-size:13px;color:#94A3B8;margin-bottom:24px"></div>
-  <div style="font-size:12px;color:#64748B">#HitungCerdas #DanaDarurat #FinancialGoals</div>
-</div>
+<script is:inline>
+  (function() {
+    function ready(fn) { if (window.HC && window.html2canvas) fn(); else setTimeout(() => ready(fn), 100); }
+    ready(() => {
+      const $ = id => document.getElementById(id);
+      const els = { status: $('status'), pekerjaan: $('pekerjaan'), pengeluaran: $('pengeluaran'), dananow: $('dananow'), nabung: $('nabung') };
+      [els.pengeluaran, els.dananow, els.nabung].forEach(el => el.addEventListener('input', HC.fmtInput));
+      document.querySelectorAll('.adv-toggle').forEach(t => t.addEventListener('click', () => t.parentElement.classList.toggle('open')));
 
-<script>
-// =====================
-// STATE
-// =====================
-const state = {
-  status: 'single',
-  kerja: 'tetap',
-  tanggungan: 2,
-  pengeluaran: 0,
-  danaSaatIni: 0,
-  kemampuanNabung: 0,
-  result: {}
-};
+      function getMultiplier(status, pekerjaan) {
+        const base = { single: 3, married: 6, family: 9 }[status];
+        const extra = { karyawan: 0, kontrak: 1, freelance: 3, wirausaha: 3 }[pekerjaan];
+        return Math.min(12, base + extra);
+      }
 
-// =====================
-// OPTION BUTTONS
-// =====================
-function setOption(btn, group) {
-  document.querySelectorAll(`[data-group="${group}"]`).forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  state[group] = btn.dataset.val;
+      let lastCalc = null;
 
-  if (group === 'kerja') {
-    const hints = {
-      tetap: 'Karyawan tetap = penghasilan stabil = kebutuhan buffer lebih kecil',
-      freelance: 'Freelance = penghasilan tidak pasti = butuh buffer lebih besar (+3 bulan)',
-      wirausaha: 'Wirausaha = risiko lebih tinggi = butuh buffer ekstra (+3 bulan)'
-    };
-    document.getElementById('kerjaHint').textContent = hints[btn.dataset.val];
-  }
-  if (group === 'status') {
-    document.getElementById('tanggunganGroup').style.display = btn.dataset.val === 'tanggungan' ? 'block' : 'none';
-  }
-}
+      function hitung() {
+        const status = els.status.value;
+        const pekerjaan = els.pekerjaan.value;
+        const pengeluaran = HC.parseRp(els.pengeluaran.value);
+        const dananow = HC.parseRp(els.dananow.value);
+        const nabung = HC.parseRp(els.nabung.value);
 
-// =====================
-// WIZARD NAVIGATION
-// =====================
-function goStep(n) {
-  document.getElementById('step1').classList.toggle('hidden', n !== 1);
-  document.getElementById('step2').classList.toggle('hidden', n !== 2);
+        if (pengeluaran === 0) { HC.toast('Masukkan pengeluaran bulanan dulu', 'error'); return; }
+        if (nabung === 0) { HC.toast('Masukkan kemampuan nabung', 'error'); return; }
 
-  ['stepDot1','stepDot2','stepDot3'].forEach((id, i) => {
-    document.getElementById(id).classList.toggle('active', i < n);
-    document.getElementById(id).classList.toggle('done', i < n-1);
-  });
+        const multiplier = getMultiplier(status, pekerjaan);
+        const target = pengeluaran * multiplier;
+        const kurang = Math.max(0, target - dananow);
+        const progress = target > 0 ? Math.min(100, (dananow / target) * 100) : 0;
+        const bulanTercapai = nabung > 0 ? Math.ceil(kurang / nabung) : 0;
 
-  const hints = ['', 'Langkah 1 dari 2 — Isi profil kamu dulu', 'Langkah 2 dari 2 — Isi data keuangan'];
-  document.getElementById('progressHint').textContent = hints[n] || '';
-}
+        const statusLabel = { single: 'Single', married: 'Menikah', family: 'Menikah + Tanggungan' }[status];
+        const pekerjaanLabel = { karyawan: 'Karyawan Tetap', kontrak: 'Karyawan Kontrak', freelance: 'Freelance', wirausaha: 'Wirausaha' }[pekerjaan];
 
-// =====================
-// FORMAT RUPIAH INPUT
-// =====================
-function formatRupiahInput(el) {
-  let val = el.value.replace(/\D/g, '');
-  el.value = val ? parseInt(val).toLocaleString('id-ID') : '';
-}
+        $('target').textContent = HC.fmt(target);
+        $('multiplier').textContent = `${multiplier}× pengeluaran bulanan`;
+        $('terkumpul').textContent = HC.fmt(dananow);
+        $('kurang').textContent = HC.fmt(kurang);
+        $('progress').textContent = progress.toFixed(1) + '%';
+        $('estimasi').textContent = bulanTercapai > 0 ? `${bulanTercapai} bulan (${(bulanTercapai/12).toFixed(1)} tahun)` : '✅ Sudah tercapai!';
 
-function parseRupiah(str) {
-  return parseInt((str || '0').replace(/\D/g, '')) || 0;
-}
+        let html = '';
+        const milestones = [3, 6, 12, 18, 24];
+        for (const m of milestones) {
+          const totalNabung = dananow + (nabung * m);
+          const pctTarget = Math.min(100, (totalNabung / target) * 100);
+          const tercapai = totalNabung >= target;
+          html += `<tr${tercapai ? ' class="active"' : ''}><td>Bulan ${m}</td><td class="right">${HC.fmt(totalNabung)}</td><td class="right" style="font-weight:700;color:${tercapai ? 'var(--green-dark)' : 'var(--text-soft)'}">${pctTarget.toFixed(1)}%${tercapai ? ' ✅' : ''}</td></tr>`;
+        }
+        $('roadmapBody').innerHTML = html;
 
-function fmtRp(n) {
-  return 'Rp ' + Math.round(n).toLocaleString('id-ID');
-}
+        lastCalc = { statusLabel, pekerjaanLabel, pengeluaran, dananow, nabung, multiplier, target, kurang, progress, bulanTercapai };
+        $('placeholder').style.display = 'none';
+        $('results').classList.add('show');
+        $('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        HC.toast('Dana darurat berhasil dihitung!');
+      }
 
-function fmtCompact(n) {
-  if (n >= 1e9) return 'Rp ' + (n/1e9).toFixed(1) + 'M';
-  if (n >= 1e6) return 'Rp ' + (n/1e6).toFixed(1) + 'jt';
-  if (n >= 1e3) return 'Rp ' + (n/1e3).toFixed(0) + 'rb';
-  return 'Rp ' + n;
-}
+      function reset() {
+        els.status.value = 'single'; els.pekerjaan.value = 'karyawan';
+        els.pengeluaran.value = '5.000.000'; els.dananow.value = '0'; els.nabung.value = '1.000.000';
+        $('placeholder').style.display = ''; $('results').classList.remove('show');
+        lastCalc = null; HC.toast('Form direset', 'info');
+      }
 
-function updateSlider(id, valId, fmtFn, prefix, suffix) {
-  const val = document.getElementById(id).value;
-  state.tanggungan = parseInt(val);
-  document.getElementById(valId).textContent = (prefix||'') + val + (suffix||'');
-}
+      function buildReport() {
+        if (!lastCalc) return null;
+        const c = lastCalc;
+        const insight = c.progress >= 100
+          ? `🎉 Selamat! Dana darurat sudah ${c.progress.toFixed(0)}% tercapai. Saatnya mulai investasi untuk tujuan jangka panjang.`
+          : c.progress >= 50
+          ? `Progress ${c.progress.toFixed(0)}% — sudah setengah jalan! Pertahankan disiplin nabung Rp ${HC.fmt(c.nabung)}/bulan.`
+          : `Baru ${c.progress.toFixed(0)}% tercapai. Estimasi ${c.bulanTercapai} bulan lagi. Jangan ditarget jangka pendek, fokus konsistensi.`;
 
-// =====================
-// MAIN CALCULATION
-// =====================
-function hitungDanaDarurat() {
-  const pengeluaran = parseRupiah(document.getElementById('pengeluaran').value);
-  const danaSaatIni = parseRupiah(document.getElementById('danaSaatIni').value);
-  const kemampuanNabung = parseRupiah(document.getElementById('kemampuanNabung').value);
+        return HC.buildReportCard({
+          title: '🛡️ Dana Darurat Plan',
+          color: '#F59E0B', color2: '#D97706',
+          heroLabel: 'Target Dana Darurat',
+          heroValue: HC.fmt(c.target),
+          heroSubtext: `${c.multiplier}× pengeluaran · ${c.statusLabel}, ${c.pekerjaanLabel}`,
+          inputs: [
+            { label: '👤 Status', value: c.statusLabel },
+            { label: '💼 Pekerjaan', value: c.pekerjaanLabel },
+            { label: '💸 Pengeluaran/bln', value: HC.fmt(c.pengeluaran) },
+            { label: '💰 Nabung/bln', value: HC.fmt(c.nabung) },
+          ],
+          results: [
+            { label: 'Target Total', value: HC.fmt(c.target), highlight: true },
+            { label: 'Sudah Terkumpul', value: HC.fmt(c.dananow) },
+            { label: 'Masih Kurang', value: HC.fmt(c.kurang) },
+            { label: 'Progress', value: c.progress.toFixed(1) + '%' },
+            { label: 'Estimasi Tercapai', value: c.bulanTercapai > 0 ? c.bulanTercapai + ' bulan' : 'Tercapai ✅', highlight: true },
+          ],
+          insight, slug: 'dana-darurat',
+        });
+      }
 
-  if (!pengeluaran) {
-    alert('Masukkan pengeluaran bulanan dulu ya!');
-    return;
-  }
+      function summaryText() {
+        if (!lastCalc) return '';
+        const c = lastCalc;
+        return `🛡️ *Dana Darurat - HitungCerdas*\n\nProfil: ${c.statusLabel}, ${c.pekerjaanLabel}\nPengeluaran: ${HC.fmt(c.pengeluaran)}/bln\nMultiplier: ${c.multiplier}× pengeluaran\n\n🎯 *Target: ${HC.fmt(c.target)}*\n💰 Sudah terkumpul: ${HC.fmt(c.dananow)}\n📊 Progress: ${c.progress.toFixed(1)}%\n⏱️ Estimasi: ${c.bulanTercapai} bulan dengan nabung ${HC.fmt(c.nabung)}/bln\n\nHitung di: https://hitungcerdas.net/kalkulator/dana-darurat`;
+      }
 
-  // Hitung multiplier
-  let multiplier = 3;
-  if (state.status === 'single') multiplier = 3;
-  else if (state.status === 'menikah') multiplier = 6;
-  else if (state.status === 'tanggungan') multiplier = 6 + state.tanggungan;
-
-  if (state.kerja === 'freelance') multiplier += 3;
-  else if (state.kerja === 'wirausaha') multiplier += 3;
-  multiplier = Math.min(12, multiplier);
-
-  const target = pengeluaran * multiplier;
-  const gap = Math.max(0, target - danaSaatIni);
-  const persen = Math.min(100, Math.round((danaSaatIni / target) * 100));
-  const bulanTercapai = kemampuanNabung > 0 ? Math.ceil(gap / kemampuanNabung) : null;
-
-  state.result = { pengeluaran, danaSaatIni, kemampuanNabung, multiplier, target, gap, persen, bulanTercapai };
-
-  renderResult();
-  showStep3();
-}
-
-// =====================
-// RENDER RESULT
-// =====================
-function renderResult() {
-  const r = state.result;
-
-  // Ring animation
-  const circumference = 427;
-  const offset = circumference - (r.persen / 100) * circumference;
-  setTimeout(() => {
-    document.getElementById('progressRingCircle').style.strokeDashoffset = offset;
-    document.getElementById('ringPct').textContent = r.persen + '%';
-  }, 300);
-
-  // Hero
-  document.getElementById('resultTarget').textContent = fmtRp(r.target);
-  document.getElementById('resultMultiplier').textContent = `= ${r.multiplier}× pengeluaran bulanan (${fmtCompact(r.pengeluaran)})`;
-
-  // Easter egg
-  const egg = document.getElementById('easterEgg');
-  if (r.persen >= 100) { egg.textContent = '👑 Sultan! Dana darurat kamu sudah aman!'; egg.classList.remove('hidden'); }
-  else if (r.persen >= 50) { egg.textContent = '💪 Mantap! Sudah lebih dari setengah jalan!'; egg.classList.remove('hidden'); }
-  else if (r.persen === 0) { egg.textContent = '🚀 Mulai dari sekarang, langkah pertama adalah yang terpenting!'; egg.classList.remove('hidden'); }
-
-  // Gap
-  document.getElementById('gapTarget').textContent = fmtRp(r.target);
-  document.getElementById('gapSudah').textContent = fmtRp(r.danaSaatIni);
-  if (r.gap > 0) {
-    document.getElementById('gapKurang').textContent = fmtRp(r.gap);
-    document.getElementById('gapKurangRow').style.display = '';
-  }
-  if (r.bulanTercapai) {
-    const thn = Math.floor(r.bulanTercapai / 12);
-    const bln = r.bulanTercapai % 12;
-    let timeStr = r.bulanTercapai + ' bulan';
-    if (thn > 0) timeStr = (thn > 0 ? thn + ' tahun ' : '') + (bln > 0 ? bln + ' bulan' : '');
-    document.getElementById('gapTimeline').textContent = timeStr + ` (nabung ${fmtCompact(r.kemampuanNabung)}/bln)`;
-    document.getElementById('gapTimelineRow').style.display = '';
-  } else {
-    document.getElementById('gapTimeline').textContent = 'Isi kemampuan nabung untuk lihat timeline';
-  }
-
-  // Relatable conversion
-  const relatableItems = [
-    { icon: '☕', label: 'gelas kopi kekinian', val: Math.round(r.target / 20000) },
-    { icon: '🍛', label: 'kali makan warteg', val: Math.round(r.target / 15000) },
-    { icon: '⛽', label: 'liter bensin', val: Math.round(r.target / 12000) },
-    { icon: '🏍️', label: 'bulan cicilan motor', val: Math.round(r.target / 800000) }
-  ];
-  document.getElementById('relatableGrid').innerHTML = relatableItems.map(i =>
-    `<div class="rel-item"><span class="rel-icon">${i.icon}</span><strong>${i.val.toLocaleString('id-ID')}</strong><span>${i.label}</span></div>`
-  ).join('');
-
-  // Chart
-  renderGrowthChart();
-
-  // Scorecard
-  document.getElementById('scTarget').textContent = fmtRp(r.target);
-  document.getElementById('scMultiplier').textContent = `= ${r.multiplier}× pengeluaran bulanan`;
-  document.getElementById('scProgress').textContent = r.persen + '%';
-  if (r.bulanTercapai) document.getElementById('scTimeline').textContent = `Estimasi tercapai dalam ${r.bulanTercapai} bulan`;
-}
-
-function showStep3() {
-  document.getElementById('step1').classList.add('hidden');
-  document.getElementById('step2').classList.add('hidden');
-  document.getElementById('step3').classList.remove('hidden');
-  document.getElementById('wizardProgress').style.display = 'none';
-  document.getElementById('step3').scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-// =====================
-// GROWTH CHART
-// =====================
-function renderGrowthChart() {
-  const r = state.result;
-  const months = r.bulanTercapai ? Math.min(r.bulanTercapai + 6, 60) : 36;
-  const labels = [], tabungan = [], targetLine = [];
-
-  for (let m = 0; m <= months; m++) {
-    labels.push(m === 0 ? 'Sekarang' : `Bln ${m}`);
-    tabungan.push(Math.min(r.danaSaatIni + r.kemampuanNabung * m, r.target * 1.1));
-    targetLine.push(r.target);
-  }
-
-  const ctx = document.getElementById('growthChart').getContext('2d');
-  if (window._growthChart) window._growthChart.destroy();
-  window._growthChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels,
-      datasets: [
-        { label: 'Tabungan Kamu', data: tabungan, borderColor: '#10B981', backgroundColor: 'rgba(16,185,129,0.1)', fill: true, tension: 0.4, pointRadius: 0 },
-        { label: 'Target Dana Darurat', data: targetLine, borderColor: '#F59E0B', borderDash: [6,4], pointRadius: 0, borderWidth: 2 }
-      ]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { position: 'bottom' }, tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': ' + fmtRp(ctx.parsed.y) } } },
-      scales: { y: { ticks: { callback: v => fmtCompact(v) } }, x: { ticks: { maxTicksLimit: 8 } } }
-    }
-  });
-}
-
-// =====================
-// EXPORT
-// =====================
-async function exportPNG() {
-  if (!window.html2canvas) {
-    const s = document.createElement('script');
-    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
-    document.head.appendChild(s);
-    await new Promise(r => s.onload = r);
-  }
-  const card = document.getElementById('scorecard');
-  card.style.left = '0'; card.style.top = '0'; card.style.position = 'fixed'; card.style.zIndex = '9999';
-  const canvas = await html2canvas(card, { backgroundColor: '#0A2540', scale: 2 });
-  card.style.left = '-9999px'; card.style.position = 'fixed';
-  const a = document.createElement('a');
-  a.download = 'HitungCerdas-DanaDarurat.png';
-  a.href = canvas.toDataURL();
-  a.click();
-}
-
-function shareWA() {
-  const r = state.result;
-  const msg = `🛡️ Hasil Kalkulator Dana Darurat — HitungCerdas.net
-
-💰 Target: ${fmtRp(r.target)} (${r.multiplier}× pengeluaran)
-✅ Sudah punya: ${fmtRp(r.danaSaatIni)}
-📊 Progress: ${r.persen}%
-${r.bulanTercapai ? `⏰ Tercapai dalam: ${r.bulanTercapai} bulan` : ''}
-
-Hitung dana daruratmu di:
-👉 https://hitungcerdas.net/kalkulator/dana-darurat`;
-  window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
-}
-
-function copyResult() {
-  const r = state.result;
-  const text = `Dana Darurat Ideal: ${fmtRp(r.target)} (${r.multiplier}× pengeluaran)\nProgress: ${r.persen}%\nSource: hitungcerdas.net`;
-  navigator.clipboard.writeText(text).then(() => alert('Hasil berhasil disalin!'));
-}
-
-function resetCalc() {
-  document.getElementById('step3').classList.add('hidden');
-  document.getElementById('step1').classList.remove('hidden');
-  document.getElementById('wizardProgress').style.display = '';
-  document.getElementById('pengeluaran').value = '';
-  document.getElementById('danaSaatIni').value = '';
-  document.getElementById('kemampuanNabung').value = '';
-  goStep(1);
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-function toggleFaq(btn) {
-  const ans = btn.nextElementSibling;
-  ans.style.display = ans.style.display === 'block' ? 'none' : 'block';
-  btn.querySelector('i').style.transform = ans.style.display === 'block' ? 'rotate(180deg)' : '';
-}
+      $('btnHitung').addEventListener('click', hitung);
+      $('btnReset').addEventListener('click', reset);
+      $('exportImg').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToImage(c, 'dana-darurat-' + Date.now()); });
+      $('exportWa').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.shareWhatsApp(c, summaryText(), 'dana-darurat'); });
+      $('exportPdf').addEventListener('click', () => { if (!lastCalc) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToPDF(); });
+      $('exportCopy').addEventListener('click', () => { if (!lastCalc) { HC.toast('Hitung dulu', 'error'); return; } HC.copyText(summaryText(), 'Tersalin!'); });
+    });
+  })();
 </script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-
-<style>
-:root { --cat-color: #F59E0B; --cat-color2: #D97706; }
-
-/* WIZARD PROGRESS */
-.wizard-progress { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1.25rem; margin-bottom: 1.25rem; }
-.progress-steps { display: flex; align-items: center; justify-content: center; gap: 0; margin-bottom: 8px; }
-.step { display: flex; flex-direction: column; align-items: center; gap: 4px; }
-.step-dot { width: 32px; height: 32px; border-radius: 50%; background: var(--color-background-tertiary); color: var(--color-text-tertiary); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; transition: all 0.3s; }
-.step span { font-size: 11px; color: var(--color-text-tertiary); }
-.step.active .step-dot { background: var(--cat-color); color: #fff; }
-.step.active span { color: var(--cat-color); font-weight: 500; }
-.step.done .step-dot { background: #10B981; color: #fff; }
-.step-line { flex: 1; height: 2px; background: var(--color-border-tertiary); margin: 0 8px; margin-bottom: 20px; min-width: 40px; }
-.progress-hint { text-align: center; font-size: 13px; color: var(--color-text-secondary); margin: 0; }
-
-/* OPTION BUTTONS */
-.option-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
-.opt-btn { display: flex; align-items: center; gap: 6px; padding: 8px 16px; border: 1.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); background: var(--color-background-primary); color: var(--color-text-secondary); font-size: 13px; cursor: pointer; transition: all 0.2s; }
-.opt-btn:hover { border-color: var(--cat-color); color: var(--cat-color); }
-.opt-btn.active { border-color: var(--cat-color); background: rgba(245,158,11,0.08); color: var(--cat-color); font-weight: 500; }
-
-/* RESULT HERO */
-.result-hero { background: linear-gradient(135deg, #0A2540 0%, #13335C 100%); border-radius: var(--border-radius-lg); padding: 2rem; margin-bottom: 1.25rem; color: #fff; }
-.result-hero-inner { display: flex; gap: 2rem; align-items: center; flex-wrap: wrap; }
-.result-ring-wrap { position: relative; flex-shrink: 0; }
-.ring-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); text-align: center; }
-.ring-pct { display: block; font-size: 28px; font-weight: 700; color: #F59E0B; font-family: var(--font-mono); }
-.ring-label { font-size: 11px; color: #94A3B8; }
-.result-tag { font-size: 12px; color: #F59E0B; margin-bottom: 6px; }
-.result-big { font-size: 2.5rem; font-weight: 700; font-family: var(--font-mono); color: #fff; line-height: 1.1; }
-.result-sub { font-size: 14px; color: #94A3B8; margin-top: 4px; }
-.easter-egg { margin-top: 10px; font-size: 14px; color: #F59E0B; font-weight: 500; padding: 6px 12px; background: rgba(245,158,11,0.1); border-radius: 8px; }
-
-/* GAP TABLE */
-.gap-table { display: flex; flex-direction: column; gap: 2px; }
-.gap-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-radius: var(--border-radius-sm); background: var(--color-background-secondary); }
-.gap-row.success { background: var(--color-background-success); }
-.gap-row.warning { background: var(--color-background-warning); }
-.gap-row.highlight { background: var(--color-background-info); }
-.gap-label { font-size: 14px; color: var(--color-text-primary); }
-.gap-value { font-size: 15px; font-weight: 600; font-family: var(--font-mono); color: var(--color-text-primary); }
-
-/* RELATABLE */
-.relatable-box { margin-top: 1rem; padding: 1rem; background: var(--color-background-secondary); border-radius: var(--border-radius-md); }
-.relatable-title { font-size: 13px; color: var(--color-text-secondary); margin-bottom: 10px; }
-.relatable-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
-.rel-item { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 10px; background: var(--color-background-primary); border-radius: var(--border-radius-sm); }
-.rel-icon { font-size: 22px; }
-.rel-item strong { font-size: 15px; font-family: var(--font-mono); color: var(--cat-color); }
-.rel-item span { font-size: 11px; color: var(--color-text-tertiary); }
-
-/* STRATEGY */
-.strategy-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
-.strategy-card { padding: 16px; border: 1.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-md); position: relative; }
-.strategy-card.best { border-color: var(--cat-color); }
-.strategy-badge { position: absolute; top: -10px; left: 12px; font-size: 10px; font-weight: 600; background: var(--cat-color); color: #fff; padding: 2px 10px; border-radius: 99px; }
-.strategy-card h4 { font-size: 14px; font-weight: 600; color: var(--color-text-primary); margin-bottom: 2px; }
-.strategy-return { font-size: 13px; color: #10B981; font-weight: 500; margin-bottom: 6px; }
-.strategy-card p { font-size: 12px; color: var(--color-text-secondary); margin: 0; }
-
-/* RECOMMENDATION */
-.rec-grid { display: flex; flex-direction: column; gap: 10px; }
-.rec-item { display: flex; gap: 14px; align-items: flex-start; padding: 14px; border: 1.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-md); text-decoration: none; color: inherit; transition: all 0.2s; }
-.rec-item:hover { border-color: var(--cat-color); transform: translateX(3px); }
-.rec-item.urgent { border-color: #E24B4A; background: rgba(226,75,74,0.04); }
-.rec-icon { width: 40px; height: 40px; border-radius: var(--border-radius-md); background: var(--color-background-secondary); display: flex; align-items: center; justify-content: center; font-size: 18px; color: var(--cat-color); flex-shrink: 0; }
-.rec-item.urgent .rec-icon { color: #E24B4A; }
-.rec-text strong { font-size: 14px; font-weight: 600; color: var(--color-text-primary); display: block; margin-bottom: 3px; }
-.rec-text p { font-size: 12px; color: var(--color-text-secondary); margin: 0 0 6px 0; }
-.rec-cta { font-size: 12px; color: var(--cat-color); font-weight: 500; }
-
-/* EXPORT */
-.export-grid { display: flex; flex-wrap: wrap; gap: 10px; }
-.export-btn { flex: 1; min-width: 120px; padding: 10px 16px; border: 1.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); background: var(--color-background-primary); color: var(--color-text-primary); font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; transition: all 0.2s; }
-.export-btn:hover { border-color: var(--cat-color); color: var(--cat-color); }
-.export-btn.wa { background: #25D366; color: #fff; border-color: #25D366; }
-
-/* EDU */
-.edu-table { display: flex; flex-direction: column; gap: 2px; margin: 12px 0; }
-.edu-row { display: grid; grid-template-columns: 2fr 1.5fr 1.5fr; gap: 8px; padding: 8px 12px; background: var(--color-background-secondary); border-radius: var(--border-radius-sm); font-size: 13px; }
-.edu-row.header { font-weight: 600; font-size: 12px; color: var(--color-text-secondary); }
-.edu-list { padding-left: 1.2rem; }
-.edu-list li { margin-bottom: 8px; font-size: 14px; color: var(--color-text-primary); }
-
-/* FAQ */
-.faq-list { display: flex; flex-direction: column; gap: 6px; }
-.faq-item { border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-md); overflow: hidden; }
-.faq-q { width: 100%; text-align: left; padding: 14px 16px; background: var(--color-background-primary); border: none; font-size: 14px; font-weight: 500; color: var(--color-text-primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 8px; }
-.faq-q i { transition: transform 0.3s; flex-shrink: 0; }
-.faq-a { display: none; padding: 12px 16px; background: var(--color-background-secondary); }
-.faq-a p { margin: 0; font-size: 13px; color: var(--color-text-secondary); }
-
-/* BTN ROW */
-.btn-row { display: flex; gap: 10px; }
-.btn-row .btn-secondary { flex: 0; }
-.btn-row .btn-primary { flex: 1; }
-
-/* CHART */
-.chart-wrap { height: 280px; }
-.chart-hint { font-size: 12px; color: var(--color-text-tertiary); text-align: center; margin-top: 6px; }
-
-/* HIDDEN */
-.hidden { display: none !important; }
-
-/* TRUST ROW */
-.trust-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 12px; }
-.trust-item { font-size: 12px; color: rgba(255,255,255,0.7); display: flex; align-items: center; gap: 4px; }
-.trust-item i { color: #10B981; }
-
-@media (max-width: 480px) {
-  .result-hero-inner { flex-direction: column; align-items: center; text-align: center; }
-  .result-big { font-size: 1.9rem; }
-  .relatable-grid { grid-template-columns: repeat(2,1fr); }
-  .edu-row { grid-template-columns: 1fr; }
-}
-</style>
