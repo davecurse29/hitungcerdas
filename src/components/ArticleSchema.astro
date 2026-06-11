@@ -9,8 +9,8 @@
 interface Props {
   headline: string;
   description: string;
-  datePublished: string;     // ISO 8601: '2026-01-15' atau '2026-01-15T08:00:00+07:00'
-  dateModified?: string;     // ISO 8601, default = datePublished
+  datePublished: string;     // 'YYYY-MM-DD' atau ISO 8601 lengkap
+  dateModified?: string;     // 'YYYY-MM-DD' atau ISO 8601 lengkap
   image?: string;            // URL gambar hero. Default: og-image.png
   author?: string;           // Default: 'Tim HitungCerdas'
   slug: string;              // slug blog (untuk URL canonical)
@@ -36,6 +36,27 @@ const siteUrl = 'https://hitungcerdas.net';
 const articleUrl = `${siteUrl}/blog/${slug}`;
 const defaultImage = `${siteUrl}/og-image.png`;
 
+// ─── Helper: convert simple date 'YYYY-MM-DD' to ISO 8601 with WIB timezone ───
+// Input '2026-06-08'  →  Output '2026-06-08T08:00:00+07:00' (morning publish, WIB)
+// Input '2026-06-08T15:30:00+07:00'  →  Pass-through (already ISO)
+function toISOWithTimezone(dateStr: string, isModified: boolean = false): string {
+  // Already ISO 8601 with timezone — pass through
+  if (dateStr.includes('T') && (dateStr.includes('+') || dateStr.includes('Z'))) {
+    return dateStr;
+  }
+  
+  // Just YYYY-MM-DD — append default time:
+  // - Published: 08:00:00 WIB (morning, typical publish time)
+  // - Modified:  17:00:00 WIB (afternoon, typical update time)
+  const time = isModified ? '17:00:00' : '08:00:00';
+  return `${dateStr}T${time}+07:00`;
+}
+
+const publishedISO = toISOWithTimezone(datePublished, false);
+const modifiedISO = dateModified 
+  ? toISOWithTimezone(dateModified, true) 
+  : publishedISO;
+
 // Build Article schema sesuai Schema.org standard
 const articleSchema: Record<string, any> = {
   "@context": "https://schema.org",
@@ -43,8 +64,8 @@ const articleSchema: Record<string, any> = {
   "headline": headline,
   "description": description,
   "image": [image || defaultImage],
-  "datePublished": datePublished,
-  "dateModified": dateModified || datePublished,
+  "datePublished": publishedISO,
+  "dateModified": modifiedISO,
   "author": {
     "@type": "Organization",
     "name": author,
