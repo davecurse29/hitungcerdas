@@ -33,12 +33,61 @@ const defaultJsonLd = {
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "HitungCerdas",
-  "description": "18 kalkulator keuangan, bisnis, dan islami online gratis untuk masyarakat Indonesia",
+  "description": "21 kalkulator keuangan, bisnis, dan islami online gratis untuk masyarakat Indonesia",
   "applicationCategory": "FinanceApplication",
   "operatingSystem": "Any",
   "url": siteUrl,
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "IDR" },
   "aggregateRating": { "@type": "AggregateRating", "ratingValue": "4.8", "reviewCount": "127" }
+};
+
+// ─── Organization Schema (sitewide, brand authority) ───
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "HitungCerdas",
+  "alternateName": "HitungCerdas.net",
+  "url": siteUrl,
+  "logo": {
+    "@type": "ImageObject",
+    "url": `${siteUrl}/logo.svg`,
+    "width": 64,
+    "height": 64
+  },
+  "description": "Pusat kalkulator keuangan, bisnis, dan islami online gratis untuk masyarakat Indonesia",
+  "foundingDate": "2026",
+  "areaServed": {
+    "@type": "Country",
+    "name": "Indonesia"
+  },
+  "knowsLanguage": "id-ID",
+  "sameAs": [
+    "https://www.cuanpertama.my.id"
+  ]
+};
+
+// ─── WebSite Schema with SearchAction (sitewide, enables Sitelinks search box) ───
+const websiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "HitungCerdas",
+  "alternateName": "HitungCerdas.net",
+  "url": siteUrl,
+  "description": "21 kalkulator keuangan, bisnis & islami online gratis Indonesia",
+  "inLanguage": "id-ID",
+  "publisher": {
+    "@type": "Organization",
+    "name": "HitungCerdas",
+    "url": siteUrl
+  },
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": `${siteUrl}/?search={search_term_string}`
+    },
+    "query-input": "required name=search_term_string"
+  }
 };
 ---
 
@@ -96,6 +145,12 @@ const defaultJsonLd = {
 
   {/* ── Schema.org JSON-LD ── */}
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd || defaultJsonLd)} />
+
+  {/* ── Organization Schema (sitewide, brand authority signal) ── */}
+  <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
+
+  {/* ── WebSite Schema (sitewide, enables Sitelinks search box) ── */}
+  <script type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />
 
   {breadcrumb && (
     <script type="application/ld+json" set:html={JSON.stringify(breadcrumb)} />
