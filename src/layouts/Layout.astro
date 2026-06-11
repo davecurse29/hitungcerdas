@@ -37,8 +37,9 @@ const defaultJsonLd = {
   "applicationCategory": "FinanceApplication",
   "operatingSystem": "Any",
   "url": siteUrl,
-  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "IDR" },
-  "aggregateRating": { "@type": "AggregateRating", "ratingValue": "4.8", "reviewCount": "127" }
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "IDR" }
+  // Note: aggregateRating removed 11-Jun-2026 (avoid fake review policy violation).
+  // Can be re-added once site has real user reviews/testimonials.
 };
 
 // ─── Organization Schema (sitewide, brand authority) ───
