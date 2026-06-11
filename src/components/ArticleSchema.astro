@@ -1,0 +1,78 @@
+---
+// Article Schema (Schema.org JSON-LD)
+// Pakai di setiap blog post untuk:
+// - Eligible Google Discover feed
+// - Eligible Google News
+// - Eligible Top Stories carousel
+// - Image carousel di SERP
+
+interface Props {
+  headline: string;
+  description: string;
+  datePublished: string;     // ISO 8601: '2026-01-15' atau '2026-01-15T08:00:00+07:00'
+  dateModified?: string;     // ISO 8601, default = datePublished
+  image?: string;            // URL gambar hero. Default: og-image.png
+  author?: string;           // Default: 'Tim HitungCerdas'
+  slug: string;              // slug blog (untuk URL canonical)
+  articleSection?: string;   // Kategori: 'Keuangan', 'Pajak', 'Zakat', dll
+  keywords?: string[];       // Array keyword
+  wordCount?: number;        // Approximate word count
+}
+
+const {
+  headline,
+  description,
+  datePublished,
+  dateModified,
+  image,
+  author = 'Tim HitungCerdas',
+  slug,
+  articleSection,
+  keywords = [],
+  wordCount,
+} = Astro.props;
+
+const siteUrl = 'https://hitungcerdas.net';
+const articleUrl = `${siteUrl}/blog/${slug}`;
+const defaultImage = `${siteUrl}/og-image.png`;
+
+// Build Article schema sesuai Schema.org standard
+const articleSchema: Record<string, any> = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": headline,
+  "description": description,
+  "image": [image || defaultImage],
+  "datePublished": datePublished,
+  "dateModified": dateModified || datePublished,
+  "author": {
+    "@type": "Organization",
+    "name": author,
+    "url": siteUrl
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "HitungCerdas",
+    "url": siteUrl,
+    "logo": {
+      "@type": "ImageObject",
+      "url": `${siteUrl}/logo.svg`,
+      "width": 64,
+      "height": 64
+    }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": articleUrl
+  },
+  "url": articleUrl,
+  "inLanguage": "id-ID",
+};
+
+// Optional fields - hanya tambah kalau ada
+if (articleSection) articleSchema.articleSection = articleSection;
+if (keywords.length > 0) articleSchema.keywords = keywords.join(', ');
+if (wordCount) articleSchema.wordCount = wordCount;
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
