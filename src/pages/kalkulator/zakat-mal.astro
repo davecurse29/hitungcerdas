@@ -12,7 +12,7 @@ const related = getRelatedCalculators('zakat-mal', 3);
 const faqs = [
   { question: 'Beda zakat mal & fitrah?', answer: '<strong>Mal</strong>: zakat harta yang capai nisab & haul 1 tahun, tarif 2,5%. <strong>Fitrah</strong>: zakat jiwa di Ramadhan, 2,5kg beras/jiwa, tidak ada nisab.' },
   { question: 'Harta apa wajib dizakati?', answer: 'Uang tunai, tabungan, emas/perak, investasi (saham, reksadana, crypto), piutang, aset usaha, properti investasi. TIDAK: rumah tinggal, kendaraan pribadi, perabotan, pakaian.' },
-  { question: 'Nisab & haul?', answer: '<strong>Nisab</strong> = 85 gr emas (~Rp 85jt). <strong>Haul</strong> = harta dimiliki min 1 tahun. Praktis: tetapkan tanggal patokan (misal Ramadhan) untuk hitung setahun sekali.' },
+  { question: 'Nisab & haul?', answer: '<strong>Nisab</strong> = 85 gr emas (~Rp 229,5jt dengan harga emas Juni 2026 ~Rp 2,7jt/gram). <strong>Haul</strong> = harta dimiliki min 1 tahun. Praktis: tetapkan tanggal patokan (misal Ramadhan) untuk hitung setahun sekali.' },
   { question: 'Hutang mengurangi zakat?', answer: 'YA, hutang jatuh tempo 12 bulan ke depan kurangi harta. Rumus: Zakat = (Harta - Hutang Jangka Pendek) × 2,5%, jika setelahnya masih di atas nisab.' },
   { question: 'Kapan bayar?', answer: 'Saat haul terpenuhi (harta dimiliki 1 tahun). Praktis: tetapkan tanggal patokan tahunan, hitung total harta, bayar 2,5%. Banyak Muslim Indonesia bayar di Ramadhan.' },
 ];
@@ -69,7 +69,8 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
               <div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="hutang" class="has-prefix" placeholder="0" inputmode="numeric" /></div>
               <p class="field-hint">Hanya cicilan 12 bulan ke depan untuk hutang panjang</p></div>
             <div class="field"><label>Harga Emas per Gram</label>
-              <div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="emasGr" class="has-prefix" value="1.000.000" inputmode="numeric" /></div></div>
+              <div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="emasGr" class="has-prefix" value="2.700.000" inputmode="numeric" /></div>
+              <p class="field-hint">Default: harga emas Antam ~Rp 2,7jt/gram (Juni 2026). Cek terbaru di logammulia.com</p></div>
 
             <div class="calc-action-bar">
               <button type="button" class="btn-hitung" id="btnHitung"><i class="ti ti-calculator"></i> Hitung Sekarang</button>
@@ -119,7 +120,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
   <section class="content-section">
     <div class="wrap-text">
       <h2>Cara Menghitung Zakat Mal yang Benar</h2>
-      <p>Zakat mal wajib bagi Muslim yang hartanya capai nisab (85 gr emas ≈ Rp 85jt) dan sudah dimiliki min 1 tahun. Tarif 2,5% dari harta bersih (setelah dikurangi hutang jatuh tempo). Punya penghasilan rutin? Hitung juga <a href="/kalkulator/zakat-penghasilan">zakat penghasilan</a>. Menjelang Idul Fitri, jangan lupa <a href="/kalkulator/zakat-fitrah">zakat fitrah</a>.</p>
+      <p>Zakat mal wajib bagi Muslim yang hartanya capai nisab (85 gr emas ≈ Rp 229,5jt dengan harga emas Juni 2026 ~Rp 2,7jt/gram) dan sudah dimiliki min 1 tahun. Tarif 2,5% dari harta bersih (setelah dikurangi hutang jatuh tempo). Punya penghasilan rutin? Hitung juga <a href="/kalkulator/zakat-penghasilan">zakat penghasilan</a>. Menjelang Idul Fitri, jangan lupa <a href="/kalkulator/zakat-fitrah">zakat fitrah</a>.</p>
       <div class="cta-box"><h3>Tunaikan Zakat Mal Anda</h3><p>Hitung total harta, kurangi hutang, lalu bayar 2,5% via BAZNAS atau lembaga zakat resmi.</p></div>
     </div>
   </section>
@@ -174,7 +175,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
 
       function reset() {
         els.tab.value = '50.000.000'; els.emas.value = '20.000.000'; els.invest.value = '30.000.000';
-        els.aset.value = ''; els.hutang.value = ''; els.emasGr.value = '1.000.000';
+        els.aset.value = ''; els.hutang.value = ''; els.emasGr.value = '2.700.000';
         $('placeholder').style.display = ''; $('results').classList.remove('show');
         lastCalc = null; HC.toast('Form direset', 'info');
       }
