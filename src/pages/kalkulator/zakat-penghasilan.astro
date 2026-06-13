@@ -11,7 +11,7 @@ const related = getRelatedCalculators('zakat-penghasilan', 3);
 
 const faqs = [
   { question: 'Apa itu zakat penghasilan?', answer: 'Zakat dari gaji/honor profesi yang capai nisab. Tarif 2,5%. Dasar: QS Adz-Dzariyat 19, Fatwa MUI 3/2003, Peraturan BAZNAS 1/2018.' },
-  { question: 'Berapa nisab 2026?', answer: '<strong>85 gram emas</strong> per tahun. Dengan harga emas ~Rp 1jt/gr: nisab = <strong>Rp 85jt/tahun</strong> atau <strong>Rp 7,08jt/bulan</strong>.' },
+  { question: 'Berapa nisab 2026?', answer: '<strong>85 gram emas</strong> per tahun. Dengan harga emas Antam ~Rp 2,7jt/gram (Juni 2026): nisab = <strong>~Rp 229,5jt/tahun</strong> atau <strong>~Rp 19,1jt/bulan</strong>. Karena harga emas naik tinggi beberapa tahun terakhir, nisab ikut naik — sesuaikan input harga emas dengan harga terkini saat menghitung.' },
   { question: 'Bruto atau neto?', answer: 'BAZNAS RI: bruto (lebih hati-hati). Sebagian ulama: neto setelah biaya pokok. Hasilnya tidak terlalu berbeda — Rp 10jt × 2,5% = Rp 250rb.' },
   { question: 'Bulanan atau setahun?', answer: 'Keduanya sah. Mayoritas Muslim Indonesia: per bulan (lebih terstruktur, auto-debet ke lembaga zakat resmi).' },
   { question: 'Zakat kurangi PPh 21?', answer: 'YA! Sesuai PMK 254/PMK.03/2010, zakat via lembaga resmi (BAZNAS, LAZ Kemenag) jadi <strong>pengurang PKP</strong>. Simpan bukti untuk SPT Tahunan.' },
@@ -61,8 +61,8 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
             <div class="field"><label>Penghasilan Lain/Bulan <span class="hint">(freelance, dividen)</span></label>
               <div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="lain" class="has-prefix" placeholder="0" inputmode="numeric" /></div></div>
             <div class="field"><label>Harga Emas per Gram</label>
-              <div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="emas" class="has-prefix" value="1.000.000" inputmode="numeric" /></div>
-              <p class="field-hint">Cek harga terbaru di pegadaian.co.id</p></div>
+              <div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="emas" class="has-prefix" value="2.700.000" inputmode="numeric" /></div>
+              <p class="field-hint">Default: harga emas Antam ~Rp 2,7jt/gram (Juni 2026). Cek terbaru di logammulia.com</p></div>
 
             <div class="calc-action-bar">
               <button type="button" class="btn-hitung" id="btnHitung"><i class="ti ti-calculator"></i> Hitung Sekarang</button>
@@ -110,7 +110,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
   <section class="content-section">
     <div class="wrap-text">
       <h2>Panduan Lengkap Zakat Penghasilan</h2>
-      <p>Zakat profesi/penghasilan = <strong>2,5% dari penghasilan</strong> jika setahun mencapai nisab 85 gram emas (~Rp 85jt). Bayar via lembaga zakat resmi BAZNAS/LAZ Kemenag — bisa <strong>kurangi PPh 21</strong> per PMK 254/2010.</p>
+      <p>Zakat profesi/penghasilan = <strong>2,5% dari penghasilan</strong> jika setahun mencapai nisab 85 gram emas (~Rp 229,5jt dengan harga emas Juni 2026 ~Rp 2,7jt/gram). Bayar via lembaga zakat resmi BAZNAS/LAZ Kemenag — bisa <strong>kurangi PPh 21</strong> per PMK 254/2010.</p>
       <div class="cta-box"><h3>Tunaikan Zakat Penghasilan</h3><p>Cek apakah penghasilanmu capai nisab, lalu hitung zakat 2,5% wajib.</p></div>
     </div>
   </section>
