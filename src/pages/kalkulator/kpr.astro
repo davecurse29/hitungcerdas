@@ -230,10 +230,10 @@ const jsonLd = {
               <div class="inflation-options">
                 <label>Skenario Inflasi:</label>
                 <select id="inflasiSkenario">
-                  <option value="rendah">📉 Rendah (2.5%) — Optimis</option>
-                  <option value="normal" selected>📊 Normal (3.5%) — Rata-rata historis</option>
-                  <option value="tinggi">📈 Tinggi (5.0%) — Hati-hati</option>
-                  <option value="krisis">⚠️ Krisis (7.5%) — Skenario terburuk</option>
+                  <option value="rendah">📉 Rendah (3.0%) — Optimis</option>
+                  <option value="normal" selected>📊 Normal (4.5%) — Rata-rata historis</option>
+                  <option value="tinggi">📈 Tinggi (6.0%) — Hati-hati</option>
+                  <option value="krisis">⚠️ Krisis (8.0%) — Skenario terburuk</option>
                 </select>
                 <p class="inflation-note">
                   Saat inflasi naik, BI Rate naik → bunga KPR naik. Mode ini auto-adjust suku bunga sesuai skenario inflasi (Fisher Equation).
@@ -955,7 +955,7 @@ const jsonLd = {
         if (useInflasi) {
           els.advInflasi.style.display = '';
           const scenarios = ['rendah', 'normal', 'tinggi', 'krisis'];
-          const labels = { rendah: 'Rendah (2.5%)', normal: 'Normal (3.5%)', tinggi: 'Tinggi (5.0%)', krisis: 'Krisis (7.5%)' };
+          const labels = { rendah: 'Rendah (3.0%)', normal: 'Normal (4.5%)', tinggi: 'Tinggi (6.0%)', krisis: 'Krisis (8.0%)' };
           $('inflasiCompareBody').innerHTML = scenarios.map(s => {
             const b = HC.adjustInterestRate(bungaOriginal, s);
             const c = ann(pokok, b / 100 / 12, totalBulan);

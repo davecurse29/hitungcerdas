@@ -120,10 +120,10 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
               <div class="inflation-options">
                 <label>Skenario Inflasi:</label>
                 <select id="inflasiSkenario">
-                  <option value="rendah">📉 Rendah (2.5%)</option>
-                  <option value="normal" selected>📊 Normal (3.5%)</option>
-                  <option value="tinggi">📈 Tinggi (5.0%)</option>
-                  <option value="krisis">⚠️ Krisis (7.5%)</option>
+                  <option value="rendah">📉 Rendah (3.0%)</option>
+                  <option value="normal" selected>📊 Normal (4.5%)</option>
+                  <option value="tinggi">📈 Tinggi (6.0%)</option>
+                  <option value="krisis">⚠️ Krisis (8.0%)</option>
                 </select>
                 <p class="inflation-note">Inflasi tinggi → BI Rate naik → bunga kredit motor naik.</p>
               </div>
@@ -463,7 +463,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         if (useInflasi) {
           els.advInflasi.style.display = '';
           const scenarios = ['rendah', 'normal', 'tinggi', 'krisis'];
-          const labels = { rendah: 'Rendah (2.5%)', normal: 'Normal (3.5%)', tinggi: 'Tinggi (5.0%)', krisis: 'Krisis (7.5%)' };
+          const labels = { rendah: 'Rendah (3.0%)', normal: 'Normal (4.5%)', tinggi: 'Tinggi (6.0%)', krisis: 'Krisis (8.0%)' };
           $('inflasiBody').innerHTML = scenarios.map(s => {
             const b = HC.adjustInterestRate(bungaOriginal, s);
             const { cicilan: c } = flat(pokok, b, tenor);

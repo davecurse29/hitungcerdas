@@ -42,10 +42,10 @@
   // 2020: 1.68%, 2021: 1.87%, 2022: 5.51%, 2023: 2.61%, 2024: 1.5%, 2025: 2.5% (est)
   // Average 10yr: ~3.5%/yr
   HC.INFLATION_RATES = {
-    rendah: 2.5,   // Skenario optimis
-    normal: 3.5,   // Rata-rata historis
-    tinggi: 5.0,   // Skenario hati-hati
-    krisis: 7.5,   // Skenario krisis ekonomi
+    rendah: 3.0,   // Skenario optimis
+    normal: 4.5,   // Baseline (disesuaikan kondisi Juni 2026)
+    tinggi: 6.0,   // Skenario hati-hati
+    krisis: 8.0,   // Skenario krisis ekonomi
   };
 
   // USD/IDR exchange rate (approx June 2026)
