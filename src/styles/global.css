@@ -2256,11 +2256,13 @@ p strong {
 /* ── Tooltip Istilah (glossary, khusus blog) ── */
 .hc-term {
   position: relative;
-  border-bottom: 1.5px dotted var(--cat-color, var(--blue));
+  color: var(--cat-color, var(--blue));
+  font-weight: 700;
+  border-bottom: 2px dotted var(--cat-color, var(--blue));
   cursor: help;
-  font-weight: 600;
   border-radius: 2px;
-  transition: background .15s;
+  padding-bottom: 1px;
+  transition: background .15s, color .15s;
 }
 .hc-term:hover, .hc-term:focus { background: var(--blue-light); outline: none; }
 .hc-tip {

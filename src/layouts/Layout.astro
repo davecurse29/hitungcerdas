@@ -229,7 +229,7 @@ const websiteSchema = {
 
     // --- Tooltip Istilah (khusus artikel blog) ---
     (function () {
-      if (!/^\/blog\/.+/.test(location.pathname)) return;
+      if (!/^\/(blog|kalkulator)\//.test(location.pathname)) return;
       var roots = document.querySelectorAll('.content-section');
       if (!roots.length) return;
       var G = {
