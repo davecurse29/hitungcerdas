@@ -38,6 +38,10 @@ const articles = [
   { slug: 'cara-menghitung-gaji-bersih', title: 'Cara Menghitung Gaji Bersih Karyawan dengan Mudah', category: 'GAJI & PENGHASILAN', readTime: '4 min', color: '#059669', color2: '#047857' },
   { slug: 'cara-menentukan-harga-jual', title: 'Cara Menentukan Harga Jual Produk agar Tetap Untung', category: 'UMKM', readTime: '6 min', color: '#EC4899', color2: '#9D174D' },
 ];
+
+// Kalkulator paling populer (estimasi tren — mudah disesuaikan saat data analytics matang)
+const POPULAR_SLUGS = ['kpr', 'gaji-bersih', 'pph-21', 'kredit-mobil', 'zakat-penghasilan', 'investasi'];
+const popularCalcs = POPULAR_SLUGS.map(s => CALCULATORS.find(c => c.slug === s)).filter(Boolean);
 ---
 
 <Layout
@@ -181,6 +185,24 @@ const articles = [
   </div>
 
   <AdSlot format="horizontal" className="mt-ad" />
+
+  {/* ═══════════════ KALKULATOR POPULER ═══════════════ */}
+  <section class="section" id="populer">
+    <div class="wrap">
+      <div class="section-hdr">
+        <div class="section-eyebrow">Paling Sering Dipakai</div>
+        <h2 class="section-title">Kalkulator Paling Populer</h2>
+        <p class="section-desc">
+          Mulai dari yang paling banyak dicari pengunjung — KPR, gaji bersih, pajak,
+          kredit kendaraan, zakat, dan investasi. Langsung pilih dan hitung dalam hitungan detik.
+        </p>
+      </div>
+
+      <div class="tool-grid">
+        {popularCalcs.map(calc => <CalculatorCard calc={calc} />)}
+      </div>
+    </div>
+  </section>
 
   {/* ═══════════════ TOOLS GRID ═══════════════ */}
   <section class="section" id="tools">
