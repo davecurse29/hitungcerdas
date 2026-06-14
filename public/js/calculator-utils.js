@@ -313,4 +313,66 @@
   // Expose copyText globally for backward compat
   window.copyText = HC.copyText;
 
+
+  // ─── COUNT-UP ANIMATION (non-invasif, otomatis di halaman kalkulator) ───
+  HC.initCountUp = function () {
+    var els = document.querySelectorAll('.result-value, .result-item-value');
+    if (!els.length) return;
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function parseVal(txt) {
+      txt = (txt || '').trim();
+      if (!/^(Rp\s*)?-?[\d.,]+$/.test(txt)) return null;
+      var d = txt.replace(/[^\d]/g, '');
+      return d === '' ? null : parseInt(d, 10);
+    }
+    function render(el, n, hasRp) {
+      el.textContent = (hasRp ? 'Rp ' : '') + Math.round(n).toLocaleString('id-ID');
+    }
+    function animate(el, from, to, hasRp) {
+      if (reduce || from === to) { render(el, to, hasRp); el._cuVal = to; el._cuAnim = false; return; }
+      el._cuAnim = true;
+      var dur = 650, t0 = null;
+      function step(ts) {
+        if (!t0) t0 = ts;
+        var p = Math.min((ts - t0) / dur, 1);
+        var eased = 1 - Math.pow(1 - p, 3);
+        render(el, from + (to - from) * eased, hasRp);
+        if (p < 1) { requestAnimationFrame(step); }
+        else { render(el, to, hasRp); el._cuVal = to; el._cuAnim = false; }
+      }
+      requestAnimationFrame(step);
+    }
+
+    var obs = new MutationObserver(function (muts) {
+      var seen = [];
+      muts.forEach(function (m) {
+        var el = m.target;
+        if (el.nodeType === 3) el = el.parentNode;
+        if (!el || seen.indexOf(el) >= 0) return;
+        if (!el.classList || (!el.classList.contains('result-value') && !el.classList.contains('result-item-value'))) return;
+        seen.push(el);
+        if (el._cuAnim) return;
+        var txt = el.textContent;
+        var tv = parseVal(txt);
+        if (tv === null || el._cuVal === tv) return;
+        var hasRp = /^Rp/i.test(txt.trim());
+        var from = (typeof el._cuVal === 'number') ? el._cuVal : 0;
+        animate(el, from, tv, hasRp);
+      });
+    });
+
+    els.forEach(function (el) {
+      var init = parseVal(el.textContent);
+      el._cuVal = (init === null ? 0 : init);
+      obs.observe(el, { childList: true, characterData: true, subtree: true });
+    });
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', HC.initCountUp);
+  } else {
+    HC.initCountUp();
+  }
+
 })(window);
