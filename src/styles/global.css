@@ -2184,3 +2184,17 @@ p strong {
 }
 [data-theme="dark"] .cta-box h3 { color: #93B4FF; }
 [data-theme="dark"] .cta-box p { color: var(--text); }
+
+/* ── Dark mode: teks artikel blog & judul widget (fix kontras) ── */
+[data-theme="dark"] .content-section h2,
+[data-theme="dark"] .content-section h3,
+[data-theme="dark"] .content-section h4,
+[data-theme="dark"] .content-section strong,
+[data-theme="dark"] .formula-box,
+[data-theme="dark"] .formula-box strong,
+[data-theme="dark"] .formula-box li strong,
+[data-theme="dark"] .info-list strong,
+[data-theme="dark"] .tips-list strong,
+[data-theme="dark"] .calc-card-title {
+  color: var(--text);
+}
