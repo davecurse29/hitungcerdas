@@ -2309,3 +2309,17 @@ p strong {
 [data-theme="dark"] .hc-tip { background: var(--bg-card); color: var(--text); border: 1px solid var(--border); }
 [data-theme="dark"] .hc-tip::after { border-top-color: var(--bg-card); }
 [data-theme="dark"] .hc-term:hover, [data-theme="dark"] .hc-term:focus { background: rgba(255, 255, 255, .06); }
+
+
+/* ── Dark mode: teks accordion KPR & box hasil (fix kontras) ── */
+[data-theme="dark"] .adv-toggle { color: var(--text); }
+[data-theme="dark"] .adv-content,
+[data-theme="dark"] .adv-content table,
+[data-theme="dark"] .adv-content th,
+[data-theme="dark"] .adv-content td,
+[data-theme="dark"] .adv-content span,
+[data-theme="dark"] .adv-content p,
+[data-theme="dark"] .adv-content li,
+[data-theme="dark"] .adv-content div { color: var(--text) !important; }
+[data-theme="dark"] .prepayment-result,
+[data-theme="dark"] .prepayment-result * { color: var(--text) !important; }

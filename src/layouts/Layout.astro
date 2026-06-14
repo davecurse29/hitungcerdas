@@ -177,7 +177,7 @@ const websiteSchema = {
     (function () {
       try {
         var t = localStorage.getItem('hc-theme');
-        if (!t) t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+        if (!t) t = 'light';
         document.documentElement.setAttribute('data-theme', t);
       } catch (e) {}
     })();
@@ -381,8 +381,10 @@ const websiteSchema = {
     // ─── Dark Mode Toggle ───
     (function () {
       var root = document.documentElement;
-      var host = document.querySelector('header nav') || document.querySelector('header');
-      if (!host || document.getElementById('theme-toggle')) return;
+      if (document.getElementById('theme-toggle')) return;
+      var hamburger = document.querySelector('header .menu-tg');
+      var host = document.querySelector('header .hdr') || document.querySelector('header nav') || document.querySelector('header');
+      if (!host && !hamburger) return;
       var btn = document.createElement('button');
       btn.id = 'theme-toggle';
       btn.type = 'button';
@@ -400,7 +402,11 @@ const websiteSchema = {
         try { localStorage.setItem('hc-theme', next); } catch (e) {}
         sync();
       });
-      host.appendChild(btn);
+      if (hamburger && hamburger.parentNode) {
+        hamburger.parentNode.insertBefore(btn, hamburger);
+      } else if (host) {
+        host.appendChild(btn);
+      }
     })();
   </script>
 </body>
