@@ -227,6 +227,83 @@ const websiteSchema = {
       } catch (e) {}
     })();
 
+    // --- Tooltip Istilah (khusus artikel blog) ---
+    (function () {
+      if (!/^\/blog\/.+/.test(location.pathname)) return;
+      var roots = document.querySelectorAll('.content-section');
+      if (!roots.length) return;
+      var G = {
+        'anuitas': 'Metode cicilan di mana angsuran per bulan jumlahnya tetap sama, tapi komposisi bunga dan pokok berubah tiap bulan. Contoh: cicilan KPR Rp3 juta konstan sepanjang tenor.',
+        'ptkp': 'Penghasilan Tidak Kena Pajak \u2014 batas penghasilan yang bebas pajak. Contoh: karyawan lajang, Rp54 juta/tahun pertama tidak kena PPh.',
+        'pph 21': 'Pajak Penghasilan atas gaji atau upah karyawan, dipotong tiap bulan sesuai UU HPP.',
+        'floating': 'Bunga mengambang yang bisa naik atau turun mengikuti kebijakan bank, biasanya berlaku setelah masa bunga tetap (fixed) habis.',
+        'fixed': 'Bunga tetap yang tidak berubah selama periode tertentu. Contoh: fixed 5% untuk 3 tahun pertama KPR.',
+        'flpp': 'Fasilitas Likuiditas Pembiayaan Perumahan \u2014 subsidi KPR pemerintah untuk rumah pertama, dengan bunga tetap rendah (sekitar 5%) sepanjang tenor.',
+        'bphtb': 'Bea Perolehan Hak atas Tanah dan Bangunan \u2014 pajak yang dibayar pembeli saat membeli properti, umumnya 5% dari nilai di atas batas bebas pajak.',
+        'ajb': 'Akta Jual Beli \u2014 dokumen resmi peralihan hak properti yang ditandatangani di hadapan PPAT (notaris).',
+        'tenor': 'Jangka waktu pinjaman atau cicilan. Contoh: tenor KPR 15 tahun sama dengan 180 bulan.',
+        'bpjs': 'Badan Penyelenggara Jaminan Sosial \u2014 iuran kesehatan dan ketenagakerjaan yang dipotong dari gaji karyawan tiap bulan.',
+        'take-home pay': 'Gaji bersih yang benar-benar diterima karyawan setelah semua potongan (pajak, BPJS, dan lainnya).',
+        'bi rate': 'Suku bunga acuan Bank Indonesia yang jadi patokan bunga kredit dan deposito. Per 2026 sekitar 5,5%.',
+        'compound interest': 'Bunga majemuk \u2014 bunga yang dihitung dari pokok plus bunga sebelumnya, sehingga saldo tumbuh makin cepat dari waktu ke waktu.',
+        'bunga majemuk': 'Bunga yang dihitung dari pokok plus bunga sebelumnya, sehingga saldo tumbuh makin cepat. Inti dari pertumbuhan investasi jangka panjang.',
+        'nisab': 'Batas minimal harta yang wajib dizakati. Contoh: nisab zakat mal setara nilai 85 gram emas.',
+        'haul': 'Masa kepemilikan harta selama satu tahun (kalender hijriah) sebagai salah satu syarat wajib zakat mal.',
+        'margin': 'Selisih antara harga jual dan biaya, dihitung sebagai persen dari harga jual. Contoh: margin 30% berarti 30% dari harga jual adalah laba.',
+        'markup': 'Tambahan harga di atas biaya modal, dihitung sebagai persen dari modal. Contoh: markup 50% dari modal Rp10.000 menghasilkan harga Rp15.000.',
+        'ojk': 'Otoritas Jasa Keuangan \u2014 lembaga yang mengawasi bank, pinjol, asuransi, dan industri keuangan di Indonesia.',
+        'faraidh': 'Ilmu pembagian harta warisan dalam Islam sesuai ketentuan Al-Qur\u2019an dan hadis.',
+        'fidyah': 'Denda berupa memberi makan orang miskin sebagai pengganti puasa yang tidak bisa diganti dengan qadha.',
+        'dp': 'Down Payment atau uang muka \u2014 pembayaran awal saat membeli, sisanya dicicil. Contoh: DP 20% dari harga rumah.'
+      };
+      var keys = Object.keys(G).sort(function (a, b) { return b.length - a.length; });
+      function esc(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+      var RE = new RegExp('(' + keys.map(esc).join('|') + ')', 'gi');
+      var used = {};
+      var SKIP = { A: 1, BUTTON: 1, CODE: 1, PRE: 1, SCRIPT: 1, STYLE: 1, H1: 1, H2: 1, H3: 1, H4: 1 };
+      function isAlnum(c) { return !!c && /[A-Za-z0-9]/.test(c); }
+      function handleText(tn) {
+        var text = tn.nodeValue;
+        if (!text || !text.trim()) return;
+        RE.lastIndex = 0;
+        var m, parts = [], last = 0, any = false;
+        while ((m = RE.exec(text))) {
+          var s = m[0], key = s.toLowerCase(), i = m.index;
+          if (!G[key] || used[key]) continue;
+          var before = i > 0 ? text.charAt(i - 1) : '';
+          var after = (i + s.length) < text.length ? text.charAt(i + s.length) : '';
+          if (isAlnum(before) || isAlnum(after)) continue;
+          used[key] = true; any = true;
+          parts.push(document.createTextNode(text.slice(last, i)));
+          var span = document.createElement('span');
+          span.className = 'hc-term';
+          span.setAttribute('tabindex', '0');
+          span.textContent = s;
+          var tip = document.createElement('span');
+          tip.className = 'hc-tip';
+          tip.textContent = G[key];
+          span.appendChild(tip);
+          parts.push(span);
+          last = i + s.length;
+        }
+        if (any) {
+          parts.push(document.createTextNode(text.slice(last)));
+          var frag = document.createDocumentFragment();
+          parts.forEach(function (x) { frag.appendChild(x); });
+          tn.parentNode.replaceChild(frag, tn);
+        }
+      }
+      function walk(node) {
+        if (node.nodeType === 3) { handleText(node); return; }
+        if (node.nodeType !== 1) return;
+        if (SKIP[node.tagName]) return;
+        if (node.classList && node.classList.contains('hc-term')) return;
+        var kids = Array.prototype.slice.call(node.childNodes);
+        for (var k = 0; k < kids.length; k++) walk(kids[k]);
+      }
+      roots.forEach(function (r) { walk(r); });
+    })();
+
     // ─── Back to Top ───
     (function() {
       const btn = document.getElementById('bttp');
