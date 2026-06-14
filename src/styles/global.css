@@ -2082,3 +2082,92 @@ p strong {
   opacity: 1;
   font-style: italic;
 }
+
+
+/* ═══════════════ DARK MODE ═══════════════ */
+[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0B1220;
+  --bg-soft: #121B2D;
+  --bg-softer: #18233A;
+  --bg-card: #141E33;
+  --border: #283450;
+  --border-strong: #3C4A6B;
+  --text: #E9EEF6;
+  --text-soft: #AEB9CC;
+  --text-mute: #707C92;
+  --blue-light: #1E2A4A;
+  --green-light: #143028;
+  --gold-light: #2E2614;
+  --red-light: #2E1A1C;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.4);
+  --shadow: 0 4px 12px rgba(0,0,0,.45), 0 1px 3px rgba(0,0,0,.4);
+  --shadow-md: 0 8px 24px rgba(0,0,0,.5);
+  --shadow-lg: 0 12px 32px rgba(0,0,0,.55), 0 4px 8px rgba(0,0,0,.4);
+  --shadow-xl: 0 24px 56px rgba(0,0,0,.6);
+}
+
+/* Surface yang pakai putih hardcoded → gelap di dark mode */
+[data-theme="dark"] .calc-card,
+[data-theme="dark"] .result-main,
+[data-theme="dark"] .result-item,
+[data-theme="dark"] .kelayakan-box,
+[data-theme="dark"] .quick-btns button,
+[data-theme="dark"] .share-btn,
+[data-theme="dark"] .amort-table,
+[data-theme="dark"] .formula-box,
+[data-theme="dark"] .btn-reset,
+[data-theme="dark"] .export-btn,
+[data-theme="dark"] .prepayment-result,
+[data-theme="dark"] .chart-section,
+[data-theme="dark"] .bank-card,
+[data-theme="dark"] .compare-table,
+[data-theme="dark"] .field input,
+[data-theme="dark"] .field textarea,
+[data-theme="dark"] .field select,
+[data-theme="dark"] .inflation-options select,
+[data-theme="dark"] .tco-profile-box select {
+  background: var(--bg-card);
+  color: var(--text);
+  border-color: var(--border);
+}
+
+/* Tabel: header & garis di dark mode */
+[data-theme="dark"] .amort-table th,
+[data-theme="dark"] .compare-table th {
+  background: var(--bg-softer);
+  color: var(--text);
+}
+[data-theme="dark"] .amort-table td,
+[data-theme="dark"] .amort-table th,
+[data-theme="dark"] .compare-table td,
+[data-theme="dark"] .compare-table th {
+  border-color: var(--border);
+}
+
+/* Input prefix tetap kontras */
+[data-theme="dark"] .input-prefix { color: var(--text-soft); }
+
+/* ── Tombol Toggle Dark Mode ── */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  margin-left: 8px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--bg-soft);
+  color: var(--text);
+  cursor: pointer;
+  font-size: 17px;
+  line-height: 1;
+  flex-shrink: 0;
+  transition: background .2s, color .2s, border-color .2s;
+}
+.theme-toggle:hover {
+  background: var(--bg-softer);
+  border-color: var(--border-strong);
+}

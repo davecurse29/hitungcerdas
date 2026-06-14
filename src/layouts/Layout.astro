@@ -164,6 +164,16 @@ const websiteSchema = {
     src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7503808144261296"
     crossorigin="anonymous"
   ></script>
+  {/* ── Theme (dark mode) anti-flash ── */}
+  <script is:inline>
+    (function () {
+      try {
+        var t = localStorage.getItem('hc-theme');
+        if (!t) t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+    })();
+  </script>
 </head>
 <body>
   <Header />
@@ -262,6 +272,31 @@ const websiteSchema = {
           link.classList.add('active');
         }
       });
+    })();
+
+    // ─── Dark Mode Toggle ───
+    (function () {
+      var root = document.documentElement;
+      var host = document.querySelector('header nav') || document.querySelector('header');
+      if (!host || document.getElementById('theme-toggle')) return;
+      var btn = document.createElement('button');
+      btn.id = 'theme-toggle';
+      btn.type = 'button';
+      btn.className = 'theme-toggle';
+      btn.setAttribute('aria-label', 'Ganti mode gelap atau terang');
+      function sync() {
+        var dark = root.getAttribute('data-theme') === 'dark';
+        btn.innerHTML = dark ? '<i class="ti ti-sun"></i>' : '<i class="ti ti-moon"></i>';
+        btn.setAttribute('aria-pressed', dark ? 'true' : 'false');
+      }
+      sync();
+      btn.addEventListener('click', function () {
+        var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        root.setAttribute('data-theme', next);
+        try { localStorage.setItem('hc-theme', next); } catch (e) {}
+        sync();
+      });
+      host.appendChild(btn);
     })();
   </script>
 </body>
