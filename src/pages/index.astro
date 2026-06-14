@@ -186,6 +186,20 @@ const popularCalcs = POPULAR_SLUGS.map(s => CALCULATORS.find(c => c.slug === s))
 
   <AdSlot format="horizontal" className="mt-ad" />
 
+  {/* ════════════ UNTUK KAMU (Favorit & Riwayat) ════════════ */}
+  <section class="section" id="untuk-kamu" style="display:none;padding-top:8px;padding-bottom:8px">
+    <div class="wrap">
+      <div class="uk-row" id="uk-fav-row" style="display:none">
+        <span class="uk-label"><i class="ti ti-star-filled"></i> Favoritmu</span>
+        <div class="uk-chips" id="uk-fav"></div>
+      </div>
+      <div class="uk-row" id="uk-rec-row" style="display:none">
+        <span class="uk-label"><i class="ti ti-history"></i> Terakhir Dipakai</span>
+        <div class="uk-chips" id="uk-rec"></div>
+      </div>
+    </div>
+  </section>
+
   {/* ═══════════════ KALKULATOR POPULER ═══════════════ */}
   <section class="section" id="populer">
     <div class="wrap">
@@ -917,5 +931,70 @@ const popularCalcs = POPULAR_SLUGS.map(s => CALCULATORS.find(c => c.slug === s))
         window.showToast?.('Tools tidak ditemukan');
       }
     });
+  })();
+
+  // ─── Favorit & Riwayat (Untuk Kamu) ───
+  (function () {
+    var FAV = 'hc-fav', REC = 'hc-recent';
+    function read(k) { try { return JSON.parse(localStorage.getItem(k)) || []; } catch (e) { return []; } }
+    function write(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+    var bySlug = {};
+    CALCULATORS_DATA.forEach(function (c) { bySlug[c.slug] = c; });
+
+    // Suntik tombol bintang ke tiap kartu
+    document.querySelectorAll('.tool-card').forEach(function (card) {
+      if (card.querySelector('.fav-btn')) return;
+      var href = card.getAttribute('href') || '';
+      var slug = href.split('/').filter(Boolean).pop();
+      if (!slug || !bySlug[slug]) return;
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'fav-btn';
+      b.setAttribute('data-slug', slug);
+      b.setAttribute('aria-label', 'Tandai sebagai favorit');
+      card.appendChild(b);
+    });
+
+    function syncStars() {
+      var favs = read(FAV);
+      document.querySelectorAll('.fav-btn').forEach(function (b) {
+        var on = favs.indexOf(b.getAttribute('data-slug')) >= 0;
+        b.classList.toggle('active', on);
+        b.innerHTML = on ? '<i class="ti ti-star-filled"></i>' : '<i class="ti ti-star"></i>';
+        b.setAttribute('aria-pressed', on ? 'true' : 'false');
+      });
+    }
+    function chip(slug) {
+      var c = bySlug[slug];
+      return c ? '<a class="uk-chip" href="/kalkulator/' + slug + '">' + c.name + '</a>' : '';
+    }
+    function renderUK() {
+      var sec = document.getElementById('untuk-kamu');
+      if (!sec) return;
+      var favs = read(FAV).filter(function (s) { return bySlug[s]; });
+      var rec = read(REC).filter(function (s) { return bySlug[s] && favs.indexOf(s) < 0; }).slice(0, 5);
+      var favRow = document.getElementById('uk-fav-row');
+      var recRow = document.getElementById('uk-rec-row');
+      if (favs.length) { favRow.style.display = ''; document.getElementById('uk-fav').innerHTML = favs.map(chip).join(''); }
+      else { favRow.style.display = 'none'; }
+      if (rec.length) { recRow.style.display = ''; document.getElementById('uk-rec').innerHTML = rec.map(chip).join(''); }
+      else { recRow.style.display = 'none'; }
+      sec.style.display = (favs.length || rec.length) ? '' : 'none';
+    }
+    document.addEventListener('click', function (e) {
+      var b = e.target.closest ? e.target.closest('.fav-btn') : null;
+      if (!b) return;
+      e.preventDefault();
+      e.stopPropagation();
+      var slug = b.getAttribute('data-slug');
+      var favs = read(FAV), i = favs.indexOf(slug);
+      if (i >= 0) favs.splice(i, 1); else favs.unshift(slug);
+      write(FAV, favs);
+      syncStars();
+      renderUK();
+      window.showToast && window.showToast(i >= 0 ? 'Dihapus dari favorit' : 'Ditambahkan ke favorit \u2b50');
+    });
+    syncStars();
+    renderUK();
   })();
 </script>

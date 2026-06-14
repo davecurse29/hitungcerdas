@@ -215,6 +215,18 @@ const websiteSchema = {
 
   {/* ── Global Scripts ── */}
   <script is:inline>
+    // ─── Catat Kalkulator Terakhir Dipakai ───
+    (function () {
+      var m = location.pathname.match(/^\/kalkulator\/([^\/]+)\/?$/);
+      if (!m) return;
+      try {
+        var rec = JSON.parse(localStorage.getItem('hc-recent')) || [];
+        rec = rec.filter(function (s) { return s !== m[1]; });
+        rec.unshift(m[1]);
+        localStorage.setItem('hc-recent', JSON.stringify(rec.slice(0, 6)));
+      } catch (e) {}
+    })();
+
     // ─── Back to Top ───
     (function() {
       const btn = document.getElementById('bttp');

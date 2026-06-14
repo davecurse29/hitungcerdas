@@ -2198,3 +2198,56 @@ p strong {
 [data-theme="dark"] .calc-card-title {
   color: var(--text);
 }
+
+
+/* ── Favorit & Riwayat (Untuk Kamu) ── */
+.tool-card { position: relative !important; }
+.fav-btn {
+  position: absolute;
+  bottom: 14px;
+  right: 14px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  line-height: 1;
+  color: var(--text-mute);
+  font-size: 19px;
+  display: inline-flex;
+  z-index: 3;
+  transition: color .15s, transform .15s;
+}
+.fav-btn:hover { color: var(--gold); transform: scale(1.15); }
+.fav-btn.active { color: var(--gold); }
+
+.uk-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.uk-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-soft);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+.uk-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.uk-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background .15s, border-color .15s;
+}
+.uk-chip:hover { background: var(--bg-softer); border-color: var(--border-strong); }
