@@ -13,7 +13,7 @@ const faqs = [
   { question: 'Apa itu TCO (Total Cost of Ownership) mobil?', answer: 'TCO mobil = total biaya kepemilikan mobil per bulan, bukan cuma cicilan. Komponen: cicilan + bensin + tol + parkir + servis berkala + pajak STNK + asuransi all-risk + cuci. Untuk mobil Rp 280 juta dengan cicilan Rp 5.5 juta, TCO bulanan bisa Rp 9-11 juta. Aturan: TCO MAKSIMAL 40% gaji.' },
   { question: 'Berapa DP minimum kredit mobil di Indonesia?', answer: 'DP minimum kredit mobil per OJK: <strong>20-30% dari OTR</strong>. Showroom sering promo "DP 15%" dengan syarat bunga lebih tinggi. Idealnya DP <strong>30%+</strong> agar bunga total tidak membengkak.' },
   { question: 'Bunga kredit mobil di Indonesia berapa?', answer: 'Bunga flat kredit mobil <strong>5-9% per tahun</strong> (Maybank Finance, ACC, BCA Finance, Mandiri Tunas Finance, Astra Credit). Lebih rendah dari motor karena nominal lebih besar.' },
-  { question: 'Berapa total biaya kepemilikan mobil per bulan?', answer: 'Selain cicilan, TCO bulanan mobil: <strong>Bensin</strong> Rp 1.5-3 juta (tergantung jarak), <strong>Tol/parkir</strong> Rp 300-700rb, <strong>Servis berkala</strong> Rp 300-500rb, <strong>Asuransi All Risk</strong> Rp 600rb-1jt/bln (~3% nilai mobil/thn), <strong>Pajak STNK</strong> Rp 200-400rb/bln, <strong>Cuci</strong> Rp 100rb. Total: TCO biasanya <strong>1.5-2× cicilan</strong>.' },
+  { question: 'Berapa total biaya kepemilikan mobil per bulan?', answer: 'Selain cicilan, TCO bulanan mobil: <strong>Bensin</strong> Rp 1.5-3 juta (tergantung jarak), <strong>Tol/parkir</strong> Rp 300-700rb, <strong>Servis berkala</strong> Rp 350-550rb, <strong>Asuransi All Risk</strong> Rp 700rb-1,2jt/bln (~3,5% nilai mobil/thn), <strong>Pajak STNK</strong> Rp 200-400rb/bln, <strong>Cuci</strong> Rp 100rb. Total: TCO biasanya <strong>1.5-2× cicilan</strong>.' },
   { question: 'Mobil listrik (EV) lebih hemat?', answer: 'YA, jangka panjang sangat hemat: (1) <strong>Bensin</strong>: EV cuma ~Rp 500rb-1jt/bln (charging) vs ICE Rp 2-3jt/bln. (2) <strong>Insentif PPN 1%</strong> dari pemerintah (bukan 11%), hemat puluhan juta saat beli. (3) <strong>Servis lebih murah</strong>: tidak ada oli mesin, tune-up jarang. (4) <strong>Tidak kena ganjil-genap</strong> di Jakarta. Cocok untuk komuter urban yang charging di rumah malam.' },
   { question: 'Beli mobil baru atau bekas yang lebih untung?', answer: '<strong>Mobil baru</strong>: Garansi 3-5 tahun, fitur lengkap, depresiasi 20-25% di tahun pertama. <strong>Mobil bekas</strong> (3-5 thn): Harga 50-70% mobil baru, depresiasi sudah jeda, tapi risiko biaya servis lebih tinggi. <strong>Sweet spot</strong>: bekas 2-3 tahun dari pemilik pertama yang terawat.' },
 ];
@@ -233,11 +233,11 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         <li>🏦 <strong>Cicilan</strong> — Pokok + bunga flat</li>
         <li>⛽ <strong>Bensin / Listrik</strong> — Tergantung mobil & profil pemakaian (Rp 500rb-3jt)</li>
         <li>🛣️ <strong>Tol & parkir</strong> — Khusus DKI Jakarta bisa Rp 700rb/bln</li>
-        <li>🔧 <strong>Servis berkala</strong> — Rp 300-500rb/bulan (oli, filter, periodic 10rb km)</li>
+        <li>🔧 <strong>Servis berkala</strong> — Rp 350-550rb/bulan (oli, filter, periodic 10rb km)</li>
         <li>📄 <strong>Pajak STNK + BBN</strong> — 2-3% nilai mobil/tahun</li>
-        <li>🛡️ <strong>Asuransi All-Risk</strong> — 2.5-3.5% nilai mobil/tahun</li>
+        <li>🛡️ <strong>Asuransi All-Risk</strong> — 3-4% nilai mobil/tahun</li>
         <li>🧽 <strong>Cuci salon</strong> — Rp 100-150rb/bulan</li>
-        <li>🚨 <strong>Dana darurat servis</strong> — Rp 200rb/bulan (untuk masalah tak terduga)</li>
+        <li>🚨 <strong>Dana darurat servis</strong> — Rp 250rb/bulan (untuk masalah tak terduga)</li>
       </ul>
 
       <h3>Tips Cerdas Sebelum Ambil Kredit Mobil</h3>
@@ -245,7 +245,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         <li><strong>Hitung TCO, bukan cicilan</strong> — TCO maksimal 40% gaji. Cicilan saja maksimal 25%.</li>
         <li><strong>Pertimbangkan EV untuk komuter urban</strong> — Insentif PPN 1% + bensin hemat 70%.</li>
         <li><strong>Mobil baru depresiasi 20-25% di tahun 1</strong> — Beli mobil bekas 2-3 thn lebih value-for-money.</li>
-        <li><strong>Asuransi All-Risk wajib untuk mobil kredit</strong> — Bank biasanya minta. Premi sekitar 2.5-3.5% nilai mobil.</li>
+        <li><strong>Asuransi All-Risk wajib untuk mobil kredit</strong> — Bank biasanya minta. Premi sekitar 3-4% nilai mobil (estimasi konservatif).</li>
         <li><strong>Bayar pajak STNK on time</strong> — Telat = denda 25%/tahun + bisa di-tilang.</li>
         <li><strong>Servis berkala 10rb km</strong> — Lebih murah daripada turun mesin (Rp 5-15 juta).</li>
       </ol>
@@ -291,11 +291,11 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
 
       // TCO data per mobil type
       const MOBIL_TYPE_DATA = {
-        lcgc:    { kmpl: 16, servisBulan: 250000, pajakRate: 0.018, asuransiRate: 0.025, label: 'LCGC' },
-        mpv:     { kmpl: 13, servisBulan: 350000, pajakRate: 0.02,  asuransiRate: 0.030, label: 'MPV / City Car' },
-        suv:     { kmpl: 10, servisBulan: 450000, pajakRate: 0.022, asuransiRate: 0.032, label: 'SUV' },
-        premium: { kmpl: 8,  servisBulan: 700000, pajakRate: 0.025, asuransiRate: 0.035, label: 'Premium' },
-        ev:      { kmpl: 0,  servisBulan: 250000, pajakRate: 0.005, asuransiRate: 0.025, label: 'Mobil Listrik', isElectric: true, kwhPerKm: 0.18 }, // 0.18 kWh/km
+        lcgc:    { kmpl: 16, servisBulan: 290000, pajakRate: 0.018, asuransiRate: 0.030, label: 'LCGC' },
+        mpv:     { kmpl: 13, servisBulan: 400000, pajakRate: 0.02,  asuransiRate: 0.035, label: 'MPV / City Car' },
+        suv:     { kmpl: 10, servisBulan: 520000, pajakRate: 0.022, asuransiRate: 0.038, label: 'SUV' },
+        premium: { kmpl: 8,  servisBulan: 800000, pajakRate: 0.025, asuransiRate: 0.040, label: 'Premium' },
+        ev:      { kmpl: 0,  servisBulan: 290000, pajakRate: 0.005, asuransiRate: 0.030, label: 'Mobil Listrik', isElectric: true, kwhPerKm: 0.18 }, // 0.18 kWh/km
       };
 
       const USAGE_PROFILE = {
@@ -335,8 +335,8 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         const asuransiBulan = harga * mobil.asuransiRate / 12;
         const tolParkirBulan = wil.tolParkirBulan * (kmBulan / 1500); // scale by usage
         const servisBulan = mobil.servisBulan;
-        const cuciBulan = 120000;
-        const danaDarurat = 200000;
+        const cuciBulan = 140000;
+        const danaDarurat = 250000;
 
         const totalTCO = cicilanBulan + bensinBulan + servisBulan + pajakBulan + asuransiBulan + tolParkirBulan + cuciBulan + danaDarurat;
 
@@ -374,7 +374,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
 
         const dpAmt = harga * (dpPct / 100);
         const bbn = harga * 0.10;
-        const asuransiThn1 = harga * 0.025;
+        const asuransiThn1 = harga * 0.03;
         const biayaAwal = dpAmt + bbn + asuransiThn1;
         const pokok = harga - dpAmt;
         const { cicilan, totalBunga } = flat(pokok, bunga, tenor);

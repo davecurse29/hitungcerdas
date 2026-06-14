@@ -15,7 +15,7 @@ const faqs = [
   { question: 'Bunga kredit motor di Indonesia berapa?', answer: '<strong>Bunga flat</strong> 8-15% per tahun (Adira, FIF, BAF, MCF). Bunga flat = bunga dihitung dari pokok awal, total konsisten setiap bulan. Berbeda dengan KPR yang anuitas. Flat 8% ≈ Anuitas 14-15% (efektif).' },
   { question: 'Berapa biaya bensin motor matic per bulan?', answer: 'Asumsi 1 liter Pertamax untuk 35-45 km (motor matic). Untuk komuter 30 km/hari × 26 hari = 780 km/bulan, butuh ~20 liter, Rp 280rb. Untuk pemakaian harian biasa: Rp 200-350rb/bulan. Motor sport lebih boros: Rp 350-500rb. Motor listrik paling hemat: Rp 50-80rb (listrik PLN).' },
   { question: 'Mengapa inflasi mempengaruhi bunga kredit motor?', answer: 'Saat inflasi tinggi, <strong>BI Rate naik</strong>, biaya dana leasing/multifinance juga naik. Otomatis bunga kredit motor naik. Mode Inflasi kami simulasikan dampak skenario inflasi terhadap bunga & cicilan untuk perencanaan jangka panjang.' },
-  { question: 'Apa biaya tersembunyi beli motor kredit?', answer: 'Selain cicilan: <strong>(1) BBN/Pajak</strong> ~Rp 200-500rb di awal, <strong>(2) STNK tahunan</strong> Rp 250-500rb/tahun, <strong>(3) Asuransi TLO</strong> Rp 400-600rb/tahun, <strong>(4) Servis berkala</strong> Rp 100-200rb/bulan (rutin), <strong>(5) Bensin</strong> Rp 200-500rb/bulan, <strong>(6) Helm + jas hujan + perlengkapan</strong> awal Rp 500rb-1jt + depresiasi ~Rp 20rb/bln.' },
+  { question: 'Apa biaya tersembunyi beli motor kredit?', answer: 'Selain cicilan: <strong>(1) BBN/Pajak</strong> ~Rp 200-500rb di awal, <strong>(2) STNK tahunan</strong> Rp 250-500rb/tahun, <strong>(3) Asuransi TLO</strong> Rp 600-900rb/tahun, <strong>(4) Servis berkala</strong> Rp 120-230rb/bulan (rutin), <strong>(5) Bensin</strong> Rp 200-500rb/bulan, <strong>(6) Helm + jas hujan + perlengkapan</strong> awal Rp 500rb-1jt + depresiasi ~Rp 20rb/bln.' },
 ];
 
 const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '/#tools' }, { label: calc.shortTitle }];
@@ -219,9 +219,9 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       <ul class="info-list">
         <li>🏦 <strong>Cicilan</strong> — Pokok + bunga flat</li>
         <li>⛽ <strong>Bensin</strong> — Tergantung jenis motor & profil pemakaian</li>
-        <li>🔧 <strong>Servis berkala</strong> — Rp 100-200rb/bulan (oli, filter, dll)</li>
+        <li>🔧 <strong>Servis berkala</strong> — Rp 120-230rb/bulan (oli, filter, dll)</li>
         <li>📄 <strong>Pajak STNK tahunan</strong> — Rp 250-500rb/tahun</li>
-        <li>🛡️ <strong>Asuransi TLO</strong> — Rp 400-600rb/tahun (recommended)</li>
+        <li>🛡️ <strong>Asuransi TLO</strong> — Rp 600-900rb/tahun (recommended)</li>
         <li>🪖 <strong>Helm + jas hujan + sarung tangan</strong> — Depresiasi ~Rp 20rb/bln</li>
         <li>🧽 <strong>Cuci & perawatan</strong> — Rp 40-80rb/bulan</li>
       </ul>
@@ -233,7 +233,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         <li><strong>Servis tepat waktu</strong> — Servis berkala 5000 km, lebih murah daripada turun mesin.</li>
         <li><strong>Bayar pajak STNK on time</strong> — Telat = denda 25% per tahun.</li>
         <li><strong>Pakai BBM yang direkomendasikan</strong> — Motor injection wajib Pertamax (RON 92+). Premium bikin mesin cepat rusak.</li>
-        <li><strong>Asuransi TLO worth it</strong> — Rp 500rb/tahun ngeganti motor hilang Rp 25 juta!</li>
+        <li><strong>Asuransi TLO worth it</strong> — Rp 750rb/tahun ngeganti motor hilang Rp 25 juta!</li>
       </ol>
 
       <div class="cta-box">
@@ -279,10 +279,10 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       // TCO data per motor type & usage profile
       // BBM consumption: km per liter
       const MOTOR_TYPE_DATA = {
-        matic:   { kmpl: 40, servisBulan: 130000, label: 'Matic' },
-        bebek:   { kmpl: 50, servisBulan: 100000, label: 'Bebek' },
-        sport:   { kmpl: 30, servisBulan: 180000, label: 'Sport' },
-        listrik: { kmpl: 0,  servisBulan: 80000,  label: 'Motor Listrik', isElectric: true, kwhPerKm: 0.025 }, // 0.025 kWh/km, tarif PLN ~Rp 1500/kWh
+        matic:   { kmpl: 40, servisBulan: 150000, label: 'Matic' },
+        bebek:   { kmpl: 50, servisBulan: 115000, label: 'Bebek' },
+        sport:   { kmpl: 30, servisBulan: 210000, label: 'Sport' },
+        listrik: { kmpl: 0,  servisBulan: 90000,  label: 'Motor Listrik', isElectric: true, kwhPerKm: 0.025 }, // 0.025 kWh/km, tarif PLN ~Rp 1500/kWh
       };
 
       const USAGE_PROFILE = {
@@ -316,8 +316,8 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
 
         // Other costs
         const pajakBulan = harga * 0.02 / 12; // 2% nilai motor per tahun
-        const asuransiBulan = harga * 0.025 / 12; // 2.5% nilai per tahun (TLO)
-        const cuciBulan = 60000;
+        const asuransiBulan = harga * 0.03 / 12; // 3% nilai per tahun (TLO, estimasi konservatif)
+        const cuciBulan = 70000;
         const perlengkapanBulan = 20000; // depresiasi helm, jas hujan, sarung tangan
         const servisBulan = motor.servisBulan;
 
