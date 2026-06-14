@@ -191,4 +191,8 @@ const svgPath = SVG_ICONS[calc.iconSvg] || SVG_ICONS.kpr;
     background: var(--green);
     box-shadow: 0 4px 12px rgba(5, 150, 105, .3);
   }
+
+  /* ── Dark mode ── */
+  :global([data-theme="dark"]) .tool-card { background: var(--bg-card); }
+  :global([data-theme="dark"]) .tool-name { color: var(--text); }
 </style>

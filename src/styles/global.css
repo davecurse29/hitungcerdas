@@ -2171,3 +2171,16 @@ p strong {
   background: var(--bg-softer);
   border-color: var(--border-strong);
 }
+
+/* ── Dark mode polish: judul, placeholder, kotak blog ── */
+[data-theme="dark"] .section-title { color: var(--text); }
+[data-theme="dark"] .result-placeholder {
+  background: linear-gradient(135deg, var(--bg-soft) 0%, var(--bg-softer) 100%);
+}
+[data-theme="dark"] .result-placeholder-title { color: var(--text); }
+[data-theme="dark"] .formula-box { background: var(--bg-card); }
+[data-theme="dark"] .cta-box {
+  background: linear-gradient(135deg, var(--blue-light) 0%, #16233F 100%);
+}
+[data-theme="dark"] .cta-box h3 { color: #93B4FF; }
+[data-theme="dark"] .cta-box p { color: var(--text); }

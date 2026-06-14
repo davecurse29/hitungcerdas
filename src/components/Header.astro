@@ -223,6 +223,12 @@ const navItems = [
       display: none;
     }
   }
+
+  /* ── Dark mode ── */
+  :global([data-theme="dark"]) header { background: rgba(11, 18, 32, .92); }
+  :global([data-theme="dark"]) .logo-text { color: var(--text); }
+  :global([data-theme="dark"]) .nv:hover { color: var(--text); }
+  :global([data-theme="dark"]) nav.mobile-open { background: var(--bg-card); }
 </style>
 
 <script is:inline>
