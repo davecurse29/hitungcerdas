@@ -30,6 +30,12 @@ const {
 const siteUrl = 'https://hitungcerdas.net';
 const fullUrl = canonical || new URL(Astro.url.pathname, siteUrl).toString();
 
+// ── Conditional heavy scripts: load hanya di halaman yang butuh ──
+const _path = Astro.url.pathname;
+const _isCalc = _path.startsWith('/kalkulator/');
+const _needsCharts = ['/kalkulator/kpr', '/kalkulator/kredit-motor', '/kalkulator/kredit-mobil']
+  .some((pfx) => _path.startsWith(pfx));
+
 const defaultJsonLd = {
   "@context": "https://schema.org",
   "@type": "WebApplication",
@@ -147,11 +153,16 @@ const websiteSchema = {
     rel="stylesheet"
   />
 
-  {/* ── Tabler Icons CDN ── */}
+  {/* ── Tabler Icons CDN (pinned 3.44.0 + non-blocking) ── */}
   <link
-    rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"
+    rel="preload"
+    as="style"
+    href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.44.0/tabler-icons.min.css"
+    onload="this.onload=null;this.rel='stylesheet'"
   />
+  <noscript>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.44.0/tabler-icons.min.css" />
+  </noscript>
 
   {/* ── Schema.org JSON-LD ── */}
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd || defaultJsonLd)} />
@@ -212,11 +223,11 @@ const websiteSchema = {
     crossorigin="anonymous"
   ></script>
 
-  {/* ── HTML to Canvas (for report card export) ── */}
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
+  {/* ── HTML to Canvas (export, hanya halaman kalkulator) ── */}
+  {_isCalc && <script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>}
 
-  {/* ── Chart.js (for visual data charts) ── */}
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  {/* ── Chart.js (charts, hanya KPR/motor/mobil) ── */}
+  {_needsCharts && <script is:inline src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>}
 
   {/* ── Global Calculator Utility (v2) ── */}
   <script src="/js/calculator-utils.js" defer></script>
