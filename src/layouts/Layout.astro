@@ -42,6 +42,32 @@ const _slug = _isCalc ? _path.replace(/^\/kalkulator\//, '').replace(/\/$/, '') 
 const _related = _isCalc ? getRelatedCalculators(_slug, 4) : [];
 const _CAT_ICON: Record<string, string> = { keuangan: 'coins', bisnis: 'briefcase', islami: 'moon' };
 
+// ── Artikel panduan terkait per kalkulator (internal linking + SEO) ──
+const _calcArticle: Record<string, { slug: string; title: string }> = {
+  'kpr': { slug: 'cara-menghitung-kpr', title: 'Cara Hitung Cicilan KPR BTN 2026' },
+  'pph-21': { slug: 'cara-menghitung-pph-21', title: 'Cara Hitung PPh 21 Karyawan 2026' },
+  'gaji-bersih': { slug: 'cara-menghitung-gaji-bersih', title: 'Cara Hitung Gaji Bersih (Take Home Pay)' },
+  'kredit-motor': { slug: 'simulasi-kredit-motor', title: 'Simulasi Kredit Motor 2026 + TCO' },
+  'kredit-mobil': { slug: 'simulasi-kredit-mobil', title: 'Simulasi Kredit Mobil 2026 + TCO' },
+  'investasi': { slug: 'cara-menghitung-investasi', title: 'Cara Hitung Investasi & Compound Interest' },
+  'dana-darurat': { slug: 'cara-hitung-dana-darurat', title: 'Cara Hitung Dana Darurat Ideal' },
+  'kta': { slug: 'cara-menghitung-kta', title: 'Cara Hitung Cicilan KTA 2026' },
+  'pinjol-legal': { slug: 'pinjol-legal-vs-ilegal', title: 'Pinjol Legal vs Ilegal 2026' },
+  'invoice-generator': { slug: 'cara-bikin-invoice-profesional', title: 'Cara Bikin Invoice Profesional' },
+  'harga-jual': { slug: 'cara-menentukan-harga-jual', title: 'Cara Menentukan Harga Jual Produk' },
+  'margin': { slug: 'cara-menghitung-margin', title: 'Cara Hitung Margin Keuntungan' },
+  'nama-bisnis-generator': { slug: 'cara-menentukan-nama-bisnis', title: 'Cara Menentukan Nama Bisnis' },
+  'caption-jualan': { slug: 'cara-bikin-caption-jualan', title: 'Cara Bikin Caption Jualan' },
+  'zakat-fitrah': { slug: 'cara-hitung-zakat-fitrah', title: 'Cara Hitung Zakat Fitrah' },
+  'zakat-penghasilan': { slug: 'cara-hitung-zakat-penghasilan', title: 'Cara Hitung Zakat Penghasilan' },
+  'zakat-mal': { slug: 'cara-hitung-zakat-mal', title: 'Cara Hitung Zakat Mal' },
+  'fidyah': { slug: 'cara-hitung-fidyah-ramadan', title: 'Cara Hitung Fidyah Ramadan' },
+  'warisan-faraidh': { slug: 'panduan-warisan-faraidh', title: 'Panduan Warisan Faraidh' },
+  'dana-qurban': { slug: 'cara-tabungan-dana-qurban', title: 'Cara Nabung Dana Qurban' },
+  'dana-haji-umrah': { slug: 'cara-menghitung-dana-haji', title: 'Cara Hitung Dana Haji & Umrah' },
+};
+const _article = _isCalc ? (_calcArticle[_slug] || null) : null;
+
 const defaultJsonLd = {
   "@context": "https://schema.org",
   "@type": "WebApplication",
@@ -201,6 +227,18 @@ const websiteSchema = {
   <main>
     <slot />
   </main>
+
+  {_isCalc && _article && (
+    <section class="calc-guide-link" aria-label="Panduan terkait">
+      <div class="wrap" style="text-align:center;padding:6px 0 0">
+        <a href={`/blog/${_article.slug}/`} style="display:inline-flex;align-items:center;gap:11px;max-width:660px;margin:0 auto;padding:14px 22px;background:var(--bg-soft);border:1px solid var(--border);border-radius:14px;color:var(--text);font-size:.95rem;text-decoration:none;transition:var(--tx);box-shadow:var(--shadow-sm)">
+          <i class="ti ti-book-2" style="color:var(--blue);font-size:21px;flex-shrink:0"></i>
+          <span>Baca panduan lengkap: <strong style="color:var(--navy)">{_article.title}</strong></span>
+          <i class="ti ti-arrow-right" style="color:var(--text-mute);flex-shrink:0"></i>
+        </a>
+      </div>
+    </section>
+  )}
 
   {_isCalc && _related.length > 0 && (
     <section class="related-section">
