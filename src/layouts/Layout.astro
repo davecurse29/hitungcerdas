@@ -4,6 +4,7 @@ import '../styles/global.css';
 import '../styles/enhancements.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import { getRelatedCalculators } from '../data/calculators';
 
 interface Props {
   title: string;
@@ -35,6 +36,11 @@ const _path = Astro.url.pathname;
 const _isCalc = _path.startsWith('/kalkulator/');
 const _needsCharts = ['/kalkulator/kpr', '/kalkulator/kredit-motor', '/kalkulator/kredit-mobil']
   .some((pfx) => _path.startsWith(pfx));
+
+// ── Kalkulator Terkait (related) ──
+const _slug = _isCalc ? _path.replace(/^\/kalkulator\//, '').replace(/\/$/, '') : '';
+const _related = _isCalc ? getRelatedCalculators(_slug, 4) : [];
+const _CAT_ICON: Record<string, string> = { keuangan: 'coins', bisnis: 'briefcase', islami: 'moon' };
 
 const defaultJsonLd = {
   "@context": "https://schema.org",
@@ -200,6 +206,29 @@ const websiteSchema = {
   <main>
     <slot />
   </main>
+
+  {_isCalc && _related.length > 0 && (
+    <section class="related-section">
+      <div class="wrap">
+        <h2 class="rc-title">Kalkulator Terkait</h2>
+        <p class="rc-sub">Lanjut hitung dengan kalkulator lain yang relevan untukmu</p>
+        <div class="rc-grid">
+          {_related.map((c) => (
+            <a href={`/kalkulator/${c.slug}/`} class="rc-card">
+              <span class="rc-ic" style={`color:${c.iconColor};background:${c.iconBg}`}>
+                <i class={`ti ti-${_CAT_ICON[c.category]}`}></i>
+              </span>
+              <span class="rc-body">
+                <span class="rc-name">{c.shortTitle}</span>
+                <span class="rc-tag" style={`color:${c.tagColor};background:${c.tagBg}`}>{c.tag}</span>
+              </span>
+              <i class="ti ti-arrow-right rc-arrow"></i>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
 
   <Footer />
 
