@@ -526,7 +526,7 @@ export const CALCULATORS: CalculatorMeta[] = [
       'Proyeksi inflasi 7% per tahun',
       'Nabung per bulan & per hari',
       'Opsi patungan sapi (lebih ringan)',
-      'Lembaga qurban resmi (Dompet Dhuafa, ACT, Rumah Zakat)',
+      'Lembaga qurban resmi (BAZNAS, Dompet Dhuafa, Rumah Zakat)',
     ],
   },
   {
