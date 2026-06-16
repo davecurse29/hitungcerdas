@@ -216,6 +216,42 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
                 <button type="button" class="export-btn pdf" id="exportPdf"><i class="ti ti-printer"></i><span>Print/PDF</span></button>
                 <button type="button" class="export-btn copy" id="exportCopy"><i class="ti ti-copy"></i><span>Copy Teks</span></button>
               </div>
+
+              <!-- ===== AI COACH KEPUTUSAN (mandiri) ===== -->
+              <div class="aic-wrap" id="aicWrap">
+                <button type="button" class="aic-trigger" id="aicTrigger">
+                  <span class="aic-trigger-ic"><i class="ti ti-sparkles"></i></span>
+                  <span class="aic-trigger-txt">
+                    <strong>Tanya AI Coach</strong>
+                    <small>Bingung sama hasilnya? Tanya di sini</small>
+                  </span>
+                  <i class="ti ti-chevron-down aic-trigger-arr"></i>
+                </button>
+                <div class="aic-panel" id="aicPanel" hidden>
+                  <div class="aic-head">
+                    <span class="aic-head-ic"><i class="ti ti-sparkles"></i></span>
+                    <div class="aic-head-tt">
+                      <strong>AI Coach Keputusan</strong>
+                      <small>Bantu pahami biaya mobilmu</small>
+                    </div>
+                    <span class="aic-badge">BETA</span>
+                  </div>
+                  <div class="aic-ground" id="aicGround"></div>
+                  <div class="aic-msgs" id="aicMsgs"></div>
+                  <div class="aic-chips" id="aicChips"></div>
+                  <div class="aic-input">
+                    <input type="text" id="aicText" placeholder="Tanya soal kredit mobilmu..." maxlength="600" autocomplete="off" />
+                    <button type="button" id="aicSend" aria-label="Kirim"><i class="ti ti-arrow-up"></i></button>
+                  </div>
+                  <div class="aic-disc">
+                    <i class="ti ti-info-circle"></i>
+                    <span>Estimasi edukatif berbasis hasil hitunganmu, bukan nasihat keuangan berlisensi.</span>
+                  </div>
+                  <div class="aic-limit" id="aicLimit"></div>
+                </div>
+              </div>
+              <!-- ===== /AI COACH ===== -->
+
             </div>
           </div>
         </div>
@@ -268,6 +304,144 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
   <p style="text-align:center;font-size:.85rem;color:#64748b;margin:1.2rem auto;max-width:600px;">
     📅 Data & tarif diperbarui <strong>Juni 2026</strong> · Sumber: Pertamina, PLN, Bank Indonesia
   </p>
+<style is:global>
+  .aic-wrap{margin-top:18px}
+  .aic-trigger{width:100%;display:flex;align-items:center;gap:12px;background:#EFF4FF;border:1px solid #C7DBFF;border-radius:14px;padding:13px 15px;cursor:pointer;text-align:left;transition:background .15s;font-family:inherit}
+  .aic-trigger:hover{background:#E4EDFF}
+  .aic-trigger-ic{width:36px;height:36px;flex-shrink:0;border-radius:50%;background:#2563EB;color:#fff;display:flex;align-items:center;justify-content:center;font-size:19px}
+  .aic-trigger-txt{flex:1;display:flex;flex-direction:column;line-height:1.25}
+  .aic-trigger-txt strong{font-size:14px;color:#0A2540}
+  .aic-trigger-txt small{font-size:12px;color:#64748B}
+  .aic-trigger-arr{font-size:18px;color:#64748B;transition:transform .2s}
+  .aic-wrap.open .aic-trigger-arr{transform:rotate(180deg)}
+
+  .aic-panel{margin-top:10px;background:#fff;border:1px solid #E5EAF1;border-radius:16px;overflow:hidden;animation:aicIn .2s ease}
+  @keyframes aicIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+  .aic-head{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid #E5EAF1}
+  .aic-head-ic{width:30px;height:30px;border-radius:50%;background:#EFF4FF;color:#2563EB;display:flex;align-items:center;justify-content:center;font-size:16px}
+  .aic-head-tt{flex:1;display:flex;flex-direction:column;line-height:1.2}
+  .aic-head-tt strong{font-size:14px;color:#0A2540}
+  .aic-head-tt small{font-size:11px;color:#64748B}
+  .aic-badge{font-size:10px;font-weight:700;background:#EFF4FF;color:#2563EB;padding:2px 8px;border-radius:8px}
+
+  .aic-ground{padding:12px 14px;border-bottom:1px solid #E5EAF1;background:#F8FAFC}
+  .aic-ctx{font-size:12px;color:#475569;margin-bottom:10px}
+  .aic-ctx b{color:#0A2540;font-weight:700}
+  .aic-gauge{position:relative;padding-top:19px}
+  .aic-gauge-mark{position:absolute;top:0;z-index:3}
+  .aic-gauge-mark span{display:block;font-size:10px;font-weight:700;background:#0A2540;color:#fff;padding:1px 7px;border-radius:9px;white-space:nowrap;transform:translateX(-50%)}
+  .aic-gauge-mark::after{content:"";position:absolute;left:0;top:15px;width:2px;height:15px;background:#0A2540}
+  .aic-gauge-bar{display:flex;height:10px;border-radius:5px;overflow:hidden}
+  .aic-gauge-bar .z-green{flex:0 0 60%;background:#D1FAE5}
+  .aic-gauge-bar .z-amber{flex:0 0 20%;background:#FEF3C7}
+  .aic-gauge-bar .z-red{flex:0 0 20%;background:#FEE2E2}
+  .aic-gauge-lbl{display:flex;font-size:10px;margin-top:5px}
+  .aic-gauge-lbl .g{flex:0 0 60%;color:#059669}
+  .aic-gauge-lbl .a{flex:0 0 20%;text-align:center;color:#D97706;font-weight:600}
+  .aic-gauge-lbl .r{flex:0 0 20%;text-align:right;color:#DC2626}
+  .aic-verdict{font-size:12.5px;font-weight:600;margin-top:11px;display:flex;align-items:center;gap:6px}
+  .aic-verdict.good{color:#059669}
+  .aic-verdict.warn{color:#D97706}
+  .aic-verdict.bad{color:#DC2626}
+  .aic-nogauge{font-size:11px;color:#94A3B8;padding:4px 0}
+
+  .aic-msgs{padding:12px 14px;display:flex;flex-direction:column;gap:10px;max-height:320px;overflow-y:auto}
+  .aic-msgs:empty{display:none}
+  .aic-row{display:flex;gap:8px;align-items:flex-start}
+  .aic-row.user{justify-content:flex-end}
+  .aic-av{width:24px;height:24px;flex-shrink:0;border-radius:50%;background:#EFF4FF;color:#2563EB;display:flex;align-items:center;justify-content:center;font-size:13px}
+  .aic-bub{max-width:82%;font-size:13px;line-height:1.55;border-radius:13px;padding:9px 12px;white-space:pre-wrap;word-wrap:break-word;overflow-wrap:anywhere}
+  .aic-row.ai .aic-bub{background:#F1F5F9;color:#0A2540}
+  .aic-row.user .aic-bub{background:#2563EB;color:#fff}
+  .aic-bub.aic-rich{white-space:normal}
+  .aic-bub.aic-rich p{margin:0 0 7px}
+  .aic-bub.aic-rich p:last-child{margin-bottom:0}
+  .aic-bub.aic-rich p.aic-h{font-weight:700;margin:10px 0 5px}
+  .aic-bub.aic-rich p.aic-h:first-child{margin-top:0}
+  .aic-bub.aic-rich strong{font-weight:700}
+  .aic-bub.aic-rich em{font-style:italic}
+  .aic-bub.aic-rich code{background:rgba(0,0,0,.06);padding:1px 5px;border-radius:4px;font-size:12px}
+  .aic-bub.aic-rich .aic-li{display:flex;gap:7px;margin:4px 0;align-items:flex-start}
+  .aic-bub.aic-rich .aic-li:first-child{margin-top:0}
+  .aic-bub.aic-rich .aic-mk{flex-shrink:0;color:#2563EB;font-weight:700;min-width:15px}
+  .aic-typing span{display:inline-block;width:6px;height:6px;border-radius:50%;background:#94A3B8;margin:0 1px;animation:aicblink 1.2s infinite}
+  .aic-typing span:nth-child(2){animation-delay:.2s}
+  .aic-typing span:nth-child(3){animation-delay:.4s}
+  @keyframes aicblink{0%,60%,100%{opacity:.3}30%{opacity:1}}
+
+  .aic-chips{display:flex;flex-wrap:wrap;gap:6px;padding:0 14px 12px}
+  .aic-chips:empty{display:none}
+  .aic-chip{font-size:11px;background:#EFF4FF;color:#2563EB;border:1px solid #D6E4FF;border-radius:14px;padding:6px 11px;cursor:pointer;font-family:inherit}
+  .aic-chip:hover{background:#E0EBFF}
+
+  .aic-input{display:flex;align-items:center;gap:8px;padding:10px 12px;border-top:1px solid #E5EAF1}
+  .aic-input input{flex:1;border:1px solid #E5EAF1;border-radius:18px;padding:9px 14px;font-size:13px;background:#F8FAFC;color:#0A2540;outline:none;font-family:inherit}
+  .aic-input input:focus{border-color:#2563EB}
+  .aic-input button{width:34px;height:34px;flex-shrink:0;border:0;border-radius:50%;background:#2563EB;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:17px}
+  .aic-input button:disabled{background:#CBD5E1;cursor:not-allowed}
+
+  .aic-disc{display:flex;gap:6px;align-items:flex-start;padding:8px 14px;font-size:10.5px;color:#94A3B8;line-height:1.45;border-top:1px solid #F1F5F9}
+  .aic-disc i{margin-top:1px}
+  .aic-limit{padding:0 14px 10px;font-size:11px;color:#64748B}
+
+  /* ===== DARK MODE (mandiri, via .aic-dark) ===== */
+  .aic-dark .aic-trigger{background:#16263B;border-color:#2A445F}
+  .aic-dark .aic-trigger:hover{background:#1B2E47}
+  .aic-dark .aic-trigger-txt strong{color:#E8EEF6}
+  .aic-dark .aic-trigger-txt small{color:#93A4B8}
+  .aic-dark .aic-trigger-arr{color:#93A4B8}
+  .aic-dark .aic-panel{background:#0E1A2B;border-color:#243A56}
+  .aic-dark .aic-head{border-color:#243A56}
+  .aic-dark .aic-head-ic{background:#172A44;color:#8FB4FF}
+  .aic-dark .aic-head-tt strong{color:#E8EEF6}
+  .aic-dark .aic-head-tt small{color:#93A4B8}
+  .aic-dark .aic-badge{background:#172A44;color:#8FB4FF}
+  .aic-dark .aic-ground{background:#122036;border-color:#243A56}
+  .aic-dark .aic-ctx{color:#A9B7C9}
+  .aic-dark .aic-ctx b{color:#E8EEF6}
+  .aic-dark .aic-gauge-mark span{background:#E8EEF6;color:#0E1A2B}
+  .aic-dark .aic-gauge-mark::after{background:#E8EEF6}
+  .aic-dark .aic-gauge-bar .z-green{background:rgba(16,185,129,.24)}
+  .aic-dark .aic-gauge-bar .z-amber{background:rgba(245,158,11,.24)}
+  .aic-dark .aic-gauge-bar .z-red{background:rgba(239,68,68,.24)}
+  .aic-dark .aic-gauge-lbl .g{color:#34D399}
+  .aic-dark .aic-gauge-lbl .a{color:#FBBF24}
+  .aic-dark .aic-gauge-lbl .r{color:#F87171}
+  .aic-dark .aic-verdict.good{color:#34D399}
+  .aic-dark .aic-verdict.warn{color:#FBBF24}
+  .aic-dark .aic-verdict.bad{color:#F87171}
+  .aic-dark .aic-av{background:#172A44;color:#8FB4FF}
+  .aic-dark .aic-row.ai .aic-bub{background:#1B2C44;color:#E8EEF6}
+  .aic-dark .aic-bub.aic-rich .aic-mk{color:#8FB4FF}
+  .aic-dark .aic-bub.aic-rich code{background:rgba(255,255,255,.1)}
+  .aic-dark .aic-chip{background:rgba(37,99,235,.16);color:#8FB4FF;border-color:#2A445F}
+  .aic-dark .aic-chip:hover{background:rgba(37,99,235,.26)}
+  .aic-dark .aic-input{border-color:#243A56}
+  .aic-dark .aic-input input{background:#16263B;border-color:#2A445F;color:#E8EEF6}
+  .aic-dark .aic-input input:focus{border-color:#3B82F6}
+  .aic-dark .aic-disc{color:#7E8DA1;border-color:#1B2C44}
+  .aic-dark .aic-limit{color:#93A4B8}
+
+  /* ==== TCO comparison bars + verdict info ==== */
+  .aic-cmp{margin-top:2px}
+  .aic-cmp-row{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+  .aic-cmp-lbl{font-size:10.5px;width:72px;flex-shrink:0;color:#64748B}
+  .aic-cmp-track{flex:1;height:19px;border-radius:5px;background:#EEF2F7;position:relative;overflow:hidden}
+  .aic-cmp-fill{height:100%;border-radius:5px}
+  .aic-cmp-fill.cic{background:#DBEAFE}
+  .aic-cmp-fill.tco{background:#2563EB}
+  .aic-cmp-val{position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:11px;font-weight:700}
+  .aic-cmp-val.on-light{color:#1E40AF}
+  .aic-cmp-val.on-dark{color:#fff}
+  .aic-verdict.info{color:#2563EB}
+  .aic-verdict b{font-weight:700}
+  .aic-dark .aic-cmp-lbl{color:#93A4B8}
+  .aic-dark .aic-cmp-track{background:#1C2D46}
+  .aic-dark .aic-cmp-fill.cic{background:#24406B}
+  .aic-dark .aic-cmp-fill.tco{background:#3B82F6}
+  .aic-dark .aic-cmp-val.on-light{color:#BFD4FF}
+  .aic-dark .aic-verdict.info{color:#8FB4FF}
+</style>
 </Layout>
 
 <script is:inline>
@@ -584,3 +758,174 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
     });
   })();
 </script>
+
+<script is:inline>
+  (function(){
+    var LIMIT = 5;
+    function ready(fn){ if(window.HC){ fn(); } else { setTimeout(function(){ready(fn);},120); } }
+    function $(id){ return document.getElementById(id); }
+
+    ready(function(){
+      var wrap = $('aicWrap'); if(!wrap) return;
+      var trigger = $('aicTrigger'), panel = $('aicPanel');
+      var ground = $('aicGround'), msgs = $('aicMsgs'), chips = $('aicChips');
+      var input = $('aicText'), send = $('aicSend'), limitEl = $('aicLimit');
+      var history = [];
+
+      function isDark(){
+        var de = document.documentElement;
+        return de.classList.contains('dark') || de.getAttribute('data-theme')==='dark'
+            || (function(){ try{ return localStorage.getItem('hc-theme')==='dark'; }catch(e){ return false; } })();
+      }
+      function applyTheme(){ wrap.classList.toggle('aic-dark', isDark()); }
+      applyTheme();
+      try{ new MutationObserver(applyTheme).observe(document.documentElement,{attributes:true,attributeFilter:['class','data-theme']}); }catch(e){}
+      window.addEventListener('storage', function(e){ if(e.key==='hc-theme') applyTheme(); });
+
+      function num(v){ try{ return HC.parseRp(String(v||'')); }catch(e){ return 0; } }
+      function selText(id){ var x=$(id); return (x && x.options && x.selectedIndex>=0) ? x.options[x.selectedIndex].text : ''; }
+      function readData(){
+        var cicTxt = ($('cicilan')||{}).textContent || 'Rp 0';
+        var tcoEl = document.querySelector('#tcoList .tco-total .val');
+        var tcoTxt = tcoEl ? tcoEl.textContent : '';
+        return {
+          cicilanTxt: cicTxt, cicNum: num(cicTxt),
+          tcoTxt: tcoTxt, tcoNum: num(tcoTxt),
+          harga: ($('harga')||{}).value || '',
+          tenor: ($('tenor')||{}).value || '',
+          bunga: ($('bunga')||{}).value || '',
+          biayaAwal: ($('biayaAwal')||{}).textContent || '',
+          pokok: ($('pokok')||{}).textContent || '',
+          totalBunga: ($('totalBunga')||{}).textContent || '',
+          totalBayar: ($('totalBayar')||{}).textContent || '',
+          mobil: selText('mobilType'),
+          usage: selText('usageProfile'),
+          wilayah: selText('wilayah')
+        };
+      }
+
+      function esc(t){ return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+      function renderGround(){
+        var d = readData();
+        var ctx = '<div class="aic-ctx"><i class="ti ti-car"></i> Kredit Mobil \u00b7 Cicilan <b>'+esc(d.cicilanTxt)+'</b>/bln</div>';
+        if(!d.tcoNum || !d.cicNum){
+          ground.innerHTML = ctx + '<div class="aic-nogauge">Hitung dulu untuk lihat perbandingan biaya.</div>';
+          return;
+        }
+        var cicPct = Math.max(8, Math.min(100, d.cicNum / d.tcoNum * 100));
+        var gap = Math.max(0, d.tcoNum - d.cicNum);
+        ground.innerHTML = ctx
+          + '<div class="aic-cmp">'
+          +   '<div class="aic-cmp-row"><span class="aic-cmp-lbl">Cicilan</span>'
+          +     '<div class="aic-cmp-track"><div class="aic-cmp-fill cic" style="width:'+cicPct.toFixed(1)+'%"></div><span class="aic-cmp-val on-light">'+esc(d.cicilanTxt)+'</span></div></div>'
+          +   '<div class="aic-cmp-row"><span class="aic-cmp-lbl">Biaya nyata</span>'
+          +     '<div class="aic-cmp-track"><div class="aic-cmp-fill tco" style="width:100%"></div><span class="aic-cmp-val on-dark">'+esc(d.tcoTxt)+'</span></div></div>'
+          + '</div>'
+          + '<div class="aic-verdict info"><i class="ti ti-gas-station"></i> Biaya bulanan nyata <b>'+esc(d.tcoTxt)+'</b> \u2014 ada +'+esc(HC.fmt(gap))+' buat BBM, servis, pajak, asuransi, tol/parkir.</div>';
+      }
+
+      function buildContext(){
+        var d = readData();
+        var p = [
+          'Kalkulator: Kredit Mobil.',
+          d.harga ? ('Harga mobil (OTR): Rp ' + d.harga + '.') : '',
+          'Cicilan per bulan: ' + d.cicilanTxt + '.',
+          'Tenor: ' + d.tenor + ' bulan. Bunga: ' + d.bunga + '% (flat).',
+          'DP + biaya awal: ' + d.biayaAwal + '. Pokok pinjaman: ' + d.pokok + '.',
+          'Total bunga: ' + d.totalBunga + '. Total bayar: ' + d.totalBayar + '.',
+          d.tcoTxt ? ('Biaya kepemilikan bulanan sebenarnya / TCO (cicilan + BBM + servis + pajak + asuransi + tol/parkir + perawatan + depresiasi): ' + d.tcoTxt + '.') : '',
+          d.mobil ? ('Jenis mobil: ' + d.mobil + '.') : '',
+          d.usage ? ('Profil pemakaian: ' + d.usage + '.') : '',
+          d.wilayah ? ('Wilayah: ' + d.wilayah + '.') : '',
+          'Acuan umum: idealnya total biaya mobil (TCO) tidak lebih dari sekitar 20-25% penghasilan bulanan; selalu sisakan dana darurat. Cicilan bukan satu-satunya biaya.'
+        ];
+        return p.filter(Boolean).join('\n');
+      }
+
+      function mdInline(t){
+        t = t.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+        t = t.replace(/__([^_]+)__/g, '<strong>$1</strong>');
+        t = t.replace(/(^|[\s(])\*([^*\n]+)\*(?=[\s).,!?:;]|$)/g, '$1<em>$2</em>');
+        t = t.replace(/`([^`]+)`/g, '<code>$1</code>');
+        return t;
+      }
+      function mdToHtml(raw){
+        var lines = String(raw).replace(/\r/g,'').split('\n'); var out=[];
+        for(var i=0;i<lines.length;i++){
+          var t = lines[i].trim(); if(t==='')continue;
+          if(/^([-*_]\s*){3,}$/.test(t))continue;
+          var h=t.match(/^#{1,6}\s+(.*)$/); if(h){ out.push('<p class="aic-h">'+mdInline(esc(h[1]))+'</p>'); continue; }
+          var b=t.match(/^[-*\u2022]\s+(.*)$/); if(b){ out.push('<div class="aic-li"><span class="aic-mk">\u2022</span><span>'+mdInline(esc(b[1]))+'</span></div>'); continue; }
+          var n=t.match(/^(\d+)[.)]\s+(.*)$/); if(n){ out.push('<div class="aic-li"><span class="aic-mk">'+n[1]+'.</span><span>'+mdInline(esc(n[2]))+'</span></div>'); continue; }
+          out.push('<p>'+mdInline(esc(t))+'</p>');
+        }
+        return out.join('') || ('<p>'+mdInline(esc(String(raw)))+'</p>');
+      }
+      function addMsg(role, text){
+        var row = document.createElement('div'); row.className='aic-row '+role;
+        if(role==='ai'){
+          row.innerHTML = '<div class="aic-av"><i class="ti ti-sparkles"></i></div><div class="aic-bub aic-rich"></div>';
+          row.querySelector('.aic-bub').innerHTML = mdToHtml(text);
+        } else {
+          row.innerHTML = '<div class="aic-bub"></div>';
+          row.querySelector('.aic-bub').textContent = text;
+        }
+        msgs.appendChild(row); msgs.scrollTop = msgs.scrollHeight; return row;
+      }
+      function addTyping(){
+        var row=document.createElement('div'); row.className='aic-row ai';
+        row.innerHTML='<div class="aic-av"><i class="ti ti-sparkles"></i></div><div class="aic-bub aic-typing"><span></span><span></span><span></span></div>';
+        msgs.appendChild(row); msgs.scrollTop=msgs.scrollHeight; return row;
+      }
+
+      function todayKey(){ var d=new Date(); return 'hc-coach-'+d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate(); }
+      function getCount(){ try{ return parseInt(localStorage.getItem(todayKey())||'0',10)||0; }catch(e){ return 0; } }
+      function incCount(){ try{ localStorage.setItem(todayKey(), getCount()+1); }catch(e){} }
+      function refreshLimit(){
+        var left=Math.max(0, LIMIT-getCount());
+        limitEl.textContent='Sisa '+left+' pertanyaan gratis hari ini.';
+        var done=left<=0; input.disabled=done; send.disabled=done;
+        if(done){ input.placeholder='Batas harian tercapai, balik lagi besok ya.'; }
+      }
+
+      var busy=false;
+      async function ask(text){
+        text=(text||'').trim(); if(!text||busy) return;
+        if(getCount()>=LIMIT){ refreshLimit(); return; }
+        busy=true; send.disabled=true;
+        addMsg('user',text); history.push({role:'user',content:text});
+        input.value=''; chips.innerHTML='';
+        var typing=addTyping(); incCount();
+        try{
+          var res=await fetch('/api/coach',{method:'POST',headers:{'content-type':'application/json'},
+            body:JSON.stringify({calcContext:buildContext(),messages:history})});
+          var data=await res.json().catch(function(){return {error:'Respon tidak valid.'};});
+          typing.parentNode && typing.remove();
+          if(data && data.reply){ addMsg('ai',data.reply); history.push({role:'assistant',content:data.reply}); }
+          else { addMsg('ai','\u26a0\ufe0f '+((data && data.error)||'Coach lagi sibuk, coba lagi sebentar ya.')); }
+        }catch(e){ typing.parentNode && typing.remove(); addMsg('ai','\u26a0\ufe0f Gagal terhubung ke Coach. Coba lagi ya.'); }
+        busy=false; refreshLimit(); if(!input.disabled) input.focus();
+      }
+
+      var PRESETS=['Biaya sebenarnya mobil ini berapa?','Mending tenor pendek atau panjang?','Cara bikin cicilan lebih ringan?'];
+      function renderChips(){
+        chips.innerHTML='';
+        PRESETS.forEach(function(q){ var b=document.createElement('button'); b.type='button'; b.className='aic-chip'; b.textContent=q; b.addEventListener('click',function(){ask(q);}); chips.appendChild(b); });
+      }
+
+      var opened=false;
+      trigger.addEventListener('click', function(){
+        if(panel.hasAttribute('hidden')){
+          panel.removeAttribute('hidden'); wrap.classList.add('open');
+          applyTheme(); renderGround(); refreshLimit();
+          if(!opened){ renderChips(); opened=true; }
+        } else { panel.setAttribute('hidden',''); wrap.classList.remove('open'); }
+      });
+      send.addEventListener('click', function(){ ask(input.value); });
+      input.addEventListener('keydown', function(e){ if(e.key==='Enter'){ e.preventDefault(); ask(input.value); } });
+      var bh=$('btnHitung'); if(bh){ bh.addEventListener('click', function(){ setTimeout(function(){ if(!panel.hasAttribute('hidden')) renderGround(); },60); }); }
+    });
+  })();
+</script>
+
