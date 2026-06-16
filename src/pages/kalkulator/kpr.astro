@@ -1310,6 +1310,15 @@ const jsonLd = {
       }
 
       $('btnHitung').addEventListener('click', hitung);
+      // Smart-link: terima ?gaji= dari Gaji Bersih, auto-isi & hitung
+      (function(){ try {
+        var g = new URLSearchParams(location.search).get('gaji');
+        if (g && !isNaN(+g) && +g > 0) {
+          els.gaji.value = Number(g).toLocaleString('id-ID');
+          hitung();
+          HC.toast('Gaji Rp ' + Number(g).toLocaleString('id-ID') + ' diisi dari Gaji Bersih');
+        }
+      } catch(e){} })();
       $('btnReset').addEventListener('click', reset);
       $('btnStress').addEventListener('click', hitungStress);
 

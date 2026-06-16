@@ -572,6 +572,13 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       $('btnHitung').addEventListener('click', hitung);
       $('btnReset').addEventListener('click', reset);
       var btnGoal = $('btnGoal'); if (btnGoal) btnGoal.addEventListener('click', hitungGoal);
+      // Smart-link: terima ?topup= / ?modal= dari Gaji Bersih, auto-isi & hitung
+      (function(){ try {
+        var q = new URLSearchParams(location.search), tu = q.get('topup'), md = q.get('modal'), did = false;
+        if (tu && !isNaN(+tu) && +tu > 0) { els.topup.value = Number(tu).toLocaleString('id-ID'); did = true; }
+        if (md && !isNaN(+md) && +md > 0) { els.modal.value = Number(md).toLocaleString('id-ID'); did = true; }
+        if (did) { hitung(); HC.toast('Nilai dari Gaji Bersih sudah diisi'); }
+      } catch(e){} })();
       $('exportImg').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToImage(c, 'investasi-' + Date.now()); });
       $('exportWa').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.shareWhatsApp(c, summaryText(), 'investasi'); });
       $('exportPdf').addEventListener('click', () => { if (!lastCalc) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToPDF(); });

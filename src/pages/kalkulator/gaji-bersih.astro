@@ -200,6 +200,12 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
                 <button type="button" class="export-btn copy" id="exportCopy"><i class="ti ti-copy"></i><span>Copy Teks</span></button>
               </div>
 
+              <div id="nextSteps" style="display:none;margin-top:14px;padding:13px;border:1px dashed var(--border,#CBD5E1);border-radius:12px">
+                <div style="font-size:13px;font-weight:700;margin-bottom:8px"><i class="ti ti-route"></i> Langkah Selanjutnya</div>
+                <div id="nextStepsBody" style="display:flex;flex-direction:column;gap:8px"></div>
+                <p style="font-size:11px;color:var(--text-mute);margin-top:8px;line-height:1.5">Take-home pay-mu otomatis diisi ke kalkulator tujuan.</p>
+              </div>
+
               <!-- ===== AI COACH KEPUTUSAN (mandiri) ===== -->
               <div class="aic-wrap" id="aicWrap">
                 <button type="button" class="aic-trigger" id="aicTrigger">
@@ -605,6 +611,10 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         lastCalc = { gaji, tunj, tunjVar, ptkpLabel: els.ptkp.options[els.ptkp.selectedIndex].text, useTer, terCat, terRt, pphBulanTahunan, pphBulanTER, ctc, empBpjs, potLain, dplkKaryawan, dplkPerusahaan, dplkKaryawanPct, dplkPerusahaanPct, thrBonus, thrPph, thrNet, thrRate, brutoBulan, bpjsTotal, pphBulan, thp, thpPct };
         $('placeholder').style.display = 'none';
         $('results').classList.add('show');
+        $('nextSteps').style.display = '';
+        $('nextStepsBody').innerHTML =
+          `<a href="/kalkulator/kpr?gaji=${Math.round(thp)}" class="btn-hitung" style="text-decoration:none;display:flex;align-items:center;justify-content:center;gap:6px"><i class="ti ti-home"></i> Cek KPR yang sanggup kamu cicil</a>`
+          + `<a href="/kalkulator/investasi?topup=${Math.round(thp * 0.2)}" class="btn-reset" style="text-decoration:none;display:flex;align-items:center;justify-content:center;gap:6px"><i class="ti ti-trending-up"></i> Investasikan 20% (${HC.fmt(thp * 0.2)}/bln)</a>`;
         $('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         HC.toast('Gaji bersih berhasil dihitung!');
       }
@@ -613,6 +623,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         els.gaji.value = '8.000.000'; els.tunj.value = '1.500.000'; els.tunjVar.value = '0';
         els.ptkp.value = '54000000'; els.pphMethod.value = 'tahunan'; els.potLain.value = '0'; els.dplkKaryawan.value = '0'; els.dplkPerusahaan.value = '0'; els.thrBonus.value = '0';
         var br=$('balikResult'); if(br) br.style.display='none';
+        var ns=$('nextSteps'); if(ns) ns.style.display='none';
         $('thrBlock').style.display = 'none';
         $('placeholder').style.display = ''; $('results').classList.remove('show');
         lastCalc = null; HC.toast('Form direset', 'info');
