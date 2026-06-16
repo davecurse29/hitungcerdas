@@ -197,6 +197,17 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
                 </div>
               </div>
 
+              <div class="adv-section">
+                <div class="adv-toggle"><span><i class="ti ti-trending-down"></i>&nbsp; Proyeksi Nilai Jual (Depresiasi)</span><i class="ti ti-chevron-down chev"></i></div>
+                <div class="adv-content">
+                  <table class="compare-table">
+                    <thead><tr><th>Usia</th><th class="right">Estimasi Nilai Jual</th><th class="right">Penyusutan</th></tr></thead>
+                    <tbody id="depresiasiBody"></tbody>
+                  </table>
+                  <p id="depresiasiNote" style="font-size:11.5px;color:var(--text-mute);margin-top:8px;line-height:1.5"></p>
+                </div>
+              </div>
+
               <div class="export-row">
                 <button type="button" class="export-btn img" id="exportImg"><i class="ti ti-photo-down"></i><span>Save Image</span></button>
                 <button type="button" class="export-btn wa" id="exportWa"><i class="ti ti-brand-whatsapp"></i><span>Share WA</span></button>
@@ -646,6 +657,19 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         } else {
           els.advInflasi.style.display = 'none';
         }
+
+        // Proyeksi nilai jual (depresiasi) — estimasi, tergantung merk & kondisi
+        const deprMotor = [1, 0.83, 0.74, 0.66, 0.59, 0.53, 0.48, 0.44];
+        const tenorTahun = Math.round(tenor / 12);
+        $('depresiasiBody').innerHTML = deprMotor.slice(1).map((ret, idx) => {
+          const th = idx + 1;
+          const nilai = harga * ret;
+          const susut = harga - nilai;
+          const hl = th === tenorTahun ? ' class="active"' : '';
+          return `<tr${hl}><td>Tahun ${th}${th === tenorTahun ? ' (lunas)' : ''}</td><td class="right">${HC.fmt(nilai)}</td><td class="right" style="color:var(--red,#DC2626)">-${HC.fmt(susut)} (${((susut / harga) * 100).toFixed(0)}%)</td></tr>`;
+        }).join('');
+        const nilaiLunas = harga * (deprMotor[Math.min(tenorTahun, deprMotor.length - 1)]);
+        $('depresiasiNote').innerHTML = `💡 Saat kredit lunas (~${tenorTahun} thn), motor diperkirakan laku <b>${HC.fmt(nilaiLunas)}</b> — padahal total yang kamu bayar (DP + cicilan) <b>${HC.fmt(totalBayar)}</b>. Selisihnya adalah "biaya" memiliki motor. Ini estimasi; merk populer (Honda/Yamaha) biasanya lebih awet nilai jualnya.`;
 
         lastCalc = { harga, dpPct, dpAmt, pokok, bunga, bungaOriginal, tenor, cicilan, totalBunga, totalBayar,
                      motorTypeKey, motorTypeLabel: MOTOR_TYPE_DATA[motorTypeKey].label,
