@@ -159,16 +159,11 @@ const websiteSchema = {
     rel="stylesheet"
   />
 
-  {/* ── Tabler Icons CDN (pinned 3.44.0 + non-blocking) ── */}
+  {/* ── Tabler Icons CDN (pinned 3.44.0, path /dist/) ── */}
   <link
-    rel="preload"
-    as="style"
-    href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.44.0/tabler-icons.min.css"
-    onload="this.onload=null;this.rel='stylesheet'"
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.44.0/dist/tabler-icons.min.css"
   />
-  <noscript>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.44.0/tabler-icons.min.css" />
-  </noscript>
 
   {/* ── Schema.org JSON-LD ── */}
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd || defaultJsonLd)} />
