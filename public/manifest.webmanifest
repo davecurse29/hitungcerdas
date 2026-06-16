@@ -1,7 +1,8 @@
 {
+  "id": "/?utm_source=pwa",
   "name": "HitungCerdas — Kalkulator Keuangan Indonesia",
   "short_name": "HitungCerdas",
-  "description": "21 kalkulator keuangan, bisnis & islami Indonesia. Gratis, tanpa login.",
+  "description": "21 kalkulator keuangan, bisnis & islami Indonesia. KPR, kredit, pajak, gaji, investasi, zakat — gratis, cepat, tanpa login.",
   "start_url": "/?utm_source=pwa",
   "scope": "/",
   "display": "standalone",
@@ -16,5 +17,9 @@
     { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
     { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
     { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "screenshots": [
+    { "src": "/screenshot-wide.png", "sizes": "1280x606", "type": "image/png", "form_factor": "wide", "label": "Beranda HitungCerdas (desktop)" },
+    { "src": "/screenshot-mobile.png", "sizes": "760x1013", "type": "image/png", "form_factor": "narrow", "label": "Beranda HitungCerdas (HP)" }
   ]
 }
