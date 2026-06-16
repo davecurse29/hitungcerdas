@@ -81,6 +81,13 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
               <div class="input-wrap"><span class="input-prefix">Rp</span>
                 <input type="text" id="potLain" class="has-prefix" value="0" inputmode="numeric" /></div></div>
 
+            <div class="field"><label>Iuran DPLK – Karyawan <span class="hint">(% gaji pokok, dipotong dari gajimu)</span></label>
+              <div class="input-wrap"><input type="number" id="dplkKaryawan" class="has-suffix" value="0" min="0" max="100" step="0.5" /><span class="input-suffix">%</span></div></div>
+
+            <div class="field"><label>Iuran DPLK – Perusahaan <span class="hint">(% gaji pokok, di luar gajimu)</span></label>
+              <div class="input-wrap"><input type="number" id="dplkPerusahaan" class="has-suffix" value="0" min="0" max="100" step="0.5" /><span class="input-suffix">%</span></div></div>
+            <p style="font-size:11.5px;color:var(--text-mute);margin:-2px 0 10px;line-height:1.5">💡 Iuran DPLK <strong>karyawan</strong> memotong gaji & mengurangi PPh (pengurang penghasilan bruto, PMK 168/2023). Iuran <strong>perusahaan</strong> di luar gajimu & tidak kena pajak saat disetor.</p>
+
             <div class="calc-action-bar">
               <button type="button" class="btn-hitung" id="btnHitung"><i class="ti ti-calculator"></i> Hitung Sekarang</button>
               <button type="button" class="btn-reset" id="btnReset"><i class="ti ti-refresh"></i> Reset</button>
@@ -106,6 +113,8 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
                 <div class="result-item"><div class="result-item-label">BPJS Karyawan</div><div class="result-item-value result-warn" id="bpjsTotal">Rp 0</div></div>
                 <div class="result-item"><div class="result-item-label">PPh 21/Bulan</div><div class="result-item-value result-warn" id="pphBulan">Rp 0</div></div>
                 <div class="result-item"><div class="result-item-label">Potongan Lain</div><div class="result-item-value" id="potLainShow">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">DPLK Karyawan</div><div class="result-item-value result-warn" id="dplkKaryawanShow">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">DPLK Perusahaan <span style="font-weight:400;font-size:10px;opacity:.7">(kantor)</span></div><div class="result-item-value" id="dplkPerusahaanShow">Rp 0</div></div>
               </div>
 
               <div class="adv-section">
@@ -342,7 +351,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
     function ready(fn) { if (window.HC && window.html2canvas) fn(); else setTimeout(() => ready(fn), 100); }
     ready(() => {
       const $ = id => document.getElementById(id);
-      const els = { gaji: $('gaji'), tunj: $('tunj'), tunjVar: $('tunjVar'), ptkp: $('ptkp'), potLain: $('potLain') };
+      const els = { gaji: $('gaji'), tunj: $('tunj'), tunjVar: $('tunjVar'), ptkp: $('ptkp'), potLain: $('potLain'), dplkKaryawan: $('dplkKaryawan'), dplkPerusahaan: $('dplkPerusahaan') };
       [els.gaji, els.tunj, els.tunjVar, els.potLain].forEach(el => el.addEventListener('input', HC.fmtInput));
       document.querySelectorAll('.adv-toggle').forEach(t => t.addEventListener('click', () => t.parentElement.classList.toggle('open')));
 
@@ -366,8 +375,15 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         const tunjVar = HC.parseRp(els.tunjVar.value);
         const ptkp = parseInt(els.ptkp.value);
         const potLain = HC.parseRp(els.potLain.value);
+        const dplkKaryawanPct = Math.max(0, parseFloat(els.dplkKaryawan.value) || 0);
+        const dplkPerusahaanPct = Math.max(0, parseFloat(els.dplkPerusahaan.value) || 0);
 
         if (gaji === 0) { HC.toast('Masukkan gaji pokok dulu', 'error'); return; }
+
+        // DPLK dihitung dari gaji pokok. Iuran KARYAWAN = pengurang penghasilan bruto (PMK 168/2023),
+        // memotong take-home & menurunkan PPh. Iuran PERUSAHAAN di luar gaji & bukan objek PPh 21 saat disetor.
+        const dplkKaryawan = gaji * dplkKaryawanPct / 100;
+        const dplkPerusahaan = gaji * dplkPerusahaanPct / 100;
 
         const brutoBulan = gaji + tunj + tunjVar;
         // BPJS (with ceiling rules)
@@ -379,12 +395,12 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         // PPh 21
         const brutoTahun = brutoBulan * 12;
         const biayaJabatan = Math.min(brutoTahun * 0.05, 6000000);
-        const neto = brutoTahun - biayaJabatan - (bpjsTotal * 12);
+        const neto = brutoTahun - biayaJabatan - (bpjsTotal * 12) - (dplkKaryawan * 12);
         const pkp = Math.max(0, neto - ptkp);
         const pphTahun = calcPPh(pkp);
         const pphBulan = pphTahun / 12;
 
-        const thp = brutoBulan - bpjsTotal - pphBulan - potLain;
+        const thp = brutoBulan - bpjsTotal - pphBulan - potLain - dplkKaryawan;
         const thpPct = (thp / brutoBulan) * 100;
 
         $('thp').textContent = HC.fmt(thp);
@@ -393,6 +409,8 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         $('bpjsTotal').textContent = HC.fmt(bpjsTotal);
         $('pphBulan').textContent = HC.fmt(pphBulan);
         $('potLainShow').textContent = HC.fmt(potLain);
+        $('dplkKaryawanShow').textContent = HC.fmt(dplkKaryawan);
+        $('dplkPerusahaanShow').textContent = HC.fmt(dplkPerusahaan);
 
         $('alokasiBody').innerHTML = `
           <tr><td>🏠 Kebutuhan (50%)</td><td class="right">50%</td><td class="right">${HC.fmt(thp * 0.5)}</td></tr>
@@ -411,7 +429,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         }
         $('proyeksiBody').innerHTML = html;
 
-        lastCalc = { gaji, tunj, tunjVar, ptkpLabel: els.ptkp.options[els.ptkp.selectedIndex].text, potLain, brutoBulan, bpjsTotal, pphBulan, thp, thpPct };
+        lastCalc = { gaji, tunj, tunjVar, ptkpLabel: els.ptkp.options[els.ptkp.selectedIndex].text, potLain, dplkKaryawan, dplkPerusahaan, dplkKaryawanPct, dplkPerusahaanPct, brutoBulan, bpjsTotal, pphBulan, thp, thpPct };
         $('placeholder').style.display = 'none';
         $('results').classList.add('show');
         $('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -420,7 +438,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
 
       function reset() {
         els.gaji.value = '8.000.000'; els.tunj.value = '1.500.000'; els.tunjVar.value = '0';
-        els.ptkp.value = '54000000'; els.potLain.value = '0';
+        els.ptkp.value = '54000000'; els.potLain.value = '0'; els.dplkKaryawan.value = '0'; els.dplkPerusahaan.value = '0';
         $('placeholder').style.display = ''; $('results').classList.remove('show');
         lastCalc = null; HC.toast('Form direset', 'info');
       }
@@ -449,6 +467,8 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
             { label: 'Bruto/Bulan', value: HC.fmt(c.brutoBulan) },
             { label: 'BPJS Karyawan (4%)', value: HC.fmt(c.bpjsTotal) },
             { label: 'PPh 21/Bulan', value: HC.fmt(c.pphBulan) },
+            ...(c.dplkKaryawan > 0 ? [{ label: `DPLK Karyawan (${c.dplkKaryawanPct}%)`, value: HC.fmt(c.dplkKaryawan) }] : []),
+            ...(c.dplkPerusahaan > 0 ? [{ label: `DPLK Perusahaan (${c.dplkPerusahaanPct}%)`, value: HC.fmt(c.dplkPerusahaan) }] : []),
             { label: 'Untuk Kebutuhan (50%)', value: HC.fmt(c.thp * 0.5) },
             { label: 'Untuk Tabungan (20%)', value: HC.fmt(c.thp * 0.2), highlight: true },
           ],
@@ -459,7 +479,8 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       function summaryText() {
         if (!lastCalc) return '';
         const c = lastCalc;
-        return `💰 *Gaji Bersih - HitungCerdas*\n\nBruto: ${HC.fmt(c.brutoBulan)}/bln\nBPJS: ${HC.fmt(c.bpjsTotal)}\nPPh 21: ${HC.fmt(c.pphBulan)}\n\n💵 *Take-Home Pay: ${HC.fmt(c.thp)}/bulan*\n📊 ${c.thpPct.toFixed(1)}% dari bruto\n\nAlokasi 50/30/20:\n• Kebutuhan: ${HC.fmt(c.thp * 0.5)}\n• Keinginan: ${HC.fmt(c.thp * 0.3)}\n• Tabungan: ${HC.fmt(c.thp * 0.2)}\n\nHitung di: https://hitungcerdas.net/kalkulator/gaji-bersih`;
+        const dplkLine = c.dplkKaryawan > 0 ? `\nDPLK (karyawan): ${HC.fmt(c.dplkKaryawan)}` : '';
+        return `💰 *Gaji Bersih - HitungCerdas*\n\nBruto: ${HC.fmt(c.brutoBulan)}/bln\nBPJS: ${HC.fmt(c.bpjsTotal)}\nPPh 21: ${HC.fmt(c.pphBulan)}${dplkLine}\n\n💵 *Take-Home Pay: ${HC.fmt(c.thp)}/bulan*\n📊 ${c.thpPct.toFixed(1)}% dari bruto\n\nAlokasi 50/30/20:\n• Kebutuhan: ${HC.fmt(c.thp * 0.5)}\n• Keinginan: ${HC.fmt(c.thp * 0.3)}\n• Tabungan: ${HC.fmt(c.thp * 0.2)}\n\nHitung di: https://hitungcerdas.net/kalkulator/gaji-bersih`;
       }
 
       $('btnHitung').addEventListener('click', hitung);
@@ -499,6 +520,8 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         var pct=parseFloat(String(($('thpPct')||{}).textContent||'').replace(',','.')); if(!isFinite(pct)) pct=null;
         return { thpTxt:thpTxt, thpNum:num(thpTxt), brutoTxt:brutoTxt, brutoNum:num(brutoTxt),
           bpjsTxt:bpjsTxt, pphTxt:pphTxt, pct:pct,
+          dplkKaryawanTxt:($('dplkKaryawanShow')||{}).textContent||'', dplkPerusahaanTxt:($('dplkPerusahaanShow')||{}).textContent||'',
+          dplkKaryawanPct:($('dplkKaryawan')||{}).value||'0', dplkPerusahaanPct:($('dplkPerusahaan')||{}).value||'0',
           gaji:($('gaji')||{}).value||'', tunj:($('tunj')||{}).value||'', tunjVar:($('tunjVar')||{}).value||'',
           ptkp:selText('ptkp'), potLain:($('potLain')||{}).value||'' };
       }
@@ -530,8 +553,10 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
           'Gaji bruto per bulan: '+d.brutoTxt+'.',
           'Potongan BPJS karyawan: '+d.bpjsTxt+'. PPh 21 per bulan: '+d.pphTxt+'.',
           (d.potLain && d.potLain!=='0')?('Potongan lain per bulan: Rp '+d.potLain+'.'):'',
+          (d.dplkKaryawanPct && d.dplkKaryawanPct!=='0')?('Iuran DPLK karyawan: '+d.dplkKaryawanPct+'% dari gaji pokok ('+d.dplkKaryawanTxt+'/bln) \u2014 dipotong dari gaji & jadi pengurang penghasilan bruto sehingga PPh ikut turun (PMK 168/2023).'):'',
+          (d.dplkPerusahaanPct && d.dplkPerusahaanPct!=='0')?('Iuran DPLK perusahaan: '+d.dplkPerusahaanPct+'% dari gaji pokok ('+d.dplkPerusahaanTxt+'/bln) \u2014 ditanggung kantor, di luar gaji karyawan & bukan objek PPh 21 saat disetor.'):'',
           'Take-home pay (gaji bersih) per bulan: '+d.thpTxt+(pct!=null?(' ('+pct.toFixed(1)+'% dari bruto)'):'')+'.',
-          'Acuan: alokasi sehat 50% kebutuhan, 30% keinginan, 20% tabungan/investasi. Take-home pay umumnya 70-85% dari bruto.'
+          'Acuan: alokasi sehat 50% kebutuhan, 30% keinginan, 20% tabungan/investasi. Take-home pay umumnya 70-85% dari bruto. Iuran pensiun (DPLK/JHT/JP) yang dibayar karyawan adalah pengurang penghasilan bruto untuk PPh 21.'
         ];
         return p.filter(Boolean).join('\n');
       }
