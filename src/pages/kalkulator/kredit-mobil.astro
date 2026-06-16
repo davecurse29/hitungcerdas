@@ -221,6 +221,29 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
                 </div>
               </div>
 
+              <div class="adv-section" id="evBlock">
+                <div class="adv-toggle"><span><i class="ti ti-bolt"></i>&nbsp; EV vs Bensin — hemat 5 tahun</span><i class="ti ti-chevron-down chev"></i></div>
+                <div class="adv-content">
+                  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+                    <div class="field" style="margin-bottom:8px"><label>Jarak per Hari</label>
+                      <div class="input-wrap"><input type="number" id="evJarak" class="has-suffix" value="40" step="5" min="1" /><span class="input-suffix">km</span></div></div>
+                    <div class="field" style="margin-bottom:8px"><label>Selisih Harga Beli EV</label>
+                      <div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="evPremi" class="has-prefix" value="100.000.000" inputmode="numeric" /></div></div>
+                    <div class="field" style="margin-bottom:8px"><label>Harga BBM (Rp/L)</label>
+                      <div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="evBbm" class="has-prefix" value="13.000" inputmode="numeric" /></div></div>
+                    <div class="field" style="margin-bottom:8px"><label>Konsumsi Bensin</label>
+                      <div class="input-wrap"><input type="number" id="evKmL" class="has-suffix" value="12" step="1" min="1" /><span class="input-suffix">km/L</span></div></div>
+                    <div class="field" style="margin-bottom:8px"><label>Harga Listrik (Rp/kWh)</label>
+                      <div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="evListrik" class="has-prefix" value="1.700" inputmode="numeric" /></div></div>
+                    <div class="field" style="margin-bottom:8px"><label>Konsumsi Listrik</label>
+                      <div class="input-wrap"><input type="number" id="evKmKwh" class="has-suffix" value="7" step="1" min="1" /><span class="input-suffix">km/kWh</span></div></div>
+                  </div>
+                  <button type="button" class="btn-reset" id="btnEV" style="width:100%"><i class="ti ti-bolt"></i> Bandingkan EV vs Bensin</button>
+                  <div id="evResult" style="display:none;margin-top:10px"></div>
+                  <p style="font-size:11.5px;color:var(--text-mute);margin-top:8px;line-height:1.5">💡 Termasuk asumsi servis & pajak/tahun: servis bensin Rp 2,5jt vs EV Rp 1jt · pajak bensin Rp 3jt vs EV Rp 1,5jt. EV unggul di biaya energi & servis; pertimbangkan juga umur baterai. Listrik & BBM bisa kamu sesuaikan.</p>
+                </div>
+              </div>
+
               <div class="export-row">
                 <button type="button" class="export-btn img" id="exportImg"><i class="ti ti-photo-down"></i><span>Save Image</span></button>
                 <button type="button" class="export-btn wa" id="exportWa"><i class="ti ti-brand-whatsapp"></i><span>Share WA</span></button>
@@ -707,6 +730,43 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         $('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         HC.toast('Cicilan + TCO Mobil berhasil dihitung!');
       }
+
+
+      // ===== EV vs Bensin (5 tahun) =====
+      function hitungEV() {
+        const jarak = Math.max(1, parseFloat($('evJarak').value) || 40);
+        const premi = HC.parseRp($('evPremi').value);
+        const bbm = HC.parseRp($('evBbm').value);
+        const kmL = Math.max(1, parseFloat($('evKmL').value) || 1);
+        const listrik = HC.parseRp($('evListrik').value);
+        const kmKwh = Math.max(1, parseFloat($('evKmKwh').value) || 1);
+        const SVB = 2500000, SVE = 1000000, PJB = 3000000, PJE = 1500000;
+        const kmYr = jarak * 365;
+        const eB = kmYr / kmL * bbm, eE = kmYr / kmKwh * listrik;
+        const bYr = eB + SVB + PJB, eYr = eE + SVE + PJE;
+        const b5 = bYr * 5, e5run = eYr * 5, evTot = e5run + premi;
+        const hemat = b5 - evTot, save = bYr - eYr;
+        const payback = save > 0 ? premi / save : null;
+        const evMenang = hemat >= 0;
+        const col = evMenang ? 'var(--green-dark,#047857)' : '#B45309';
+        $('evResult').style.display = '';
+        $('evResult').innerHTML =
+          `<table class="compare-table">`
+          + `<thead><tr><th>Selama 5 tahun</th><th class="right">⛽ Bensin</th><th class="right">⚡ EV (Listrik)</th></tr></thead>`
+          + `<tbody>`
+          + `<tr><td>Energi/tahun</td><td class="right">${HC.fmt(eB)}</td><td class="right" style="color:var(--green-dark)">${HC.fmt(eE)}</td></tr>`
+          + `<tr><td>Servis + pajak/tahun</td><td class="right">${HC.fmt(SVB + PJB)}</td><td class="right" style="color:var(--green-dark)">${HC.fmt(SVE + PJE)}</td></tr>`
+          + `<tr><td>Total biaya pakai 5 thn</td><td class="right">${HC.fmt(b5)}</td><td class="right">${HC.fmt(e5run)}</td></tr>`
+          + `<tr><td>+ Selisih harga beli EV</td><td class="right">—</td><td class="right">${premi > 0 ? '+' + HC.fmt(premi) : 'Rp 0'}</td></tr>`
+          + `<tr class="active"><td><b>Total 5 thn</b></td><td class="right"><b>${HC.fmt(b5)}</b></td><td class="right"><b>${HC.fmt(evTot)}</b></td></tr>`
+          + `</tbody></table>`
+          + `<p style="font-size:13px;margin-top:8px;font-weight:600;color:${col}">${evMenang
+              ? '⚡ EV lebih hemat ' + HC.fmt(hemat) + ' dalam 5 tahun.'
+              : '⛽ Bensin masih lebih murah ' + HC.fmt(-hemat) + ' dalam 5 tahun (karena selisih harga beli EV).'}</p>`
+          + (payback ? `<p style="font-size:12px;color:var(--text-mute);margin-top:4px;line-height:1.5">Hemat biaya pakai EV ≈ ${HC.fmt(save)}/tahun → selisih harga beli balik modal dalam <strong>${payback.toFixed(1)} tahun</strong>${payback > 5 ? ' (di luar 5 thn — EV menang kalau dipakai lebih lama)' : ''}.</p>` : '');
+      }
+      ['evPremi','evBbm','evListrik'].forEach(function(id){ var e=$(id); if(e) e.addEventListener('input', HC.fmtInput); });
+      var btnEV=$('btnEV'); if(btnEV) btnEV.addEventListener('click', hitungEV);
 
       function reset() {
         els.harga.value = '280.000.000'; els.dp.value = '25'; els.bunga.value = '7';
