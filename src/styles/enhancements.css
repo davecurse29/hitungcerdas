@@ -413,3 +413,29 @@ html { scroll-behavior: smooth; }
 }
 
 /* ═══════════════ END OF SECTION 15–22 ═══════════════ */
+
+
+/* ─── 23. SLOT IKLAN — RAMPING SAAT BELUM TERISI ────────────── */
+/* Sebelum AdSense approve (atau saat slot tak terisi), box "Iklan"
+   menyisakan ruang kosong besar. Aturan ini menciutkannya, lalu
+   OTOMATIS normal kembali begitu iklan benar-benar tampil (filled).
+   Pakai :has() (Chrome/Edge modern); browser lama → perilaku lama. */
+.ad-strip { transition: min-height .3s ease, margin .3s ease, padding .3s ease; }
+
+/* Belum ada status (masih review) ATAU status unfilled → ciutkan */
+.ad-strip:has(ins.adsbygoogle:not([data-ad-status])),
+.ad-strip:has(ins.adsbygoogle[data-ad-status="unfilled"]) {
+  min-height: 0;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  padding: 0;
+}
+.ad-strip:has(ins.adsbygoogle:not([data-ad-status])) .ad-lbl,
+.ad-strip:has(ins.adsbygoogle[data-ad-status="unfilled"]) .ad-lbl { display: none; }
+.ad-strip:has(ins.adsbygoogle:not([data-ad-status])) .adsbygoogle,
+.ad-strip:has(ins.adsbygoogle[data-ad-status="unfilled"]) .adsbygoogle {
+  min-height: 0 !important;
+  height: 0 !important;
+}
+
+/* ═══════════════ END OF SECTION 23 ═══════════════ */

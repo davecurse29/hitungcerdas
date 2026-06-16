@@ -400,8 +400,8 @@ export const CALCULATORS: CalculatorMeta[] = [
       'Sesuai ketetapan BAZNAS RI 2026',
       '3,5 liter beras (2,5 kg) per jiwa',
       'Pilihan bayar dengan uang atau beras',
-      'Reference harga beras terbaru',
-      'Panduan kemana bayar (BAZNAS, masjid, LAZ)',
+      'Referensi harga beras terbaru',
+      'Panduan ke mana bayar (BAZNAS, masjid, LAZ)',
     ],
   },
   {
