@@ -447,6 +447,46 @@ const jsonLd = {
                 </div>
               </div>
 
+              <div class="adv-section" id="sewaBeliBlock">
+                <div class="adv-toggle">
+                  <span><i class="ti ti-home-search"></i>&nbsp; Sewa vs Beli — mana lebih hemat?</span>
+                  <i class="ti ti-chevron-down chev"></i>
+                </div>
+                <div class="adv-content">
+                  <div class="field" style="margin-bottom:8px"><label>Sewa Rumah Setara per Bulan</label>
+                    <div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="sbSewa" class="has-prefix" value="3.500.000" inputmode="numeric" /></div>
+                    <p class="field-hint">Sewa rumah sekelas. Patokan kasar ≈ 0,3–0,5% harga rumah/bulan.</p></div>
+                  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+                    <div class="field" style="margin-bottom:8px"><label>Horizon (tahun)</label>
+                      <div class="input-wrap"><input type="number" id="sbTahun" class="has-suffix" value="10" step="1" min="1" /><span class="input-suffix">thn</span></div></div>
+                    <div class="field" style="margin-bottom:8px"><label>Apresiasi Rumah</label>
+                      <div class="input-wrap"><input type="number" id="sbApresiasi" class="has-suffix" value="5" step="0.5" min="0" /><span class="input-suffix">%/th</span></div></div>
+                    <div class="field" style="margin-bottom:8px"><label>Kenaikan Sewa</label>
+                      <div class="input-wrap"><input type="number" id="sbKenaikan" class="has-suffix" value="5" step="0.5" min="0" /><span class="input-suffix">%/th</span></div></div>
+                    <div class="field" style="margin-bottom:8px"><label>Return Investasi</label>
+                      <div class="input-wrap"><input type="number" id="sbReturn" class="has-suffix" value="6" step="0.5" min="0" /><span class="input-suffix">%/th</span></div></div>
+                  </div>
+                  <button type="button" class="btn-reset" id="btnSewaBeli" style="width:100%"><i class="ti ti-home-search"></i> Bandingkan Sewa vs Beli</button>
+                  <div id="sewaBeliResult" style="display:none;margin-top:10px"></div>
+                  <p style="font-size:11.5px;color:var(--text-mute);margin-top:8px;line-height:1.5">💡 "Net biaya" = total uang keluar dikurangi nilai yang kamu pegang di akhir (ekuitas rumah untuk Beli, hasil investasi DP untuk Sewa). Asumsi biaya pemeliharaan + PBB ≈ 1%/thn harga rumah.</p>
+                </div>
+              </div>
+
+              <div class="adv-section" id="syariahBlock">
+                <div class="adv-toggle">
+                  <span><i class="ti ti-moon-stars"></i>&nbsp; Bandingkan KPR Syariah (Murabahah)</span>
+                  <i class="ti ti-chevron-down chev"></i>
+                </div>
+                <div class="adv-content">
+                  <div class="field" style="margin-bottom:10px"><label>Margin Murabahah (flat) per Tahun</label>
+                    <div class="input-wrap"><input type="number" id="syrMargin" class="has-suffix" value="5.5" step="0.5" min="0" /><span class="input-suffix">%/th</span></div>
+                    <p class="field-hint">Margin keuntungan bank syariah (akad jual-beli). Bersifat flat & cicilan TETAP sepanjang tenor.</p></div>
+                  <button type="button" class="btn-reset" id="btnSyariah" style="width:100%"><i class="ti ti-moon-stars"></i> Bandingkan Konvensional vs Syariah</button>
+                  <div id="syariahResult" style="display:none;margin-top:10px"></div>
+                  <p style="font-size:11.5px;color:var(--text-mute);margin-top:8px;line-height:1.5">💡 <strong>Murabahah</strong>: bank beli rumah lalu jual ke kamu dengan margin tetap → cicilan pasti, tidak kena risiko bunga naik. Tapi margin flat sering bikin total bayar lebih tinggi dari KPR konvensional bunga efektif. Bandingkan <strong>total bayar</strong> & nilai kepastiannya.</p>
+                </div>
+              </div>
+
               {/* Export Row */}
               <div class="export-row">
                 <button type="button" class="export-btn img" id="exportImg">
@@ -1272,6 +1312,107 @@ const jsonLd = {
       $('btnHitung').addEventListener('click', hitung);
       $('btnReset').addEventListener('click', reset);
       $('btnStress').addEventListener('click', hitungStress);
+
+      // ===== Sewa vs Beli =====
+      function hitungSewaBeli() {
+        const harga = HC.parseRp(els.harga.value);
+        const dpPct = parseFloat(els.dp.value) || 0;
+        const bunga = parseFloat(els.bunga.value) || 0;
+        const tenor = parseInt(els.tenor.value) || 1;
+        if (harga === 0) { HC.toast('Hitung KPR dulu', 'error'); return; }
+        const sewa0 = HC.parseRp($('sbSewa').value);
+        const H = Math.max(1, parseInt($('sbTahun').value) || 10);
+        const apr = (parseFloat($('sbApresiasi').value) || 0) / 100;
+        const naik = (parseFloat($('sbKenaikan').value) || 0) / 100;
+        const ret = (parseFloat($('sbReturn').value) || 0) / 100;
+
+        const dpAmt = harga * dpPct / 100;
+        const pokok = harga - dpAmt;
+        const i = bunga / 100 / 12, n = tenor * 12;
+        const cicilan = ann(pokok, i, n);
+        const hM = Math.min(H * 12, n);
+
+        // BELI
+        const totalCicilanH = cicilan * hM;
+        const maintenance = harga * 0.01 * H;
+        let sisa;
+        if (i === 0) sisa = Math.max(0, pokok - cicilan * hM);
+        else sisa = Math.max(0, pokok * Math.pow(1 + i, hM) - cicilan * ((Math.pow(1 + i, hM) - 1) / i));
+        if (hM >= n) sisa = 0;
+        const nilaiRumah = harga * Math.pow(1 + apr, H);
+        const ekuitas = nilaiRumah - sisa;
+        const beliCashOut = dpAmt + totalCicilanH + maintenance;
+        const beliNet = beliCashOut - ekuitas;
+
+        // SEWA
+        let rent = sewa0, totalSewa = 0;
+        for (let y = 0; y < H; y++) { totalSewa += rent * 12; rent *= (1 + naik); }
+        const dpInvestGain = dpAmt * (Math.pow(1 + ret, H) - 1);
+        const sewaNet = totalSewa - dpInvestGain;
+
+        const beliMenang = beliNet <= sewaNet;
+        const selisih = Math.abs(beliNet - sewaNet);
+        const col = beliMenang ? 'var(--green-dark,#047857)' : '#B45309';
+
+        $('sewaBeliResult').style.display = '';
+        $('sewaBeliResult').innerHTML =
+          `<table class="compare-table">`
+          + `<thead><tr><th>Selama ${H} tahun</th><th class="right">🏠 Beli (KPR)</th><th class="right">🔑 Sewa</th></tr></thead>`
+          + `<tbody>`
+          + `<tr><td>Uang keluar</td><td class="right">${HC.fmt(beliCashOut)}</td><td class="right">${HC.fmt(totalSewa)}</td></tr>`
+          + `<tr><td>Nilai dipegang akhir</td><td class="right" style="color:var(--green-dark)">${HC.fmt(ekuitas)}<br><span style="font-size:10px;color:var(--text-mute)">ekuitas rumah</span></td><td class="right" style="color:var(--green-dark)">${HC.fmt(dpInvestGain)}<br><span style="font-size:10px;color:var(--text-mute)">hasil invest DP</span></td></tr>`
+          + `<tr class="active"><td><b>Net biaya</b></td><td class="right"><b>${HC.fmt(beliNet)}</b></td><td class="right"><b>${HC.fmt(sewaNet)}</b></td></tr>`
+          + `</tbody></table>`
+          + `<p style="font-size:13px;margin-top:8px;font-weight:600;color:${col}">${beliMenang ? '🏠 Beli' : '🔑 Sewa'} lebih hemat ${HC.fmt(selisih)} dalam ${H} tahun (asumsi apresiasi ${(apr*100).toFixed(1)}%/thn, return invest ${(ret*100).toFixed(1)}%/thn).</p>`
+          + `<p style="font-size:11px;color:var(--text-mute);margin-top:4px;line-height:1.5">Net negatif = nilai aset yang kamu pegang di akhir melebihi total uang keluar (alias untung). Hasil sangat sensitif pada apresiasi rumah & return investasi: Beli unggul kalau rumah cepat naik & kamu tinggal lama; Sewa unggul kalau horizon pendek atau dana DP bisa diinvestasikan return tinggi.</p>`;
+      }
+
+      // ===== KPR Syariah (Murabahah) vs Konvensional =====
+      function hitungSyariah() {
+        const harga = HC.parseRp(els.harga.value);
+        const dpPct = parseFloat(els.dp.value) || 0;
+        const bunga = parseFloat(els.bunga.value) || 0;
+        const tenor = parseInt(els.tenor.value) || 1;
+        if (harga === 0) { HC.toast('Hitung KPR dulu', 'error'); return; }
+        const margin = parseFloat($('syrMargin').value) || 0;
+        const pokok = harga - harga * dpPct / 100;
+        const n = tenor * 12;
+
+        // Konvensional (anuitas / bunga efektif)
+        const cicKonv = ann(pokok, bunga / 100 / 12, n);
+        const totalKonv = cicKonv * n;
+
+        // Murabahah (margin flat, cicilan tetap)
+        const marginTotal = pokok * (margin / 100) * tenor;
+        const totalJual = pokok + marginTotal;
+        const cicSyr = totalJual / n;
+        const totalSyr = totalJual;
+
+        // Setara bunga efektif (IRR bulanan) dari cicilan tetap murabahah
+        let lo = 0, hi = 1;
+        for (let k = 0; k < 100; k++) { const m = (lo + hi) / 2; if (ann(pokok, m, n) < cicSyr) lo = m; else hi = m; }
+        const effSyr = (lo + hi) / 2 * 12 * 100;
+
+        const selisihTotal = totalSyr - totalKonv;
+        const syrLebihMahal = selisihTotal > 0;
+
+        $('syariahResult').style.display = '';
+        $('syariahResult').innerHTML =
+          `<table class="compare-table">`
+          + `<thead><tr><th>Pembiayaan ${tenor} thn</th><th class="right">Konvensional</th><th class="right">Syariah (Murabahah)</th></tr></thead>`
+          + `<tbody>`
+          + `<tr><td>Dasar</td><td class="right">Bunga efektif ${bunga.toFixed(1)}%</td><td class="right">Margin flat ${margin.toFixed(1)}%<br><span style="font-size:10px;color:var(--text-mute)">≈ ${effSyr.toFixed(1)}% efektif</span></td></tr>`
+          + `<tr><td>Cicilan/bulan</td><td class="right">${HC.fmt(cicKonv)}<br><span style="font-size:10px;color:var(--text-mute)">bisa floating</span></td><td class="right" style="color:var(--green-dark)">${HC.fmt(cicSyr)}<br><span style="font-size:10px;color:var(--text-mute)">tetap</span></td></tr>`
+          + `<tr class="active"><td><b>Total bayar</b></td><td class="right"><b>${HC.fmt(totalKonv)}</b></td><td class="right"><b>${HC.fmt(totalSyr)}</b></td></tr>`
+          + `</tbody></table>`
+          + `<p style="font-size:12.5px;margin-top:8px;line-height:1.55">${syrLebihMahal
+              ? `Dengan margin ${margin.toFixed(1)}% flat, total Murabahah <strong style="color:#B45309">lebih mahal ${HC.fmt(selisihTotal)}</strong> dari konvensional ${bunga.toFixed(1)}% efektif — tapi cicilan <strong>tetap</strong> (bebas risiko bunga naik).`
+              : `Dengan margin ${margin.toFixed(1)}% flat, total Murabahah <strong style="color:var(--green-dark)">lebih murah ${HC.fmt(-selisihTotal)}</strong> dari konvensional — plus cicilan tetap. Menarik!`}</p>`;
+      }
+
+      var sbS=$('sbSewa'); if(sbS) sbS.addEventListener('input', HC.fmtInput);
+      var btnSB=$('btnSewaBeli'); if(btnSB) btnSB.addEventListener('click', hitungSewaBeli);
+      var btnSyr=$('btnSyariah'); if(btnSyr) btnSyr.addEventListener('click', hitungSyariah);
 
       $('exportImg').addEventListener('click', () => {
         const card = buildReport();
