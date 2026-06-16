@@ -103,6 +103,16 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
               <button type="button" class="btn-hitung" id="btnHitung"><i class="ti ti-calculator"></i> Hitung Sekarang</button>
               <button type="button" class="btn-reset" id="btnReset"><i class="ti ti-refresh"></i> Reset</button>
             </div>
+
+            <div style="margin-top:14px;padding:13px;border:1px dashed var(--border,#CBD5E1);border-radius:12px">
+              <div style="font-size:13px;font-weight:700;margin-bottom:8px"><i class="ti ti-target"></i> Mode Target — berapa harus nabung/bulan?</div>
+              <div class="field"><label>Target Nominal yang Ingin Dicapai</label>
+                <div class="input-wrap"><span class="input-prefix">Rp</span>
+                  <input type="text" id="goalTarget" class="has-prefix" value="500.000.000" inputmode="numeric" /></div></div>
+              <button type="button" class="btn-reset" id="btnGoal" style="width:100%"><i class="ti ti-target"></i> Hitung Nabung Bulanan</button>
+              <div id="goalResult" style="display:none;margin-top:10px;font-size:13px;line-height:1.6"></div>
+              <p style="font-size:11.5px;color:var(--text-mute);margin-top:8px;line-height:1.5">💡 Pakai modal awal, return & jangka waktu di atas. Aku hitung mundur: berapa top-up bulanan biar tercapai targetmu.</p>
+            </div>
           </div>
 
           <div class="calc-output">
@@ -362,6 +372,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
                     inflasiToggle: $('inflasiToggle'), inflasiSkenario: $('inflasiSkenario'),
                     inflasiBox: $('inflationBox') };
       [els.modal, els.topup].forEach(el => el.addEventListener('input', HC.fmtInput));
+      var goalTargetEl = $('goalTarget'); if (goalTargetEl) goalTargetEl.addEventListener('input', HC.fmtInput);
       document.querySelectorAll('.quick-btns button').forEach(btn => btn.addEventListener('click', () => { els.ret.value = btn.dataset.r; }));
       els.inflasiToggle.addEventListener('change', () => els.inflasiBox.classList.toggle('active', els.inflasiToggle.checked));
       document.querySelectorAll('.adv-toggle').forEach(t => t.addEventListener('click', () => t.parentElement.classList.toggle('open')));
@@ -499,8 +510,30 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         return `📈 *Proyeksi Investasi - HitungCerdas*\n\nModal: ${HC.fmt(c.modal)}\nTop-up: ${HC.fmt(c.topup)}/bln\nReturn: ${c.ret}%/thn\nDurasi: ${c.tahun} tahun${c.useInflasi ? `\nInflasi: ${c.inflasi}%` : ''}\n\n💰 *Nilai Akhir: ${HC.fmt(c.fv)}*\n📊 Total Setor: ${HC.fmt(c.totalSetor)}\n💵 Keuntungan: +${HC.fmt(c.untung)}${c.useInflasi ? `\n✨ Real Value: ${HC.fmt(c.realFv)}` : ''}\n\nHitung: https://hitungcerdas.net/kalkulator/investasi`;
       }
 
+      function hitungGoal() {
+        const target = HC.parseRp($('goalTarget').value);
+        const modal = HC.parseRp(els.modal.value);
+        const ret = parseFloat(els.ret.value) || 0;
+        const tahun = parseInt(els.tahun.value);
+        if (target <= 0) { HC.toast('Masukkan target nominal dulu', 'error'); return; }
+        const r = ret / 100 / 12, n = tahun * 12;
+        const fvModal = modal * Math.pow(1 + r, n);
+        const annuityFactor = r === 0 ? n : ((Math.pow(1 + r, n) - 1) / r);
+        const topupNeeded = (target - fvModal) / annuityFactor;
+        const box = $('goalResult');
+        box.style.display = '';
+        if (topupNeeded <= 0) {
+          box.innerHTML = `✅ Modal awal <b>${HC.fmt(modal)}</b> dengan return ${ret}%/thn <b>sudah cukup</b> mencapai <b>${HC.fmt(target)}</b> dalam ${tahun} tahun — tanpa perlu nabung bulanan.`;
+        } else {
+          const totalSetor = modal + topupNeeded * n;
+          const dariBunga = target - totalSetor;
+          box.innerHTML = `🎯 Untuk capai <b>${HC.fmt(target)}</b> dalam <b>${tahun} tahun</b> (asumsi return ${ret}%/thn), kamu perlu nabung:<br><b style="color:var(--green-dark);font-size:16px">${HC.fmt(topupNeeded)}/bulan</b><br><span style="color:var(--text-mute);font-size:12px">Total setoran ${HC.fmt(totalSetor)} + hasil bunga berbunga ${HC.fmt(dariBunga)}.</span>`;
+        }
+      }
+
       $('btnHitung').addEventListener('click', hitung);
       $('btnReset').addEventListener('click', reset);
+      var btnGoal = $('btnGoal'); if (btnGoal) btnGoal.addEventListener('click', hitungGoal);
       $('exportImg').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToImage(c, 'investasi-' + Date.now()); });
       $('exportWa').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.shareWhatsApp(c, summaryText(), 'investasi'); });
       $('exportPdf').addEventListener('click', () => { if (!lastCalc) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToPDF(); });

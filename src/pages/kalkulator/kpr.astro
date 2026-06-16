@@ -433,6 +433,20 @@ const jsonLd = {
                 </div>
               </div>
 
+              <div class="adv-section open" id="stressBlock">
+                <div class="adv-toggle">
+                  <span><i class="ti ti-flame"></i>&nbsp; Stress Test: Kalau Bunga Floating Naik</span>
+                  <i class="ti ti-chevron-down chev"></i>
+                </div>
+                <div class="adv-content">
+                  <div class="field" style="margin-bottom:10px"><label>Bunga floating naik ke (%)</label>
+                    <div class="input-wrap"><input type="number" id="stressBunga" class="has-suffix" value="12" step="0.5" min="0" /><span class="input-suffix">%</span></div></div>
+                  <button type="button" class="btn-reset" id="btnStress" style="width:100%"><i class="ti ti-flame"></i> Hitung Stress Test</button>
+                  <div id="stressResult" style="display:none;margin-top:10px"></div>
+                  <p style="font-size:11.5px;color:var(--text-mute);margin-top:8px;line-height:1.5">💡 KPR floating: setelah masa fixed habis, bunga ikut BI Rate & bisa naik. Cek kesanggupanmu di skenario terburuk sebelum ambil KPR.</p>
+                </div>
+              </div>
+
               {/* Export Row */}
               <div class="export-row">
                 <button type="button" class="export-btn img" id="exportImg">
@@ -1224,8 +1238,40 @@ const jsonLd = {
       }
 
       // Event listeners
+      function hitungStress() {
+        const harga = HC.parseRp(els.harga.value);
+        const dpPct = parseFloat(els.dp.value) || 0;
+        const baseBunga = parseFloat(els.bunga.value) || 0;
+        const tenor = parseInt(els.tenor.value) || 1;
+        const gaji = HC.parseRp(els.gaji.value);
+        const stressBunga = parseFloat($('stressBunga').value) || 0;
+        if (harga === 0) { HC.toast('Hitung KPR dulu', 'error'); return; }
+        const pokok = harga - harga * (dpPct / 100);
+        const n = tenor * 12;
+        const cicBase = ann(pokok, baseBunga / 100 / 12, n);
+        const cicStress = ann(pokok, stressBunga / 100 / 12, n);
+        const selisih = cicStress - cicBase;
+        let dtiHtml = '';
+        if (gaji > 0) {
+          const dtiBase = cicBase / gaji * 100, dtiStress = cicStress / gaji * 100;
+          const col = dtiStress <= 30 ? 'var(--green-dark,#047857)' : (dtiStress <= 40 ? '#B45309' : 'var(--red,#DC2626)');
+          dtiHtml = `<div style="margin-top:8px;font-size:13px;font-weight:600;color:${col}"><i class="ti ti-percentage"></i> DTI: ${dtiBase.toFixed(1)}% &rarr; ${dtiStress.toFixed(1)}% dari gaji${dtiStress > 40 ? ' (lewat batas aman!)' : ''}</div>`;
+        }
+        $('stressResult').style.display = '';
+        $('stressResult').innerHTML = `
+          <table class="compare-table">
+            <thead><tr><th>Skenario</th><th class="right">Bunga</th><th class="right">Cicilan/Bulan</th></tr></thead>
+            <tbody>
+              <tr><td>Sekarang</td><td class="right">${baseBunga.toFixed(1)}%</td><td class="right">${HC.fmt(cicBase)}</td></tr>
+              <tr class="active"><td>Stress (naik)</td><td class="right">${stressBunga.toFixed(1)}%</td><td class="right">${HC.fmt(cicStress)}</td></tr>
+            </tbody>
+          </table>
+          <p style="font-size:12.5px;margin-top:8px;line-height:1.5">⚠️ Kalau bunga naik ke <strong>${stressBunga.toFixed(1)}%</strong>, cicilanmu naik <strong style="color:var(--red,#DC2626)">+${HC.fmt(selisih)}/bulan</strong> (≈ +${HC.fmt(selisih * 12)}/tahun).</p>${dtiHtml}`;
+      }
+
       $('btnHitung').addEventListener('click', hitung);
       $('btnReset').addEventListener('click', reset);
+      $('btnStress').addEventListener('click', hitungStress);
 
       $('exportImg').addEventListener('click', () => {
         const card = buildReport();
