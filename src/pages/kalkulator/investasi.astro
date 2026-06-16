@@ -172,6 +172,19 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
                 </div>
               </div>
 
+              <div class="adv-section" id="scenBlock">
+                <div class="adv-toggle"><span><i class="ti ti-columns"></i>&nbsp; Bandingkan Skenario A vs B</span><i class="ti ti-chevron-down chev"></i></div>
+                <div class="adv-content">
+                  <p style="font-size:12px;color:var(--text-mute);margin:0 0 8px;line-height:1.5">Hitung skenario pertama lalu simpan sebagai <b>A</b>. Ubah input, Hitung lagi, simpan sebagai <b>B</b>. Tabel perbandingan muncul otomatis.</p>
+                  <div style="display:flex;gap:8px">
+                    <button type="button" class="btn-reset" id="btnScenA" style="flex:1"><i class="ti ti-bookmark"></i> Simpan sbg A</button>
+                    <button type="button" class="btn-reset" id="btnScenB" style="flex:1"><i class="ti ti-bookmark"></i> Simpan sbg B</button>
+                  </div>
+                  <div id="scenResult" style="display:none;margin-top:10px"></div>
+                  <button type="button" id="btnScenReset" style="margin-top:8px;background:none;border:none;color:var(--text-mute);font-size:12px;cursor:pointer;text-decoration:underline">Reset skenario</button>
+                </div>
+              </div>
+
               <div class="export-row">
                 <button type="button" class="export-btn img" id="exportImg"><i class="ti ti-photo-down"></i><span>Save Image</span></button>
                 <button type="button" class="export-btn wa" id="exportWa"><i class="ti ti-brand-whatsapp"></i><span>Share WA</span></button>
@@ -490,7 +503,51 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
           + `</div>`;
       }
 
+
+      // ===== Skenario A vs B =====
+      let scenA = null, scenB = null;
+      function scenFmt(v, t) { return t === 'pct' ? v.toFixed(1) + '%' : HC.fmt(v); }
+      function buildSnap() { var c = lastCalc; return { label: c.tahun + 'thn @ ' + c.ret + '%', rows: [ {k:'Nilai Akhir', v:c.fv, t:'rp'}, {k:'Total Setor', v:c.totalSetor, t:'rp'}, {k:'Keuntungan', v:c.untung, t:'rp'} ] }; }
+      function snapScenario(slot) {
+        if (!lastCalc) { HC.toast('Hitung dulu sebelum simpan skenario', 'error'); return; }
+        var snap = buildSnap();
+        if (slot === 'A') scenA = snap; else scenB = snap;
+        HC.toast('Tersimpan sebagai Skenario ' + slot + ' (' + snap.label + ')');
+        renderScenario();
+      }
+      function renderScenario() {
+        var box = $('scenResult');
+        if (!scenA && !scenB) { box.style.display = 'none'; return; }
+        box.style.display = '';
+        var ref = scenA || scenB, both = scenA && scenB;
+        var html = '<table class="compare-table"><thead><tr><th>Metrik</th>'
+          + '<th class="right">A' + (scenA ? '<br><span style="font-size:10px;color:var(--text-mute)">' + scenA.label + '</span>' : '') + '</th>'
+          + '<th class="right">B' + (scenB ? '<br><span style="font-size:10px;color:var(--text-mute)">' + scenB.label + '</span>' : '') + '</th>'
+          + (both ? '<th class="right">Selisih</th>' : '') + '</tr></thead><tbody>';
+        for (var i = 0; i < ref.rows.length; i++) {
+          var k = ref.rows[i].k, t = ref.rows[i].t;
+          var av = scenA ? scenFmt(scenA.rows[i].v, t) : '—';
+          var bv = scenB ? scenFmt(scenB.rows[i].v, t) : '—';
+          var sel = '';
+          if (both) { var d = scenB.rows[i].v - scenA.rows[i].v; sel = '<td class="right">' + (Math.abs(d) < 0.005 ? '—' : (d > 0 ? '+' : '\u2212') + scenFmt(Math.abs(d), t)) + '</td>'; }
+          html += '<tr' + (i === 0 ? ' class="active"' : '') + '><td>' + k + '</td><td class="right">' + av + '</td><td class="right">' + bv + '</td>' + sel + '</tr>';
+        }
+        html += '</tbody></table>';
+        if (both) {
+          var lower = false, d = scenB.rows[0].v - scenA.rows[0].v, pk = scenA.rows[0].k, t0 = scenA.rows[0].t;
+          var msg;
+          if (Math.abs(d) < 0.005) msg = 'Kedua skenario setara di ' + pk + '.';
+          else { var bBetter = lower ? d < 0 : d > 0; msg = 'Skenario ' + (bBetter ? 'B' : 'A') + ' lebih ' + (lower ? 'hemat' : 'unggul') + ' \u2014 ' + pk + ' selisih ' + scenFmt(Math.abs(d), t0) + '.'; }
+          html += '<p style="font-size:13px;margin-top:8px;font-weight:600;color:var(--green-dark,#047857)">' + msg + '</p>';
+        }
+        box.innerHTML = html;
+      }
+      var bSA = $('btnScenA'); if (bSA) bSA.addEventListener('click', function () { snapScenario('A'); });
+      var bSB = $('btnScenB'); if (bSB) bSB.addEventListener('click', function () { snapScenario('B'); });
+      var bSR = $('btnScenReset'); if (bSR) bSR.addEventListener('click', function () { scenA = null; scenB = null; renderScenario(); HC.toast('Skenario direset', 'info'); });
+
       function reset() {
+        scenA = null; scenB = null; var _sr=$('scenResult'); if(_sr) _sr.style.display='none';
         els.modal.value = '10.000.000'; els.topup.value = '1.000.000'; els.ret.value = '10';
         els.tahun.value = '10'; els.inflasiToggle.checked = false; els.inflasiBox.classList.remove('active');
         $('placeholder').style.display = ''; $('results').classList.remove('show');
