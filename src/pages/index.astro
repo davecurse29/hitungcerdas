@@ -323,7 +323,7 @@ const popularCalcs = POPULAR_SLUGS.map(s => CALCULATORS.find(c => c.slug === s))
 
       <div class="art-grid">
         {articles.map(art => (
-          <a href={`/blog/${art.slug}`} class="art-card reveal" style={`--art-color:${art.color};--art-color2:${art.color2}`}>
+          <a href={`/blog/${art.slug}/`} class="art-card reveal" style={`--art-color:${art.color};--art-color2:${art.color2}`}>
             <div class="art-img">
               <i class="ti ti-file-text"></i>
             </div>
@@ -338,7 +338,7 @@ const popularCalcs = POPULAR_SLUGS.map(s => CALCULATORS.find(c => c.slug === s))
       </div>
 
       <div class="art-cta">
-        <a href="/blog" class="btn btn-ghost">
+        <a href="/blog/" class="btn btn-ghost">
           Lihat Semua Artikel <i class="ti ti-arrow-right"></i>
         </a>
       </div>
@@ -907,7 +907,7 @@ const popularCalcs = POPULAR_SLUGS.map(s => CALCULATORS.find(c => c.slug === s))
         results.innerHTML = '<div class="search-item" style="cursor:default"><div class="search-item-name" style="color:var(--text-mute)">Tidak ditemukan tools untuk "' + q + '"</div></div>';
       } else {
         results.innerHTML = matches.map(t => `
-          <a class="search-item" href="/kalkulator/${t.slug}">
+          <a class="search-item" href="/kalkulator/${t.slug}/">
             <div><div class="search-item-name">${t.name}</div><div class="search-item-cat">${t.cat}</div></div>
           </a>
         `).join('');
@@ -926,7 +926,7 @@ const popularCalcs = POPULAR_SLUGS.map(s => CALCULATORS.find(c => c.slug === s))
       if (!q) return;
       const match = CALCULATORS_DATA.find(c => c.name.toLowerCase().includes(q));
       if (match) {
-        window.location.href = `/kalkulator/${match.slug}`;
+        window.location.href = `/kalkulator/${match.slug}/`;
       } else {
         window.showToast?.('Tools tidak ditemukan');
       }
@@ -966,7 +966,7 @@ const popularCalcs = POPULAR_SLUGS.map(s => CALCULATORS.find(c => c.slug === s))
     }
     function chip(slug) {
       var c = bySlug[slug];
-      return c ? '<a class="uk-chip" href="/kalkulator/' + slug + '">' + c.name + '</a>' : '';
+      return c ? '<a class="uk-chip" href="/kalkulator/' + slug + '/">' + c.name + '</a>' : '';
     }
     function renderUK() {
       var sec = document.getElementById('untuk-kamu');

@@ -33,7 +33,7 @@ const year = new Date().getFullYear();
       <h4>Kalkulator Keuangan</h4>
       <ul>
         {keuanganLinks.map(c => (
-          <li><a href={`/kalkulator/${c.slug}`}>{c.shortTitle}</a></li>
+          <li><a href={`/kalkulator/${c.slug}/`}>{c.shortTitle}</a></li>
         ))}
       </ul>
     </div>
@@ -42,7 +42,7 @@ const year = new Date().getFullYear();
       <h4>Kalkulator Bisnis</h4>
       <ul>
         {bisnisLinks.map(c => (
-          <li><a href={`/kalkulator/${c.slug}`}>{c.shortTitle}</a></li>
+          <li><a href={`/kalkulator/${c.slug}/`}>{c.shortTitle}</a></li>
         ))}
       </ul>
     </div>
@@ -51,7 +51,7 @@ const year = new Date().getFullYear();
       <h4>Kalkulator Islami</h4>
       <ul>
         {islamiLinks.map(c => (
-          <li><a href={`/kalkulator/${c.slug}`}>{c.shortTitle}</a></li>
+          <li><a href={`/kalkulator/${c.slug}/`}>{c.shortTitle}</a></li>
         ))}
       </ul>
     </div>
@@ -59,18 +59,18 @@ const year = new Date().getFullYear();
     <div class="footer-col">
       <h4>Lainnya</h4>
       <ul>
-        <li><a href="/blog">Blog & Artikel</a></li>
-        <li><a href="/tentang">Tentang Kami</a></li>
-        <li><a href="/kontak">Kontak</a></li>
+        <li><a href="/blog/">Blog & Artikel</a></li>
+        <li><a href="/tentang/">Tentang Kami</a></li>
+        <li><a href="/kontak/">Kontak</a></li>
         <li>
           <a href="https://www.cuanpertama.my.id" target="_blank" rel="noopener">
             🛒 Toko Cuan Pertama
           </a>
         </li>
-        <li><a href="/legal/syarat">Syarat & Ketentuan</a></li>
-        <li><a href="/legal/disclaimer">Disclaimer</a></li>
-        <li><a href="/legal/privasi">Kebijakan Privasi</a></li>
-        <li><a href="/legal/legal">Legal & Ketentuan</a></li>
+        <li><a href="/legal/syarat/">Syarat & Ketentuan</a></li>
+        <li><a href="/legal/disclaimer/">Disclaimer</a></li>
+        <li><a href="/legal/privasi/">Kebijakan Privasi</a></li>
+        <li><a href="/legal/legal/">Legal & Ketentuan</a></li>
       </ul>
     </div>
   </div>
@@ -80,11 +80,11 @@ const year = new Date().getFullYear();
       © {year} HitungCerdas. Semua hak dilindungi. Made with 💚 in Indonesia.
     </div>
     <div class="footer-bot-right">
-      <a href="/legal/syarat">Syarat</a>
-      <a href="/legal/disclaimer">Disclaimer</a>
-      <a href="/legal/privasi">Privasi</a>
-      <a href="/legal/legal">Legal</a>
-      <a href="/kontak">Kontak</a>
+      <a href="/legal/syarat/">Syarat</a>
+      <a href="/legal/disclaimer/">Disclaimer</a>
+      <a href="/legal/privasi/">Privasi</a>
+      <a href="/legal/legal/">Legal</a>
+      <a href="/kontak/">Kontak</a>
     </div>
   </div>
 </footer>

@@ -4,13 +4,13 @@ const currentPath = Astro.url.pathname;
 
 const navItems = [
   { href: '/', label: 'Beranda' },
-  { href: '/kalkulator/kpr', label: 'KPR' },
-  { href: '/kalkulator/pph-21', label: 'Pajak' },
-  { href: '/kalkulator/gaji-bersih', label: 'Gaji' },
-  { href: '/kalkulator/investasi', label: 'Investasi' },
-  { href: '/kalkulator/zakat-fitrah', label: 'Zakat' },
-  { href: '/blog', label: 'Blog' },
-  { href: '/tentang', label: 'Tentang' },
+  { href: '/kalkulator/kpr/', label: 'KPR' },
+  { href: '/kalkulator/pph-21/', label: 'Pajak' },
+  { href: '/kalkulator/gaji-bersih/', label: 'Gaji' },
+  { href: '/kalkulator/investasi/', label: 'Investasi' },
+  { href: '/kalkulator/zakat-fitrah/', label: 'Zakat' },
+  { href: '/blog/', label: 'Blog' },
+  { href: '/tentang/', label: 'Tentang' },
 ];
 ---
 
@@ -223,12 +223,6 @@ const navItems = [
       display: none;
     }
   }
-
-  /* ── Dark mode ── */
-  :global([data-theme="dark"]) header { background: rgba(11, 18, 32, .92); }
-  :global([data-theme="dark"]) .logo-text { color: var(--text); }
-  :global([data-theme="dark"]) .nv:hover { color: var(--text); }
-  :global([data-theme="dark"]) nav.mobile-open { background: var(--bg-card); }
 </style>
 
 <script is:inline>
