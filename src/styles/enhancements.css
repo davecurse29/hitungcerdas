@@ -470,14 +470,20 @@ html { scroll-behavior: smooth; }
   color: #fff !important;
   padding: 20px 0 48px !important;
 }
-/* Teks hero putih (judul, breadcrumb, meta) */
+/* Teks hero putih (judul, breadcrumb, meta) — selektor diperkuat
+   (.article-hero .wrap ...) agar menang atas base global.css */
 .article-hero h1,
+.article-hero .wrap h1,
+.article-hero .wrap > h1,
 .article-hero .article-meta,
+.article-hero .wrap .article-meta,
 .article-hero .article-meta span,
+.article-hero .wrap .article-meta span,
 .article-hero .breadcrumb-item,
 .article-hero .breadcrumb-item span,
 .article-hero .breadcrumb-item i { color: #fff !important; }
-.article-hero .breadcrumb-item a { color: rgba(255, 255, 255, .72) !important; }
+.article-hero .breadcrumb-item a,
+.article-hero .wrap .breadcrumb-item a { color: rgba(255, 255, 255, .72) !important; }
 .article-hero .breadcrumb-item a:hover { color: var(--gold-soft, #FCD34D) !important; }
 .article-hero h1 {
   font-size: clamp(26px, 3.8vw, 42px);
@@ -493,7 +499,8 @@ html { scroll-behavior: smooth; }
 }
 .article-hero .article-meta span { display: inline-flex; align-items: center; gap: 6px; opacity: .82; }
 /* Tag kategori: gold, uppercase, kecil (di dalam pill dari §13) */
-.article-hero .article-tag {
+.article-hero .article-tag,
+.article-hero .wrap .article-tag {
   display: inline-block;
   font-size: 11px;
   font-weight: 700;
