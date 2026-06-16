@@ -14,6 +14,7 @@ const faqs = [
   { question: 'Berapa total potongan BPJS karyawan?', answer: 'Total potongan BPJS karyawan = 4% gaji: <strong>BPJS Kesehatan 1%</strong> (maks Rp 120rb/bln, batas ceiling Rp 12jt), <strong>JHT 2%</strong>, <strong>JP 1%</strong> (maks Rp 87rb/bln, batas ceiling Rp 8,7jt). Perusahaan tambah ~9% dari sisinya untuk JKK, JKM, BPJS Kes.' },
   { question: 'Bagaimana alokasi 50/30/20 yang tepat?', answer: 'Aturan emas alokasi take-home pay: <strong>50% kebutuhan</strong> (sewa/cicilan, listrik, transport, makan), <strong>30% keinginan</strong> (hiburan, hobi, makan di luar), <strong>20% tabungan & investasi</strong> (dana darurat, reksadana, emas).' },
   { question: 'Apakah lembur dan komisi kena PPh?', answer: 'YA, lembur dan komisi termasuk objek PPh 21. Hitungnya ditambahkan ke bruto setahun. Tarifnya progresif sama seperti gaji pokok. Komisi yang besar bisa bikin loncat ke lapisan tarif berikutnya.' },
+  { question: 'Kenapa THR/bonus dipotong pajak lebih besar?', answer: 'THR & bonus termasuk <strong>penghasilan tidak teratur</strong>. Pajaknya dihitung sebagai selisih PPh setahun <em>dengan</em> THR dikurangi PPh setahun <em>tanpa</em> THR. Karena menambah total penghasilan tahunan, THR bisa kena tarif lapisan lebih tinggi, sehingga tarif efektifnya terasa lebih besar dari gaji biasa. Sejak 2024 (PMK 168/2023), potongan riil di bulan THR memakai tarif efektif (TER), lalu dikoreksi otomatis di masa pajak Desember.' },
 ];
 
 const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '/#tools' }, { label: calc.shortTitle }];
@@ -88,6 +89,10 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
               <div class="input-wrap"><input type="number" id="dplkPerusahaan" class="has-suffix" value="0" min="0" max="100" step="0.5" /><span class="input-suffix">%</span></div></div>
             <p style="font-size:11.5px;color:var(--text-mute);margin:-2px 0 10px;line-height:1.5">💡 Iuran DPLK <strong>karyawan</strong> memotong gaji & mengurangi PPh (pengurang penghasilan bruto, PMK 168/2023). Iuran <strong>perusahaan</strong> di luar gajimu & tidak kena pajak saat disetor.</p>
 
+            <div class="field"><label>THR / Bonus Tahunan <span class="hint">(THR Lebaran, bonus, gratifikasi)</span></label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span>
+                <input type="text" id="thrBonus" class="has-prefix" value="0" inputmode="numeric" /></div></div>
+
             <div class="calc-action-bar">
               <button type="button" class="btn-hitung" id="btnHitung"><i class="ti ti-calculator"></i> Hitung Sekarang</button>
               <button type="button" class="btn-reset" id="btnReset"><i class="ti ti-refresh"></i> Reset</button>
@@ -115,6 +120,19 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
                 <div class="result-item"><div class="result-item-label">Potongan Lain</div><div class="result-item-value" id="potLainShow">Rp 0</div></div>
                 <div class="result-item"><div class="result-item-label">DPLK Karyawan</div><div class="result-item-value result-warn" id="dplkKaryawanShow">Rp 0</div></div>
                 <div class="result-item"><div class="result-item-label">DPLK Perusahaan <span style="font-weight:400;font-size:10px;opacity:.7">(kantor)</span></div><div class="result-item-value" id="dplkPerusahaanShow">Rp 0</div></div>
+              </div>
+
+              <div class="adv-section open" id="thrBlock" style="display:none">
+                <div class="adv-toggle"><span><i class="ti ti-gift"></i>&nbsp; Rincian THR / Bonus (diterima sekali)</span><i class="ti ti-chevron-down chev"></i></div>
+                <div class="adv-content">
+                  <div class="result-grid">
+                    <div class="result-item"><div class="result-item-label">THR / Bonus Bruto</div><div class="result-item-value" id="thrBruto">Rp 0</div></div>
+                    <div class="result-item"><div class="result-item-label">PPh 21 atas THR/Bonus</div><div class="result-item-value result-warn" id="thrPphShow">Rp 0</div></div>
+                    <div class="result-item"><div class="result-item-label">THR/Bonus Bersih</div><div class="result-item-value result-strong" id="thrNetShow">Rp 0</div></div>
+                    <div class="result-item"><div class="result-item-label">Tarif Efektif THR</div><div class="result-item-value" id="thrRateShow">0%</div></div>
+                  </div>
+                  <p style="font-size:11.5px;color:var(--text-mute);margin-top:8px;line-height:1.5">💡 THR/bonus = penghasilan <strong>tidak teratur</strong>. Pajaknya = selisih PPh setahun (dengan vs tanpa THR), jadi tarif efektifnya bisa lebih tinggi dari gaji biasa. Diterima sekali, <strong>terpisah</strong> dari take-home bulanan. Sejak 2024 potongan riil pakai TER di bulan THR, lalu dikoreksi di Desember.</p>
+                </div>
               </div>
 
               <div class="adv-section">
@@ -351,8 +369,8 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
     function ready(fn) { if (window.HC && window.html2canvas) fn(); else setTimeout(() => ready(fn), 100); }
     ready(() => {
       const $ = id => document.getElementById(id);
-      const els = { gaji: $('gaji'), tunj: $('tunj'), tunjVar: $('tunjVar'), ptkp: $('ptkp'), potLain: $('potLain'), dplkKaryawan: $('dplkKaryawan'), dplkPerusahaan: $('dplkPerusahaan') };
-      [els.gaji, els.tunj, els.tunjVar, els.potLain].forEach(el => el.addEventListener('input', HC.fmtInput));
+      const els = { gaji: $('gaji'), tunj: $('tunj'), tunjVar: $('tunjVar'), ptkp: $('ptkp'), potLain: $('potLain'), dplkKaryawan: $('dplkKaryawan'), dplkPerusahaan: $('dplkPerusahaan'), thrBonus: $('thrBonus') };
+      [els.gaji, els.tunj, els.tunjVar, els.potLain, els.thrBonus].forEach(el => el.addEventListener('input', HC.fmtInput));
       document.querySelectorAll('.adv-toggle').forEach(t => t.addEventListener('click', () => t.parentElement.classList.toggle('open')));
 
       const BRACKETS = [
@@ -400,6 +418,20 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         const pphTahun = calcPPh(pkp);
         const pphBulan = pphTahun / 12;
 
+        // THR / Bonus = penghasilan TIDAK TERATUR. PPh-nya = selisih PPh setahun (dengan vs tanpa THR).
+        const thrBonus = HC.parseRp(els.thrBonus.value);
+        let thrPph = 0, thrNet = 0, thrRate = 0;
+        if (thrBonus > 0) {
+          const brutoTahunTHR = brutoTahun + thrBonus;
+          const biayaJabatanTHR = Math.min(brutoTahunTHR * 0.05, 6000000);
+          const netoTHR = brutoTahunTHR - biayaJabatanTHR - (bpjsTotal * 12) - (dplkKaryawan * 12);
+          const pkpTHR = Math.max(0, netoTHR - ptkp);
+          const pphTahunTHR = calcPPh(pkpTHR);
+          thrPph = Math.max(0, pphTahunTHR - pphTahun);
+          thrNet = thrBonus - thrPph;
+          thrRate = (thrPph / thrBonus) * 100;
+        }
+
         const thp = brutoBulan - bpjsTotal - pphBulan - potLain - dplkKaryawan;
         const thpPct = (thp / brutoBulan) * 100;
 
@@ -411,6 +443,17 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         $('potLainShow').textContent = HC.fmt(potLain);
         $('dplkKaryawanShow').textContent = HC.fmt(dplkKaryawan);
         $('dplkPerusahaanShow').textContent = HC.fmt(dplkPerusahaan);
+
+        if (thrBonus > 0) {
+          $('thrBlock').style.display = '';
+          $('thrBlock').classList.add('open');
+          $('thrBruto').textContent = HC.fmt(thrBonus);
+          $('thrPphShow').textContent = HC.fmt(thrPph);
+          $('thrNetShow').textContent = HC.fmt(thrNet);
+          $('thrRateShow').textContent = `${thrRate.toFixed(1)}%`;
+        } else {
+          $('thrBlock').style.display = 'none';
+        }
 
         $('alokasiBody').innerHTML = `
           <tr><td>🏠 Kebutuhan (50%)</td><td class="right">50%</td><td class="right">${HC.fmt(thp * 0.5)}</td></tr>
@@ -429,7 +472,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         }
         $('proyeksiBody').innerHTML = html;
 
-        lastCalc = { gaji, tunj, tunjVar, ptkpLabel: els.ptkp.options[els.ptkp.selectedIndex].text, potLain, dplkKaryawan, dplkPerusahaan, dplkKaryawanPct, dplkPerusahaanPct, brutoBulan, bpjsTotal, pphBulan, thp, thpPct };
+        lastCalc = { gaji, tunj, tunjVar, ptkpLabel: els.ptkp.options[els.ptkp.selectedIndex].text, potLain, dplkKaryawan, dplkPerusahaan, dplkKaryawanPct, dplkPerusahaanPct, thrBonus, thrPph, thrNet, thrRate, brutoBulan, bpjsTotal, pphBulan, thp, thpPct };
         $('placeholder').style.display = 'none';
         $('results').classList.add('show');
         $('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -438,7 +481,8 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
 
       function reset() {
         els.gaji.value = '8.000.000'; els.tunj.value = '1.500.000'; els.tunjVar.value = '0';
-        els.ptkp.value = '54000000'; els.potLain.value = '0'; els.dplkKaryawan.value = '0'; els.dplkPerusahaan.value = '0';
+        els.ptkp.value = '54000000'; els.potLain.value = '0'; els.dplkKaryawan.value = '0'; els.dplkPerusahaan.value = '0'; els.thrBonus.value = '0';
+        $('thrBlock').style.display = 'none';
         $('placeholder').style.display = ''; $('results').classList.remove('show');
         lastCalc = null; HC.toast('Form direset', 'info');
       }
@@ -469,6 +513,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
             { label: 'PPh 21/Bulan', value: HC.fmt(c.pphBulan) },
             ...(c.dplkKaryawan > 0 ? [{ label: `DPLK Karyawan (${c.dplkKaryawanPct}%)`, value: HC.fmt(c.dplkKaryawan) }] : []),
             ...(c.dplkPerusahaan > 0 ? [{ label: `DPLK Perusahaan (${c.dplkPerusahaanPct}%)`, value: HC.fmt(c.dplkPerusahaan) }] : []),
+            ...(c.thrBonus > 0 ? [{ label: '🎁 THR/Bonus Bruto', value: HC.fmt(c.thrBonus) }, { label: 'PPh atas THR/Bonus', value: HC.fmt(c.thrPph) }, { label: 'THR/Bonus Bersih', value: HC.fmt(c.thrNet), highlight: true }] : []),
             { label: 'Untuk Kebutuhan (50%)', value: HC.fmt(c.thp * 0.5) },
             { label: 'Untuk Tabungan (20%)', value: HC.fmt(c.thp * 0.2), highlight: true },
           ],
@@ -480,7 +525,8 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         if (!lastCalc) return '';
         const c = lastCalc;
         const dplkLine = c.dplkKaryawan > 0 ? `\nDPLK (karyawan): ${HC.fmt(c.dplkKaryawan)}` : '';
-        return `💰 *Gaji Bersih - HitungCerdas*\n\nBruto: ${HC.fmt(c.brutoBulan)}/bln\nBPJS: ${HC.fmt(c.bpjsTotal)}\nPPh 21: ${HC.fmt(c.pphBulan)}${dplkLine}\n\n💵 *Take-Home Pay: ${HC.fmt(c.thp)}/bulan*\n📊 ${c.thpPct.toFixed(1)}% dari bruto\n\nAlokasi 50/30/20:\n• Kebutuhan: ${HC.fmt(c.thp * 0.5)}\n• Keinginan: ${HC.fmt(c.thp * 0.3)}\n• Tabungan: ${HC.fmt(c.thp * 0.2)}\n\nHitung di: https://hitungcerdas.net/kalkulator/gaji-bersih`;
+        const thrLine = c.thrBonus > 0 ? `\n\n🎁 *THR/Bonus: ${HC.fmt(c.thrBonus)}*\nPPh THR: ${HC.fmt(c.thrPph)} (${c.thrRate.toFixed(1)}%)\nTHR Bersih: ${HC.fmt(c.thrNet)}` : '';
+        return `💰 *Gaji Bersih - HitungCerdas*\n\nBruto: ${HC.fmt(c.brutoBulan)}/bln\nBPJS: ${HC.fmt(c.bpjsTotal)}\nPPh 21: ${HC.fmt(c.pphBulan)}${dplkLine}\n\n💵 *Take-Home Pay: ${HC.fmt(c.thp)}/bulan*\n📊 ${c.thpPct.toFixed(1)}% dari bruto${thrLine}\n\nAlokasi 50/30/20:\n• Kebutuhan: ${HC.fmt(c.thp * 0.5)}\n• Keinginan: ${HC.fmt(c.thp * 0.3)}\n• Tabungan: ${HC.fmt(c.thp * 0.2)}\n\nHitung di: https://hitungcerdas.net/kalkulator/gaji-bersih`;
       }
 
       $('btnHitung').addEventListener('click', hitung);
@@ -522,6 +568,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
           bpjsTxt:bpjsTxt, pphTxt:pphTxt, pct:pct,
           dplkKaryawanTxt:($('dplkKaryawanShow')||{}).textContent||'', dplkPerusahaanTxt:($('dplkPerusahaanShow')||{}).textContent||'',
           dplkKaryawanPct:($('dplkKaryawan')||{}).value||'0', dplkPerusahaanPct:($('dplkPerusahaan')||{}).value||'0',
+          thrBonus:($('thrBonus')||{}).value||'0', thrPphTxt:($('thrPphShow')||{}).textContent||'', thrNetTxt:($('thrNetShow')||{}).textContent||'', thrRateTxt:($('thrRateShow')||{}).textContent||'',
           gaji:($('gaji')||{}).value||'', tunj:($('tunj')||{}).value||'', tunjVar:($('tunjVar')||{}).value||'',
           ptkp:selText('ptkp'), potLain:($('potLain')||{}).value||'' };
       }
@@ -555,6 +602,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
           (d.potLain && d.potLain!=='0')?('Potongan lain per bulan: Rp '+d.potLain+'.'):'',
           (d.dplkKaryawanPct && d.dplkKaryawanPct!=='0')?('Iuran DPLK karyawan: '+d.dplkKaryawanPct+'% dari gaji pokok ('+d.dplkKaryawanTxt+'/bln) \u2014 dipotong dari gaji & jadi pengurang penghasilan bruto sehingga PPh ikut turun (PMK 168/2023).'):'',
           (d.dplkPerusahaanPct && d.dplkPerusahaanPct!=='0')?('Iuran DPLK perusahaan: '+d.dplkPerusahaanPct+'% dari gaji pokok ('+d.dplkPerusahaanTxt+'/bln) \u2014 ditanggung kantor, di luar gaji karyawan & bukan objek PPh 21 saat disetor.'):'',
+          (d.thrBonus && d.thrBonus!=='0')?('THR/Bonus tahunan: Rp '+d.thrBonus+'. PPh atas THR/bonus: '+d.thrPphTxt+' (tarif efektif '+d.thrRateTxt+'). THR/bonus bersih: '+d.thrNetTxt+'. Catatan: THR/bonus = penghasilan tidak teratur, pajaknya = selisih PPh setahun dengan vs tanpa THR (jadi tarif efektifnya bisa lebih tinggi dari gaji bulanan), diterima sekali & terpisah dari take-home bulanan. Sejak 2024 potongan riil pakai TER di bulan THR lalu dikoreksi Desember.'):'',
           'Take-home pay (gaji bersih) per bulan: '+d.thpTxt+(pct!=null?(' ('+pct.toFixed(1)+'% dari bruto)'):'')+'.',
           'Acuan: alokasi sehat 50% kebutuhan, 30% keinginan, 20% tabungan/investasi. Take-home pay umumnya 70-85% dari bruto. Iuran pensiun (DPLK/JHT/JP) yang dibayar karyawan adalah pengurang penghasilan bruto untuk PPh 21.'
         ];
