@@ -68,9 +68,9 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
             <div class="field"><label>Hutang Jatuh Tempo 12 Bulan</label>
               <div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="hutang" class="has-prefix" placeholder="0" inputmode="numeric" /></div>
               <p class="field-hint">Hanya cicilan 12 bulan ke depan untuk hutang panjang</p></div>
-            <div class="field"><label>Harga Emas per Gram</label>
+            <div class="field"><label>Harga Emas per Gram <span class="hint" id="goldLiveBadge" style="display:none;font-weight:700;color:#047857">🟢 live</span></label>
               <div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="emasGr" class="has-prefix" value="2.700.000" inputmode="numeric" /></div>
-              <p class="field-hint">Default: harga emas Antam ~Rp 2,7jt/gram (Juni 2026). Cek terbaru di logammulia.com</p></div>
+              <p class="field-hint" id="goldLiveNote">Default: harga emas Antam ~Rp 2,7jt/gram (Juni 2026). Cek terbaru di logammulia.com</p></div>
 
             <div class="calc-action-bar">
               <button type="button" class="btn-hitung" id="btnHitung"><i class="ti ti-calculator"></i> Hitung Sekarang</button>
@@ -144,6 +144,29 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       const $ = id => document.getElementById(id);
       const ids = ['tab', 'emas', 'invest', 'aset', 'hutang', 'emasGr'];
       const els = {}; ids.forEach(id => { els[id] = $(id); els[id].addEventListener('input', HC.fmtInput); });
+
+      // Harga emas LIVE (best-effort). Kalau gagal / belum aktif, tetap pakai harga manual.
+      (function loadGoldPrice() {
+        const note = $('goldLiveNote'), badge = $('goldLiveBadge');
+        const fmtId = n => new Intl.NumberFormat('id-ID').format(n);
+        fetch('/api/gold', { headers: { 'accept': 'application/json' } })
+          .then(r => r.json())
+          .then(d => {
+            if (d && d.ok && d.pricePerGram24k > 0) {
+              els.emasGr.value = fmtId(d.pricePerGram24k);
+              if (badge) badge.style.display = '';
+              if (note) {
+                let t = '';
+                if (d.ts) { try { t = ' · update ' + new Date(d.ts * 1000).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' }); } catch (e) {} }
+                note.innerHTML = `Harga emas 24k <strong>live</strong> (spot dunia): Rp ${fmtId(d.pricePerGram24k)}/gram${t}. Bisa kamu edit — sebagian ulama pakai harga <strong>Antam</strong> (lebih tinggi, ada premi cetak) sebagai acuan nisab.`;
+                note.style.color = '#047857';
+              }
+              if (lastCalc) hitung();
+            }
+            // kalau d.ok=false: diam saja, biarkan harga manual default (tidak ada error ke user)
+          })
+          .catch(() => { /* offline / belum deploy function: pakai manual, tanpa error */ });
+      })();
 
       let lastCalc = null;
 
