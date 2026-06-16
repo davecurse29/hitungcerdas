@@ -78,6 +78,12 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
                 <option value="72000000">K/3 - 3 anak</option>
               </select></div>
 
+            <div class="field"><label>Metode Hitung PPh 21</label>
+              <select id="pphMethod">
+                <option value="tahunan">Estimasi Tahunan (progresif ÷12)</option>
+                <option value="ter">TER Bulanan — sesuai slip 2024+</option>
+              </select></div>
+
             <div class="field"><label>Potongan Lain per Bulan <span class="hint">(koperasi, cicilan internal)</span></label>
               <div class="input-wrap"><span class="input-prefix">Rp</span>
                 <input type="text" id="potLain" class="has-prefix" value="0" inputmode="numeric" /></div></div>
@@ -122,6 +128,8 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
                 <div class="result-item"><div class="result-item-label">DPLK Perusahaan <span style="font-weight:400;font-size:10px;opacity:.7">(kantor)</span></div><div class="result-item-value" id="dplkPerusahaanShow">Rp 0</div></div>
               </div>
 
+              <div id="pphMethodInfo" style="font-size:11.5px;color:var(--text-mute);margin:2px 2px 4px;line-height:1.45"></div>
+
               <div class="adv-section open" id="thrBlock" style="display:none">
                 <div class="adv-toggle"><span><i class="ti ti-gift"></i>&nbsp; Rincian THR / Bonus (diterima sekali)</span><i class="ti ti-chevron-down chev"></i></div>
                 <div class="adv-content">
@@ -132,6 +140,17 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
                     <div class="result-item"><div class="result-item-label">Tarif Efektif THR</div><div class="result-item-value" id="thrRateShow">0%</div></div>
                   </div>
                   <p style="font-size:11.5px;color:var(--text-mute);margin-top:8px;line-height:1.5">💡 THR/bonus = penghasilan <strong>tidak teratur</strong>. Pajaknya = selisih PPh setahun (dengan vs tanpa THR), jadi tarif efektifnya bisa lebih tinggi dari gaji biasa. Diterima sekali, <strong>terpisah</strong> dari take-home bulanan. Sejak 2024 potongan riil pakai TER di bulan THR, lalu dikoreksi di Desember.</p>
+                </div>
+              </div>
+
+              <div class="adv-section">
+                <div class="adv-toggle"><span><i class="ti ti-building-skyscraper"></i>&nbsp; Total Biaya Perusahaan (CTC)</span><i class="ti ti-chevron-down chev"></i></div>
+                <div class="adv-content">
+                  <table class="compare-table">
+                    <thead><tr><th>Komponen (ditanggung kantor)</th><th class="right">Per Bulan</th></tr></thead>
+                    <tbody id="ctcBody"></tbody>
+                  </table>
+                  <p style="font-size:11.5px;color:var(--text-mute);margin-top:8px;line-height:1.5">💡 CTC = total biaya perusahaan untuk mempekerjakanmu (gaji + iuran BPJS sisi kantor + DPLK kantor). Take-home kamu <strong id="ctcRatio">—</strong> dari total ini. Berguna saat negosiasi gaji. (JKK pakai asumsi risiko rendah 0,24%; tarif aktual tergantung sektor usaha.)</p>
                 </div>
               </div>
 
@@ -369,7 +388,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
     function ready(fn) { if (window.HC && window.html2canvas) fn(); else setTimeout(() => ready(fn), 100); }
     ready(() => {
       const $ = id => document.getElementById(id);
-      const els = { gaji: $('gaji'), tunj: $('tunj'), tunjVar: $('tunjVar'), ptkp: $('ptkp'), potLain: $('potLain'), dplkKaryawan: $('dplkKaryawan'), dplkPerusahaan: $('dplkPerusahaan'), thrBonus: $('thrBonus') };
+      const els = { gaji: $('gaji'), tunj: $('tunj'), tunjVar: $('tunjVar'), ptkp: $('ptkp'), pphMethod: $('pphMethod'), potLain: $('potLain'), dplkKaryawan: $('dplkKaryawan'), dplkPerusahaan: $('dplkPerusahaan'), thrBonus: $('thrBonus') };
       [els.gaji, els.tunj, els.tunjVar, els.potLain, els.thrBonus].forEach(el => el.addEventListener('input', HC.fmtInput));
       document.querySelectorAll('.adv-toggle').forEach(t => t.addEventListener('click', () => t.parentElement.classList.toggle('open')));
 
@@ -384,6 +403,16 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         for (const b of BRACKETS) { if (r <= 0) break; const s = Math.min(r, b.max - prev); total += s * b.rate; r -= s; prev = b.max; }
         return total;
       }
+
+      // ===== Tabel TER Bulanan PP 58/2023 (resmi). [batas atas bruto/bln, tarif %] =====
+      const TER = {
+        A: [[5400000,0],[5650000,.25],[5950000,.5],[6300000,.75],[6750000,1],[7500000,1.25],[8550000,1.5],[9650000,1.75],[10050000,2],[10350000,2.25],[10700000,2.5],[11050000,3],[11600000,3.5],[12500000,4],[13750000,5],[15100000,6],[16950000,7],[19750000,8],[24150000,9],[26450000,10],[28000000,11],[30050000,12],[32400000,13],[35400000,14],[39100000,15],[43850000,16],[47800000,17],[51400000,18],[56300000,19],[62200000,20],[68600000,21],[77500000,22],[89000000,23],[103000000,24],[125000000,25],[157000000,26],[206000000,27],[337000000,28],[454000000,29],[550000000,30],[695000000,31],[910000000,32],[1400000000,33],[Infinity,34]],
+        B: [[6200000,0],[6500000,.25],[6850000,.5],[7300000,.75],[9200000,1],[10750000,1.5],[11250000,2],[11600000,2.5],[12600000,3],[13600000,4],[14950000,5],[16400000,6],[18450000,7],[21850000,8],[26000000,9],[27700000,10],[29350000,11],[31450000,12],[33950000,13],[37100000,14],[41100000,15],[45800000,16],[49500000,17],[53800000,18],[58500000,19],[64000000,20],[71000000,21],[80000000,22],[93000000,23],[109000000,24],[129000000,25],[163000000,26],[211000000,27],[374000000,28],[459000000,29],[555000000,30],[704000000,31],[957000000,32],[1405000000,33],[Infinity,34]],
+        C: [[6600000,0],[6950000,.25],[7350000,.5],[7800000,.75],[8850000,1],[9800000,1.25],[10950000,1.5],[11200000,1.75],[12050000,2],[12950000,3],[14150000,4],[15550000,5],[17050000,6],[19500000,7],[22700000,8],[26600000,9],[28100000,10],[30100000,11],[32600000,12],[35400000,13],[38900000,14],[43000000,15],[47400000,16],[51200000,17],[55800000,18],[60400000,19],[66700000,20],[74500000,21],[83200000,22],[95600000,23],[110000000,24],[134000000,25],[169000000,26],[221000000,27],[390000000,28],[463000000,29],[561000000,30],[709000000,31],[965000000,32],[1419000000,33],[Infinity,34]]
+      };
+      // PTKP -> kategori TER: A (TK/0, K/0 ≤58,5jt), B (K/1, K/2 ≤67,5jt), C (K/3)
+      function terCategory(ptkp){ return ptkp <= 58500000 ? 'A' : (ptkp <= 67500000 ? 'B' : 'C'); }
+      function terRate(cat, bruto){ const t = TER[cat]; for (let i=0;i<t.length;i++){ if (bruto <= t[i][0]) return t[i][1]/100; } return t[t.length-1][1]/100; }
 
       let lastCalc = null;
 
@@ -410,27 +439,51 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         const bpjsJp = Math.min(brutoBulan * 0.01, 87000);
         const bpjsTotal = bpjsKes + bpjsJht + bpjsJp;
 
-        // PPh 21
+        // ===== PPh 21: dua metode =====
+        const useTer = els.pphMethod.value === 'ter';
+        const terCat = terCategory(ptkp);
+        const terRt = terRate(terCat, brutoBulan);
+
+        // Metode TAHUNAN (progresif disetahunkan, dibagi 12)
         const brutoTahun = brutoBulan * 12;
         const biayaJabatan = Math.min(brutoTahun * 0.05, 6000000);
         const neto = brutoTahun - biayaJabatan - (bpjsTotal * 12) - (dplkKaryawan * 12);
         const pkp = Math.max(0, neto - ptkp);
         const pphTahun = calcPPh(pkp);
-        const pphBulan = pphTahun / 12;
+        const pphBulanTahunan = pphTahun / 12;
 
-        // THR / Bonus = penghasilan TIDAK TERATUR. PPh-nya = selisih PPh setahun (dengan vs tanpa THR).
+        // Metode TER BULANAN (Jan–Nov): tarif efektif × bruto bulan ini
+        const pphBulanTER = terRt * brutoBulan;
+
+        const pphBulan = useTer ? pphBulanTER : pphBulanTahunan;
+
+        // THR / Bonus = penghasilan tidak teratur (digabung ke bruto bulan diterimanya).
         const thrBonus = HC.parseRp(els.thrBonus.value);
         let thrPph = 0, thrNet = 0, thrRate = 0;
         if (thrBonus > 0) {
-          const brutoTahunTHR = brutoTahun + thrBonus;
-          const biayaJabatanTHR = Math.min(brutoTahunTHR * 0.05, 6000000);
-          const netoTHR = brutoTahunTHR - biayaJabatanTHR - (bpjsTotal * 12) - (dplkKaryawan * 12);
-          const pkpTHR = Math.max(0, netoTHR - ptkp);
-          const pphTahunTHR = calcPPh(pkpTHR);
-          thrPph = Math.max(0, pphTahunTHR - pphTahun);
+          if (useTer) {
+            // TER: pajak bulan THR = TER(bruto+THR)×(bruto+THR) − TER(bruto)×bruto
+            const rThr = terRate(terCat, brutoBulan + thrBonus);
+            thrPph = Math.max(0, rThr * (brutoBulan + thrBonus) - pphBulanTER);
+          } else {
+            // Tahunan: selisih PPh setahun (dengan vs tanpa THR)
+            const brutoTahunTHR = brutoTahun + thrBonus;
+            const biayaJabatanTHR = Math.min(brutoTahunTHR * 0.05, 6000000);
+            const netoTHR = brutoTahunTHR - biayaJabatanTHR - (bpjsTotal * 12) - (dplkKaryawan * 12);
+            thrPph = Math.max(0, calcPPh(Math.max(0, netoTHR - ptkp)) - pphTahun);
+          }
           thrNet = thrBonus - thrPph;
           thrRate = (thrPph / thrBonus) * 100;
         }
+
+        // ===== Total Biaya Perusahaan (CTC) — iuran sisi kantor =====
+        const empKes = Math.min(brutoBulan, 12000000) * 0.04;   // BPJS Kesehatan kantor 4% (ceiling gaji 12jt)
+        const empJht = brutoBulan * 0.037;                       // JHT kantor 3,7%
+        const empJp  = Math.min(brutoBulan, 8700000) * 0.02;     // JP kantor 2% (ceiling 8,7jt)
+        const empJkk = brutoBulan * 0.0024;                      // JKK 0,24% (asumsi risiko rendah)
+        const empJkm = brutoBulan * 0.003;                       // JKM 0,3%
+        const empBpjs = empKes + empJht + empJp + empJkk + empJkm;
+        const ctc = brutoBulan + empBpjs + dplkPerusahaan;
 
         const thp = brutoBulan - bpjsTotal - pphBulan - potLain - dplkKaryawan;
         const thpPct = (thp / brutoBulan) * 100;
@@ -440,9 +493,23 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         $('bruto').textContent = HC.fmt(brutoBulan);
         $('bpjsTotal').textContent = HC.fmt(bpjsTotal);
         $('pphBulan').textContent = HC.fmt(pphBulan);
+        $('pphMethodInfo').innerHTML = useTer
+          ? `<i class="ti ti-receipt-tax"></i> Metode <strong>TER ${terCat}</strong> · tarif efektif <strong>${(terRt*100).toFixed(2)}%</strong> × bruto (potongan riil slip Jan–Nov). Desember dikoreksi ke total tahunan.`
+          : `<i class="ti ti-calculator"></i> Metode <strong>estimasi tahunan</strong> (progresif disetahunkan ÷12). Pilih <strong>TER</strong> untuk angka sesuai slip gaji 2024+.`;
         $('potLainShow').textContent = HC.fmt(potLain);
         $('dplkKaryawanShow').textContent = HC.fmt(dplkKaryawan);
         $('dplkPerusahaanShow').textContent = HC.fmt(dplkPerusahaan);
+
+        $('ctcBody').innerHTML =
+          `<tr><td>Gaji bruto (yang kamu lihat)</td><td class="right">${HC.fmt(brutoBulan)}</td></tr>`
+          + `<tr><td>BPJS Kesehatan (4%)</td><td class="right">${HC.fmt(empKes)}</td></tr>`
+          + `<tr><td>JHT (3,7%)</td><td class="right">${HC.fmt(empJht)}</td></tr>`
+          + `<tr><td>JP (2%)</td><td class="right">${HC.fmt(empJp)}</td></tr>`
+          + `<tr><td>JKK (0,24%, risiko rendah)</td><td class="right">${HC.fmt(empJkk)}</td></tr>`
+          + `<tr><td>JKM (0,3%)</td><td class="right">${HC.fmt(empJkm)}</td></tr>`
+          + (dplkPerusahaan > 0 ? `<tr><td>DPLK perusahaan</td><td class="right">${HC.fmt(dplkPerusahaan)}</td></tr>` : '')
+          + `<tr class="active"><td><strong>Total Biaya Perusahaan</strong></td><td class="right"><strong>${HC.fmt(ctc)}</strong></td></tr>`;
+        $('ctcRatio').textContent = `${(thp / ctc * 100).toFixed(0)}%`;
 
         if (thrBonus > 0) {
           $('thrBlock').style.display = '';
@@ -472,7 +539,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         }
         $('proyeksiBody').innerHTML = html;
 
-        lastCalc = { gaji, tunj, tunjVar, ptkpLabel: els.ptkp.options[els.ptkp.selectedIndex].text, potLain, dplkKaryawan, dplkPerusahaan, dplkKaryawanPct, dplkPerusahaanPct, thrBonus, thrPph, thrNet, thrRate, brutoBulan, bpjsTotal, pphBulan, thp, thpPct };
+        lastCalc = { gaji, tunj, tunjVar, ptkpLabel: els.ptkp.options[els.ptkp.selectedIndex].text, useTer, terCat, terRt, pphBulanTahunan, pphBulanTER, ctc, empBpjs, potLain, dplkKaryawan, dplkPerusahaan, dplkKaryawanPct, dplkPerusahaanPct, thrBonus, thrPph, thrNet, thrRate, brutoBulan, bpjsTotal, pphBulan, thp, thpPct };
         $('placeholder').style.display = 'none';
         $('results').classList.add('show');
         $('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -481,7 +548,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
 
       function reset() {
         els.gaji.value = '8.000.000'; els.tunj.value = '1.500.000'; els.tunjVar.value = '0';
-        els.ptkp.value = '54000000'; els.potLain.value = '0'; els.dplkKaryawan.value = '0'; els.dplkPerusahaan.value = '0'; els.thrBonus.value = '0';
+        els.ptkp.value = '54000000'; els.pphMethod.value = 'tahunan'; els.potLain.value = '0'; els.dplkKaryawan.value = '0'; els.dplkPerusahaan.value = '0'; els.thrBonus.value = '0';
         $('thrBlock').style.display = 'none';
         $('placeholder').style.display = ''; $('results').classList.remove('show');
         lastCalc = null; HC.toast('Form direset', 'info');
@@ -530,6 +597,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       }
 
       $('btnHitung').addEventListener('click', hitung);
+      els.pphMethod.addEventListener('change', () => { if (lastCalc) hitung(); });
       $('btnReset').addEventListener('click', reset);
       $('exportImg').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToImage(c, 'gaji-bersih-' + Date.now()); });
       $('exportWa').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.shareWhatsApp(c, summaryText(), 'gaji-bersih'); });
@@ -570,7 +638,8 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
           dplkKaryawanPct:($('dplkKaryawan')||{}).value||'0', dplkPerusahaanPct:($('dplkPerusahaan')||{}).value||'0',
           thrBonus:($('thrBonus')||{}).value||'0', thrPphTxt:($('thrPphShow')||{}).textContent||'', thrNetTxt:($('thrNetShow')||{}).textContent||'', thrRateTxt:($('thrRateShow')||{}).textContent||'',
           gaji:($('gaji')||{}).value||'', tunj:($('tunj')||{}).value||'', tunjVar:($('tunjVar')||{}).value||'',
-          ptkp:selText('ptkp'), potLain:($('potLain')||{}).value||'' };
+          ptkp:selText('ptkp'), potLain:($('potLain')||{}).value||'',
+          pphMethod:selText('pphMethod'), ctcRatio:($('ctcRatio')||{}).textContent||'' };
       }
 
       function renderGround(){
@@ -597,6 +666,8 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
           (d.tunj && d.tunj!=='0')?('Tunjangan tetap: Rp '+d.tunj+'.'):'',
           (d.tunjVar && d.tunjVar!=='0')?('Tunjangan tidak tetap (lembur/komisi): Rp '+d.tunjVar+'.'):'',
           d.ptkp?('Status PTKP: '+d.ptkp+'.'):'',
+          d.pphMethod?('Metode hitung PPh 21 yang dipilih: '+d.pphMethod+'. (TER = tarif efektif bulanan PP 58/2023 untuk masa Jan-Nov, dikoreksi Desember; Estimasi Tahunan = progresif disetahunkan dibagi 12.)'):'',
+          (d.ctcRatio)?('Total Biaya Perusahaan (CTC) = gaji bruto + iuran BPJS sisi kantor (Kes 4%, JHT 3,7%, JP 2%, JKK ~0,24%, JKM 0,3%) + DPLK kantor. Take-home karyawan sekitar '+d.ctcRatio+' dari CTC.'):'',
           'Gaji bruto per bulan: '+d.brutoTxt+'.',
           'Potongan BPJS karyawan: '+d.bpjsTxt+'. PPh 21 per bulan: '+d.pphTxt+'.',
           (d.potLain && d.potLain!=='0')?('Potongan lain per bulan: Rp '+d.potLain+'.'):'',
