@@ -12,7 +12,7 @@ const related = getRelatedCalculators('zakat-mal', 3);
 const faqs = [
   { question: 'Beda zakat mal & fitrah?', answer: '<strong>Mal</strong>: zakat harta yang capai nisab & haul 1 tahun, tarif 2,5%. <strong>Fitrah</strong>: zakat jiwa di Ramadhan, 2,5kg beras/jiwa, tidak ada nisab.' },
   { question: 'Harta apa wajib dizakati?', answer: 'Uang tunai, tabungan, emas/perak, investasi (saham, reksadana, crypto), piutang, aset usaha, properti investasi. TIDAK: rumah tinggal, kendaraan pribadi, perabotan, pakaian.' },
-  { question: 'Nisab & haul?', answer: '<strong>Nisab</strong> = 85 gr emas (~Rp 229,5jt dengan harga emas Juni 2026 ~Rp 2,7jt/gram). <strong>Haul</strong> = harta dimiliki min 1 tahun. Praktis: tetapkan tanggal patokan (misal Ramadhan) untuk hitung setahun sekali.' },
+  { question: 'Nisab & haul?', answer: '<strong>Nisab</strong> = 85 gr emas. Nilai rupiahnya mengikuti harga emas terkini — sekitar Rp 205–230jt, tergantung acuan (spot emas dunia atau harga Antam yang lebih tinggi). Kalkulator ini menghitung nisab otomatis dari harga emas yang dipakai. <strong>Haul</strong> = harta dimiliki min 1 tahun. Praktis: tetapkan tanggal patokan (misal Ramadhan) untuk hitung setahun sekali.' },
   { question: 'Hutang mengurangi zakat?', answer: 'YA, hutang jatuh tempo 12 bulan ke depan kurangi harta. Rumus: Zakat = (Harta - Hutang Jangka Pendek) × 2,5%, jika setelahnya masih di atas nisab.' },
   { question: 'Kapan bayar?', answer: 'Saat haul terpenuhi (harta dimiliki 1 tahun). Praktis: tetapkan tanggal patokan tahunan, hitung total harta, bayar 2,5%. Banyak Muslim Indonesia bayar di Ramadhan.' },
 ];
@@ -70,7 +70,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
               <p class="field-hint">Hanya cicilan 12 bulan ke depan untuk hutang panjang</p></div>
             <div class="field"><label>Harga Emas per Gram <span class="hint" id="goldLiveBadge" style="display:none;font-weight:700;color:#047857">🟢 live</span></label>
               <div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="emasGr" class="has-prefix" value="2.700.000" inputmode="numeric" /></div>
-              <p class="field-hint" id="goldLiveNote">Default: harga emas Antam ~Rp 2,7jt/gram (Juni 2026). Cek terbaru di logammulia.com</p></div>
+              <p class="field-hint" id="goldLiveNote">Harga emas terisi otomatis (spot terkini). Jika offline, pakai default manual ~Rp 2,7jt/gram (acuan Antam) — bisa kamu edit.</p></div>
 
             <div class="calc-action-bar">
               <button type="button" class="btn-hitung" id="btnHitung"><i class="ti ti-calculator"></i> Hitung Sekarang</button>
@@ -120,7 +120,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
   <section class="content-section">
     <div class="wrap-text">
       <h2>Cara Menghitung Zakat Mal yang Benar</h2>
-      <p>Zakat mal wajib bagi Muslim yang hartanya capai nisab (85 gr emas ≈ Rp 229,5jt dengan harga emas Juni 2026 ~Rp 2,7jt/gram) dan sudah dimiliki min 1 tahun. Tarif 2,5% dari harta bersih (setelah dikurangi hutang jatuh tempo). Punya penghasilan rutin? Hitung juga <a href="/kalkulator/zakat-penghasilan">zakat penghasilan</a>. Menjelang Idul Fitri, jangan lupa <a href="/kalkulator/zakat-fitrah">zakat fitrah</a>.</p>
+      <p>Zakat mal wajib bagi Muslim yang hartanya capai nisab (85 gr emas — sekitar Rp 205–230jt mengikuti harga emas terkini, tergantung acuan spot emas dunia atau harga Antam) dan sudah dimiliki min 1 tahun. Tarif 2,5% dari harta bersih (setelah dikurangi hutang jatuh tempo). Punya penghasilan rutin? Hitung juga <a href="/kalkulator/zakat-penghasilan">zakat penghasilan</a>. Menjelang Idul Fitri, jangan lupa <a href="/kalkulator/zakat-fitrah">zakat fitrah</a>.</p>
       <div class="cta-box"><h3>Tunaikan Zakat Mal Anda</h3><p>Hitung total harta, kurangi hutang, lalu bayar 2,5% via BAZNAS atau lembaga zakat resmi.</p></div>
     </div>
   </section>
