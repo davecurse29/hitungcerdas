@@ -175,7 +175,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
               <div class="adv-section" id="scenBlock">
                 <div class="adv-toggle"><span><i class="ti ti-columns"></i>&nbsp; Bandingkan Skenario A vs B</span><i class="ti ti-chevron-down chev"></i></div>
                 <div class="adv-content">
-                  <p style="font-size:12px;color:var(--text-mute);margin:0 0 8px;line-height:1.5">Hitung skenario pertama lalu simpan sebagai <b>A</b>. Ubah input, Hitung lagi, simpan sebagai <b>B</b>. Tabel perbandingan muncul otomatis.</p>
+                  <p style="font-size:12px;color:var(--text-mute);margin:0 0 8px;line-height:1.5">Atur input skenario pertama lalu klik <b>Simpan sbg A</b>. Ubah input, klik <b>Simpan sbg B</b>. Otomatis dihitung ulang saat disimpan — tabel perbandingan muncul sendiri.</p>
                   <div style="display:flex;gap:8px">
                     <button type="button" class="btn-reset" id="btnScenA" style="flex:1"><i class="ti ti-bookmark"></i> Simpan sbg A</button>
                     <button type="button" class="btn-reset" id="btnScenB" style="flex:1"><i class="ti ti-bookmark"></i> Simpan sbg B</button>
@@ -509,11 +509,13 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       function scenFmt(v, t) { return t === 'pct' ? v.toFixed(1) + '%' : HC.fmt(v); }
       function buildSnap() { var c = lastCalc; return { label: c.tahun + 'thn @ ' + c.ret + '%', rows: [ {k:'Nilai Akhir', v:c.fv, t:'rp'}, {k:'Total Setor', v:c.totalSetor, t:'rp'}, {k:'Keuntungan', v:c.untung, t:'rp'} ] }; }
       function snapScenario(slot) {
-        if (!lastCalc) { HC.toast('Hitung dulu sebelum simpan skenario', 'error'); return; }
+        hitung(); // refresh dari input terkini agar snapshot selalu akurat (anti lupa klik Hitung)
+        if (!lastCalc) { HC.toast('Isi data dulu sebelum simpan skenario', 'error'); return; }
         var snap = buildSnap();
         if (slot === 'A') scenA = snap; else scenB = snap;
         HC.toast('Tersimpan sebagai Skenario ' + slot + ' (' + snap.label + ')');
         renderScenario();
+        var _sb = $('scenResult'); if (_sb) _sb.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       }
       function renderScenario() {
         var box = $('scenResult');
@@ -541,6 +543,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
           html += '<p style="font-size:13px;margin-top:8px;font-weight:600;color:var(--green-dark,#047857)">' + msg + '</p>';
         }
         box.innerHTML = html;
+        box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       }
       var bSA = $('btnScenA'); if (bSA) bSA.addEventListener('click', function () { snapScenario('A'); });
       var bSB = $('btnScenB'); if (bSB) bSB.addEventListener('click', function () { snapScenario('B'); });
