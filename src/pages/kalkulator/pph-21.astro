@@ -71,6 +71,14 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
                 <input type="text" id="bonus" class="has-prefix" placeholder="10.000.000" value="10.000.000" inputmode="numeric" /></div>
             </div>
 
+            <div class="field"><label>Jenis Penghasilan</label>
+              <select id="jenis">
+                <option value="pegawai">Pegawai Tetap (karyawan)</option>
+                <option value="freelancer">Bukan Pegawai / Freelancer (DPP 50%)</option>
+              </select>
+              <p class="field-hint" id="jenisHint">Pegawai tetap: ada biaya jabatan 5% & BPJS. Freelancer/bukan pegawai: dasar pajak = 50% × bruto (PER-16/PJ/2016).</p>
+            </div>
+
             <div class="field"><label>Status PTKP</label>
               <select id="ptkp">
                 <option value="54000000">TK/0 - Lajang (Rp 54jt)</option>
@@ -366,7 +374,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
     function ready(fn) { if (window.HC && window.html2canvas) fn(); else setTimeout(() => ready(fn), 100); }
     ready(() => {
       const $ = id => document.getElementById(id);
-      const els = { gaji: $('gaji'), tunj: $('tunjangan'), bonus: $('bonus'), ptkp: $('ptkp'), pphMethod: $('pphMethod'), bpjs: $('bpjs') };
+      const els = { gaji: $('gaji'), tunj: $('tunjangan'), bonus: $('bonus'), ptkp: $('ptkp'), pphMethod: $('pphMethod'), bpjs: $('bpjs'), jenis: $('jenis') };
 
       [els.gaji, els.tunj, els.bonus, els.bpjs].forEach(el => el.addEventListener('input', HC.fmtInput));
 
@@ -416,29 +424,47 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
 
         if (gaji === 0) { HC.toast('Masukkan gaji pokok dulu', 'error'); return; }
 
+        const isFreelancer = els.jenis.value === 'freelancer';
         const bruto = (gaji + tunj) * 12 + bonus;
-        const biayaJabatan = Math.min(bruto * 0.05, 6000000);
-        const bpjsTahun = bpjsBulan * 12;
-        const neto = bruto - biayaJabatan - bpjsTahun;
-        const pkp = Math.max(0, neto - ptkp);
-        const { total: pphTahun, breakdown } = calcPPh(pkp);
-        const pphBulanTahunan = pphTahun / 12;
-        // TER bulanan (Jan–Nov): tarif efektif × bruto bulan reguler (gaji + tunjangan)
-        const useTer = els.pphMethod.value === 'ter';
-        const terCat = terCategory(ptkp);
         const brutoBulanReg = gaji + tunj;
-        const terRt = terRate(terCat, brutoBulanReg);
-        const pphBulanTER = terRt * brutoBulanReg;
-        const pphBulan = useTer ? pphBulanTER : pphBulanTahunan;
-        const thp = (gaji + tunj) - bpjsBulan - pphBulan;
+        let neto, pkp, pphTahun, breakdown, pphBulan;
+        let useTer = false, terCat = '', terRt = 0, pphBulanTahunan = 0, pphBulanTER = 0;
+
+        if (isFreelancer) {
+          // Bukan pegawai berkesinambungan (ber-NPWP, 1 pemberi penghasilan):
+          // DPP = 50% × bruto, lalu tarif progresif Pasal 17 atas (DPP − PTKP).
+          neto = bruto * 0.5; // DPP
+          pkp = Math.max(0, neto - ptkp);
+          const c = calcPPh(pkp); pphTahun = c.total; breakdown = c.breakdown;
+          pphBulan = pphTahun / 12;
+          pphBulanTahunan = pphBulan;
+        } else {
+          const biayaJabatan = Math.min(bruto * 0.05, 6000000);
+          const bpjsTahun = bpjsBulan * 12;
+          neto = bruto - biayaJabatan - bpjsTahun;
+          pkp = Math.max(0, neto - ptkp);
+          const c = calcPPh(pkp); pphTahun = c.total; breakdown = c.breakdown;
+          pphBulanTahunan = pphTahun / 12;
+          useTer = els.pphMethod.value === 'ter';
+          terCat = terCategory(ptkp);
+          terRt = terRate(terCat, brutoBulanReg);
+          pphBulanTER = terRt * brutoBulanReg;
+          pphBulan = useTer ? pphBulanTER : pphBulanTahunan;
+        }
+        const thp = isFreelancer ? (brutoBulanReg - pphBulan) : (brutoBulanReg - bpjsBulan - pphBulan);
 
         $('pphBulan').textContent = HC.fmt(pphBulan);
-        $('metaInfo').textContent = useTer ? `Metode TER ${terCat} · ${(terRt*100).toFixed(2)}% × bruto bulan` : `PPh setahun: ${HC.fmt(pphTahun)}`;
-        $('pphMethodInfo').innerHTML = useTer
-          ? `<i class="ti ti-receipt-tax"></i> <strong>TER ${terCat}</strong> — potongan riil slip Jan–Nov. Bonus/THR dipotong di bulan diterimanya, Desember dikoreksi ke total setahun (${HC.fmt(pphTahun)}).`
-          : `<i class="ti ti-calculator"></i> <strong>Estimasi tahunan</strong> (progresif disetahunkan ÷12). Pilih <strong>TER</strong> untuk angka sesuai slip gaji 2024+.`;
+        $('metaInfo').textContent = isFreelancer
+          ? `Bukan Pegawai · DPP 50% · PPh setahun ${HC.fmt(pphTahun)}`
+          : (useTer ? `Metode TER ${terCat} · ${(terRt*100).toFixed(2)}% × bruto bulan` : `PPh setahun: ${HC.fmt(pphTahun)}`);
+        $('pphMethodInfo').innerHTML = isFreelancer
+          ? `<i class="ti ti-user-dollar"></i> <strong>Bukan Pegawai / Freelancer</strong> — Dasar Pengenaan Pajak = <strong>50% × bruto</strong>, lalu tarif progresif Pasal 17 atas (DPP − PTKP). Biaya jabatan & BPJS karyawan tidak berlaku. Metode TER hanya untuk pegawai tetap.`
+          : (useTer
+            ? `<i class="ti ti-receipt-tax"></i> <strong>TER ${terCat}</strong> — potongan riil slip Jan–Nov. Bonus/THR dipotong di bulan diterimanya, Desember dikoreksi ke total setahun (${HC.fmt(pphTahun)}).`
+            : `<i class="ti ti-calculator"></i> <strong>Estimasi tahunan</strong> (progresif disetahunkan ÷12). Pilih <strong>TER</strong> untuk angka sesuai slip gaji 2024+.`);
         $('bruto').textContent = HC.fmt(bruto);
         $('neto').textContent = HC.fmt(neto);
+        var netoLbl = $('neto').previousElementSibling; if (netoLbl) netoLbl.textContent = isFreelancer ? 'DPP (50% Bruto)' : 'Neto Setahun';
         $('pkp').textContent = HC.fmt(pkp);
         $('thp').textContent = HC.fmt(thp);
 
@@ -468,7 +494,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
 
       function reset() {
         els.gaji.value = '10.000.000'; els.tunj.value = '2.000.000'; els.bonus.value = '10.000.000';
-        els.ptkp.value = '54000000'; els.pphMethod.value = 'tahunan'; els.bpjs.value = '400.000';
+        els.ptkp.value = '54000000'; els.pphMethod.value = 'tahunan'; els.bpjs.value = '400.000'; els.jenis.value = 'pegawai'; els.pphMethod.disabled = false; els.bpjs.disabled = false; els.pphMethod.style.opacity = ''; els.bpjs.style.opacity = '';
         $('placeholder').style.display = ''; $('results').classList.remove('show');
         lastCalc = null; HC.toast('Form direset', 'info');
       }
@@ -514,6 +540,13 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       }
 
       $('btnHitung').addEventListener('click', hitung);
+      function syncJenis() {
+        const fl = els.jenis.value === 'freelancer';
+        els.pphMethod.disabled = fl; els.bpjs.disabled = fl;
+        els.pphMethod.style.opacity = fl ? '0.5' : ''; els.bpjs.style.opacity = fl ? '0.5' : '';
+        if (lastCalc) hitung();
+      }
+      els.jenis.addEventListener('change', syncJenis);
       els.pphMethod.addEventListener('change', () => { if (lastCalc) hitung(); });
       $('btnReset').addEventListener('click', reset);
       $('exportImg').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToImage(c, 'pph21-' + Date.now()); });

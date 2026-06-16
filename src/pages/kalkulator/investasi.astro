@@ -156,6 +156,22 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
                 </div>
               </div>
 
+              <div class="adv-section open">
+                <div class="adv-toggle"><span><i class="ti ti-receipt-tax"></i>&nbsp; Pajak Hasil Investasi (PPh Final)</span><i class="ti ti-chevron-down chev"></i></div>
+                <div class="adv-content">
+                  <div class="field" style="margin-bottom:0"><label>Jenis Instrumen</label>
+                    <select id="pajakInstrumen">
+                      <option value="reksadana">Reksadana (saham/campuran) — bebas pajak investor</option>
+                      <option value="saham">Saham (jual di bursa) — PPh final 0,1%</option>
+                      <option value="deposito">Deposito — PPh final 20% bunga</option>
+                      <option value="obligasi">Obligasi/SBN/ORI/SBR — PPh final 10% kupon</option>
+                      <option value="crypto">Crypto — PPh 0,1% + PPN 0,11%</option>
+                    </select></div>
+                  <div id="pajakBody" style="margin-top:12px"></div>
+                  <p style="font-size:11.5px;color:var(--text-mute);margin-top:8px;line-height:1.5">💡 Pajak investasi di Indonesia umumnya <strong>PPh final</strong> (sekali potong, tidak digabung penghasilan lain). Reksa dana bebas pajak di level investor; keuntungan jual saham tidak dipajaki (hanya bea 0,1% saat jual); bunga deposito & kupon obligasi dipotong final. Angka ini estimasi sederhana.</p>
+                </div>
+              </div>
+
               <div class="export-row">
                 <button type="button" class="export-btn img" id="exportImg"><i class="ti ti-photo-down"></i><span>Save Image</span></button>
                 <button type="button" class="export-btn wa" id="exportWa"><i class="ti ti-brand-whatsapp"></i><span>Share WA</span></button>
@@ -374,6 +390,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       [els.modal, els.topup].forEach(el => el.addEventListener('input', HC.fmtInput));
       var goalTargetEl = $('goalTarget'); if (goalTargetEl) goalTargetEl.addEventListener('input', HC.fmtInput);
       document.querySelectorAll('.quick-btns button').forEach(btn => btn.addEventListener('click', () => { els.ret.value = btn.dataset.r; }));
+      var pj=$('pajakInstrumen'); if(pj) pj.addEventListener('change', renderPajak);
       els.inflasiToggle.addEventListener('change', () => els.inflasiBox.classList.toggle('active', els.inflasiToggle.checked));
       document.querySelectorAll('.adv-toggle').forEach(t => t.addEventListener('click', () => t.parentElement.classList.toggle('open')));
 
@@ -446,10 +463,31 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         }).join('');
 
         lastCalc = { modal, topup, ret, tahun, fv, totalSetor, untung, useInflasi, skenario, inflasi, realReturn, realFv };
+        renderPajak();
         $('placeholder').style.display = 'none';
         $('results').classList.add('show');
         $('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         HC.toast('Proyeksi berhasil dihitung!');
+      }
+
+      function renderPajak() {
+        if (!lastCalc) return;
+        const fv = lastCalc.fv, untung = Math.max(0, lastCalc.untung);
+        const t = $('pajakInstrumen').value;
+        let pajak = 0, rate = '';
+        if (t === 'reksadana') { pajak = 0; rate = '0% — bebas pajak di level investor'; }
+        else if (t === 'deposito') { pajak = untung * 0.20; rate = '20% × keuntungan (bunga)'; }
+        else if (t === 'obligasi') { pajak = untung * 0.10; rate = '10% × keuntungan (kupon)'; }
+        else if (t === 'saham') { pajak = fv * 0.001; rate = '0,1% × nilai jual di bursa'; }
+        else if (t === 'crypto') { pajak = fv * 0.0021; rate = '0,1% PPh + 0,11% PPN × nilai jual'; }
+        const net = fv - pajak;
+        $('pajakBody').innerHTML =
+          `<div class="result-grid">`
+          + `<div class="result-item"><div class="result-item-label">Nilai Akhir (kotor)</div><div class="result-item-value">${HC.fmt(fv)}</div></div>`
+          + `<div class="result-item"><div class="result-item-label">Estimasi Pajak</div><div class="result-item-value result-warn">${pajak > 0 ? '−' + HC.fmt(pajak) : 'Rp 0'}</div></div>`
+          + `<div class="result-item"><div class="result-item-label">Nilai Akhir Bersih</div><div class="result-item-value result-strong">${HC.fmt(net)}</div></div>`
+          + `<div class="result-item"><div class="result-item-label">Tarif Pajak</div><div class="result-item-value" style="font-size:12px;line-height:1.4">${rate}</div></div>`
+          + `</div>`;
       }
 
       function reset() {
