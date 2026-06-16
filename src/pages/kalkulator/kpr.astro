@@ -607,6 +607,17 @@ const jsonLd = {
   .aic-bub{max-width:82%;font-size:13px;line-height:1.55;border-radius:13px;padding:9px 12px;white-space:pre-wrap;word-wrap:break-word;overflow-wrap:anywhere}
   .aic-row.ai .aic-bub{background:#F1F5F9;color:#0A2540}
   .aic-row.user .aic-bub{background:#2563EB;color:#fff}
+  .aic-bub.aic-rich{white-space:normal}
+  .aic-bub.aic-rich p{margin:0 0 7px}
+  .aic-bub.aic-rich p:last-child{margin-bottom:0}
+  .aic-bub.aic-rich p.aic-h{font-weight:700;margin:10px 0 5px}
+  .aic-bub.aic-rich p.aic-h:first-child{margin-top:0}
+  .aic-bub.aic-rich strong{font-weight:700}
+  .aic-bub.aic-rich em{font-style:italic}
+  .aic-bub.aic-rich code{background:rgba(0,0,0,.06);padding:1px 5px;border-radius:4px;font-size:12px}
+  .aic-bub.aic-rich .aic-li{display:flex;gap:7px;margin:4px 0;align-items:flex-start}
+  .aic-bub.aic-rich .aic-li:first-child{margin-top:0}
+  .aic-bub.aic-rich .aic-mk{flex-shrink:0;color:#2563EB;font-weight:700;min-width:15px}
   .aic-typing span{display:inline-block;width:6px;height:6px;border-radius:50%;background:#94A3B8;margin:0 1px;animation:aicblink 1.2s infinite}
   .aic-typing span:nth-child(2){animation-delay:.2s}
   .aic-typing span:nth-child(3){animation-delay:.4s}
@@ -655,6 +666,8 @@ const jsonLd = {
   .aic-dark .aic-verdict.bad{color:#F87171}
   .aic-dark .aic-av{background:#172A44;color:#8FB4FF}
   .aic-dark .aic-row.ai .aic-bub{background:#1B2C44;color:#E8EEF6}
+  .aic-dark .aic-bub.aic-rich .aic-mk{color:#8FB4FF}
+  .aic-dark .aic-bub.aic-rich code{background:rgba(255,255,255,.1)}
   .aic-dark .aic-chip{background:rgba(37,99,235,.16);color:#8FB4FF;border-color:#2A445F}
   .aic-dark .aic-chip:hover{background:rgba(37,99,235,.26)}
   .aic-dark .aic-input{border-color:#243A56}
@@ -1326,12 +1339,36 @@ const jsonLd = {
       }
 
       /* ---------- pesan UI ---------- */
+      function mdInline(t){
+        t = t.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+        t = t.replace(/__([^_]+)__/g, '<strong>$1</strong>');
+        t = t.replace(/(^|[\s(])\*([^*\n]+)\*(?=[\s).,!?:;]|$)/g, '$1<em>$2</em>');
+        t = t.replace(/`([^`]+)`/g, '<code>$1</code>');
+        return t;
+      }
+      function mdToHtml(raw){
+        var lines = String(raw).replace(/\r/g,'').split('\n');
+        var out = [];
+        for(var i=0;i<lines.length;i++){
+          var t = lines[i].trim();
+          if(t === '') continue;
+          if(/^([-*_]\s*){3,}$/.test(t)) continue;       // pemisah --- dibuang
+          var h = t.match(/^#{1,6}\s+(.*)$/);            // judul -> baris tebal
+          if(h){ out.push('<p class="aic-h">' + mdInline(esc(h[1])) + '</p>'); continue; }
+          var b = t.match(/^[-*\u2022]\s+(.*)$/);        // bullet
+          if(b){ out.push('<div class="aic-li"><span class="aic-mk">\u2022</span><span>' + mdInline(esc(b[1])) + '</span></div>'); continue; }
+          var n = t.match(/^(\d+)[.)]\s+(.*)$/);         // daftar bernomor
+          if(n){ out.push('<div class="aic-li"><span class="aic-mk">' + n[1] + '.</span><span>' + mdInline(esc(n[2])) + '</span></div>'); continue; }
+          out.push('<p>' + mdInline(esc(t)) + '</p>');   // paragraf biasa
+        }
+        return out.join('') || ('<p>' + mdInline(esc(String(raw))) + '</p>');
+      }
       function addMsg(role, text){
         var row = document.createElement('div');
         row.className = 'aic-row ' + role;
         if(role==='ai'){
-          row.innerHTML = '<div class="aic-av"><i class="ti ti-sparkles"></i></div><div class="aic-bub"></div>';
-          row.querySelector('.aic-bub').textContent = text;
+          row.innerHTML = '<div class="aic-av"><i class="ti ti-sparkles"></i></div><div class="aic-bub aic-rich"></div>';
+          row.querySelector('.aic-bub').innerHTML = mdToHtml(text);
         } else {
           row.innerHTML = '<div class="aic-bub"></div>';
           row.querySelector('.aic-bub').textContent = text;
