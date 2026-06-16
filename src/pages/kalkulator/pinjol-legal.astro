@@ -127,6 +127,8 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
                 <div class="result-item"><div class="result-item-label">Dana Cair (Diterima)</div><div class="result-item-value" id="danaCair">Rp 0</div></div>
               </div>
 
+              <div id="aprEffInfo" style="display:none;margin-top:10px;padding:11px 13px;border-radius:12px;background:#FEF3C7;border:1px solid #FDE68A;font-size:12.5px;line-height:1.55;color:#92400E"></div>
+
               <div class="adv-section" id="ojkSection">
                 <div class="adv-toggle"><span><i class="ti ti-shield-check"></i>&nbsp; Cek Kepatuhan OJK 2026</span><i class="ti ti-chevron-down chev"></i></div>
                 <div class="adv-content">
@@ -455,7 +457,15 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         $('adminVal').textContent = HC.fmt(admin);
         $('danaCair').textContent = HC.fmt(danaCair);
 
-        lastCalc = { pokok, tenor, bungaHarian, admin, gaji, bunga, totalBayar, danaCair, apr, biayaPctPokok };
+        // APR efektif (all-in: bunga + admin), disetahunkan dengan rollover
+        const periodCost = totalBiaya / pokok;                         // biaya total selama `tenor` hari
+        const aprEff = (Math.pow(1 + periodCost, 365 / tenor) - 1) * 100;
+        const setaraBulan = periodCost * (30 / tenor) * 100;           // setara %/bulan (flat)
+        const effEl = $('aprEffInfo');
+        effEl.style.display = '';
+        effEl.innerHTML = `💡 APR di atas (${apr.toFixed(0)}%) cuma hitung bunga. Kalau <b>biaya admin ikut dihitung</b>: biaya pinjaman ini <b>${biayaPctPokok.toFixed(1)}% dari pokok untuk ${tenor} hari</b> — setara <b>~${setaraBulan.toFixed(1)}%/bulan</b> atau <b>~${aprEff.toFixed(0)}% efektif/tahun</b> kalau dipinjam berulang. Admin yang "cuma" ${HC.fmt(admin)} jadi mahal banget di tenor pendek. Bandingkan: KTA bank ~18-26%/thn.`;
+
+        lastCalc = { pokok, tenor, bungaHarian, admin, gaji, bunga, totalBayar, danaCair, apr, aprEff, setaraBulan, biayaPctPokok };
         $('placeholder').style.display = 'none';
         $('results').classList.add('show');
         $('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -469,6 +479,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
 
       function reset() {
         els.pinjaman.value = '2.000.000'; els.tenor.value = '30'; els.bunga.value = '0.1';
+        var ae=$('aprEffInfo'); if(ae) ae.style.display='none';
         els.preset.value = 'custom'; els.admin.value = '80.000'; els.gaji.value = '5.000.000';
         $('placeholder').style.display = ''; $('results').classList.remove('show');
         lastCalc = null; HC.toast('Form direset', 'info');

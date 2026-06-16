@@ -128,6 +128,8 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
                 <div class="result-item"><div class="result-item-label">Status DTI</div><div class="result-item-value" id="dtiStatus">-</div></div>
               </div>
 
+              <div id="effInfo" style="display:none;margin-top:10px;padding:11px 13px;border-radius:12px;background:#FEF3C7;border:1px solid #FDE68A;font-size:12.5px;line-height:1.55;color:#92400E"></div>
+
               <div class="adv-section">
                 <div class="adv-toggle"><span><i class="ti ti-building-bank"></i>&nbsp; Bandingkan 6 Bank Besar (Juni 2026)</span><i class="ti ti-chevron-down chev"></i></div>
                 <div class="adv-content">
@@ -417,6 +419,15 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         return { cicilan, totalBunga, totalBayar, rows };
       }
 
+      // Bunga efektif setara (APR) dari arus cicilan, via IRR bisection
+      function effectiveApr(pokok, payments) {
+        const npv = (i) => { let s = -pokok; for (let t = 0; t < payments.length; t++) s += payments[t] / Math.pow(1 + i, t + 1); return s; };
+        if (npv(0) <= 0) return 0;
+        let lo = 0, hi = 1;
+        for (let k = 0; k < 100; k++) { const mid = (lo + hi) / 2; if (npv(mid) > 0) lo = mid; else hi = mid; }
+        return ((lo + hi) / 2) * 12 * 100;
+      }
+
       let lastCalc = null;
 
       function hitung() {
@@ -453,6 +464,19 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         $('dtiStatus').textContent = dtiStatus;
         $('dtiStatus').style.color = dtiColor;
 
+        // Bunga efektif setara (APR)
+        const payments = result.rows ? result.rows.map(r => r.pokok + r.bunga) : Array(tenor).fill(result.cicilan);
+        const effApr = effectiveApr(pokok, payments);
+        const effEl = $('effInfo');
+        effEl.style.display = '';
+        if (metode === 'flat') {
+          effEl.innerHTML = `💡 Bunga <b>${bunga}%/thn flat</b> setara <b>~${effApr.toFixed(1)}% efektif/tahun</b>. Cicilan flat terlihat ringan, tapi bunga dihitung dari pokok awal terus — biaya riilnya jauh lebih tinggi. Selalu bandingkan pinjaman pakai angka <b>efektif</b>, bukan flat.`;
+        } else if (metode === 'anuitas') {
+          effEl.innerHTML = `✅ Anuitas: bunga <b>${bunga}%/thn</b> sudah <b>efektif</b> (≈${effApr.toFixed(1)}%/thn). Ini cara paling adil membandingkan biaya antar pinjaman.`;
+        } else {
+          effEl.innerHTML = `ℹ️ Efektif (sliding): bunga dari sisa pokok, cicilan menurun tiap bulan. Biaya riil ≈ <b>${effApr.toFixed(1)}% efektif/tahun</b>.`;
+        }
+
         // Bank comparison
         let bankHtml = '';
         BANKS.forEach(b => {
@@ -479,7 +503,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         }
         $('amortBody').innerHTML = amortHtml;
 
-        lastCalc = { pokok, tenor, metode, metodeLabel, bunga, gaji, cicLain, cicilan: result.cicilan, totalBunga: result.totalBunga, totalBayar: result.totalBayar, dti, dtiStatus };
+        lastCalc = { pokok, tenor, metode, metodeLabel, bunga, effApr, gaji, cicLain, cicilan: result.cicilan, totalBunga: result.totalBunga, totalBayar: result.totalBayar, dti, dtiStatus };
         $('placeholder').style.display = 'none';
         $('results').classList.add('show');
         $('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -488,6 +512,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
 
       function reset() {
         els.pinjaman.value = '50.000.000'; els.tenor.value = '24'; els.metode.value = 'flat';
+        var ei=$('effInfo'); if(ei) ei.style.display='none';
         els.bunga.value = '18'; els.gaji.value = '10.000.000'; els.cicLain.value = '0';
         $('placeholder').style.display = ''; $('results').classList.remove('show');
         lastCalc = null; HC.toast('Form direset', 'info');
@@ -532,6 +557,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       }
 
       $('btnHitung').addEventListener('click', hitung);
+      els.metode.addEventListener('change', () => { if (lastCalc) hitung(); });
       $('btnReset').addEventListener('click', reset);
       $('exportImg').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToImage(c, 'kta-' + Date.now()); });
       $('exportWa').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.shareWhatsApp(c, summaryText(), 'kta'); });
