@@ -309,3 +309,107 @@ button:focus-visible {
 }
 
 /* ═══════════════ END OF SECTION 11–14 ═══════════════ */
+
+
+/* ═══════════════════════════════════════════════════════════════
+   SECTION 15–22 — NEUROSCIENCE-INFORMED POLISH (v2)
+   Etis & profesional: memandu perhatian, menurunkan beban kognitif,
+   memberi feedback halus. Semua aman (tidak menyembunyikan konten),
+   menghormati prefers-reduced-motion, & bisa di-revert via import.
+═══════════════════════════════════════════════════════════════ */
+
+/* ─── 15. SMOOTH SCROLL + OFFSET ANCHOR ─────────────────────── */
+html { scroll-behavior: smooth; }
+:target { scroll-margin-top: 88px; }
+
+/* ─── 16. RITME TIPOGRAFI ARTIKEL — cognitive ease ──────────── */
+/* Jarak & tinggi baris nyaman → otak baca lebih ringan */
+.wrap-text p, .article-body p { line-height: 1.82; }
+.wrap-text li, .article-body li { line-height: 1.72; margin-bottom: 6px; }
+.wrap-text h2, .article-body h2 { margin-top: 1.9em; line-height: 1.28; letter-spacing: -.01em; }
+.wrap-text h3, .article-body h3 { margin-top: 1.5em; }
+/* Paragraf pembuka (lead) huruf awal sedikit lebih besar = entry point */
+.lead { font-size: 17.5px !important; }
+
+/* ─── 17. ANGKA HASIL: RAPI + MENONJOL (peak-end rule) ──────── */
+/* tabular-nums → angka sejajar rapi (terasa presisi & profesional) */
+.result-item-value, .result-value, .result-strong,
+.compare-table td.right, .amort td, .result-big {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+/* Nilai utama: "pop" lembut saat hasil muncul (momen reward) */
+.result-strong, .result-big, .result-hero-value {
+  animation: hcPop .55s cubic-bezier(.34, 1.56, .64, 1) backwards;
+  animation-delay: .12s;
+}
+@keyframes hcPop {
+  0%   { transform: scale(.94); opacity: 0; }
+  60%  { transform: scale(1.025); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* ─── 18. ENTRANCE HERO (time-based — selalu berakhir terlihat) ── */
+/* Konten hero naik-fade saat load → kesan app premium, TANPA risiko
+   konten hilang (animasi berbasis waktu, fill ke kondisi terlihat) */
+.calc-hero-text > *,
+.calc-hero-illust,
+.article-hero > .wrap > * {
+  animation: hcRise .6s cubic-bezier(.4, 0, .2, 1) backwards;
+}
+.article-hero > .wrap > *:nth-child(1), .calc-hero-text > *:nth-child(1) { animation-delay: .04s; }
+.article-hero > .wrap > *:nth-child(2), .calc-hero-text > *:nth-child(2) { animation-delay: .10s; }
+.article-hero > .wrap > *:nth-child(3), .calc-hero-text > *:nth-child(3) { animation-delay: .16s; }
+.article-hero > .wrap > *:nth-child(4), .calc-hero-text > *:nth-child(4) { animation-delay: .22s; }
+.calc-hero-illust { animation-delay: .20s; }
+@keyframes hcRise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+/* ─── 19. ELEVASI KARTU & GESTALT (grouping yang jelas) ─────── */
+.card, .calc-card, .rc-card {
+  transition: transform .25s cubic-bezier(.4, 0, .2, 1), box-shadow .25s ease;
+}
+.rc-card:hover { transform: translateY(-3px); box-shadow: 0 14px 32px -12px rgba(15, 23, 42, .18); }
+.cta-box { transition: box-shadow .3s ease; }
+.cta-box:hover { box-shadow: 0 18px 44px -20px var(--cat-color, var(--navy)); }
+
+/* ─── 20. AKSI UTAMA — AFFORDANCE (memandu mata ke tindakan) ── */
+/* Tombol Hitung punya "berat" visual lebih → otak tahu ini aksi utama */
+.btn-hitung, .btn-pri {
+  box-shadow: 0 8px 22px -8px var(--cat-color, var(--green, #059669));
+}
+.btn-hitung:hover, .btn-pri:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px -8px var(--cat-color, var(--green, #059669));
+}
+
+/* ─── 21. READING PROGRESS BAR (artikel) — progress feedback ── */
+/* Bar gold tipis di atas yang mengikuti scroll. Pure CSS scroll-timeline,
+   progressive enhancement (browser lama: tidak muncul, tidak error). */
+@supports (animation-timeline: scroll()) {
+  body:has(.article-hero)::after {
+    content: '';
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 3px;
+    transform-origin: 0 50%;
+    transform: scaleX(0);
+    z-index: 9999;
+    background: linear-gradient(90deg, var(--gold, #FBBF24), #F59E0B);
+    animation: hcProgress auto linear;
+    animation-timeline: scroll(root);
+    pointer-events: none;
+  }
+  @keyframes hcProgress { to { transform: scaleX(1); } }
+}
+
+/* ─── 22. HORMATI REDUCED MOTION (untuk animasi baru §17–21) ── */
+@media (prefers-reduced-motion: reduce) {
+  .result-strong, .result-big, .result-hero-value,
+  .calc-hero-text > *, .calc-hero-illust, .article-hero > .wrap > * {
+    animation: none !important;
+  }
+  html { scroll-behavior: auto; }
+  body:has(.article-hero)::after { display: none; }
+}
+
+/* ═══════════════ END OF SECTION 15–22 ═══════════════ */
