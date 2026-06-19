@@ -11,7 +11,7 @@ const related = getRelatedCalculators('fidyah', 3);
 
 const faqs = [
   { question: 'Apa itu fidyah?', answer: 'Pengganti puasa Ramadhan untuk yang tidak mampu puasa atau qadha karena alasan syari. Wajib bagi: ibu hamil/menyusui (yang khawatir bayi), lansia, sakit kronis. Dasar: QS Al-Baqarah 184.' },
-  { question: 'Berapa fidyah/hari 2026?', answer: '<strong>1 mud</strong> (≈ 675 gr atau 0,75 kg) makanan pokok per hari. Atau uang setara. Standar BAZNAS 2026: <strong>Rp 50.000 - 60.000/hari</strong> di Jakarta.' },
+  { question: 'Berapa fidyah/hari 2026?', answer: '<strong>1 mud</strong> (≈ 675 gr atau 0,75 kg) makanan pokok per hari. Atau uang setara. Standar BAZNAS RI 2026: <strong>Rp 65.000/hari</strong> (acuan nasional).' },
   { question: 'Hamil/menyusui wajib qadha?', answer: 'Tergantung niat: khawatir <strong>diri</strong> → WAJIB QADHA, tidak fidyah. Khawatir <strong>bayi</strong> → WAJIB QADHA + FIDYAH (jumhur ulama). Untuk aman, lakukan keduanya.' },
   { question: 'Kapan bayar fidyah?', answer: 'Setiap hari atau diakhir Ramadhan (akumulasi). Maks sebelum Ramadhan tahun depan. TIDAK BOLEH dibayar sebelum mulai meninggalkan puasa.' },
   { question: 'Boleh uang?', answer: 'Mazhab Hanafi: boleh, lebih bermanfaat untuk fakir miskin (bisa beli kebutuhan lain). BAZNAS Indonesia ikut Hanafi. Praktis: bayar via lembaga zakat resmi.' },
@@ -71,8 +71,8 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
             <div class="field"><label>Jumlah Orang</label>
               <input type="number" id="orang" value="1" min="1" max="10" /></div>
             <div class="field"><label>Standar Fidyah per Hari per Orang</label>
-              <div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="standar" class="has-prefix" value="55.000" inputmode="numeric" /></div>
-              <p class="field-hint">BAZNAS 2026: Rp 50-60rb/hari</p></div>
+              <div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="standar" class="has-prefix" value="65.000" inputmode="numeric" /></div>
+              <p class="field-hint">BAZNAS RI 2026: Rp 65.000/hari</p></div>
 
             <div class="calc-action-bar">
               <button type="button" class="btn-hitung" id="btnHitung"><i class="ti ti-calculator"></i> Hitung Sekarang</button>
@@ -121,7 +121,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
     <div class="wrap-text">
       <h2>Panduan Lengkap Fidyah</h2>
       <p>Fidyah = pengganti puasa Ramadhan bagi yang berhalangan dengan alasan syari yang tidak memungkinkan puasa atau qadha. Berbeda dengan kafarat (denda dosa), fidyah adalah keringanan agama. Saat Idul Fitri, tunaikan juga <a href="/kalkulator/zakat-fitrah">zakat fitrah</a>. Punya penghasilan rutin? Hitung <a href="/kalkulator/zakat-penghasilan">zakat penghasilan</a>.</p>
-      <p>Ibu hamil/menyusui yang khawatir bayinya wajib <strong>qadha + fidyah</strong> (jumhur ulama). Lansia & sakit kronis yang sulit sembuh cukup fidyah. Standar BAZNAS 2026: Rp 50-60rb/hari/orang.</p>
+      <p>Ibu hamil/menyusui yang khawatir bayinya wajib <strong>qadha + fidyah</strong> (jumhur ulama). Lansia & sakit kronis yang sulit sembuh cukup fidyah. Standar BAZNAS RI 2026: Rp 65.000/hari/orang.</p>
       <div class="cta-box"><h3>Tunaikan Fidyah Anda</h3><p>Hitung total, salurkan via BAZNAS, Dompet Dhuafa, atau langsung ke fakir miskin.</p></div>
     </div>
   </section>
@@ -178,7 +178,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       }
 
       function reset() {
-        els.a.value = 'hamil'; els.h.value = '30'; els.o.value = '1'; els.s.value = '55.000';
+        els.a.value = 'hamil'; els.h.value = '30'; els.o.value = '1'; els.s.value = '65.000';
         $('placeholder').style.display = ''; $('results').classList.remove('show');
         lastCalc = null; HC.toast('Form direset', 'info');
       }
