@@ -1,0 +1,495 @@
+---
+// Master Layout untuk semua halaman HitungCerdas
+import '../styles/global.css';
+import '../styles/enhancements.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { getRelatedCalculators } from '../data/calculators';
+
+interface Props {
+  title: string;
+  description: string;
+  keywords?: string[];
+  canonical?: string;
+  ogImage?: string;
+  ogType?: 'website' | 'article';
+  jsonLd?: object;
+  breadcrumb?: object;
+}
+
+const {
+  title,
+  description,
+  keywords = [],
+  canonical,
+  ogImage = 'https://hitungcerdas.net/og-image.png',
+  ogType = 'website',
+  jsonLd,
+  breadcrumb,
+} = Astro.props;
+
+const siteUrl = 'https://hitungcerdas.net';
+const fullUrl = canonical || new URL(Astro.url.pathname, siteUrl).toString();
+
+// ── Conditional heavy scripts: load hanya di halaman yang butuh ──
+const _path = Astro.url.pathname;
+const _isCalc = _path.startsWith('/kalkulator/');
+const _needsCharts = ['/kalkulator/kpr', '/kalkulator/kredit-motor', '/kalkulator/kredit-mobil']
+  .some((pfx) => _path.startsWith(pfx));
+
+// ── Kalkulator Terkait (related) ──
+const _slug = _isCalc ? _path.replace(/^\/kalkulator\//, '').replace(/\/$/, '') : '';
+const _related = _isCalc ? getRelatedCalculators(_slug, 4) : [];
+const _CAT_ICON: Record<string, string> = { keuangan: 'coins', bisnis: 'briefcase', islami: 'moon' };
+
+// ── Artikel panduan terkait per kalkulator (internal linking + SEO) ──
+const _calcArticle: Record<string, { slug: string; title: string }> = {
+  'kpr': { slug: 'cara-menghitung-kpr', title: 'Cara Hitung Cicilan KPR BTN 2026' },
+  'pph-21': { slug: 'cara-menghitung-pph-21', title: 'Cara Hitung PPh 21 Karyawan 2026' },
+  'gaji-bersih': { slug: 'cara-menghitung-gaji-bersih', title: 'Cara Hitung Gaji Bersih (Take Home Pay)' },
+  'kredit-motor': { slug: 'simulasi-kredit-motor', title: 'Simulasi Kredit Motor 2026 + TCO' },
+  'kredit-mobil': { slug: 'simulasi-kredit-mobil', title: 'Simulasi Kredit Mobil 2026 + TCO' },
+  'investasi': { slug: 'cara-menghitung-investasi', title: 'Cara Hitung Investasi & Compound Interest' },
+  'dana-darurat': { slug: 'cara-hitung-dana-darurat', title: 'Cara Hitung Dana Darurat Ideal' },
+  'kta': { slug: 'cara-menghitung-kta', title: 'Cara Hitung Cicilan KTA 2026' },
+  'pinjol-legal': { slug: 'pinjol-legal-vs-ilegal', title: 'Pinjol Legal vs Ilegal 2026' },
+  'invoice-generator': { slug: 'cara-bikin-invoice-profesional', title: 'Cara Bikin Invoice Profesional' },
+  'harga-jual': { slug: 'cara-menentukan-harga-jual', title: 'Cara Menentukan Harga Jual Produk' },
+  'margin': { slug: 'cara-menghitung-margin', title: 'Cara Hitung Margin Keuntungan' },
+  'nama-bisnis-generator': { slug: 'cara-menentukan-nama-bisnis', title: 'Cara Menentukan Nama Bisnis' },
+  'caption-jualan': { slug: 'cara-bikin-caption-jualan', title: 'Cara Bikin Caption Jualan' },
+  'zakat-fitrah': { slug: 'cara-hitung-zakat-fitrah', title: 'Cara Hitung Zakat Fitrah' },
+  'zakat-penghasilan': { slug: 'cara-hitung-zakat-penghasilan', title: 'Cara Hitung Zakat Penghasilan' },
+  'zakat-mal': { slug: 'cara-hitung-zakat-mal', title: 'Cara Hitung Zakat Mal' },
+  'fidyah': { slug: 'cara-hitung-fidyah-ramadan', title: 'Cara Hitung Fidyah Ramadan' },
+  'warisan-faraidh': { slug: 'panduan-warisan-faraidh', title: 'Panduan Warisan Faraidh' },
+  'dana-qurban': { slug: 'cara-tabungan-dana-qurban', title: 'Cara Nabung Dana Qurban' },
+  'dana-haji-umrah': { slug: 'cara-menghitung-dana-haji', title: 'Cara Hitung Dana Haji & Umrah' },
+};
+const _article = _isCalc ? (_calcArticle[_slug] || null) : null;
+
+const defaultJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "HitungCerdas",
+  "description": "21 kalkulator keuangan, bisnis, dan islami online gratis untuk masyarakat Indonesia",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Any",
+  "url": siteUrl,
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "IDR" }
+  // Note: aggregateRating removed 11-Jun-2026 (avoid fake review policy violation).
+  // Can be re-added once site has real user reviews/testimonials.
+};
+
+// ─── Organization Schema (sitewide, brand authority) ───
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "HitungCerdas",
+  "alternateName": "HitungCerdas.net",
+  "url": siteUrl,
+  "logo": {
+    "@type": "ImageObject",
+    "url": `${siteUrl}/logo.svg`,
+    "width": 64,
+    "height": 64
+  },
+  "description": "Pusat kalkulator keuangan, bisnis, dan islami online gratis untuk masyarakat Indonesia",
+  "foundingDate": "2026",
+  "areaServed": {
+    "@type": "Country",
+    "name": "Indonesia"
+  },
+  "knowsLanguage": "id-ID",
+  "sameAs": [
+    "https://www.cuanpertama.my.id"
+  ]
+};
+
+// ─── WebSite Schema with SearchAction (sitewide, enables Sitelinks search box) ───
+const websiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "HitungCerdas",
+  "alternateName": "HitungCerdas.net",
+  "url": siteUrl,
+  "description": "21 kalkulator keuangan, bisnis & islami online gratis Indonesia",
+  "inLanguage": "id-ID",
+  "publisher": {
+    "@type": "Organization",
+    "name": "HitungCerdas",
+    "url": siteUrl
+  },
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": `${siteUrl}/?search={search_term_string}`
+    },
+    "query-input": "required name=search_term_string"
+  }
+};
+---
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+
+  {/* ── Title & Description ── */}
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  {keywords.length > 0 && <meta name="keywords" content={keywords.join(', ')} />}
+  <meta name="author" content="HitungCerdas" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+
+  {/* ── Theme ── */}
+  <meta name="theme-color" content="#0A2540" />
+  <meta name="google-site-verification" content="sanMNF1i87E8Tc2Ooz-vHw2FHEpQ6DhVpQ29H3HiPN4" />
+
+  {/* ── Canonical ── */}
+  <link rel="canonical" href={fullUrl} />
+
+  {/* ── Open Graph ── */}
+  <meta property="og:type" content={ogType} />
+  <meta property="og:url" content={fullUrl} />
+  <meta property="og:site_name" content="HitungCerdas" />
+  <meta property="og:locale" content="id_ID" />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:image" content={ogImage} />
+
+  {/* ── Twitter Card ── */}
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={ogImage} />
+
+  {/* ── Favicon ── */}
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+  {/* ── PWA ── */}
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="/icon-192.png" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="HitungCerdas" />
+
+  {/* ── Fonts (Preconnect for performance) ── */}
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=optional"
+    rel="stylesheet"
+  />
+
+  {/* ── Tabler Icons CDN (pinned 3.44.0, path /dist/) ── */}
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.44.0/dist/tabler-icons.min.css"
+  />
+
+  {/* ── Schema.org JSON-LD ── */}
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd || defaultJsonLd)} />
+
+  {/* ── Organization Schema (sitewide, brand authority signal) ── */}
+  <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
+
+  {/* ── WebSite Schema (sitewide, enables Sitelinks search box) ── */}
+  <script type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />
+
+  {breadcrumb && (
+    <script type="application/ld+json" set:html={JSON.stringify(breadcrumb)} />
+  )}
+
+  {/* ── Google AdSense ── */}
+  <script
+    async
+    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7503808144261296"
+    crossorigin="anonymous"
+  ></script>
+  {/* ── Theme (dark mode) anti-flash ── */}
+  <script is:inline>
+    (function () {
+      try {
+        var t = localStorage.getItem('hc-theme');
+        if (!t) t = 'light';
+        document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body>
+  <Header />
+
+  <main>
+    <slot />
+  </main>
+
+  {_isCalc && _article && (
+    <section class="calc-guide-link" aria-label="Panduan terkait">
+      <div class="wrap" style="text-align:center;padding:6px 0 0">
+        <a href={`/blog/${_article.slug}/`} style="display:inline-flex;align-items:center;gap:11px;max-width:660px;margin:0 auto;padding:14px 22px;background:var(--bg-soft);border:1px solid var(--border);border-radius:14px;color:var(--text);font-size:.95rem;text-decoration:none;transition:var(--tx);box-shadow:var(--shadow-sm)">
+          <i class="ti ti-book-2" style="color:var(--blue);font-size:21px;flex-shrink:0"></i>
+          <span>Baca panduan lengkap: <strong style="color:var(--navy)">{_article.title}</strong></span>
+          <i class="ti ti-arrow-right" style="color:var(--text-mute);flex-shrink:0"></i>
+        </a>
+      </div>
+    </section>
+  )}
+
+  {_isCalc && _related.length > 0 && (
+    <section class="related-section">
+      <div class="wrap">
+        <h2 class="rc-title">Kalkulator Terkait</h2>
+        <p class="rc-sub">Lanjut hitung dengan kalkulator lain yang relevan untukmu</p>
+        <div class="rc-grid">
+          {_related.map((c) => (
+            <a href={`/kalkulator/${c.slug}/`} class="rc-card">
+              <span class="rc-ic" style={`color:${c.iconColor};background:${c.iconBg}`}>
+                <i class={`ti ti-${_CAT_ICON[c.category]}`}></i>
+              </span>
+              <span class="rc-body">
+                <span class="rc-name">{c.shortTitle}</span>
+                <span class="rc-tag" style={`color:${c.tagColor};background:${c.tagBg}`}>{c.tag}</span>
+              </span>
+              <i class="ti ti-arrow-right rc-arrow"></i>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <Footer />
+
+  {/* ── Back to Top Button ── */}
+  <button class="bttp" id="bttp" aria-label="Kembali ke atas">
+    <i class="ti ti-arrow-up"></i>
+  </button>
+
+  {/* ── Toast Notification ── */}
+  <div class="toast" id="toast">
+    <i class="ti ti-check"></i>
+    <span id="toastText">Tersalin!</span>
+  </div>
+
+  {/* ── Cloudflare Analytics ── */}
+  <script
+    defer
+    src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447"
+    integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ=="
+    data-cf-beacon='{"version":"2024.11.0","token":"17baf21aa07846ffa89b64e450cfa7ac","r":1}'
+    crossorigin="anonymous"
+  ></script>
+
+  {/* ── HTML to Canvas (export, hanya halaman kalkulator) ── */}
+  {_isCalc && <script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>}
+
+  {/* ── Chart.js (charts, hanya KPR/motor/mobil) ── */}
+  {_needsCharts && <script is:inline src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>}
+
+  {/* ── Global Calculator Utility (v2) ── */}
+  <script src="/js/calculator-utils.js" defer></script>
+
+  {/* ── Global Scripts ── */}
+  <script is:inline>
+    // --- PWA: daftarkan Service Worker ---
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('/sw.js').catch(function () {});
+      });
+    }
+
+    // ─── Catat Kalkulator Terakhir Dipakai ───
+    (function () {
+      var m = location.pathname.match(/^\/kalkulator\/([^\/]+)\/?$/);
+      if (!m) return;
+      try {
+        var rec = JSON.parse(localStorage.getItem('hc-recent')) || [];
+        rec = rec.filter(function (s) { return s !== m[1]; });
+        rec.unshift(m[1]);
+        localStorage.setItem('hc-recent', JSON.stringify(rec.slice(0, 6)));
+      } catch (e) {}
+    })();
+
+    // --- Tooltip Istilah (khusus artikel blog) ---
+    (function () {
+      if (!/^\/(blog|kalkulator)\//.test(location.pathname)) return;
+      var roots = document.querySelectorAll('.content-section');
+      if (!roots.length) return;
+      var G = {
+        'anuitas': 'Metode cicilan di mana angsuran per bulan jumlahnya tetap sama, tapi komposisi bunga dan pokok berubah tiap bulan. Contoh: cicilan KPR Rp3 juta konstan sepanjang tenor.',
+        'ptkp': 'Penghasilan Tidak Kena Pajak \u2014 batas penghasilan yang bebas pajak. Contoh: karyawan lajang, Rp54 juta/tahun pertama tidak kena PPh.',
+        'pph 21': 'Pajak Penghasilan atas gaji atau upah karyawan, dipotong tiap bulan sesuai UU HPP.',
+        'floating': 'Bunga mengambang yang bisa naik atau turun mengikuti kebijakan bank, biasanya berlaku setelah masa bunga tetap (fixed) habis.',
+        'fixed': 'Bunga tetap yang tidak berubah selama periode tertentu. Contoh: fixed 5% untuk 3 tahun pertama KPR.',
+        'flpp': 'Fasilitas Likuiditas Pembiayaan Perumahan \u2014 subsidi KPR pemerintah untuk rumah pertama, dengan bunga tetap rendah (sekitar 5%) sepanjang tenor.',
+        'bphtb': 'Bea Perolehan Hak atas Tanah dan Bangunan \u2014 pajak yang dibayar pembeli saat membeli properti, umumnya 5% dari nilai di atas batas bebas pajak.',
+        'ajb': 'Akta Jual Beli \u2014 dokumen resmi peralihan hak properti yang ditandatangani di hadapan PPAT (notaris).',
+        'tenor': 'Jangka waktu pinjaman atau cicilan. Contoh: tenor KPR 15 tahun sama dengan 180 bulan.',
+        'bpjs': 'Badan Penyelenggara Jaminan Sosial \u2014 iuran kesehatan dan ketenagakerjaan yang dipotong dari gaji karyawan tiap bulan.',
+        'take-home pay': 'Gaji bersih yang benar-benar diterima karyawan setelah semua potongan (pajak, BPJS, dan lainnya).',
+        'bi rate': 'Suku bunga acuan Bank Indonesia yang jadi patokan bunga kredit dan deposito. Per 2026 sekitar 5,75%.',
+        'compound interest': 'Bunga majemuk \u2014 bunga yang dihitung dari pokok plus bunga sebelumnya, sehingga saldo tumbuh makin cepat dari waktu ke waktu.',
+        'bunga majemuk': 'Bunga yang dihitung dari pokok plus bunga sebelumnya, sehingga saldo tumbuh makin cepat. Inti dari pertumbuhan investasi jangka panjang.',
+        'nisab': 'Batas minimal harta yang wajib dizakati. Contoh: nisab zakat mal setara nilai 85 gram emas.',
+        'haul': 'Masa kepemilikan harta selama satu tahun (kalender hijriah) sebagai salah satu syarat wajib zakat mal.',
+        'margin': 'Selisih antara harga jual dan biaya, dihitung sebagai persen dari harga jual. Contoh: margin 30% berarti 30% dari harga jual adalah laba.',
+        'markup': 'Tambahan harga di atas biaya modal, dihitung sebagai persen dari modal. Contoh: markup 50% dari modal Rp10.000 menghasilkan harga Rp15.000.',
+        'ojk': 'Otoritas Jasa Keuangan \u2014 lembaga yang mengawasi bank, pinjol, asuransi, dan industri keuangan di Indonesia.',
+        'faraidh': 'Ilmu pembagian harta warisan dalam Islam sesuai ketentuan Al-Qur\u2019an dan hadis.',
+        'fidyah': 'Denda berupa memberi makan orang miskin sebagai pengganti puasa yang tidak bisa diganti dengan qadha.',
+        'dp': 'Down Payment atau uang muka \u2014 pembayaran awal saat membeli, sisanya dicicil. Contoh: DP 20% dari harga rumah.'
+      };
+      var keys = Object.keys(G).sort(function (a, b) { return b.length - a.length; });
+      function esc(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+      var RE = new RegExp('(' + keys.map(esc).join('|') + ')', 'gi');
+      var used = {};
+      var SKIP = { A: 1, BUTTON: 1, CODE: 1, PRE: 1, SCRIPT: 1, STYLE: 1, H1: 1, H2: 1, H3: 1, H4: 1 };
+      function isAlnum(c) { return !!c && /[A-Za-z0-9]/.test(c); }
+      function handleText(tn) {
+        var text = tn.nodeValue;
+        if (!text || !text.trim()) return;
+        RE.lastIndex = 0;
+        var m, parts = [], last = 0, any = false;
+        while ((m = RE.exec(text))) {
+          var s = m[0], key = s.toLowerCase(), i = m.index;
+          if (!G[key] || used[key]) continue;
+          var before = i > 0 ? text.charAt(i - 1) : '';
+          var after = (i + s.length) < text.length ? text.charAt(i + s.length) : '';
+          if (isAlnum(before) || isAlnum(after)) continue;
+          used[key] = true; any = true;
+          parts.push(document.createTextNode(text.slice(last, i)));
+          var span = document.createElement('span');
+          span.className = 'hc-term';
+          span.setAttribute('tabindex', '0');
+          span.textContent = s;
+          var tip = document.createElement('span');
+          tip.className = 'hc-tip';
+          tip.textContent = G[key];
+          span.appendChild(tip);
+          parts.push(span);
+          last = i + s.length;
+        }
+        if (any) {
+          parts.push(document.createTextNode(text.slice(last)));
+          var frag = document.createDocumentFragment();
+          parts.forEach(function (x) { frag.appendChild(x); });
+          tn.parentNode.replaceChild(frag, tn);
+        }
+      }
+      function walk(node) {
+        if (node.nodeType === 3) { handleText(node); return; }
+        if (node.nodeType !== 1) return;
+        if (SKIP[node.tagName]) return;
+        if (node.classList && node.classList.contains('hc-term')) return;
+        var kids = Array.prototype.slice.call(node.childNodes);
+        for (var k = 0; k < kids.length; k++) walk(kids[k]);
+      }
+      roots.forEach(function (r) { walk(r); });
+    })();
+
+    // ─── Back to Top ───
+    (function() {
+      const btn = document.getElementById('bttp');
+      if (!btn) return;
+      window.addEventListener('scroll', () => {
+        btn.classList.toggle('show', window.scrollY > 300);
+      }, { passive: true });
+      btn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    })();
+
+    // ─── Toast (Global Helper) ───
+    window.showToast = function(msg) {
+      const t = document.getElementById('toast');
+      const txt = document.getElementById('toastText');
+      if (!t || !txt) return;
+      txt.textContent = msg || 'Tersalin!';
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2200);
+    };
+
+    // ─── Copy Helper ───
+    window.copyText = async function(text, msg) {
+      try {
+        await navigator.clipboard.writeText(text);
+        window.showToast(msg || 'Tersalin ke clipboard!');
+      } catch (e) {
+        window.showToast('Gagal copy. Coba pilih manual.');
+      }
+    };
+
+    // ─── Scroll Reveal ───
+    (function() {
+      if (!('IntersectionObserver' in window)) return;
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            e.target.classList.add('shown');
+            io.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+      document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+    })();
+
+    // ─── Active Nav Link ───
+    (function() {
+      const path = window.location.pathname;
+      document.querySelectorAll('header nav a').forEach(link => {
+        const href = link.getAttribute('href');
+        if (!href) return;
+        if (href === path || (href !== '/' && path.startsWith(href))) {
+          link.classList.add('active');
+        }
+      });
+    })();
+
+    // ─── Dark Mode Toggle ───
+    (function () {
+      var root = document.documentElement;
+      if (document.getElementById('theme-toggle')) return;
+      var hamburger = document.querySelector('header .menu-tg');
+      var host = document.querySelector('header .hdr') || document.querySelector('header nav') || document.querySelector('header');
+      if (!host && !hamburger) return;
+      var btn = document.createElement('button');
+      btn.id = 'theme-toggle';
+      btn.type = 'button';
+      btn.className = 'theme-toggle';
+      btn.setAttribute('aria-label', 'Ganti mode gelap atau terang');
+      function sync() {
+        var dark = root.getAttribute('data-theme') === 'dark';
+        btn.innerHTML = dark ? '<i class="ti ti-sun"></i>' : '<i class="ti ti-moon"></i>';
+        btn.setAttribute('aria-pressed', dark ? 'true' : 'false');
+      }
+      sync();
+      btn.addEventListener('click', function () {
+        var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        root.setAttribute('data-theme', next);
+        try { localStorage.setItem('hc-theme', next); } catch (e) {}
+        sync();
+      });
+      if (hamburger && hamburger.parentNode) {
+        hamburger.parentNode.insertBefore(btn, hamburger);
+      } else if (host) {
+        host.appendChild(btn);
+      }
+    })();
+  </script>
+
+  <!-- ── PWA: daftarkan Service Worker (offline + installable) ── -->
+  <script is:inline>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('/sw.js').catch(function () {});
+      });
+    }
+  </script>
+</body>
+</html>
