@@ -10,7 +10,7 @@ const calc = getCalculatorBySlug('kta')!;
 const related = getRelatedCalculators('kta', 3);
 
 const faqs = [
-  { question: 'Kenapa bunga KTA naik di 2026?', answer: 'BI Rate naik dari 4,75% ke <strong>5,5%</strong> per Juni 2026 karena kondisi ekonomi memburuk. Akibatnya bunga semua kredit konsumtif termasuk KTA ikut naik. Rata-rata KTA bank kini di 16-26% efektif per tahun (sebelumnya 14-22%).' },
+  { question: 'Kenapa bunga KTA naik di 2026?', answer: 'BI Rate naik dari 4,75% ke <strong>5,75%</strong> per Juni 2026 karena kondisi ekonomi memburuk. Akibatnya bunga semua kredit konsumtif termasuk KTA ikut naik. Rata-rata KTA bank kini di 16-26% efektif per tahun (sebelumnya 14-22%).' },
   { question: 'KTA bisa untuk modal usaha?', answer: 'Bisa, tapi <strong>tidak ideal</strong>. KTA bunganya tinggi (16-26%) sementara KUR untuk UMKM hanya 6% per tahun. Kalau punya usaha berjalan minimal 6 bulan, ajukan KUR ke BRI/Mandiri dulu. KTA dipakai kalau benar-benar butuh dana cepat tanpa agunan.' },
   { question: 'Berapa maksimal KTA yang bisa diajukan?', answer: 'Plafon KTA tergantung bank & profil kredit: <strong>BCA</strong> max Rp 100 juta, <strong>CIMB Niaga & Mandiri</strong> Rp 300 juta, <strong>BNI</strong> Rp 500 juta, <strong>BRI & Danamon</strong> Rp 200 juta. Tapi besaran realnya tergantung penghasilan & DTI ratio kamu.' },
   { question: 'Lebih baik KTA atau pinjol?', answer: 'KTA <strong>jauh lebih aman & murah</strong>. Pinjol konsumtif legal OJK 2026 max 0,1%/hari (≈36%/tahun), KTA bank rata-rata 16-26%/tahun. Pinjol cocok untuk pinjaman kecil jangka pendek (1-3 bulan), KTA untuk dana lebih besar 12-60 bulan.' },
@@ -52,7 +52,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       <div class="calc-card">
         <div class="calc-card-hdr">
           <div class="calc-card-hdr-ic" style="background:linear-gradient(135deg,#4F46E5 0%,#3730A3 100%)"><i class="ti ti-credit-card"></i></div>
-          <div><h2 class="calc-card-title">Kalkulator KTA 2026</h2><p class="calc-card-sub">Bunga BI Rate Juni 2026: 5,5% — KTA rata-rata 16-26% efektif/tahun</p></div>
+          <div><h2 class="calc-card-title">Kalkulator KTA 2026</h2><p class="calc-card-sub">Bunga BI Rate Juni 2026: 5,75% — KTA rata-rata 16-26% efektif/tahun</p></div>
         </div>
 
         <div class="calc-grid">
@@ -369,7 +369,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       [els.pinjaman, els.gaji, els.cicLain].forEach(el => el.addEventListener('input', HC.fmtInput));
       document.querySelectorAll('.adv-toggle').forEach(t => t.addEventListener('click', () => t.parentElement.classList.toggle('open')));
 
-      // 6 Banks Juni 2026 (BI Rate 5.5%)
+      // 6 Banks Juni 2026 (BI Rate 5.75%)
       const BANKS = [
         { name: 'CIMB Niaga', flatBln: 0.79, efektif: 16.5 },
         { name: 'BCA', flatBln: 0.88, efektif: 18.2 },
@@ -654,4 +654,3 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
     });
   })();
 </script>
-

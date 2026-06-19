@@ -213,10 +213,10 @@ export const CALCULATORS: CalculatorMeta[] = [
     iconBg: '#E0E7FF',
     iconSvg: 'kta',
     description: 'Simulasi cicilan KTA bank dengan bunga terupdate 2026. Bandingkan 6 bank.',
-    metaDescription: 'Kalkulator KTA 2026 terlengkap: hitung cicilan flat/efektif/anuitas, bandingkan 6 bank (CIMB, BCA, Mandiri, BNI, BRI, Danamon) dengan bunga update setelah BI Rate 5,5%, cek DTI ratio.',
+    metaDescription: 'Kalkulator KTA 2026 terlengkap: hitung cicilan flat/efektif/anuitas, bandingkan 6 bank (CIMB, BCA, Mandiri, BNI, BRI, Danamon) dengan bunga update setelah BI Rate 5,75%, cek DTI ratio.',
     keywords: ['kalkulator kta', 'simulasi kta', 'kta bank 2026', 'bunga kta terendah', 'flat vs efektif kta', 'kta tanpa agunan'],
     h1: 'Kalkulator KTA 2026 — Simulasi Terlengkap',
-    introText: 'Simulasi Kredit Tanpa Agunan terlengkap di Indonesia. Bunga terupdate Juni 2026 setelah BI Rate naik ke 5,5%, bandingkan 6 bank (CIMB Niaga termurah 16,5%/thn), cek kemampuan bayar (DTI), pilih metode bunga flat/efektif/anuitas, dan jadwal amortisasi lengkap.',
+    introText: 'Simulasi Kredit Tanpa Agunan terlengkap di Indonesia. Bunga terupdate Juni 2026 setelah BI Rate naik ke 5,75%, bandingkan 6 bank (CIMB Niaga termurah 16,5%/thn), cek kemampuan bayar (DTI), pilih metode bunga flat/efektif/anuitas, dan jadwal amortisasi lengkap.',
     benefits: [
       'Flat / Efektif / Anuitas — semua bisa diedit',
       'Bandingkan 6 bank (data update Juni 2026)',
