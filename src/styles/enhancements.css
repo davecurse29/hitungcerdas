@@ -588,3 +588,15 @@ textarea:focus-visible,
 }
 
 /* ═══════════════ END OF SECTION 25–30 ═══════════════ */
+
+/* ═══════════════ SECTION 31: SEARCH BOX FOCUS (homepage) ═══════════════ */
+/* Satu-satunya celah: search box homepage tidak merespons saat diketik.
+   Ring biru muncul di SELURUH box saat aktif (pakai outline = nol konflik). */
+.search-box:focus-within {
+  outline: 2px solid var(--blue, #2563EB);
+  outline-offset: 2px;
+}
+/* Ring di box, bukan di input kecil di dalamnya */
+.search-box input:focus-visible { outline: none; }
+
+/* ═══════════════ END OF SECTION 31 ═══════════════ */
