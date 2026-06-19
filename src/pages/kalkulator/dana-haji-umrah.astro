@@ -10,10 +10,10 @@ const calc = getCalculatorBySlug('dana-haji-umrah')!;
 const related = getRelatedCalculators('dana-haji-umrah', 3);
 
 const faqs = [
-  { question: 'Biaya haji & umrah 2026?', answer: 'Umrah Reguler Rp 25-30jt, Umrah Plus Rp 40-55jt, Haji Reguler Rp 70-100jt (antrian 15-30 thn), Haji Plus Rp 250-350jt (antrian 5-10 thn), Haji Furoda Rp 400-500jt (tanpa antrian).' },
-  { question: 'Antrian haji reguler?', answer: 'Jakarta/Jabar/Jateng 25-30 thn. Jatim 28-32 thn. Sulsel 35-40 thn (terlama). Papua 12-15 thn (tercepat). Setoran awal Rp 25jt untuk masuk antrian.' },
+  { question: 'Biaya haji & umrah 2026?', answer: 'Umrah Reguler Rp 30-40jt (naik akibat lonjakan tiket pesawat 2026), Umrah Plus Rp 45-65jt. Haji Reguler: Bipih (dibayar jemaah) ~Rp 54,2jt, total BPIH ~Rp 87,4jt (sisanya subsidi BPKH), antrian ~26 thn. Haji Plus Rp 250-350jt (antrian 5-8 thn), Haji Furoda Rp 400-500jt (tanpa antrian).' },
+  { question: 'Antrian haji reguler?', answer: 'Mulai 2026 masa tunggu disamaratakan ~26 tahun untuk semua provinsi (UU No. 14/2025), tidak lagi beda per daerah. Daftar 2026 → estimasi berangkat sekitar 2052. Setoran awal Rp 25jt untuk masuk antrian (dapat nomor porsi).' },
   { question: 'Strategi nabung?', answer: 'Tabungan Haji Bank Syariah (BSI, Muamalat), Reksadana Syariah (6-8%/thn), Sukuk Negara (SBSN 5-7%), Emas/LM. Hindari riba dan saham individual.' },
-  { question: 'Bedanya Reguler/Plus/Furoda?', answer: '<strong>Reguler</strong>: termurah, antrian 15-40thn. <strong>Plus</strong>: antrian 5-10thn, Rp 250-350jt. <strong>Furoda</strong>: TANPA antrian, visa undangan Saudi, Rp 400-500jt.' },
+  { question: 'Bedanya Reguler/Plus/Furoda?', answer: '<strong>Reguler</strong>: termurah (Bipih ~Rp 54,2jt), antrian ~26 thn. <strong>Plus</strong>: antrian 5-8thn, Rp 250-350jt. <strong>Furoda</strong>: TANPA antrian, visa undangan Saudi, Rp 400-500jt.' },
   { question: 'Aman nabung via travel?', answer: 'WASPADA First Travel/Abu Tours! Pilih travel berlisensi PPIU/PIHK Kemenag (simpu.kemenag.go.id). Jangan setor 100% di awal. Cek lisensi & asuransi.' },
 ];
 
@@ -58,14 +58,14 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
           <div class="calc-input">
             <div class="field"><label>Jenis Perjalanan</label>
               <select id="jenis">
-                <option value="27000000">Umrah Reguler (~Rp 27jt)</option>
-                <option value="45000000">Umrah Plus (~Rp 45jt)</option>
-                <option value="87400000" selected>Haji Reguler (~Rp 87,4jt)</option>
+                <option value="35000000">Umrah Reguler (~Rp 35jt)</option>
+                <option value="50000000">Umrah Plus (~Rp 50jt)</option>
+                <option value="54200000" selected>Haji Reguler / Bipih (~Rp 54,2jt)</option>
                 <option value="300000000">Haji Plus (~Rp 300jt)</option>
                 <option value="450000000">Haji Furoda (~Rp 450jt)</option>
               </select></div>
             <div class="field"><label>Biaya Custom Saat Ini</label>
-              <div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="biayaCustom" class="has-prefix" value="87.400.000" inputmode="numeric" /></div></div>
+              <div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="biayaCustom" class="has-prefix" value="54.200.000" inputmode="numeric" /></div></div>
             <div class="field"><label>Target Tahun Berangkat</label>
               <select id="targetTahun">
                 <option value="2">2 tahun lagi</option><option value="3">3 tahun lagi</option>
@@ -150,7 +150,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
     <div class="related-grid">{related.map(c => <CalculatorCard calc={c} />)}</div>
   </div></section>
   <p style="text-align:center;font-size:.85rem;color:#64748b;margin:1.2rem auto;max-width:600px;">
-    📅 Estimasi biaya <strong>Juni 2026</strong> · Sumber: Kemenag
+    📅 Estimasi biaya <strong>Juni 2026</strong> · Sumber: Kemenag, BPKH & Amphuri
   </p>
 </Layout>
 
@@ -199,7 +199,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       }
 
       function reset() {
-        els.jenis.value = '85000000'; els.custom.value = '85.000.000'; els.tt.value = '5';
+        els.jenis.value = '54200000'; els.custom.value = '54.200.000'; els.tt.value = '5';
         els.o.value = '1'; els.ta.value = ''; els.r.value = '6'; els.inf.value = '5';
         $('placeholder').style.display = ''; $('results').classList.remove('show');
         lastCalc = null; HC.toast('Form direset', 'info');
