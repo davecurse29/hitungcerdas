@@ -522,8 +522,8 @@ export const CALCULATORS: CalculatorMeta[] = [
     h1: 'Kalkulator Dana Qurban',
     introText: 'Rencanakan dana qurban untuk Idul Adha mendatang. Pilih jenis hewan (kambing, domba, sapi, patungan sapi 1/7), target tahun, dan tabungan yang sudah ada — kalkulator hitung berapa nabung per bulan & per hari.',
     benefits: [
-      '6 jenis hewan qurban dengan harga 2026',
-      'Proyeksi inflasi 7% per tahun',
+      '5 jenis hewan qurban dengan harga 2026',
+      'Proyeksi inflasi 5-8% per tahun',
       'Nabung per bulan & per hari',
       'Opsi patungan sapi (lebih ringan)',
       'Lembaga qurban resmi (BAZNAS, Dompet Dhuafa, Rumah Zakat)',
