@@ -463,7 +463,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         const setaraBulan = periodCost * (30 / tenor) * 100;           // setara %/bulan (flat)
         const effEl = $('aprEffInfo');
         effEl.style.display = '';
-        effEl.innerHTML = `💡 APR di atas (${apr.toFixed(0)}%) cuma hitung bunga. Kalau <b>biaya admin ikut dihitung</b>: biaya pinjaman ini <b>${biayaPctPokok.toFixed(1)}% dari pokok untuk ${tenor} hari</b> — setara <b>~${setaraBulan.toFixed(1)}%/bulan</b> atau <b>~${aprEff.toFixed(0)}% efektif/tahun</b> kalau dipinjam berulang. Admin yang "cuma" ${HC.fmt(admin)} jadi mahal banget di tenor pendek. Bandingkan: KTA bank ~18-26%/thn.`;
+        effEl.innerHTML = `💡 APR di atas (${apr.toFixed(0)}%) cuma hitung bunga. Kalau <b>biaya admin ikut dihitung</b>: biaya pinjaman ini <b>${biayaPctPokok.toFixed(1)}% dari pokok untuk ${tenor} hari</b> — setara <b>~${setaraBulan.toFixed(1)}%/bulan</b> atau <b>~${aprEff.toFixed(0)}% efektif/tahun</b> kalau dipinjam berulang. Admin yang "cuma" ${HC.fmt(admin)} jadi mahal banget di tenor pendek. Bandingkan: KTA bank ~16-26%/thn.`;
 
         lastCalc = { pokok, tenor, bungaHarian, admin, gaji, bunga, totalBayar, danaCair, apr, aprEff, setaraBulan, biayaPctPokok };
         $('placeholder').style.display = 'none';

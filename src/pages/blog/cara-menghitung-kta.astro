@@ -5,7 +5,7 @@ import AdSlot from '../../components/AdSlot.astro';
 import ArticleSchema from '../../components/ArticleSchema.astro';
 
 const datePublished = '2026-06-08';
-const dateModified = '2026-06-11';
+const dateModified = '2026-06-20';
 const today = new Date(datePublished).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
 const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'Panduan KTA 2026' }];
 ---
@@ -54,7 +54,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog'
 
       <div class="info-list" style="background:#FEF3C7;padding:16px;border-radius:12px;margin:16px 0">
         <strong>⚡ Update Juni 2026:</strong> Bank Indonesia menaikkan suku bunga acuan (BI Rate) dari
-        4,75% ke 5,75% akibat kondisi ekonomi yang memburuk. Akibatnya bunga KTA ikut naik — rata-rata
+        4,75% ke 5,75% untuk menjaga stabilitas nilai tukar rupiah. Akibatnya bunga KTA ikut naik — rata-rata
         kini di kisaran 16-26% efektif per tahun.
       </div>
 
@@ -69,7 +69,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog'
       <h2>2. Flat vs Efektif vs Anuitas</h2>
       <p>Ini bagian terpenting yang sering bikin orang salah paham:</p>
       <ul class="info-list">
-        <li><strong>Bunga Flat</strong>: Dihitung dari pokok awal sepanjang tenor. Cicilan tetap. Angka terlihat kecil (misal 1%/bulan) tapi efektifnya bisa 18-22%/tahun. Umum dipakai KTA.</li>
+        <li><strong>Bunga Flat</strong>: Dihitung dari pokok awal sepanjang tenor. Cicilan tetap. Angka terlihat kecil (misal 1%/bulan) tapi efektifnya bisa ~24%/tahun. Umum dipakai KTA.</li>
         <li><strong>Bunga Efektif</strong>: Dihitung dari sisa pokok. Cicilan bunga mengecil seiring waktu. Lebih adil. Umum dipakai KPR.</li>
         <li><strong>Bunga Anuitas</strong>: Total cicilan tetap, tapi komposisi pokok-bunga berubah (awal bunga besar, lama-lama pokok besar).</li>
       </ul>
@@ -79,7 +79,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog'
       </div>
 
       <h2>3. Contoh Perhitungan KTA</h2>
-      <p>Pinjaman Rp 50 juta, tenor 24 bulan, bunga 1%/bulan flat (≈18% efektif):</p>
+      <p>Pinjaman Rp 50 juta, tenor 24 bulan, bunga 1%/bulan flat (≈24% efektif):</p>
       <ul class="info-list">
         <li><strong>Pokok</strong>: Rp 50.000.000</li>
         <li><strong>Bunga flat</strong>: Rp 50jt × 12% × 2 tahun = Rp 12.000.000</li>
