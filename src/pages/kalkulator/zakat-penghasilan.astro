@@ -62,7 +62,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
               <div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="lain" class="has-prefix" placeholder="0" inputmode="numeric" /></div></div>
             <div class="field"><label>Harga Emas per Gram</label>
               <div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="emas" class="has-prefix" value="2.700.000" inputmode="numeric" /></div>
-              <p class="field-hint">Default: harga emas Antam ~Rp 2,7jt/gram (Juni 2026). Cek terbaru di logammulia.com</p></div>
+              <p class="field-hint">🔄 Acuan Antam ~Rp 2,7jt/gram (per Juni 2026). Harga emas berubah harian — cek harga hari ini di logammulia.com lalu sesuaikan.</p></div>
 
             <div class="calc-action-bar">
               <button type="button" class="btn-hitung" id="btnHitung"><i class="ti ti-calculator"></i> Hitung Sekarang</button>
@@ -123,7 +123,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
     <div class="related-grid">{related.map(c => <CalculatorCard calc={c} />)}</div>
   </div></section>
   <p style="text-align:center;font-size:.85rem;color:#64748b;margin:1.2rem auto;max-width:600px;">
-    📅 Nisab diperbarui <strong>Juni 2026</strong> · Sumber: BAZNAS & harga emas terkini
+    📅 Nisab acuan <strong>Juni 2026</strong> (emas Antam ~Rp 2,7jt/gram) · Sumber: BAZNAS & logammulia.com
   </p>
 </Layout>
 
@@ -170,7 +170,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       }
 
       function reset() {
-        els.p.value = '10.000.000'; els.l.value = ''; els.e.value = '1.000.000';
+        els.p.value = '10.000.000'; els.l.value = ''; els.e.value = '2.700.000';
         $('placeholder').style.display = ''; $('results').classList.remove('show');
         lastCalc = null; HC.toast('Form direset', 'info');
       }
