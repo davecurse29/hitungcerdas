@@ -521,3 +521,70 @@ html { scroll-behavior: smooth; }
 }
 
 /* ═══════════════ END OF SECTION 23–24 ═══════════════ */
+
+/* ═══════════════ SECTION 25–30: AKSESIBILITAS + MICRO-POLISH PREMIUM ═══════════════ */
+/* Tambahan additif: fokus keyboard, ring input, seleksi teks, scrollbar,
+   underline link artikel. TIDAK mengubah struktur, warna brand, atau JS apa pun. */
+
+/* ─── 25. FOCUS-VISIBLE — navigasi keyboard jelas (aksesibilitas) ── */
+/* Hanya muncul saat Tab (keyboard), tidak mengganggu klik mouse */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--blue, #2563EB);
+  outline-offset: 2px;
+  border-radius: 5px;
+}
+
+/* ─── 26. INPUT FOCUS — ring lembut saat field difokus (clarity) ── */
+.input-wrap:focus-within {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--cat-color, #2563EB) 16%, transparent);
+  transition: box-shadow .18s ease;
+}
+
+/* ─── 27. TEXT SELECTION — tint brand (detail premium) ── */
+::selection {
+  background: rgba(37, 99, 235, .16);
+}
+
+/* ─── 28. SCROLLBAR — tipis & halus (desktop), adaptif dark mode ── */
+@media (min-width: 1024px) {
+  * { scrollbar-width: thin; scrollbar-color: #CBD5E1 transparent; }
+  *::-webkit-scrollbar { width: 10px; height: 10px; }
+  *::-webkit-scrollbar-track { background: transparent; }
+  *::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 8px; }
+  *::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
+}
+[data-theme="dark"] * { scrollbar-color: #334155 transparent; }
+[data-theme="dark"] *::-webkit-scrollbar-thumb { background: #334155; }
+[data-theme="dark"] *::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+/* ─── 29. LINK DALAM ARTIKEL KALKULATOR — underline tumbuh saat hover ── */
+/* Afordansi jelas untuk internal link SEO (mis. "simulasi pinjol legal") */
+.wrap-text p a,
+.wrap-text li a {
+  color: var(--cat-color, #2563EB);
+  font-weight: 600;
+  text-decoration: none;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 1.5px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size .25s ease;
+}
+.wrap-text p a:hover,
+.wrap-text li a:hover {
+  background-size: 100% 1.5px;
+}
+
+/* ─── 30. HORMATI REDUCED MOTION (untuk §26 & §29) ── */
+@media (prefers-reduced-motion: reduce) {
+  .input-wrap:focus-within,
+  .wrap-text p a,
+  .wrap-text li a { transition: none !important; }
+}
+
+/* ═══════════════ END OF SECTION 25–30 ═══════════════ */
