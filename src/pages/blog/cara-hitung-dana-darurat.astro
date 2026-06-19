@@ -5,7 +5,7 @@ import AdSlot from '../../components/AdSlot.astro';
 import ArticleSchema from '../../components/ArticleSchema.astro';
 
 const datePublished = '2026-06-08';
-const dateModified = '2026-06-11';
+const dateModified = '2026-06-20';
 const today = new Date(datePublished).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
 const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'Panduan Dana Darurat' }];
 ---
@@ -74,9 +74,9 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog'
       <h2>3. Contoh Perhitungan</h2>
       <p>Keluarga muda dengan 1 anak, pengeluaran Rp 5 juta/bulan:</p>
       <ul class="info-list">
-        <li>Status: menikah + 1 tanggungan → multiplier 7×</li>
-        <li>Target dana darurat: Rp 5jt × 7 = <strong>Rp 35.000.000</strong></li>
-        <li>Jika nabung Rp 1,5jt/bulan → tercapai dalam ~24 bulan</li>
+        <li>Status: menikah + 1 tanggungan → multiplier 9×</li>
+        <li>Target dana darurat: Rp 5jt × 9 = <strong>Rp 45.000.000</strong></li>
+        <li>Jika nabung Rp 1,5jt/bulan → tercapai dalam ~30 bulan</li>
       </ul>
 
       <div class="cta-box">
@@ -90,7 +90,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog'
       <h2>4. Di Mana Menyimpan Dana Darurat?</h2>
       <p>Dana darurat harus <strong>likuid</strong> (mudah dicairkan) dan <strong>aman</strong>:</p>
       <ul class="info-list">
-        <li><strong>Reksa Dana Pasar Uang (RDPU)</strong> — return ~4-5%/tahun, bisa cair 1-2 hari, terbaik!</li>
+        <li><strong>Reksa Dana Pasar Uang (RDPU)</strong> — return ~5-6%/tahun, bisa cair 1-2 hari, terbaik!</li>
         <li><strong>Deposito</strong> — aman & dijamin LPS, tapi ada jangka waktu</li>
         <li><strong>Tabungan terpisah</strong> — paling likuid tapi return rendah</li>
       </ul>
