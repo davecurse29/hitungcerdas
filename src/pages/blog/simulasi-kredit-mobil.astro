@@ -4,7 +4,7 @@ import Breadcrumb from '../../components/Breadcrumb.astro';
 import AdSlot from '../../components/AdSlot.astro';
 import ArticleSchema from '../../components/ArticleSchema.astro';
 const datePublished = '2026-06-08';
-const dateModified = '2026-06-11';
+const dateModified = '2026-06-20';
 const today = new Date(datePublished).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
 const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'Simulasi Kredit Mobil' }];
 ---
@@ -28,15 +28,15 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog'
   </section>
   <AdSlot format="horizontal" />
   <article class="content-section"><div class="wrap-text">
-    <p class="lead">Mobil bukan investasi, tapi <strong>liability</strong>. Cicilan cuma 30% dari total biaya kepemilikan (TCO). Untuk mobil Rp 250 juta, TCO 5 tahun bisa <strong>Rp 450+ juta</strong>. Mari bedah angkanya.</p>
+    <p class="lead">Mobil bukan investasi, tapi <strong>liability</strong>. Cicilan cuma kurang dari separuh total biaya kepemilikan (TCO). Untuk mobil Rp 250 juta, TCO 5 tahun bisa <strong>Rp 450+ juta</strong>. Mari bedah angkanya.</p>
     <h2>1. Rumus Cicilan Mobil</h2>
     <p>Mobil pakai bunga <strong>flat</strong> (mirip motor) di leasing, atau <strong>efektif</strong> di bank. Rate flat 6-9% per tahun.</p>
     <div class="formula-box"><p><strong>Cicilan = Pokok × (1 + flat_rate × tenor_tahun) / total_bulan</strong></p></div>
     <h2>2. Contoh: Toyota Avanza Rp 250 juta, DP 30%, Tenor 5 tahun</h2>
     <ul class="info-list"><li><strong>DP</strong>: Rp 75.000.000</li><li><strong>Pokok</strong>: Rp 175.000.000</li><li><strong>Bunga flat 7% × 5</strong>: 35% × 175jt = Rp 61.250.000</li><li><strong>Total bayar</strong>: Rp 236.250.000</li><li><strong>Cicilan/bulan</strong>: Rp 236.25jt / 60 = <strong>Rp 3.937.500</strong></li></ul>
     <h2>3. TCO 5 Tahun Toyota Avanza</h2>
-    <ul class="info-list"><li><strong>Harga + bunga kredit</strong>: Rp 236.250.000</li><li><strong>BBM (12 km/L, 1500km/bulan)</strong>: 9000L × Rp 10rb = Rp 90.000.000</li><li><strong>Servis rutin 5 tahun</strong>: Rp 1.5jt × 5 = Rp 7.500.000</li><li><strong>Ganti oli + filter (10x)</strong>: Rp 600rb × 10 = Rp 6.000.000</li><li><strong>Ban (1 set ganti)</strong>: Rp 4.000.000</li><li><strong>Asuransi all-risk 5 tahun</strong>: 2.5% × 250jt × 5 = Rp 31.250.000</li><li><strong>Pajak (PKB 1.5%)</strong>: Rp 3.75jt × 5 = Rp 18.750.000</li><li><strong>Tol, parkir, cuci</strong>: ~Rp 500rb/bulan × 60 = Rp 30.000.000</li><li><strong>Depresiasi (40% nilai)</strong>: Rp 100.000.000 hilang</li><li><strong>TOTAL TCO 5 TAHUN</strong>: <strong>~Rp 523.750.000</strong></li></ul>
-    <p>Artinya all-in: <strong>~Rp 8.7 juta/bulan</strong> untuk Avanza.</p>
+    <ul class="info-list"><li><strong>Harga + bunga kredit (OTR 250jt + bunga 61,25jt, termasuk DP)</strong>: Rp 311.250.000</li><li><strong>BBM (12 km/L, 1500km/bulan, Pertamax)</strong>: 7.500L × Rp 16.250 = Rp 121.875.000</li><li><strong>Servis rutin 5 tahun</strong>: Rp 1.5jt × 5 = Rp 7.500.000</li><li><strong>Ganti oli + filter (10x)</strong>: Rp 600rb × 10 = Rp 6.000.000</li><li><strong>Ban (1 set ganti)</strong>: Rp 4.000.000</li><li><strong>Asuransi all-risk 5 tahun</strong>: 2.5% × 250jt × 5 = Rp 31.250.000</li><li><strong>Pajak (PKB 1.5%)</strong>: Rp 3.75jt × 5 = Rp 18.750.000</li><li><strong>Tol, parkir, cuci</strong>: ~Rp 500rb/bulan × 60 = Rp 30.000.000</li><li><strong>TOTAL TCO 5 TAHUN</strong>: <strong>~Rp 530.625.000</strong></li></ul>
+    <p>Artinya all-in: <strong>~Rp 8,8 juta/bulan</strong> untuk Avanza. <em>Catatan: nilai mobil juga turun ~40% (~Rp 100jt) dalam 5 tahun, tapi sebagian masih kembali saat dijual (~Rp 150jt).</em></p>
     <AdSlot format="horizontal" />
     <h2>4. Tips Kredit Mobil yang Cerdas</h2>
     <ul class="info-list"><li><strong>DP minimum 30%</strong>: regulasi OJK + lebih sehat finansial</li><li><strong>Tenor max 5 tahun</strong>: jangan 6-7 tahun, total bunga balik bengkak</li><li><strong>Asuransi all-risk 3 tahun pertama</strong>, lalu TLO untuk mobil tua</li><li><strong>Pakai 30% rule</strong>: cicilan max 30% gaji bersih</li><li><strong>Pertimbangkan mobil bekas</strong>: depresiasi sudah lewat, harga 30-40% lebih murah</li></ul>

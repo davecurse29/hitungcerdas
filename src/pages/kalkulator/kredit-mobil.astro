@@ -14,7 +14,7 @@ const faqs = [
   { question: 'Berapa DP minimum kredit mobil di Indonesia?', answer: 'DP minimum kredit mobil per OJK: <strong>20-30% dari OTR</strong>. Showroom sering promo "DP 15%" dengan syarat bunga lebih tinggi. Idealnya DP <strong>30%+</strong> agar bunga total tidak membengkak.' },
   { question: 'Bunga kredit mobil di Indonesia berapa?', answer: 'Bunga flat kredit mobil <strong>5-9% per tahun</strong> (Maybank Finance, ACC, BCA Finance, Mandiri Tunas Finance, Astra Credit). Lebih rendah dari motor karena nominal lebih besar.' },
   { question: 'Berapa total biaya kepemilikan mobil per bulan?', answer: 'Selain cicilan, TCO bulanan mobil: <strong>Bensin</strong> Rp 1.5-3 juta (tergantung jarak), <strong>Tol/parkir</strong> Rp 300-700rb, <strong>Servis berkala</strong> Rp 350-550rb, <strong>Asuransi All Risk</strong> Rp 700rb-1,2jt/bln (~3,5% nilai mobil/thn), <strong>Pajak STNK</strong> Rp 200-400rb/bln, <strong>Cuci</strong> Rp 100rb. Total: TCO biasanya <strong>1.5-2× cicilan</strong>.' },
-  { question: 'Mobil listrik (EV) lebih hemat?', answer: 'YA, jangka panjang sangat hemat: (1) <strong>Bensin</strong>: EV cuma ~Rp 500rb-1jt/bln (charging) vs ICE Rp 2-3jt/bln. (2) <strong>Insentif PPN 1%</strong> dari pemerintah (bukan 11%), hemat puluhan juta saat beli. (3) <strong>Servis lebih murah</strong>: tidak ada oli mesin, tune-up jarang. (4) <strong>Tidak kena ganjil-genap</strong> di Jakarta. Cocok untuk komuter urban yang charging di rumah malam.' },
+  { question: 'Mobil listrik (EV) lebih hemat?', answer: 'YA, jangka panjang sangat hemat: (1) <strong>Bensin</strong>: EV cuma ~Rp 500rb-1jt/bln (charging) vs ICE Rp 2-3jt/bln. (2) <strong>Insentif PPN DTP</strong>: sebagian mobil listrik (BEV, TKDN &ge;40%) bayar PPN efektif ~1% (bukan 12%), hemat puluhan juta &mdash; tapi tak semua model dapat &amp; skema bisa berubah, cek model yang kamu incar. (3) <strong>Servis lebih murah</strong>: tidak ada oli mesin, tune-up jarang. (4) <strong>Tidak kena ganjil-genap</strong> di Jakarta. Cocok untuk komuter urban yang charging di rumah malam.' },
   { question: 'Beli mobil baru atau bekas yang lebih untung?', answer: '<strong>Mobil baru</strong>: Garansi 3-5 tahun, fitur lengkap, depresiasi 20-25% di tahun pertama. <strong>Mobil bekas</strong> (3-5 thn): Harga 50-70% mobil baru, depresiasi sudah jeda, tapi risiko biaya servis lebih tinggi. <strong>Sweet spot</strong>: bekas 2-3 tahun dari pemilik pertama yang terawat.' },
 ];
 
@@ -195,7 +195,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
                     <thead><tr><th>Tipe Mobil</th><th class="right">Bensin/Bln</th><th class="right">TCO Total/Bln</th></tr></thead>
                     <tbody id="mobilCompareBody"></tbody>
                   </table>
-                  <p class="bank-disclaimer">⚡ <strong>Mobil listrik (EV)</strong> untuk komuter urban yang charging di rumah malam paling hemat. Plus insentif PPN 1% pemerintah Indonesia! Tapi pastikan rute kamu ada stasiun pengisian (SPKLU).</p>
+                  <p class="bank-disclaimer">⚡ <strong>Mobil listrik (EV)</strong> untuk komuter urban yang charging di rumah malam paling hemat. Plus banyak model mobil listrik (BEV, TKDN tinggi) dapat insentif PPN DTP &mdash; cek apakah model incaranmu termasuk. Pastikan juga rute kamu ada stasiun pengisian (SPKLU).</p>
                 </div>
               </div>
 
@@ -230,7 +230,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
                     <div class="field" style="margin-bottom:8px"><label>Selisih Harga Beli EV</label>
                       <div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="evPremi" class="has-prefix" value="100.000.000" inputmode="numeric" /></div></div>
                     <div class="field" style="margin-bottom:8px"><label>Harga BBM (Rp/L)</label>
-                      <div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="evBbm" class="has-prefix" value="13.000" inputmode="numeric" /></div></div>
+                      <div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="evBbm" class="has-prefix" value="16.250" inputmode="numeric" /></div></div>
                     <div class="field" style="margin-bottom:8px"><label>Konsumsi Bensin</label>
                       <div class="input-wrap"><input type="number" id="evKmL" class="has-suffix" value="12" step="1" min="1" /><span class="input-suffix">km/L</span></div></div>
                     <div class="field" style="margin-bottom:8px"><label>Harga Listrik (Rp/kWh)</label>
@@ -313,7 +313,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       <h3>Tips Cerdas Sebelum Ambil Kredit Mobil</h3>
       <ol class="tips-list">
         <li><strong>Hitung TCO, bukan cicilan</strong> — TCO maksimal 40% gaji. Cicilan saja maksimal 25%.</li>
-        <li><strong>Pertimbangkan EV untuk komuter urban</strong> — Insentif PPN 1% + bensin hemat 70%.</li>
+        <li><strong>Pertimbangkan EV untuk komuter urban</strong> — Banyak model dapat insentif PPN DTP (cek kelayakan) + bensin hemat 70%.</li>
         <li><strong>Mobil baru depresiasi 20-25% di tahun 1</strong> — Beli mobil bekas 2-3 thn lebih value-for-money.</li>
         <li><strong>Asuransi All-Risk wajib untuk mobil kredit</strong> — Bank biasanya minta. Premi sekitar 3-4% nilai mobil (estimasi konservatif).</li>
         <li><strong>Bayar pajak STNK on time</strong> — Telat = denda 25%/tahun + bisa di-tilang.</li>
@@ -668,7 +668,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         let warningHtml = '';
         if (tco.isElectric) {
           const hematPotensi = (tco.totalTCO * 0.15); // estimate hemat 15% jika compared to ICE
-          warningHtml = `<div class="tco-warning safe">⚡ <strong>EV Smart Choice!</strong> Mobil listrik hemat bensin 70%, insentif PPN 1% (bukan 11%), tidak kena ganjil-genap. Cocok untuk komuter urban yang charging di rumah malam.</div>`;
+          warningHtml = `<div class="tco-warning safe">⚡ <strong>EV Smart Choice!</strong> Mobil listrik hemat bensin 70%, banyak model dapat insentif PPN DTP (PPN efektif ~1%, cek kelayakan), tidak kena ganjil-genap. Cocok untuk komuter urban yang charging di rumah malam.</div>`;
         } else if (tco.totalTCO > 10000000) {
           warningHtml = `<div class="tco-warning">⚠️ <strong>TCO ${HC.fmt(tco.totalTCO)}/bulan sangat besar.</strong> Pastikan gaji minimal ${HC.fmt(minGaji)} agar TCO mobil tidak lebih dari 40% gaji. Pertimbangkan mobil lebih kecil atau bekas.</div>`;
         } else if (tco.totalTCO > 6000000) {
@@ -780,7 +780,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         if (!lastCalc) return null;
         const c = lastCalc;
         const insight = c.tco.isElectric
-          ? `⚡ Mobil listrik HEMAT! Bensin cuma ${HC.fmt(c.tco.bensin)}/bln vs Rp 2-3jt mobil bensin. Plus insentif PPN 1% + bebas ganjil-genap.`
+          ? `⚡ Mobil listrik HEMAT! Bensin cuma ${HC.fmt(c.tco.bensin)}/bln vs Rp 2-3jt mobil bensin. Plus banyak model EV dapat insentif PPN DTP (cek kelayakan) + bebas ganjil-genap.`
           : `TCO total ${HC.fmt(c.tco.totalTCO)}/bln. Cicilan cuma ${((c.tco.cicilan / c.tco.totalTCO) * 100).toFixed(0)}% dari TCO. Pastikan gaji minimal ${HC.fmt(c.tco.totalTCO * 2.5)} (TCO max 40% gaji).`;
 
         const inputs = [
