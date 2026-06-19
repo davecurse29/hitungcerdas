@@ -11,7 +11,7 @@ const related = getRelatedCalculators('gaji-bersih', 3);
 
 const faqs = [
   { question: 'Apa itu gaji bersih (take-home pay)?', answer: 'Gaji bersih = uang yang benar-benar masuk rekeningmu setelah semua potongan: BPJS Kesehatan (1%), BPJS JHT (2%), BPJS JP (1%), PPh 21 progresif, dan potongan internal (koperasi, cicilan). Biasanya 70-85% dari gaji bruto.' },
-  { question: 'Berapa total potongan BPJS karyawan?', answer: 'Total potongan BPJS karyawan = 4% gaji: <strong>BPJS Kesehatan 1%</strong> (maks Rp 120rb/bln, batas ceiling Rp 12jt), <strong>JHT 2%</strong>, <strong>JP 1%</strong> (maks Rp 87rb/bln, batas ceiling Rp 8,7jt). Perusahaan tambah ~9% dari sisinya untuk JKK, JKM, BPJS Kes.' },
+  { question: 'Berapa total potongan BPJS karyawan?', answer: 'Total potongan BPJS karyawan = 4% gaji: <strong>BPJS Kesehatan 1%</strong> (maks Rp 120rb/bln, batas ceiling Rp 12jt), <strong>JHT 2%</strong>, <strong>JP 1%</strong> (maks Rp 110.863/bln, batas ceiling Rp 11,08jt). Perusahaan tambah ~9% dari sisinya untuk JKK, JKM, BPJS Kes.' },
   { question: 'Bagaimana alokasi 50/30/20 yang tepat?', answer: 'Aturan emas alokasi take-home pay: <strong>50% kebutuhan</strong> (sewa/cicilan, listrik, transport, makan), <strong>30% keinginan</strong> (hiburan, hobi, makan di luar), <strong>20% tabungan & investasi</strong> (dana darurat, reksadana, emas).' },
   { question: 'Apakah lembur dan komisi kena PPh?', answer: 'YA, lembur dan komisi termasuk objek PPh 21. Hitungnya ditambahkan ke bruto setahun. Tarifnya progresif sama seperti gaji pokok. Komisi yang besar bisa bikin loncat ke lapisan tarif berikutnya.' },
   { question: 'Kenapa THR/bonus dipotong pajak lebih besar?', answer: 'THR & bonus termasuk <strong>penghasilan tidak teratur</strong>. Pajaknya dihitung sebagai selisih PPh setahun <em>dengan</em> THR dikurangi PPh setahun <em>tanpa</em> THR. Karena menambah total penghasilan tahunan, THR bisa kena tarif lapisan lebih tinggi, sehingga tarif efektifnya terasa lebih besar dari gaji biasa. Sejak 2024 (PMK 168/2023), potongan riil di bulan THR memakai tarif efektif (TER), lalu dikoreksi otomatis di masa pajak Desember.' },
@@ -457,7 +457,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         const brutoBulan = gaji + tunj + tunjVar;
         const bpjsKes = Math.min(brutoBulan * 0.01, 120000);
         const bpjsJht = brutoBulan * 0.02;
-        const bpjsJp = Math.min(brutoBulan * 0.01, 87000);
+        const bpjsJp = Math.min(brutoBulan * 0.01, 110863);
         const bpjsTotal = bpjsKes + bpjsJht + bpjsJp;
         let pphBulan;
         if (useTer) {
@@ -501,7 +501,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         // BPJS (with ceiling rules)
         const bpjsKes = Math.min(brutoBulan * 0.01, 120000);
         const bpjsJht = brutoBulan * 0.02;
-        const bpjsJp = Math.min(brutoBulan * 0.01, 87000);
+        const bpjsJp = Math.min(brutoBulan * 0.01, 110863);
         const bpjsTotal = bpjsKes + bpjsJht + bpjsJp;
 
         // ===== PPh 21: dua metode =====
@@ -544,7 +544,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         // ===== Total Biaya Perusahaan (CTC) — iuran sisi kantor =====
         const empKes = Math.min(brutoBulan, 12000000) * 0.04;   // BPJS Kesehatan kantor 4% (ceiling gaji 12jt)
         const empJht = brutoBulan * 0.037;                       // JHT kantor 3,7%
-        const empJp  = Math.min(brutoBulan, 8700000) * 0.02;     // JP kantor 2% (ceiling 8,7jt)
+        const empJp  = Math.min(brutoBulan, 11086300) * 0.02;     // JP kantor 2% (ceiling 11,08jt)
         const empJkk = brutoBulan * 0.0024;                      // JKK 0,24% (asumsi risiko rendah)
         const empJkm = brutoBulan * 0.003;                       // JKM 0,3%
         const empBpjs = empKes + empJht + empJp + empJkk + empJkm;

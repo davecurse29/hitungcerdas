@@ -5,7 +5,7 @@ import AdSlot from '../../components/AdSlot.astro';
 import ArticleSchema from '../../components/ArticleSchema.astro';
 
 const datePublished = '2026-06-08';
-const dateModified = '2026-06-11';
+const dateModified = '2026-06-20';
 const today = new Date(datePublished).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
 const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'Cara Menghitung Gaji Bersih' }];
 ---
@@ -48,7 +48,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog'
       <p class="lead">
         Gaji yang tertera di kontrak <strong>bukanlah</strong> yang masuk rekening. Setelah dipotong
         BPJS Kesehatan, BPJS Ketenagakerjaan, dan PPh 21, gaji bruto Rp 10 juta bisa jadi gaji bersih
-        <strong>~Rp 8,7 juta</strong>. Artikel ini ngajarin cara hitung take-home pay step-by-step
+        <strong>~Rp 9,4 juta</strong>. Artikel ini ngajarin cara hitung take-home pay step-by-step
         plus simulasi untuk berbagai range gaji.
       </p>
 
@@ -60,7 +60,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog'
       <ul class="info-list">
         <li><strong>BPJS Kesehatan</strong>: 1% dari gaji bruto (karyawan), 4% (perusahaan). Max gaji acuan: Rp 12 juta.</li>
         <li><strong>BPJS JHT</strong>: 2% dari gaji (karyawan), 3,7% (perusahaan)</li>
-        <li><strong>BPJS JP</strong>: 1% dari gaji (karyawan), 2% (perusahaan). Max gaji acuan: Rp 10,5 juta.</li>
+        <li><strong>BPJS JP</strong>: 1% dari gaji (karyawan), 2% (perusahaan). Max gaji acuan: Rp 11,08 juta.</li>
         <li><strong>BPJS JKK + JKM</strong>: dibayar perusahaan 100%, tidak potong gaji karyawan</li>
         <li><strong>PPh 21</strong>: sesuai tarif progresif UU HPP 2022 (5%-35%)</li>
       </ul>
@@ -72,18 +72,18 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog'
         <li><strong>BPJS JHT 2%</strong>: Rp 200.000</li>
         <li><strong>BPJS JP 1%</strong>: Rp 100.000</li>
         <li><strong>Total BPJS</strong>: Rp 400.000</li>
-        <li><strong>PPh 21 (estimasi)</strong>: Rp 313.000</li>
-        <li><strong>Gaji Bersih</strong>: Rp 10jt - Rp 400rb - Rp 313rb = <strong>Rp 9.287.000</strong></li>
+        <li><strong>PPh 21 (estimasi)</strong>: Rp 230.000</li>
+        <li><strong>Gaji Bersih</strong>: Rp 10jt - Rp 400rb - Rp 230rb = <strong>Rp 9.370.000</strong></li>
       </ul>
 
       <h2>3. Simulasi Gaji Bersih untuk Range Gaji Berbeda (Status TK/0)</h2>
       <ul class="info-list">
         <li><strong>Bruto Rp 5 juta</strong>: BPJS Rp 200rb, PPh 21 Rp 0 (di bawah PTKP). Bersih: <strong>~Rp 4.800.000</strong></li>
-        <li><strong>Bruto Rp 8 juta</strong>: BPJS Rp 320rb, PPh 21 Rp 155rb. Bersih: <strong>~Rp 7.525.000</strong></li>
-        <li><strong>Bruto Rp 12 juta</strong>: BPJS Rp 480rb, PPh 21 Rp 542rb. Bersih: <strong>~Rp 10.978.000</strong></li>
-        <li><strong>Bruto Rp 15 juta</strong>: BPJS Rp 565rb (capped), PPh 21 Rp 826rb. Bersih: <strong>~Rp 13.609.000</strong></li>
-        <li><strong>Bruto Rp 20 juta</strong>: BPJS Rp 615rb (capped), PPh 21 Rp 1.534rb. Bersih: <strong>~Rp 17.851.000</strong></li>
-        <li><strong>Bruto Rp 25 juta</strong>: BPJS Rp 665rb (capped), PPh 21 Rp 2.500rb. Bersih: <strong>~Rp 21.835.000</strong></li>
+        <li><strong>Bruto Rp 8 juta</strong>: BPJS Rp 320rb, PPh 21 ~Rp 139rb. Bersih: <strong>~Rp 7.541.000</strong></li>
+        <li><strong>Bruto Rp 12 juta</strong>: BPJS Rp 471rb, PPh 21 ~Rp 479rb. Bersih: <strong>~Rp 11.050.000</strong></li>
+        <li><strong>Bruto Rp 15 juta</strong>: BPJS Rp 531rb (Kes &amp; JP capped), PPh 21 ~Rp 920rb. Bersih: <strong>~Rp 13.549.000</strong></li>
+        <li><strong>Bruto Rp 20 juta</strong>: BPJS Rp 631rb (Kes &amp; JP capped), PPh 21 ~Rp 1.655rb. Bersih: <strong>~Rp 17.714.000</strong></li>
+        <li><strong>Bruto Rp 25 juta</strong>: BPJS Rp 731rb (Kes &amp; JP capped), PPh 21 ~Rp 2.390rb. Bersih: <strong>~Rp 21.879.000</strong></li>
       </ul>
 
       <h2>4. Cap BPJS — Penting Diperhatikan</h2>
@@ -93,7 +93,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog'
       </p>
       <ul class="info-list">
         <li><strong>BPJS Kesehatan</strong>: max gaji acuan Rp 12 juta → max potongan karyawan Rp 120rb</li>
-        <li><strong>BPJS JP</strong>: max gaji acuan Rp 10,5 juta → max potongan karyawan Rp 105rb</li>
+        <li><strong>BPJS JP</strong>: max gaji acuan Rp 11,08 juta → max potongan karyawan Rp 110.863</li>
         <li><strong>BPJS JHT</strong>: tidak ada cap, 2% dari gaji penuh</li>
       </ul>
 
