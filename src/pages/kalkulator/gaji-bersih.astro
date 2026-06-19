@@ -261,6 +261,57 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
     </div>
   </section>
 
+  <!-- ===== FITUR: BANDINGKAN TAWARAN KERJA ===== -->
+  <section class="calc-section" style="padding-top:0">
+    <div class="wrap">
+      <div class="calc-card jobcmp">
+        <div class="calc-card-hdr">
+          <div class="calc-card-hdr-ic" style="background:linear-gradient(135deg,#0EA5E9 0%,#0369A1 100%)"><i class="ti ti-arrows-exchange"></i></div>
+          <div><h2 class="calc-card-title">Bandingkan Tawaran Kerja</h2><p class="calc-card-sub">Gaji sekarang vs tawaran baru &mdash; lihat take-home asli &amp; target nego HRD</p></div>
+        </div>
+
+        <div class="field"><label>Status PTKP (kamu)</label>
+          <select id="jcPtkp">
+            <option value="54000000">TK/0 - Lajang</option>
+            <option value="58500000">K/0 - Menikah no anak</option>
+            <option value="63000000">K/1 - 1 anak</option>
+            <option value="67500000">K/2 - 2 anak</option>
+            <option value="72000000">K/3 - 3 anak</option>
+          </select>
+        </div>
+
+        <div class="jc-grid">
+          <div class="jc-col jc-now">
+            <div class="jc-col-hdr"><i class="ti ti-building"></i> Kantor Sekarang</div>
+            <div class="field"><label>Gaji Pokok</label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span>
+                <input type="text" id="jcGajiNow" class="has-prefix" value="8.000.000" inputmode="numeric" /></div></div>
+            <div class="field" style="margin-bottom:0"><label>Tunjangan Tetap</label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span>
+                <input type="text" id="jcTunjNow" class="has-prefix" value="1.500.000" inputmode="numeric" /></div></div>
+          </div>
+          <div class="jc-vs"><span>VS</span></div>
+          <div class="jc-col jc-new">
+            <div class="jc-col-hdr"><i class="ti ti-rocket"></i> Tawaran Baru</div>
+            <div class="field"><label>Gaji Pokok</label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span>
+                <input type="text" id="jcGajiNew" class="has-prefix" value="10.000.000" inputmode="numeric" /></div></div>
+            <div class="field" style="margin-bottom:0"><label>Tunjangan Tetap</label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span>
+                <input type="text" id="jcTunjNew" class="has-prefix" value="1.500.000" inputmode="numeric" /></div></div>
+          </div>
+        </div>
+
+        <button type="button" class="btn-hitung" id="jcBtn"><i class="ti ti-arrows-exchange"></i> Bandingkan Take-Home</button>
+
+        <div id="jcResult" class="jc-result" style="display:none;margin-top:16px"></div>
+
+        <p class="jc-note"><i class="ti ti-info-circle"></i> Berdasarkan estimasi tahunan (BPJS + PPh 21, JP cap 2026). THR/bonus &amp; potongan internal belum dihitung. Angka untuk gambaran negosiasi, bukan patokan resmi.</p>
+      </div>
+    </div>
+  </section>
+  <!-- ===== /BANDINGKAN TAWARAN KERJA ===== -->
+
   <section class="content-section">
     <div class="wrap-text">
       <h2>Cara Menghitung Gaji Bersih Karyawan</h2>
@@ -471,6 +522,9 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         const thp = brutoBulan - bpjsTotal - pphBulan - potLain - dplkKaryawan;
         return { thp, brutoBulan, bpjsTotal, pphBulan, dplkKaryawan };
       }
+
+      // Expose mesin take-home murni untuk fitur "Bandingkan Tawaran Kerja" (single source of truth).
+      try { window.HCGaji = { coreThp: coreThp }; } catch (e) {}
 
       // Harga emas live (untuk nisab zakat penghasilan). Fallback spot 24k ~Rp 2,4jt/gram.
       let goldPerGram = 2400000;
@@ -858,6 +912,109 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       send.addEventListener('click', function(){ ask(input.value); });
       input.addEventListener('keydown', function(e){ if(e.key==='Enter'){ e.preventDefault(); ask(input.value); } });
       var bh=$('btnHitung'); if(bh){ bh.addEventListener('click', function(){ setTimeout(function(){ if(!panel.hasAttribute('hidden')) renderGround(); },60); }); }
+    });
+  })();
+</script>
+
+<style is:global>
+  .jobcmp .jc-grid{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:stretch;margin:6px 0 14px}
+  .jobcmp .jc-col{padding:14px;border-radius:14px;border:1px solid var(--border,#E2E8F0)}
+  .jobcmp .jc-now{background:var(--bg-soft,#F8FAFC)}
+  .jobcmp .jc-new{background:#ECFDF5;border-color:#A7F3D0}
+  .jobcmp .jc-col-hdr{font-weight:800;font-size:13.5px;margin-bottom:12px;display:flex;align-items:center;gap:6px}
+  .jobcmp .jc-now .jc-col-hdr{color:#475569}
+  .jobcmp .jc-new .jc-col-hdr{color:#047857}
+  .jobcmp .jc-vs{align-self:center;display:flex;justify-content:center}
+  .jobcmp .jc-vs span{display:inline-flex;width:36px;height:36px;border-radius:50%;background:#fff;border:1px solid var(--border,#E2E8F0);align-items:center;justify-content:center;font-weight:800;font-size:12px;color:var(--text-mute,#94A3B8)}
+  .jobcmp .jc-twin{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+  .jobcmp .jc-thp{padding:12px;border-radius:12px;text-align:center}
+  .jobcmp .jc-thp.now{background:var(--bg-soft,#F8FAFC)}
+  .jobcmp .jc-thp.new{background:#ECFDF5}
+  .jobcmp .jc-thp .l{font-size:11.5px;color:var(--text-mute,#64748B);font-weight:600}
+  .jobcmp .jc-thp .v{font-size:19px;font-weight:800;margin-top:3px;color:var(--text,#0F172A)}
+  .jobcmp .jc-delta{padding:11px 14px;border-radius:12px;font-weight:700;text-align:center;margin-bottom:12px;font-size:14px;display:flex;align-items:center;justify-content:center;gap:7px}
+  .jobcmp .jc-delta.up{background:#D1FAE5;color:#047857}
+  .jobcmp .jc-delta.down{background:#FEE2E2;color:#B91C1C}
+  .jobcmp .jc-delta.flat{background:var(--bg-soft,#F1F5F9);color:#475569}
+  .jobcmp .jc-nego{padding:14px;border-radius:12px;background:#FEF9C3;border:1px solid #FDE68A;margin-bottom:10px}
+  .jobcmp .jc-nego .t{font-weight:800;font-size:13px;margin-bottom:4px;display:flex;align-items:center;gap:6px;color:#854D0E}
+  .jobcmp .jc-nego .big{font-size:20px;font-weight:800;color:#0F172A;margin:2px 0 6px}
+  .jobcmp .jc-nego p{font-size:12.5px;color:#475569;line-height:1.55;margin:0}
+  .jobcmp .jc-sentence{margin-top:10px;padding:12px;border-radius:10px;background:#fff;border:1px dashed #CBD5E1;font-size:12.5px;color:#334155;line-height:1.6;font-style:italic}
+  .jobcmp .jc-copy{margin-top:8px;display:inline-flex;align-items:center;gap:6px;background:#0EA5E9;color:#fff;border:none;border-radius:9px;padding:8px 14px;font-size:12.5px;font-weight:700;cursor:pointer}
+  .jobcmp .jc-copy:hover{background:#0284C7}
+  .jobcmp .jc-note{font-size:11px;color:var(--text-mute,#94A3B8);line-height:1.5;margin-top:12px;display:flex;gap:6px;align-items:flex-start}
+  @media(max-width:560px){ .jobcmp .jc-grid{grid-template-columns:1fr} .jobcmp .jc-vs{margin:2px 0} .jobcmp .jc-vs span{width:30px;height:30px} }
+</style>
+
+<script is:inline>
+  (function(){
+    function ready(fn){ if(window.HC && window.HCGaji && window.HCGaji.coreThp){ fn(); } else { setTimeout(function(){ ready(fn); }, 120); } }
+    function $(id){ return document.getElementById(id); }
+    ready(function(){
+      var btn=$('jcBtn'); if(!btn) return;
+      function parseRp(v){ try{ return HC.parseRp(String(v||'')); }catch(e){ return parseInt(String(v||'').replace(/\D/g,''),10)||0; } }
+      function fmt(n){ try{ return HC.fmt(n); }catch(e){ return 'Rp '+Math.round(n).toLocaleString('id-ID'); } }
+      function grp(v){ v=String(v).replace(/\D/g,''); return v.replace(/\B(?=(\d{3})+(?!\d))/g,'.'); }
+      ['jcGajiNow','jcTunjNow','jcGajiNew','jcTunjNew'].forEach(function(id){ var el=$(id); if(el){ el.addEventListener('input', function(){ el.value=grp(el.value); }); } });
+
+      var C=window.HCGaji.coreThp;
+      function thp(g,t,p){ return C(g,t,0,p,0,0,false).thp; }
+      function reqGaji(target,t,p){
+        if(thp(0,t,p)>=target) return 0;
+        var lo=0,hi=1000000,k;
+        for(k=0;k<80 && thp(hi,t,p)<target;k++) hi*=1.5;
+        for(k=0;k<100;k++){ var mid=(lo+hi)/2; if(thp(mid,t,p)<target) lo=mid; else hi=mid; }
+        return (lo+hi)/2;
+      }
+      function round1k(n){ return Math.ceil(n/1000)*1000; }
+
+      function run(){
+        var p=parseInt(($('jcPtkp')||{}).value||'54000000',10);
+        var gNow=parseRp($('jcGajiNow').value), tNow=parseRp($('jcTunjNow').value);
+        var gNew=parseRp($('jcGajiNew').value), tNew=parseRp($('jcTunjNew').value);
+        if(gNow<=0 || gNew<=0){ try{HC.toast('Isi gaji pokok kedua kolom dulu','error');}catch(e){} return; }
+        var thpNow=thp(gNow,tNow,p), thpNew=thp(gNew,tNew,p);
+        var dBln=thpNew-thpNow, dThn=dBln*12;
+        var pct= thpNow>0 ? (dBln/thpNow*100) : 0;
+        var be=round1k(reqGaji(thpNow,tNew,p)); var gap=be-gNew;
+
+        var dCls = Math.abs(dBln)<5000 ? 'flat' : (dBln>0?'up':'down');
+        var dIcon = dCls==='up'?'ti-trending-up':(dCls==='down'?'ti-trending-down':'ti-equal');
+        var dTxt = dCls==='flat' ? 'Take-home praktis setara'
+          : ((dBln>0?'+':'\u2212')+fmt(Math.abs(dBln))+'/bln ('+(dBln>0?'+':'\u2212')+Math.abs(pct).toFixed(1)+'%) '+(dBln>0?'lebih tinggi':'lebih rendah'));
+
+        var negoHtml;
+        if(gap>5000){
+          negoHtml='<div class="jc-nego"><div class="t"><i class="ti ti-target-arrow"></i> Target nego HRD</div>'
+            +'<div class="big">Gaji pokok min. '+fmt(be)+'</div>'
+            +'<p>Dengan tunjangan '+fmt(tNew)+', tawaran sekarang ('+fmt(gNew)+') memberi take-home '+fmt(thpNew)+'/bln \u2014 masih <b>'+fmt(Math.abs(dBln))+' di bawah</b> posisimu sekarang. Untuk minimal setara, dorong gaji pokok naik ~<b>'+fmt(gap)+'</b> jadi '+fmt(be)+'.</p></div>';
+        } else if(gap<-5000){
+          negoHtml='<div class="jc-nego" style="background:#ECFDF5;border-color:#A7F3D0"><div class="t" style="color:#047857"><i class="ti ti-circle-check"></i> Tawaran sudah unggul</div>'
+            +'<div class="big">Surplus +'+fmt(thpNew-thpNow)+'/bln</div>'
+            +'<p>Take-home tawaran baru sudah di atas posisimu sekarang. Titik impas ada di gaji pokok '+fmt(be)+' \u2014 tawaran ('+fmt(gNew)+') sudah <b>'+fmt(Math.abs(gap))+' di atas</b> itu. Posisi nego kamu kuat; bisa dorong lebih atau amankan benefit lain.</p></div>';
+        } else {
+          negoHtml='<div class="jc-nego" style="background:#F1F5F9;border-color:#CBD5E1"><div class="t" style="color:#475569"><i class="ti ti-equal"></i> Nyaris setara</div>'
+            +'<div class="big">Impas di gaji pokok '+fmt(be)+'</div>'
+            +'<p>Take-home dua posisi praktis sama. Timbang faktor non-gaji: jarak, jenjang karier, kultur, benefit kesehatan, dan bonus/THR yang belum dihitung di sini.</p></div>';
+        }
+
+        var sentence='Berdasarkan perhitungan take-home pay (setelah BPJS & PPh 21), penghasilan bersih saya saat ini sekitar '+fmt(thpNow)+'/bulan. Agar penghasilan bersih di posisi baru setara atau lebih baik, saya mengusulkan gaji pokok minimal '+fmt(be)+' (dengan tunjangan '+fmt(tNew)+').';
+
+        var html='<div class="jc-twin">'
+          +'<div class="jc-thp now"><div class="l">Take-home Sekarang</div><div class="v">'+fmt(thpNow)+'</div></div>'
+          +'<div class="jc-thp new"><div class="l">Take-home Tawaran Baru</div><div class="v">'+fmt(thpNew)+'</div></div></div>'
+          +'<div class="jc-delta '+dCls+'"><i class="ti '+dIcon+'"></i> '+dTxt+'</div>'
+          +(dCls!=='flat'?('<div style="font-size:12px;color:var(--text-mute,#64748B);text-align:center;margin:-6px 0 12px">Selisih setahun: '+(dBln>0?'+':'\u2212')+fmt(Math.abs(dThn))+'</div>'):'')
+          +negoHtml
+          +'<div class="jc-sentence">\u201c'+sentence+'\u201d</div>'
+          +'<button type="button" class="jc-copy" id="jcCopy"><i class="ti ti-copy"></i> Salin kalimat nego</button>';
+
+        var box=$('jcResult'); box.innerHTML=html; box.style.display='block';
+        var cp=$('jcCopy'); if(cp){ cp.addEventListener('click', function(){ try{ HC.copyText(sentence,'Kalimat nego tersalin!'); }catch(e){ try{ navigator.clipboard.writeText(sentence); }catch(_){} } }); }
+        try{ box.scrollIntoView({behavior:'smooth',block:'nearest'}); }catch(e){}
+      }
+      btn.addEventListener('click', run);
     });
   })();
 </script>
