@@ -165,7 +165,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
                       <option value="saham">Saham (jual di bursa) — PPh final 0,1%</option>
                       <option value="deposito">Deposito — PPh final 20% bunga</option>
                       <option value="obligasi">Obligasi/SBN/ORI/SBR — PPh final 10% kupon</option>
-                      <option value="crypto">Crypto — PPh 0,1% + PPN 0,11%</option>
+                      <option value="crypto">Crypto — PPh final 0,21% (PPN dihapus 2026)</option>
                     </select></div>
                   <div id="pajakBody" style="margin-top:12px"></div>
                   <p style="font-size:11.5px;color:var(--text-mute);margin-top:8px;line-height:1.5">💡 Pajak investasi di Indonesia umumnya <strong>PPh final</strong> (sekali potong, tidak digabung penghasilan lain). Reksa dana bebas pajak di level investor; keuntungan jual saham tidak dipajaki (hanya bea 0,1% saat jual); bunga deposito & kupon obligasi dipotong final. Angka ini estimasi sederhana.</p>
@@ -492,7 +492,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         else if (t === 'deposito') { pajak = untung * 0.20; rate = '20% × keuntungan (bunga)'; }
         else if (t === 'obligasi') { pajak = untung * 0.10; rate = '10% × keuntungan (kupon)'; }
         else if (t === 'saham') { pajak = fv * 0.001; rate = '0,1% × nilai jual di bursa'; }
-        else if (t === 'crypto') { pajak = fv * 0.0021; rate = '0,1% PPh + 0,11% PPN × nilai jual'; }
+        else if (t === 'crypto') { pajak = fv * 0.0021; rate = '0,21% PPh final × nilai jual (PPN dihapus 2026)'; }
         const net = fv - pajak;
         $('pajakBody').innerHTML =
           `<div class="result-grid">`
