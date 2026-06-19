@@ -10,7 +10,7 @@ const calc = getCalculatorBySlug('zakat-fitrah')!;
 const related = getRelatedCalculators('zakat-fitrah', 3);
 
 const faqs = [
-  { question: 'Berapa zakat fitrah per jiwa 2026?', answer: 'Sesuai BAZNAS: <strong>2,5 kg beras</strong> per jiwa atau <strong>3,5 liter</strong>. Dalam uang: <strong>Rp 50.000 - 60.000 per jiwa</strong> di Jakarta (sesuai harga beras lokal).' },
+  { question: 'Berapa zakat fitrah per jiwa 2026?', answer: 'Sesuai BAZNAS: <strong>2,5 kg beras</strong> per jiwa atau <strong>3,5 liter</strong>. Dalam uang, BAZNAS RI 2026 menetapkan <strong>Rp 50.000/jiwa</strong> (≈ 2,5 kg beras premium); bisa lebih rendah jika beras yang dikonsumsi lebih murah. Sebagian daerah menetapkan berbeda sesuai harga beras lokal.' },
   { question: 'Siapa wajib zakat fitrah?', answer: 'Setiap Muslim yang hidup malam Idul Fitri & mampu (punya kelebihan makanan). Termasuk bayi (lahir sebelum maghrib hari Idul Fitri), anak-anak, lansia. Wajib dibayar kepala keluarga.' },
   { question: 'Kapan waktu bayar?', answer: 'Sebelum shalat Idul Fitri. Boleh sejak awal Ramadhan (Syafi\'i). Disarankan 2-3 hari sebelum Lebaran agar amil bisa distribusikan tepat waktu.' },
   { question: 'Boleh uang?', answer: 'Mazhab Hanafi boleh. Syafi\'i wajib beras. BAZNAS RI ikut Hanafi: boleh uang setara harga beras yang biasa dikonsumsi keluarga.' },
@@ -67,10 +67,10 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
             <div class="field"><label>Harga Beras per Kg</label>
               <div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="hargaBeras" class="has-prefix" value="16.000" inputmode="numeric" /></div>
               <div class="quick-btns">
-                <button type="button" data-h="12000">Premium 12k</button>
-                <button type="button" data-h="14000">Standar 14k</button>
-                <button type="button" data-h="18000">Pandan 18k</button>
-                <button type="button" data-h="22000">Organik 22k</button>
+                <button type="button" data-h="12500">Ekonomis 12,5k</button>
+                <button type="button" data-h="14500">Medium 14,5k</button>
+                <button type="button" data-h="16000">Premium 16k</button>
+                <button type="button" data-h="20000">Pandan 20k</button>
               </div></div>
 
             <div class="calc-action-bar">
@@ -140,7 +140,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
     <div class="related-grid">{related.map(c => <CalculatorCard calc={c} />)}</div>
   </div></section>
   <p style="text-align:center;font-size:.85rem;color:#64748b;margin:1.2rem auto;max-width:600px;">
-    📅 Diperbarui <strong>Juni 2026</strong> · Sumber: BAZNAS & harga beras setempat
+    📅 Diperbarui <strong>Juni 2026</strong> · Sumber: BAZNAS RI & BPS/Bapanas (harga beras 2026)
   </p>
 </Layout>
 
@@ -179,7 +179,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       }
 
       function reset() {
-        els.j.value = '4'; els.m.value = 'uang'; els.h.value = '14.000';
+        els.j.value = '4'; els.m.value = 'uang'; els.h.value = '16.000';
         $('placeholder').style.display = ''; $('results').classList.remove('show');
         lastCalc = null; HC.toast('Form direset', 'info');
       }
