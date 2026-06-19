@@ -4,7 +4,7 @@ import Breadcrumb from '../../components/Breadcrumb.astro';
 import AdSlot from '../../components/AdSlot.astro';
 import ArticleSchema from '../../components/ArticleSchema.astro';
 const datePublished = '2026-06-08';
-const dateModified = '2026-06-11';
+const dateModified = '2026-06-20';
 const today = new Date(datePublished).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
 const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'Simulasi Kredit Motor' }];
 ---
@@ -36,8 +36,8 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog'
     <ul class="info-list"><li><strong>DP</strong>: Rp 3.600.000</li><li><strong>Pokok</strong>: Rp 14.400.000</li><li><strong>Bunga flat 8%/tahun × 3</strong>: 24% × Rp 14.4jt = Rp 3.456.000</li><li><strong>Total bayar</strong>: Rp 17.856.000</li><li><strong>Cicilan/bulan</strong>: Rp 17.856.000 / 36 = <strong>Rp 496.000</strong></li></ul>
     <h2>3. TCO 5 Tahun (Total Cost of Ownership)</h2>
     <p>Komponen biaya kepemilikan motor 5 tahun (estimasi Honda BeAT):</p>
-    <ul class="info-list"><li><strong>Harga + bunga kredit</strong>: Rp 17.856.000</li><li><strong>BBM (40km/L, 30km/hari)</strong>: 5400L × Rp 10.000 = Rp 54.000.000</li><li><strong>Servis rutin (12x/tahun)</strong>: Rp 100rb × 60 = Rp 6.000.000</li><li><strong>Ganti oli (24x)</strong>: Rp 60rb × 24 = Rp 1.440.000</li><li><strong>Ban (2 set)</strong>: Rp 800rb × 2 = Rp 1.600.000</li><li><strong>Asuransi TLO (5 tahun)</strong>: Rp 500rb × 5 = Rp 2.500.000</li><li><strong>Pajak (PKB)</strong>: Rp 250rb × 5 = Rp 1.250.000</li><li><strong>STNK 5 tahun</strong>: Rp 200rb</li><li><strong>TOTAL TCO 5 TAHUN</strong>: <strong>~Rp 84.846.000</strong></li></ul>
-    <p>Artinya rata-rata <strong>Rp 1.414.000/bulan</strong> all-in untuk motor — bukan cuma Rp 496rb cicilan!</p>
+    <ul class="info-list"><li><strong>Harga + bunga kredit (OTR Rp 18jt + bunga Rp 3,456jt)</strong>: Rp 21.456.000</li><li><strong>BBM (40km/L, 780km/bln, Pertamax)</strong>: 1.170L × Rp 16.250 = Rp 19.012.500</li><li><strong>Servis rutin (12x/tahun)</strong>: Rp 100rb × 60 = Rp 6.000.000</li><li><strong>Ganti oli (24x)</strong>: Rp 60rb × 24 = Rp 1.440.000</li><li><strong>Ban (2 set)</strong>: Rp 800rb × 2 = Rp 1.600.000</li><li><strong>Asuransi TLO (5 tahun)</strong>: Rp 500rb × 5 = Rp 2.500.000</li><li><strong>Pajak (PKB)</strong>: Rp 250rb × 5 = Rp 1.250.000</li><li><strong>STNK 5 tahun</strong>: Rp 200rb</li><li><strong>TOTAL TCO 5 TAHUN</strong>: <strong>~Rp 53.458.500</strong></li></ul>
+    <p>Artinya rata-rata <strong>~Rp 891.000/bulan</strong> all-in untuk motor — bukan cuma Rp 496rb cicilan!</p>
     <AdSlot format="horizontal" />
     <h2>4. Tips Memilih Kredit Motor</h2>
     <ul class="info-list"><li><strong>DP minimum 20-30%</strong>: cicilan lebih ringan, total bunga lebih kecil</li><li><strong>Tenor 24-36 bulan</strong>: balance cicilan vs total cost. Hindari 48-60 bulan</li><li><strong>Cek flat rate vs effective</strong>: flat 8% = effective ~14%. Yang penting total bayar</li><li><strong>Bandingkan minimal 3 leasing</strong>: Adira, FIF, BAF, MCF</li><li><strong>Asuransi all-risk</strong> untuk motor di atas Rp 25jt, TLO untuk motor lebih murah</li></ul>

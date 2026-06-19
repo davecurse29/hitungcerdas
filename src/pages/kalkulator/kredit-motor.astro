@@ -13,7 +13,7 @@ const faqs = [
   { question: 'Apa itu TCO (Total Cost of Ownership) motor?', answer: 'TCO motor = total biaya kepemilikan motor per bulan, BUKAN hanya cicilan. Komponen TCO: cicilan + bensin + servis berkala + pajak STNK + asuransi + perawatan + helm/jas hujan (depresiasi). Cicilan biasanya cuma 60-70% dari TCO. Untuk motor harga Rp 25 juta dengan cicilan Rp 800rb, TCO bulanan bisa Rp 1.2-1.5 juta.' },
   { question: 'Berapa DP minimum kredit motor di Indonesia?', answer: 'DP minimum kredit motor sesuai OJK: <strong>10-15% dari OTR</strong>. Promo dealer sering 0% DP dengan syarat tertentu (cicilan jadi lebih besar atau bunga lebih tinggi). Idealnya DP <strong>30%+</strong> untuk cicilan ringan.' },
   { question: 'Bunga kredit motor di Indonesia berapa?', answer: '<strong>Bunga flat</strong> 8-15% per tahun (Adira, FIF, BAF, MCF). Bunga flat = bunga dihitung dari pokok awal, total konsisten setiap bulan. Berbeda dengan KPR yang anuitas. Flat 8% ≈ Anuitas 14-15% (efektif).' },
-  { question: 'Berapa biaya bensin motor matic per bulan?', answer: 'Asumsi 1 liter Pertamax untuk 35-45 km (motor matic). Untuk komuter 30 km/hari × 26 hari = 780 km/bulan, butuh ~20 liter, Rp 280rb. Untuk pemakaian harian biasa: Rp 200-350rb/bulan. Motor sport lebih boros: Rp 350-500rb. Motor listrik paling hemat: Rp 50-80rb (listrik PLN).' },
+  { question: 'Berapa biaya bensin motor matic per bulan?', answer: 'Asumsi 1 liter Pertamax untuk 35-45 km (motor matic). Untuk komuter 30 km/hari × 26 hari = 780 km/bulan, butuh ~20 liter, ~Rp 317rb (Pertamax). Untuk pemakaian harian biasa: Rp 200-350rb/bulan. Motor sport lebih boros: Rp 350-500rb. Motor listrik paling hemat: Rp 50-80rb (listrik PLN).' },
   { question: 'Mengapa inflasi mempengaruhi bunga kredit motor?', answer: 'Saat inflasi tinggi, <strong>BI Rate naik</strong>, biaya dana leasing/multifinance juga naik. Otomatis bunga kredit motor naik. Mode Inflasi kami simulasikan dampak skenario inflasi terhadap bunga & cicilan untuk perencanaan jangka panjang.' },
   { question: 'Apa biaya tersembunyi beli motor kredit?', answer: 'Selain cicilan: <strong>(1) BBN/Pajak</strong> ~Rp 200-500rb di awal, <strong>(2) STNK tahunan</strong> Rp 250-500rb/tahun, <strong>(3) Asuransi TLO</strong> Rp 600-900rb/tahun, <strong>(4) Servis berkala</strong> Rp 120-230rb/bulan (rutin), <strong>(5) Bensin</strong> Rp 200-500rb/bulan, <strong>(6) Helm + jas hujan + perlengkapan</strong> awal Rp 500rb-1jt + depresiasi ~Rp 20rb/bln.' },
 ];
@@ -182,7 +182,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
                     <thead><tr><th>Tipe Motor</th><th class="right">Bensin/Bln</th><th class="right">Servis/Bln</th><th class="right">TCO Total/Bln</th></tr></thead>
                     <tbody id="motorCompareBody"></tbody>
                   </table>
-                  <p class="bank-disclaimer">⚡ <strong>Motor listrik PALING HEMAT</strong> untuk pemakaian harian. Bensin Rp 50-80rb/bln vs motor bensin Rp 300-500rb/bln. Plus subsidi pemerintah Rp 7 juta saat pembelian!</p>
+                  <p class="bank-disclaimer">⚡ <strong>Motor listrik PALING HEMAT</strong> untuk pemakaian harian. Bensin Rp 50-80rb/bln vs motor bensin Rp 300-500rb/bln. Cek juga insentif/subsidi motor listrik yang sedang berlaku (kebijakan berubah tiap tahun).</p>
                 </div>
               </div>
 
@@ -217,7 +217,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
                     <div class="field" style="margin-bottom:8px"><label>Selisih Harga Beli EV</label>
                       <div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="evPremi" class="has-prefix" value="5.000.000" inputmode="numeric" /></div></div>
                     <div class="field" style="margin-bottom:8px"><label>Harga BBM (Rp/L)</label>
-                      <div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="evBbm" class="has-prefix" value="13.000" inputmode="numeric" /></div></div>
+                      <div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="evBbm" class="has-prefix" value="16.250" inputmode="numeric" /></div></div>
                     <div class="field" style="margin-bottom:8px"><label>Konsumsi Bensin</label>
                       <div class="input-wrap"><input type="number" id="evKmL" class="has-suffix" value="45" step="1" min="1" /><span class="input-suffix">km/L</span></div></div>
                     <div class="field" style="margin-bottom:8px"><label>Harga Listrik (Rp/kWh)</label>
@@ -490,7 +490,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         matic:   { kmpl: 40, servisBulan: 150000, label: 'Matic' },
         bebek:   { kmpl: 50, servisBulan: 115000, label: 'Bebek' },
         sport:   { kmpl: 30, servisBulan: 210000, label: 'Sport' },
-        listrik: { kmpl: 0,  servisBulan: 90000,  label: 'Motor Listrik', isElectric: true, kwhPerKm: 0.025 }, // 0.025 kWh/km, tarif PLN ~Rp 1500/kWh
+        listrik: { kmpl: 0,  servisBulan: 90000,  label: 'Motor Listrik', isElectric: true, kwhPerKm: 0.025 }, // 0.025 kWh/km, tarif PLN ~Rp 1445/kWh
       };
 
       const USAGE_PROFILE = {
@@ -644,7 +644,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         const tcoRatio = (tco.totalTCO / 4000000) * 100; // benchmark UMR 4jt
         let warningHtml = '';
         if (tco.isElectric) {
-          warningHtml = `<div class="tco-warning safe">⚡ <strong>HEMAT!</strong> Motor listrik bisa hemat ${HC.fmt(150000)} - ${HC.fmt(300000)} per bulan dibanding motor bensin. Plus subsidi pemerintah Rp 7 juta saat beli!</div>`;
+          warningHtml = `<div class="tco-warning safe">⚡ <strong>HEMAT!</strong> Motor listrik bisa hemat ${HC.fmt(150000)} - ${HC.fmt(300000)} per bulan dibanding motor bensin. Cek juga insentif motor listrik yang berlaku saat ini.</div>`;
         } else if (tco.totalTCO > 2000000) {
           warningHtml = `<div class="tco-warning">⚠️ <strong>TCO ${HC.fmt(tco.totalTCO)}/bulan cukup besar.</strong> Pastikan gaji minimal ${HC.fmt(tco.totalTCO * 4)} agar TCO motor tidak lebih dari 25% gaji.</div>`;
         } else {
@@ -752,7 +752,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         if (!lastCalc) return null;
         const c = lastCalc;
         const insight = c.tco.isElectric
-          ? `⚡ Motor listrik HEMAT! Bensin cuma ${HC.fmt(c.tco.bensin)}/bln vs Rp 300-500rb motor bensin. Plus subsidi pemerintah Rp 7 juta saat beli.`
+          ? `⚡ Motor listrik HEMAT! Bensin cuma ${HC.fmt(c.tco.bensin)}/bln vs Rp 300-500rb motor bensin. Cek juga insentif motor listrik yang berlaku saat ini.`
           : `TCO total ${HC.fmt(c.tco.totalTCO)}/bln. Cicilan cuma ${((c.tco.cicilan / c.tco.totalTCO) * 100).toFixed(0)}% dari TCO — sisanya untuk bensin, servis, pajak, asuransi.`;
 
         const inputs = [
