@@ -5,7 +5,7 @@ import AdSlot from '../../components/AdSlot.astro';
 import ArticleSchema from '../../components/ArticleSchema.astro';
 
 const datePublished = '2026-06-08';
-const dateModified = '2026-06-11';
+const dateModified = '2026-06-20';
 const today = new Date(datePublished).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
 const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'Cara Menghitung PPh 21' }];
 ---
@@ -48,7 +48,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog'
       <p class="lead">
         Sejak UU HPP 2022 disahkan, tarif PPh 21 berubah dari 4 lapisan menjadi <strong>5 lapisan progresif</strong>
         (5% - 35%). Buat karyawan gaji Rp 10 juta + tunjangan Rp 2 juta + THR Rp 10 juta, PPh 21 setahun
-        adalah <strong>~Rp 5,4 juta</strong>. Artikel ini bedah cara hitungnya step-by-step plus 3 contoh
+        adalah <strong>~Rp 7,4 juta</strong> (sekitar <strong>Rp 615 ribu/bulan</strong>). Artikel ini bedah cara hitungnya step-by-step plus 3 contoh
         kasus gaji berbeda.
       </p>
 
@@ -63,6 +63,25 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog'
         </ul>
       </div>
       <p>PKP = Penghasilan Kena Pajak = Penghasilan Bruto - PTKP - Pengurang.</p>
+
+      <h3>Dua Metode: Progresif Tahunan vs TER Bulanan (2024+)</h3>
+      <p>
+        Tarif progresif 5 lapisan di atas dipakai untuk hitung pajak <strong>setahun</strong>. Tapi sejak Januari 2024
+        (PP 58/2023), potongan di slip gaji bulan Januari–November pakai <strong>Tarif Efektif Rata-rata (TER)</strong>:
+        tarif langsung dikalikan penghasilan bruto bulanan, tanpa perlu hitung PKP dulu. Kategorinya mengikuti status PTKP:
+      </p>
+      <ul class="info-list">
+        <li><strong>TER A</strong>: status TK/0, TK/1, K/0</li>
+        <li><strong>TER B</strong>: status TK/2, TK/3, K/1, K/2</li>
+        <li><strong>TER C</strong>: status K/3</li>
+      </ul>
+      <p>
+        Contoh: gaji bruto Rp 10 juta status TK/0 (TER A) kena tarif <strong>2%</strong> → potongan
+        <strong>Rp 200 ribu/bulan</strong>. Di bulan Desember, total pajak setahun dikoreksi ulang pakai tarif
+        progresif Pasal 17 — jadi <strong>total pajak setahun tetap sama</strong>, TER cuma mengatur ritme potongan
+        bulanannya. Kalkulator HitungCerdas punya kedua metode: pilih opsi <strong>"TER Bulanan"</strong> untuk angka
+        yang sama persis dengan slip gaji 2024+.
+      </p>
 
       <h2>2. PTKP (Penghasilan Tidak Kena Pajak) 2026</h2>
       <p>PTKP adalah batas penghasilan yang tidak kena pajak. Besarannya tergantung status pernikahan dan jumlah tanggungan:</p>
