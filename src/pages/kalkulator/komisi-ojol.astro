@@ -1,0 +1,312 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import FAQ from '../../components/FAQ.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import CalculatorCard from '../../components/CalculatorCard.astro';
+import { getCalculatorBySlug, getRelatedCalculators } from '../../data/calculators';
+
+const calc = getCalculatorBySlug('komisi-ojol')!;
+const related = getRelatedCalculators('komisi-ojol', 3);
+
+const faqs = [
+  { question: 'Berapa potongan GoFood, GrabFood, dan ShopeeFood untuk merchant?', answer: 'Untuk mitra reguler 2026 (perkiraan): <strong>GoFood ~20% + Rp 1.000/transaksi</strong>, <strong>GrabFood ~25-30%</strong>, <strong>ShopeeFood ~20%</strong>. Angka pasti bisa berbeda tergantung jenis kemitraan (reguler vs preferred/marketplace-only), promo, dan kesepakatan tiap merchant. Kalkulator ini memakai angka tersebut sebagai default yang bisa kamu ubah sesuai laporan aplikasimu.' },
+  { question: 'Apakah PPN dipotong dari harga makanan saya?', answer: 'Tidak. <strong>PPN dikenakan atas nilai komisi platform, bukan atas harga makananmu.</strong> Contoh: jika komisi platform Rp 10.000, PPN dihitung dari Rp 10.000 itu (mis. 11% = Rp 1.100), bukan dari harga makanan. Karena itu PPN menambah sedikit potongan di atas komisi pokok.' },
+  { question: 'Kenapa potongan terasa lebih dari 20%?', answer: 'Karena selain komisi pokok, ada biaya tetap per transaksi (mis. Rp 1.000 di GoFood) dan PPN atas komisi. Pada pesanan kecil, biaya tetap Rp 1.000 terasa besar secara persentase. Akibatnya total potongan efektif bisa mencapai ~24% pada transaksi kecil, meski komisi pokoknya 20%.' },
+  { question: 'Bagaimana cara menentukan harga jual di aplikasi?', answer: 'Gunakan fitur <strong>"Target Bersih"</strong> di kalkulator ini. Masukkan berapa uang bersih yang ingin kamu terima per pesanan (idealnya sudah termasuk <a href="/kalkulator/hpp">HPP</a> + margin untung), lalu kalkulator menghitung mundur harga yang harus kamu pasang di aplikasi agar setelah dipotong platform, kamu tetap menerima target tersebut.' },
+  { question: 'Apakah angka kalkulator ini pasti akurat?', answer: 'Angka default bersifat estimasi berdasarkan informasi publik 2026 dan bisa berubah sewaktu-waktu. Skema komisi tiap platform berbeda dan sering diperbarui. Selalu cek potongan riil di laporan/dashboard merchant aplikasimu, lalu sesuaikan angka komisi & PPN di kalkulator agar hasilnya pas dengan kondisimu.' },
+];
+
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '/#tools' }, { label: calc.shortTitle }];
+---
+
+<Layout title={calc.title} description={calc.metaDescription} keywords={calc.keywords} canonical={`https://hitungcerdas.net/kalkulator/${calc.slug}`}>
+  <section class="calc-hero" style="--cat-color:#D97706;--cat-color2:#B45309">
+    <div class="wrap">
+      <Breadcrumb items={bcItems} />
+      <div class="calc-hero-grid">
+        <div class="calc-hero-text">
+          <div class="calc-hero-tag" style="background:#FEF3C7;color:#92400E"><i class="ti ti-motorbike"></i> {calc.categoryLabel}</div>
+          <h1 class="calc-hero-title">{calc.h1}</h1>
+          <p class="calc-hero-sub">{calc.introText}</p>
+          <ul class="calc-hero-benefits">{calc.benefits.map(b => <li><i class="ti ti-check"></i> {b}</li>)}</ul>
+        </div>
+        <div class="calc-hero-illust">
+          <svg viewBox="0 0 200 200" fill="none">
+            <circle cx="100" cy="100" r="85" fill="rgba(255,255,255,.08)"/>
+            <circle cx="68" cy="138" r="16" fill="none" stroke="#FCD34D" stroke-width="4"/>
+            <circle cx="140" cy="138" r="16" fill="none" stroke="#FCD34D" stroke-width="4"/>
+            <path d="M68 138 L96 138 L112 110 H86 Z" fill="#FFF" stroke="#D97706" stroke-width="2"/>
+            <path d="M112 110 L128 110 L140 138" stroke="#FCD34D" stroke-width="4" fill="none" stroke-linecap="round"/>
+            <rect x="120" y="74" width="34" height="30" rx="4" fill="#FFF" stroke="#D97706" stroke-width="2"/>
+            <text x="128" y="95" fill="#D97706" font-size="15" font-weight="bold" font-family="sans-serif">Rp</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+
+  <section class="calc-section">
+    <div class="wrap">
+      <div class="calc-card">
+        <div class="calc-card-hdr">
+          <div class="calc-card-hdr-ic" style="background:linear-gradient(135deg,#D97706 0%,#B45309 100%)"><i class="ti ti-motorbike"></i></div>
+          <div><h2 class="calc-card-title">Kalkulator Komisi Platform Delivery</h2><p class="calc-card-sub">Berapa potongan & uang bersih yang merchant terima</p></div>
+        </div>
+
+        <div class="calc-grid">
+          <div class="calc-input">
+            <div class="field">
+              <label>Platform</label>
+              <select id="platform">
+                <option value="gofood" selected>GoFood (20% + Rp 1.000)</option>
+                <option value="grabfood">GrabFood (~30%)</option>
+                <option value="shopeefood">ShopeeFood (~20%)</option>
+                <option value="custom">Custom (atur sendiri)</option>
+              </select>
+              <p class="hint" style="margin-top:6px">Pilih platform untuk isi otomatis, atau "Custom" untuk atur manual.</p>
+            </div>
+
+            <div class="field"><label>Harga Jual di Aplikasi <span class="hint">(per pesanan)</span></label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span>
+                <input type="text" id="harga" class="has-prefix" value="50.000" inputmode="numeric" /></div>
+            </div>
+
+            <div class="calc-grid-2" style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+              <div class="field"><label>Komisi Platform</label>
+                <div class="input-wrap"><span class="input-suffix">%</span>
+                  <input type="number" id="komisi" class="has-suffix" value="20" min="0" max="60" step="0.5" /></div>
+              </div>
+              <div class="field"><label>Biaya Tetap/Transaksi</label>
+                <div class="input-wrap"><span class="input-prefix">Rp</span>
+                  <input type="text" id="biayaTetap" class="has-prefix" value="1.000" inputmode="numeric" /></div>
+              </div>
+            </div>
+
+            <div class="field"><label>PPN atas Komisi <span class="hint">(bukan atas harga makanan)</span></label>
+              <div class="input-wrap"><span class="input-suffix">%</span>
+                <input type="number" id="ppn" class="has-suffix" value="11" min="0" max="15" step="0.5" /></div>
+              <p class="hint" style="margin-top:6px">PPN dikenakan dari nilai komisi. Default 11% &mdash; cek tarif terkini di laporan aplikasimu.</p>
+            </div>
+
+            <div class="field"><label>Target Uang Bersih <span class="hint">(opsional &mdash; untuk hitung mundur harga)</span></label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span>
+                <input type="text" id="target" class="has-prefix" value="0" inputmode="numeric" /></div>
+              <p class="hint" style="margin-top:6px">Isi jika ingin tahu harga jual di app supaya bersih sesuai target (mis. HPP + margin).</p>
+            </div>
+
+            <div class="calc-action-bar">
+              <button type="button" class="btn-hitung" id="btnHitung"><i class="ti ti-calculator"></i> Hitung Sekarang</button>
+              <button type="button" class="btn-reset" id="btnReset"><i class="ti ti-refresh"></i> Reset</button>
+            </div>
+          </div>
+
+          <div class="calc-output">
+            <div class="result-placeholder" id="placeholder">
+              <i class="ti ti-motorbike result-placeholder-icon"></i>
+              <div class="result-placeholder-title">Hitung potongan & uang bersih</div>
+              <div class="result-placeholder-desc">Pilih platform, isi harga jual, klik <strong>"Hitung Sekarang"</strong>.</div>
+            </div>
+
+            <div class="result-wrapper" id="results">
+              <div class="result-main">
+                <div class="result-label">Uang Bersih Diterima</div>
+                <div class="result-value" id="netValue">Rp 0</div>
+                <div class="result-meta"><i class="ti ti-info-circle"></i> <span id="netMeta">dari harga jual Rp 0</span></div>
+              </div>
+
+              <div class="result-grid">
+                <div class="result-item"><div class="result-item-label">Total Potongan</div><div class="result-item-value" id="totalCut" style="color:var(--red)">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">Potongan Efektif</div><div class="result-item-value" id="cutPct">0%</div></div>
+                <div class="result-item"><div class="result-item-label">Komisi Pokok</div><div class="result-item-value" id="komisiRp">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">PPN atas Komisi</div><div class="result-item-value" id="ppnRp">Rp 0</div></div>
+              </div>
+
+              <div id="cutInfo" style="margin-top:10px;padding:11px 13px;border-radius:12px;background:#FFFBEB;border:1px solid #FDE68A;font-size:12.5px;line-height:1.55;color:#92400E"></div>
+
+              <div id="targetSection" style="display:none;margin-top:10px;padding:13px 15px;border-radius:12px;background:#F0FDF4;border:1px solid #BBF7D0">
+                <div style="font-size:13px;font-weight:700;color:#15803D;margin-bottom:8px"><i class="ti ti-tag"></i> Harga Jual Disarankan di Aplikasi</div>
+                <div id="targetBody" style="font-size:13px;line-height:1.7;color:#166534"></div>
+              </div>
+
+              <div class="export-row">
+                <button type="button" class="export-btn img" id="exportImg"><i class="ti ti-photo-down"></i><span>Save Image</span></button>
+                <button type="button" class="export-btn wa" id="exportWa"><i class="ti ti-brand-whatsapp"></i><span>Share WA</span></button>
+                <button type="button" class="export-btn pdf" id="exportPdf"><i class="ti ti-printer"></i><span>Print/PDF</span></button>
+                <button type="button" class="export-btn copy" id="exportCopy"><i class="ti ti-copy"></i><span>Copy Teks</span></button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="content-section">
+    <div class="wrap-text">
+      <h2>Memahami Potongan Platform Delivery</h2>
+      <p>Berjualan lewat GoFood, GrabFood, dan ShopeeFood membuka akses ke jutaan pelanggan, tapi ada harganya: potongan komisi. Banyak merchant kaget karena uang yang masuk ke rekening jauh lebih kecil dari harga yang tertera di aplikasi. Kalkulator ini membantu kamu melihat angka bersih yang sebenarnya, lalu menyesuaikan harga jual agar tetap untung. Sebelum menetapkan harga, pastikan kamu sudah tahu <a href="/kalkulator/hpp">HPP per porsi</a>.</p>
+
+      <h3>Tiga Komponen Potongan</h3>
+      <ul>
+        <li><strong>Komisi pokok</strong> — persentase dari harga jual (mis. GoFood ~20%, GrabFood ~25-30%, ShopeeFood ~20%).</li>
+        <li><strong>Biaya tetap per transaksi</strong> — nominal tetap tiap pesanan (mis. GoFood Rp 1.000), terasa berat di pesanan kecil.</li>
+        <li><strong>PPN atas komisi</strong> — pajak yang dihitung dari nilai komisi (bukan dari harga makanan).</li>
+      </ul>
+
+      <h3>Strategi Harga agar Tetap Untung</h3>
+      <p>Karena ada potongan ~20-30%, banyak merchant menetapkan harga di aplikasi lebih tinggi daripada harga di tempat (dine-in). Gunakan fitur "Target Bersih" untuk menghitung mundur: tentukan berapa yang ingin kamu terima bersih (sudah termasuk HPP + margin), lalu kalkulator memberi tahu harga yang harus dipasang di aplikasi. Dengan begitu margin tetap terjaga meski setelah dipotong platform.</p>
+
+      <h3>Catatan 2026</h3>
+      <p>Skema komisi tiap platform terus berubah dan berbeda menurut jenis kemitraan (reguler, preferred merchant, atau marketplace-only dengan kurir sendiri). PPN atas komisi juga mengikuti ketentuan pajak yang berlaku. Karena itu, jadikan angka default di kalkulator sebagai titik awal, lalu cek potongan riil di dashboard merchant aplikasimu dan sesuaikan. Pertimbangkan juga mengarahkan pelanggan setia untuk repeat order langsung (WhatsApp/offline) agar tidak selalu terkena potongan platform.</p>
+
+      <div class="cta-box">
+        <h3>Disclaimer</h3>
+        <p>Kalkulator ini alat bantu simulasi &amp; edukasi. Angka komisi, biaya transaksi, dan PPN bersifat estimasi berdasarkan informasi publik 2026 dan <strong>dapat berbeda</strong> dengan skema riil yang berlaku pada akunmu. HitungCerdas tidak berafiliasi dengan GoFood, GrabFood, maupun ShopeeFood. Selalu verifikasi potongan sebenarnya di laporan/dashboard merchant resmi sebelum mengambil keputusan harga.</p>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+  <FAQ title="Pertanyaan Seputar Komisi Platform Delivery" items={faqs} />
+
+  <section class="section"><div class="wrap">
+    <div class="section-hdr"><div class="section-eyebrow">Kalkulator Lainnya</div><h2 class="section-title">Hitung Juga yang Lain</h2></div>
+    <div class="related-grid">{related.map(c => <CalculatorCard calc={c} />)}</div>
+  </div></section>
+
+  <p style="text-align:center;font-size:.85rem;color:#64748b;margin:1.2rem auto;max-width:600px;">
+    📅 Diperbarui <strong>Juni 2026</strong> · Angka estimasi · HitungCerdas tidak berafiliasi dengan platform terkait
+  </p>
+
+<script is:inline>
+  (function() {
+    function ready(fn) { if (window.HC && window.html2canvas) fn(); else setTimeout(() => ready(fn), 100); }
+    ready(() => {
+      const $ = id => document.getElementById(id);
+      const PRESET = {
+        gofood: { komisi: 20, biayaTetap: 1000, label: 'GoFood' },
+        grabfood: { komisi: 30, biayaTetap: 0, label: 'GrabFood' },
+        shopeefood: { komisi: 20, biayaTetap: 0, label: 'ShopeeFood' },
+        custom: null,
+      };
+      const els = { platform: $('platform'), harga: $('harga'), komisi: $('komisi'), biayaTetap: $('biayaTetap'), ppn: $('ppn'), target: $('target') };
+      [els.harga, els.biayaTetap, els.target].forEach(el => el.addEventListener('input', HC.fmtInput));
+
+      els.platform.addEventListener('change', () => {
+        const p = PRESET[els.platform.value];
+        if (p) { els.komisi.value = p.komisi; els.biayaTetap.value = p.biayaTetap.toLocaleString('id-ID'); }
+        if (lastCalc) hitung();
+      });
+
+      let lastCalc = null;
+
+      function hitung() {
+        const platform = els.platform.value;
+        const platformLabel = PRESET[platform] ? PRESET[platform].label : 'Custom';
+        const harga = HC.parseRp(els.harga.value);
+        const komisiPct = parseFloat(els.komisi.value) || 0;
+        const biayaTetap = HC.parseRp(els.biayaTetap.value);
+        const ppnPct = parseFloat(els.ppn.value) || 0;
+        const target = HC.parseRp(els.target.value);
+
+        if (harga === 0) { HC.toast('Masukkan harga jual di aplikasi', 'error'); return; }
+
+        const k = komisiPct / 100, p = ppnPct / 100;
+        const komisiRp = harga * k;
+        const ppnRp = komisiRp * p;
+        const totalCut = komisiRp + biayaTetap + ppnRp;
+        const net = harga - totalCut;
+        const cutPct = harga > 0 ? totalCut / harga * 100 : 0;
+
+        $('netValue').textContent = HC.fmt(net);
+        $('netMeta').textContent = `dari harga jual ${HC.fmt(harga)} di ${platformLabel}`;
+        $('totalCut').textContent = HC.fmt(totalCut);
+        $('cutPct').textContent = cutPct.toFixed(1) + '%';
+        $('komisiRp').textContent = HC.fmt(komisiRp);
+        $('ppnRp').textContent = HC.fmt(ppnRp);
+        $('netValue').style.color = net >= 0 ? '' : 'var(--red)';
+
+        $('cutInfo').innerHTML = `\ud83d\udecf\ufe0f Dari harga <b>${HC.fmt(harga)}</b> di ${platformLabel}, total potongan <b>${HC.fmt(totalCut)}</b> (${cutPct.toFixed(1)}%) \u2014 terdiri dari komisi ${HC.fmt(komisiRp)} + biaya transaksi ${HC.fmt(biayaTetap)} + PPN ${HC.fmt(ppnRp)}. Uang bersih yang kamu terima: <b>${HC.fmt(net)}</b>.`;
+
+        let targetData = null;
+        const denom = 1 - k * (1 + p);
+        if (target > 0) {
+          if (denom <= 0) {
+            $('targetSection').style.display = '';
+            $('targetBody').innerHTML = `Komisi terlalu besar untuk menghitung harga jual (komisi + PPN \u2265 100%). Periksa kembali angka komisi.`;
+          } else {
+            const hargaSaran = (target + biayaTetap) / denom;
+            $('targetSection').style.display = '';
+            $('targetBody').innerHTML = `Supaya menerima bersih <b>${HC.fmt(target)}</b> per pesanan di ${platformLabel}, pasang harga di aplikasi sekitar <b>${HC.fmt(hargaSaran)}</b>. (Pembulatan ke atas disarankan, mis. ${HC.fmt(Math.ceil(hargaSaran / 500) * 500)}.)`;
+            targetData = { target, hargaSaran, hargaBulat: Math.ceil(hargaSaran / 500) * 500 };
+          }
+        } else {
+          $('targetSection').style.display = 'none';
+        }
+
+        lastCalc = { platform, platformLabel, harga, komisiPct, biayaTetap, ppnPct, komisiRp, ppnRp, totalCut, net, cutPct, target: targetData };
+        $('placeholder').style.display = 'none';
+        $('results').classList.add('show');
+        $('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        HC.toast('Berhasil dihitung!');
+      }
+
+      function reset() {
+        els.platform.value = 'gofood'; els.harga.value = '50.000'; els.komisi.value = '20';
+        els.biayaTetap.value = '1.000'; els.ppn.value = '11'; els.target.value = '0';
+        $('targetSection').style.display = 'none';
+        $('placeholder').style.display = ''; $('results').classList.remove('show');
+        lastCalc = null; HC.toast('Form direset', 'info');
+      }
+
+      function buildReport() {
+        if (!lastCalc) return null;
+        const c = lastCalc;
+        let insight = `${c.platformLabel}: harga jual ${HC.fmt(c.harga)}, total potongan ${HC.fmt(c.totalCut)} (${c.cutPct.toFixed(1)}%), uang bersih ${HC.fmt(c.net)}.`;
+        if (c.target) insight += ` Untuk bersih ${HC.fmt(c.target.target)}, pasang harga \u2248 ${HC.fmt(c.target.hargaBulat)}.`;
+        insight += ' Estimasi edukatif; cek potongan riil di dashboard merchant.';
+        const results = [
+          { label: 'Uang Bersih', value: HC.fmt(c.net), highlight: true },
+          { label: 'Total Potongan', value: HC.fmt(c.totalCut) + ' (' + c.cutPct.toFixed(1) + '%)', highlight: true },
+          { label: 'Komisi Pokok', value: HC.fmt(c.komisiRp) },
+          { label: 'PPN atas Komisi', value: HC.fmt(c.ppnRp) },
+        ];
+        if (c.target) results.push({ label: 'Harga Jual Disarankan', value: HC.fmt(c.target.hargaBulat) });
+        return HC.buildReportCard({
+          title: '\ud83c\udf5b Komisi Platform Delivery',
+          color: '#D97706', color2: '#B45309',
+          heroLabel: 'Uang Bersih Diterima',
+          heroValue: HC.fmt(c.net),
+          heroSubtext: `${c.platformLabel} \u00b7 dari harga ${HC.fmt(c.harga)}`,
+          inputs: [
+            { label: '\ud83d\udcf1 Platform', value: c.platformLabel },
+            { label: '\ud83c\udff7\ufe0f Harga di App', value: HC.fmt(c.harga) },
+            { label: '\ud83d\udcc9 Komisi', value: c.komisiPct + '% + ' + HC.fmt(c.biayaTetap) + '/trx' },
+          ],
+          results, insight, slug: 'komisi-ojol',
+        });
+      }
+
+      function summaryText() {
+        if (!lastCalc) return '';
+        const c = lastCalc;
+        let t = `\ud83c\udf5b *Komisi ${c.platformLabel} - HitungCerdas*\n\nHarga jual di app: ${HC.fmt(c.harga)}\nKomisi: ${c.komisiPct}% + ${HC.fmt(c.biayaTetap)}/trx\nPPN atas komisi: ${c.ppnPct}%\n\n\ud83d\udcb8 *Total potongan: ${HC.fmt(c.totalCut)} (${c.cutPct.toFixed(1)}%)*\n\u2705 Uang bersih: ${HC.fmt(c.net)}`;
+        if (c.target) t += `\n\n\ud83c\udff7\ufe0f Untuk bersih ${HC.fmt(c.target.target)}, pasang harga \u2248 ${HC.fmt(c.target.hargaBulat)}`;
+        t += `\n\nHitung di: https://hitungcerdas.net/kalkulator/komisi-ojol`;
+        return t;
+      }
+
+      $('btnHitung').addEventListener('click', hitung);
+      $('btnReset').addEventListener('click', reset);
+      $('exportImg').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToImage(c, 'komisi-ojol-' + Date.now()); });
+      $('exportWa').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.shareWhatsApp(c, summaryText(), 'komisi-ojol'); });
+      $('exportPdf').addEventListener('click', () => { if (!lastCalc) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToPDF(); });
+      $('exportCopy').addEventListener('click', () => { if (!lastCalc) { HC.toast('Hitung dulu', 'error'); return; } HC.copyText(summaryText(), 'Tersalin!'); });
+    });
+  })();
+</script>
+</Layout>

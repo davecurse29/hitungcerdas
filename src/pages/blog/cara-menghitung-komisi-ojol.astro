@@ -1,0 +1,104 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import ArticleSchema from '../../components/ArticleSchema.astro';
+const datePublished = '2026-06-21';
+const dateModified = '2026-06-21';
+const today = new Date(datePublished).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'Cara Hitung Komisi GoFood GrabFood ShopeeFood' }];
+---
+<Layout title="Cara Hitung Komisi GoFood, GrabFood & ShopeeFood 2026 untuk Merchant" description="Panduan lengkap potongan platform delivery 2026: berapa persen komisi GoFood, GrabFood, ShopeeFood, plus biaya transaksi & PPN atas komisi. Cara hitung uang bersih merchant & strategi harga jual. Plus kalkulator gratis." keywords={['komisi gofood', 'potongan grabfood', 'komisi shopeefood', 'potongan merchant ojol', 'biaya admin gofood 2026', 'harga jual gofood']} canonical="https://hitungcerdas.net/blog/cara-menghitung-komisi-ojol" ogType="article">
+  <ArticleSchema
+    headline="Cara Hitung Komisi GoFood, GrabFood & ShopeeFood 2026 untuk Merchant"
+    description="Panduan lengkap potongan platform delivery 2026: berapa persen komisi GoFood, GrabFood, ShopeeFood, plus biaya transaksi & PPN atas komisi. Cara hitung uang bersih merchant & strategi harga jual."
+    datePublished={datePublished}
+    dateModified={dateModified}
+    slug="cara-menghitung-komisi-ojol"
+    articleSection="UMKM"
+    keywords={['komisi gofood', 'potongan grabfood', 'komisi shopeefood', 'potongan merchant ojol', 'harga jual gofood']}
+    wordCount={820}
+  />
+
+  <section class="article-hero" style="--cat-color:#D97706;--cat-color2:#B45309">
+    <div class="wrap"><Breadcrumb items={bcItems} /><div class="article-tag">UMKM</div>
+      <h1>Cara Hitung Komisi GoFood, GrabFood & ShopeeFood 2026</h1>
+      <div class="article-meta"><span><i class="ti ti-calendar"></i> {today}</span><span><i class="ti ti-clock"></i> 8 menit baca</span><span><i class="ti ti-user"></i> Tim HitungCerdas</span></div>
+    </div>
+  </section>
+  <AdSlot format="horizontal" />
+  <article class="content-section"><div class="wrap-text">
+    <p class="lead">Sudah jualan ramai di GoFood atau GrabFood, tapi uang yang masuk rekening terasa jauh lebih kecil dari yang dibayar pelanggan? Itu karena potongan platform. Artikel ini bedah berapa sebenarnya komisi tiap platform di 2026, komponen apa saja yang dipotong, dan cara menetapkan harga agar tetap untung.</p>
+
+    <h2>1. Berapa Komisi Tiap Platform?</h2>
+    <p>Untuk mitra reguler di 2026, perkiraan potongannya: <strong>GoFood ~20% + Rp 1.000/transaksi</strong>, <strong>GrabFood ~25-30%</strong>, dan <strong>ShopeeFood ~20%</strong>. Angka ini bisa berbeda menurut jenis kemitraan — misalnya skema <em>marketplace-only</em> (pakai kurir sendiri) biasanya komisinya lebih rendah, sementara <em>preferred merchant</em> punya skema tersendiri. Selalu cek potongan riil di dashboard merchant aplikasimu.</p>
+
+    <h2>2. Tiga Komponen Potongan</h2>
+    <ul class="info-list">
+      <li><strong>Komisi pokok</strong> — persentase dari harga jual yang tertera di aplikasi.</li>
+      <li><strong>Biaya tetap per transaksi</strong> — nominal tetap tiap pesanan (mis. GoFood Rp 1.000). Terasa berat di pesanan kecil.</li>
+      <li><strong>PPN atas komisi</strong> — pajak yang dihitung dari nilai komisi, <strong>bukan</strong> dari harga makananmu.</li>
+    </ul>
+    <p>Poin terakhir sering disalahpahami. PPN tidak memotong harga makananmu — ia menambah pajak di atas komisi platform. Jadi kalau komisi Rp 10.000, PPN dihitung dari Rp 10.000 itu.</p>
+
+    <AdSlot format="horizontal" />
+
+    <h2>3. Contoh Perhitungan (GoFood)</h2>
+    <p>Misal kamu menjual paket makanan seharga <strong>Rp 50.000</strong> di GoFood (komisi 20%, biaya Rp 1.000, PPN atas komisi 11%):</p>
+    <ul class="info-list">
+      <li>Komisi = 20% × Rp 50.000 = <strong>Rp 10.000</strong></li>
+      <li>Biaya transaksi = <strong>Rp 1.000</strong></li>
+      <li>PPN atas komisi = 11% × Rp 10.000 = <strong>Rp 1.100</strong></li>
+      <li>Total potongan = Rp 12.100 (<strong>24,2%</strong>)</li>
+      <li>Uang bersih diterima = Rp 50.000 − Rp 12.100 = <strong>Rp 37.900</strong></li>
+    </ul>
+    <p>Perhatikan: meski komisi pokoknya 20%, total potongan efektif jadi 24,2% karena ada biaya tetap dan PPN. Di GrabFood dengan komisi ~30%, potongannya bisa di atas 33%.</p>
+
+    <h2>4. Strategi Harga: Hitung Mundur</h2>
+    <p>Karena ada potongan besar, banyak merchant menetapkan harga di aplikasi lebih tinggi daripada harga dine-in. Caranya: tentukan dulu berapa yang ingin kamu terima bersih (sudah termasuk <a href="/kalkulator/hpp">HPP</a> + margin untung), lalu hitung mundur harga yang harus dipasang. Misal ingin menerima bersih Rp 50.000 di GoFood, kamu perlu memasang harga sekitar <strong>Rp 66.000</strong> di aplikasi. Fitur "Target Bersih" di kalkulator melakukan ini otomatis.</p>
+
+    <h2>5. Tips Menjaga Margin</h2>
+    <ul class="info-list">
+      <li>Pisahkan harga aplikasi dan harga dine-in — wajar dan umum dilakukan.</li>
+      <li>Dorong pelanggan setia untuk repeat order langsung (WhatsApp/offline) agar tidak selalu kena potongan.</li>
+      <li>Hitung ulang harga tiap kali komisi platform atau biaya bahan baku berubah.</li>
+      <li>Hati-hati ikut promo besar — subsidi biaya admin yang kecil belum tentu sepadan dengan diskon yang kamu tanggung.</li>
+    </ul>
+
+    <div class="cta-box">
+      <h3>🍛 Coba Kalkulator Komisi HitungCerdas</h3>
+      <p>Hitung potongan & uang bersihmu otomatis:</p>
+      <ul>
+        <li>✅ Preset GoFood, GrabFood, ShopeeFood</li>
+        <li>✅ Uang bersih per pesanan + rincian potongan</li>
+        <li>✅ Harga jual disarankan untuk target bersih</li>
+        <li>✅ Bisa atur komisi & PPN sesuai akunmu</li>
+      </ul>
+      <p style="margin-top:14px"><a href="/kalkulator/komisi-ojol" class="btn btn-pri"><i class="ti ti-calculator"></i> Buka Kalkulator Komisi</a></p>
+    </div>
+
+    <h2>Kesimpulan</h2>
+    <p>Jualan di platform delivery membuka pasar besar, tapi potongan 20-33% harus diperhitungkan sejak awal. Tahu angka bersih yang sebenarnya, lalu tetapkan harga aplikasi dengan hitung mundur agar margin tetap aman. Kombinasikan dengan <a href="/kalkulator/hpp">HPP</a> dan <a href="/kalkulator/harga-jual">harga jual</a> untuk strategi harga yang utuh. Catatan: angka komisi bersifat estimasi dan dapat berbeda — selalu verifikasi di dashboard merchant resmi.</p>
+
+    <h3>📚 Artikel & Kalkulator Terkait</h3>
+    <ul class="info-list">
+      <li><a href="/kalkulator/komisi-ojol">Kalkulator Komisi Ojol</a></li>
+      <li><a href="/kalkulator/hpp">Kalkulator HPP</a></li>
+      <li><a href="/kalkulator/harga-jual">Kalkulator Harga Jual</a></li>
+      <li><a href="/blog/cara-menghitung-hpp">Cara Menghitung HPP</a></li>
+    </ul>
+  </div></article>
+  <AdSlot format="horizontal" />
+</Layout>
+<style>
+  .article-hero { background: linear-gradient(135deg, var(--cat-color) 0%, var(--cat-color2) 100%); color: #fff; padding: 20px 0 48px; }
+  .article-hero :global(.breadcrumb-item), .article-hero :global(.breadcrumb-item a) { color: rgba(255, 255, 255, .7); }
+  .article-hero :global(.breadcrumb-item a:hover) { color: var(--gold-soft); }
+  .article-hero :global(.breadcrumb-item span) { color: #fff; }
+  .article-hero :global(.breadcrumb-item i) { color: rgba(255, 255, 255, .4); }
+  .article-tag { display: inline-block; font-size: 11px; font-weight: 700; color: var(--gold-soft); letter-spacing: .1em; text-transform: uppercase; margin: 16px 0 12px; }
+  .article-hero h1 { color: #fff; font-size: clamp(24px, 3.6vw, 40px); margin: 0 0 20px; max-width: 900px; line-height: 1.2; }
+  .article-meta { display: flex; gap: 20px; color: rgba(255, 255, 255, .75); font-size: 13px; flex-wrap: wrap; }
+  .article-meta span { display: inline-flex; align-items: center; gap: 6px; }
+  .lead { font-size: 17px !important; line-height: 1.7 !important; color: var(--text) !important; padding: 20px 24px; background: var(--bg-soft); border-radius: 12px; border-left: 4px solid #D97706; margin-bottom: 24px !important; }
+</style>
