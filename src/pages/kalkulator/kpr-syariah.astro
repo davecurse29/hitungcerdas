@@ -1,0 +1,252 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import FAQ from '../../components/FAQ.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import CalculatorCard from '../../components/CalculatorCard.astro';
+import { getCalculatorBySlug, getRelatedCalculators } from '../../data/calculators';
+
+const calc = getCalculatorBySlug('kpr-syariah')!;
+const related = getRelatedCalculators('kpr-syariah', 3);
+
+const faqs = [
+  { question: 'Apa itu akad murabahah pada KPR syariah?', answer: 'Murabahah adalah akad <strong>jual-beli</strong>. Bank syariah membeli rumah yang kamu inginkan, lalu menjualnya kembali kepadamu dengan harga pokok + margin keuntungan yang disepakati di awal. Karena ini jual-beli (bukan pinjaman berbunga), harga jual sudah dikunci sejak akad, sehingga <strong>cicilan tetap sama sampai lunas</strong>.' },
+  { question: 'Bagaimana cara menghitung cicilan KPR syariah murabahah?', answer: 'Rumusnya: <strong>Pokok Pembiayaan = Harga Rumah − Uang Muka</strong>. <strong>Total Margin = Pokok × margin% × tenor (tahun)</strong>. <strong>Total Pembiayaan = Pokok + Total Margin</strong>. <strong>Cicilan tetap = Total Pembiayaan ÷ (tenor × 12)</strong>. Karena margin dihitung flat dan dikunci di awal, cicilan tidak berubah sepanjang tenor.' },
+  { question: 'Apa bedanya dengan KPR konvensional?', answer: 'KPR konvensional memakai <strong>bunga</strong> yang bisa berubah (floating) mengikuti BI Rate — cicilan bisa naik di tengah jalan. KPR syariah murabahah memakai <strong>margin tetap</strong> yang dikunci di akad, jadi cicilan pasti sampai lunas. Keunggulan utamanya adalah kepastian dan bebas riba; soal total biaya, perlu dibandingkan kasus per kasus. Kamu bisa membandingkan dengan <a href="/kalkulator/kpr">Kalkulator KPR konvensional</a>.' },
+  { question: 'Berapa margin KPR syariah yang wajar di 2026?', answer: 'Bervariasi per bank dan program. Untuk rumah komersial, margin setara umumnya di kisaran 7-10% per tahun; rumah subsidi (MBR) sekitar 5% tetap. Beberapa bank menawarkan margin promo lebih rendah di tahun-tahun awal. Selalu minta tabel angsuran lengkap sampai lunas dari bank dan bandingkan total pembayarannya.' },
+  { question: 'Apakah cicilan KPR syariah benar-benar tidak berubah?', answer: 'Pada akad <strong>murabahah</strong>, ya — cicilan tetap sampai lunas karena harga jual sudah disepakati di awal. Namun ada akad lain seperti <strong>Musyarakah Mutanaqisah (MMQ)</strong> yang memakai skema sewa + kepemilikan bertahap, di mana nilai sewa bisa ditinjau berkala. Kalkulator ini khusus untuk akad murabahah (cicilan tetap).' },
+];
+
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '/#tools' }, { label: calc.shortTitle }];
+---
+
+<Layout title={calc.title} description={calc.metaDescription} keywords={calc.keywords} canonical={`https://hitungcerdas.net/kalkulator/${calc.slug}`}>
+  <section class="calc-hero" style="--cat-color:#0F766E;--cat-color2:#115E59">
+    <div class="wrap">
+      <Breadcrumb items={bcItems} />
+      <div class="calc-hero-grid">
+        <div class="calc-hero-text">
+          <div class="calc-hero-tag" style="background:#CCFBF1;color:#115E59"><i class="ti ti-home-2"></i> {calc.categoryLabel}</div>
+          <h1 class="calc-hero-title">{calc.h1}</h1>
+          <p class="calc-hero-sub">{calc.introText}</p>
+          <ul class="calc-hero-benefits">{calc.benefits.map(b => <li><i class="ti ti-check"></i> {b}</li>)}</ul>
+        </div>
+        <div class="calc-hero-illust">
+          <svg viewBox="0 0 200 200" fill="none">
+            <circle cx="100" cy="100" r="85" fill="rgba(255,255,255,.08)"/>
+            <path d="M58 96 L100 62 L142 96 V146 a4 4 0 0 1 -4 4 H62 a4 4 0 0 1 -4 -4 Z" fill="#FFF" stroke="#5EEAD4" stroke-width="2"/>
+            <path d="M50 100 L100 58 L150 100" stroke="#5EEAD4" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <rect x="90" y="116" width="20" height="34" rx="2" fill="#CCFBF1"/>
+            <path d="M118 78 l6 5 m0 0 l-3 7 m3 -7 l7 -2" stroke="#5EEAD4" stroke-width="2" stroke-linecap="round"/>
+            <text x="84" y="110" fill="#0F766E" font-size="13" font-weight="bold" font-family="sans-serif">حلال</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+
+  <section class="calc-section">
+    <div class="wrap">
+      <div class="calc-card">
+        <div class="calc-card-hdr">
+          <div class="calc-card-hdr-ic" style="background:linear-gradient(135deg,#0F766E 0%,#115E59 100%)"><i class="ti ti-home-2"></i></div>
+          <div><h2 class="calc-card-title">Kalkulator KPR Syariah (Murabahah)</h2><p class="calc-card-sub">Cicilan tetap sampai lunas &middot; tanpa bunga</p></div>
+        </div>
+
+        <div class="calc-grid">
+          <div class="calc-input">
+            <div class="field"><label>Harga Rumah</label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span>
+                <input type="text" id="harga" class="has-prefix" value="500.000.000" inputmode="numeric" /></div>
+            </div>
+
+            <div class="field"><label>Uang Muka (DP)</label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span>
+                <input type="text" id="dp" class="has-prefix" value="100.000.000" inputmode="numeric" /></div>
+              <p class="hint" style="margin-top:6px">Biasanya minimal 10-20% dari harga rumah.</p>
+            </div>
+
+            <div class="field"><label>Margin Setara per Tahun</label>
+              <div class="input-wrap"><span class="input-suffix">%</span>
+                <input type="number" id="margin" class="has-suffix" value="8" min="0" max="20" step="0.1" /></div>
+              <p class="hint" style="margin-top:6px">Margin keuntungan bank (flat). Komersial ~7-10%, subsidi ~5%.</p>
+            </div>
+
+            <div class="field"><label>Tenor (Jangka Waktu)</label>
+              <div class="input-wrap"><span class="input-suffix">tahun</span>
+                <input type="number" id="tenor" class="has-suffix" value="15" min="1" max="30" step="1" /></div>
+            </div>
+
+            <div class="calc-action-bar">
+              <button type="button" class="btn-hitung" id="btnHitung"><i class="ti ti-calculator"></i> Hitung Sekarang</button>
+              <button type="button" class="btn-reset" id="btnReset"><i class="ti ti-refresh"></i> Reset</button>
+            </div>
+          </div>
+
+          <div class="calc-output">
+            <div class="result-placeholder" id="placeholder">
+              <i class="ti ti-home-2 result-placeholder-icon"></i>
+              <div class="result-placeholder-title">Cicilan tetap akan muncul di sini</div>
+              <div class="result-placeholder-desc">Isi harga rumah, DP, margin & tenor, klik <strong>"Hitung Sekarang"</strong>.</div>
+            </div>
+
+            <div class="result-wrapper" id="results">
+              <div class="result-main">
+                <div class="result-label">Cicilan Tetap per Bulan</div>
+                <div class="result-value" id="cicilan">Rp 0</div>
+                <div class="result-meta"><i class="ti ti-info-circle"></i> <span id="cicilanMeta">tetap sampai lunas</span></div>
+              </div>
+
+              <div class="result-grid">
+                <div class="result-item"><div class="result-item-label">Pokok Pembiayaan</div><div class="result-item-value" id="pokok">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">Total Margin</div><div class="result-item-value" id="totalMargin" style="color:var(--gold-dark)">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">Total Pembiayaan</div><div class="result-item-value" id="totalBiaya">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">Total Uang Dikeluarkan</div><div class="result-item-value" id="totalKeluar">Rp 0</div></div>
+              </div>
+
+              <div id="kprInfo" style="margin-top:10px;padding:11px 13px;border-radius:12px;background:#F0FDFA;border:1px solid #99F6E4;font-size:12.5px;line-height:1.55;color:#115E59"></div>
+
+              <div class="export-row">
+                <button type="button" class="export-btn img" id="exportImg"><i class="ti ti-photo-down"></i><span>Save Image</span></button>
+                <button type="button" class="export-btn wa" id="exportWa"><i class="ti ti-brand-whatsapp"></i><span>Share WA</span></button>
+                <button type="button" class="export-btn pdf" id="exportPdf"><i class="ti ti-printer"></i><span>Print/PDF</span></button>
+                <button type="button" class="export-btn copy" id="exportCopy"><i class="ti ti-copy"></i><span>Copy Teks</span></button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="content-section">
+    <div class="wrap-text">
+      <h2>Memahami KPR Syariah Akad Murabahah</h2>
+      <p>KPR syariah adalah pembiayaan kepemilikan rumah yang sesuai prinsip syariah — tanpa bunga (riba). Skema paling umum adalah <strong>murabahah</strong> (jual-beli): bank membeli rumah yang kamu incar, lalu menjualnya kembali kepadamu dengan harga pokok ditambah margin keuntungan yang disepakati di awal. Karena harga jual sudah dikunci, cicilan bulananmu <strong>tetap sama sampai lunas</strong>, tidak terpengaruh naik-turunnya BI Rate.</p>
+
+      <h3>Rumus Perhitungan</h3>
+      <ul>
+        <li><strong>Pokok Pembiayaan</strong> = Harga Rumah − Uang Muka (DP)</li>
+        <li><strong>Total Margin</strong> = Pokok × margin% × tenor (tahun)</li>
+        <li><strong>Total Pembiayaan</strong> = Pokok + Total Margin</li>
+        <li><strong>Cicilan Tetap</strong> = Total Pembiayaan ÷ (tenor × 12 bulan)</li>
+      </ul>
+
+      <h3>Kelebihan & Pertimbangan</h3>
+      <p>Kelebihan utama KPR syariah murabahah adalah <strong>kepastian</strong> — cicilan tidak akan berubah meski suku bunga pasar melonjak. Ini memudahkan perencanaan keuangan jangka panjang. Namun, keunggulan ini bukan selalu soal total biaya yang lebih murah. Jika kamu berniat melunasi dalam waktu singkat, KPR konvensional dengan promo bunga rendah kadang lebih hemat. Bandingkan total pembayaran kedua skema dengan <a href="/kalkulator/kpr">Kalkulator KPR konvensional</a> sebelum memutuskan.</p>
+
+      <h3>Catatan 2026</h3>
+      <p>Bank syariah seperti BSI dan BTN Syariah menawarkan beragam program, dari margin promo berjenjang hingga KPR subsidi bermargin 5% tetap. Selain cicilan, perhitungkan juga biaya pra-akad seperti BPHTB, notaris, appraisal, dan asuransi. Mintalah tabel angsuran lengkap sampai lunas dari bank, dan pastikan akadnya murabahah jika kamu menginginkan cicilan yang benar-benar tetap.</p>
+
+      <div class="cta-box">
+        <h3>Disclaimer</h3>
+        <p>Kalkulator ini alat bantu simulasi &amp; edukasi memakai metode margin flat akad murabahah. Hasil bersifat estimasi; angka riil tiap bank bisa berbeda karena skema margin promo berjenjang, biaya tambahan, dan kebijakan masing-masing. Bukan penawaran atau nasihat keuangan. Konsultasikan dengan bank syariah resmi untuk simulasi & akad yang mengikat.</p>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+  <FAQ title="Pertanyaan Seputar KPR Syariah" items={faqs} />
+
+  <section class="section"><div class="wrap">
+    <div class="section-hdr"><div class="section-eyebrow">Kalkulator Lainnya</div><h2 class="section-title">Hitung Juga yang Lain</h2></div>
+    <div class="related-grid">{related.map(c => <CalculatorCard calc={c} />)}</div>
+  </div></section>
+
+  <p style="text-align:center;font-size:.85rem;color:#64748b;margin:1.2rem auto;max-width:600px;">
+    📅 Diperbarui <strong>Juni 2026</strong> · Metode margin flat akad murabahah · Estimasi edukatif
+  </p>
+
+<script is:inline>
+  (function() {
+    function ready(fn) { if (window.HC && window.html2canvas) fn(); else setTimeout(() => ready(fn), 100); }
+    ready(() => {
+      const $ = id => document.getElementById(id);
+      const els = { harga: $('harga'), dp: $('dp'), margin: $('margin'), tenor: $('tenor') };
+      [els.harga, els.dp].forEach(el => el.addEventListener('input', HC.fmtInput));
+
+      let lastCalc = null;
+
+      function hitung() {
+        const harga = HC.parseRp(els.harga.value);
+        const dp = HC.parseRp(els.dp.value);
+        const marginPct = parseFloat(els.margin.value) || 0;
+        const tenor = parseInt(els.tenor.value) || 0;
+
+        if (harga === 0) { HC.toast('Masukkan harga rumah dulu', 'error'); return; }
+        if (dp >= harga) { HC.toast('Uang muka harus lebih kecil dari harga rumah', 'error'); return; }
+        if (tenor < 1) { HC.toast('Tenor minimal 1 tahun', 'error'); return; }
+
+        const pokok = harga - dp;
+        const totalMargin = pokok * (marginPct / 100) * tenor;
+        const totalBiaya = pokok + totalMargin;
+        const bulan = tenor * 12;
+        const cicilan = totalBiaya / bulan;
+        const totalKeluar = dp + totalBiaya;
+
+        $('cicilan').textContent = HC.fmt(cicilan);
+        $('cicilanMeta').textContent = `tetap selama ${bulan} bulan (${tenor} tahun)`;
+        $('pokok').textContent = HC.fmt(pokok);
+        $('totalMargin').textContent = HC.fmt(totalMargin);
+        $('totalBiaya').textContent = HC.fmt(totalBiaya);
+        $('totalKeluar').textContent = HC.fmt(totalKeluar);
+
+        $('kprInfo').innerHTML = `\ud83c\udfe1 Bank membeli rumah seharga ${HC.fmt(harga)}, kamu bayar DP ${HC.fmt(dp)}. Sisa <b>${HC.fmt(pokok)}</b> dijual kembali dengan margin ${marginPct}%/thn \u2192 total pembiayaan <b>${HC.fmt(totalBiaya)}</b>. Cicilan <b>${HC.fmt(cicilan)}/bulan tetap</b> sampai lunas, tidak terpengaruh BI Rate.`;
+
+        lastCalc = { harga, dp, marginPct, tenor, bulan, pokok, totalMargin, totalBiaya, cicilan, totalKeluar };
+        $('placeholder').style.display = 'none';
+        $('results').classList.add('show');
+        $('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        HC.toast('Cicilan berhasil dihitung!');
+      }
+
+      function reset() {
+        els.harga.value = '500.000.000'; els.dp.value = '100.000.000'; els.margin.value = '8'; els.tenor.value = '15';
+        $('placeholder').style.display = ''; $('results').classList.remove('show');
+        lastCalc = null; HC.toast('Form direset', 'info');
+      }
+
+      function buildReport() {
+        if (!lastCalc) return null;
+        const c = lastCalc;
+        const insight = `Akad murabahah: harga rumah ${HC.fmt(c.harga)}, DP ${HC.fmt(c.dp)}, pokok ${HC.fmt(c.pokok)}, margin ${c.marginPct}%/thn x ${c.tenor} thn = ${HC.fmt(c.totalMargin)}. Cicilan tetap ${HC.fmt(c.cicilan)}/bulan selama ${c.bulan} bulan. Estimasi edukatif, bukan penawaran bank.`;
+        return HC.buildReportCard({
+          title: '\ud83c\udfe1 KPR Syariah (Murabahah)',
+          color: '#0F766E', color2: '#115E59',
+          heroLabel: 'Cicilan Tetap per Bulan',
+          heroValue: HC.fmt(c.cicilan),
+          heroSubtext: `tetap ${c.bulan} bulan \u00b7 margin ${c.marginPct}%/thn`,
+          inputs: [
+            { label: '\ud83c\udfe0 Harga Rumah', value: HC.fmt(c.harga) },
+            { label: '\ud83d\udcb5 Uang Muka', value: HC.fmt(c.dp) },
+            { label: '\u23f3 Tenor', value: c.tenor + ' tahun' },
+          ],
+          results: [
+            { label: 'Cicilan/bulan (tetap)', value: HC.fmt(c.cicilan), highlight: true },
+            { label: 'Pokok Pembiayaan', value: HC.fmt(c.pokok) },
+            { label: 'Total Margin', value: HC.fmt(c.totalMargin) },
+            { label: 'Total Pembiayaan', value: HC.fmt(c.totalBiaya) },
+          ],
+          insight, slug: 'kpr-syariah',
+        });
+      }
+
+      function summaryText() {
+        if (!lastCalc) return '';
+        const c = lastCalc;
+        return `\ud83c\udfe1 *KPR Syariah Murabahah - HitungCerdas*\n\nHarga rumah: ${HC.fmt(c.harga)}\nUang muka: ${HC.fmt(c.dp)}\nMargin: ${c.marginPct}%/thn \u00b7 tenor ${c.tenor} thn\n\n\ud83c\udff7\ufe0f *Cicilan tetap: ${HC.fmt(c.cicilan)}/bulan*\n\ud83d\udcb0 Total pembiayaan: ${HC.fmt(c.totalBiaya)}\n(pokok ${HC.fmt(c.pokok)} + margin ${HC.fmt(c.totalMargin)})\n\nHitung di: https://hitungcerdas.net/kalkulator/kpr-syariah`;
+      }
+
+      $('btnHitung').addEventListener('click', hitung);
+      $('btnReset').addEventListener('click', reset);
+      $('exportImg').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToImage(c, 'kpr-syariah-' + Date.now()); });
+      $('exportWa').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.shareWhatsApp(c, summaryText(), 'kpr-syariah'); });
+      $('exportPdf').addEventListener('click', () => { if (!lastCalc) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToPDF(); });
+      $('exportCopy').addEventListener('click', () => { if (!lastCalc) { HC.toast('Hitung dulu', 'error'); return; } HC.copyText(summaryText(), 'Tersalin!'); });
+    });
+  })();
+</script>
+</Layout>

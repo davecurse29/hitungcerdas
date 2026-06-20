@@ -710,6 +710,32 @@ export const CALCULATORS: CalculatorMeta[] = [
       'Tips bank syariah resmi (BSI, Muamalat)',
     ],
   },
+
+  {
+    slug: 'kpr-syariah',
+    title: 'Kalkulator KPR Syariah 2026 — Cicilan Tetap Akad Murabahah',
+    shortTitle: 'KPR Syariah',
+    category: 'islami',
+    categoryLabel: 'Kalkulator Islami',
+    tag: 'Syariah',
+    tagColor: '#115E59',
+    tagBg: '#CCFBF1',
+    iconColor: '#0F766E',
+    iconBg: '#CCFBF1',
+    iconSvg: 'kpr',
+    description: 'Hitung cicilan KPR syariah akad murabahah yang tetap (flat) sampai lunas, tanpa bunga.',
+    metaDescription: 'Kalkulator KPR Syariah 2026 akad murabahah: hitung cicilan tetap (flat) sampai lunas dari harga rumah, DP, margin, dan tenor. Tanpa bunga, tanpa floating. Bandingkan total pembiayaan dengan mudah.',
+    keywords: ['kalkulator kpr syariah', 'kpr syariah murabahah', 'cicilan kpr syariah', 'simulasi kpr syariah', 'kpr tanpa riba', 'kpr syariah 2026'],
+    h1: 'Kalkulator KPR Syariah (Murabahah)',
+    introText: 'Hitung cicilan KPR syariah dengan akad murabahah (jual-beli) yang besarnya tetap sampai lunas, tanpa bunga dan tanpa floating. Masukkan harga rumah, uang muka, margin, dan tenor — kalkulator menampilkan cicilan tetap per bulan, total margin, dan total pembiayaan. Cocok untuk merencanakan rumah impian secara syariah.',
+    benefits: [
+      'Cicilan tetap (flat) sampai lunas',
+      'Akad murabahah, tanpa bunga/riba',
+      'Rincian pokok, margin, & total pembiayaan',
+      'Tidak terpengaruh naik-turun BI Rate',
+      'Scorecard share-ready (WA/IG/PDF)',
+    ],
+  },
 ];
 
 // Helper functions

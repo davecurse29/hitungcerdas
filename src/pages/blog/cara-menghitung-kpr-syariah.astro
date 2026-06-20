@@ -1,0 +1,105 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import ArticleSchema from '../../components/ArticleSchema.astro';
+const datePublished = '2026-06-21';
+const dateModified = '2026-06-21';
+const today = new Date(datePublished).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'Cara Hitung KPR Syariah' }];
+---
+<Layout title="Cara Hitung KPR Syariah Murabahah 2026 — Cicilan Tetap Tanpa Riba" description="Panduan lengkap KPR syariah akad murabahah 2026: cara menghitung cicilan tetap, rumus pokok + margin, beda dengan KPR konvensional, dan tips memilih bank. Plus kalkulator KPR syariah gratis." keywords={['cara hitung kpr syariah', 'kpr syariah murabahah', 'cicilan kpr syariah', 'kpr tanpa riba', 'simulasi kpr syariah 2026', 'beda kpr syariah konvensional']} canonical="https://hitungcerdas.net/blog/cara-menghitung-kpr-syariah" ogType="article">
+  <ArticleSchema
+    headline="Cara Hitung KPR Syariah Murabahah 2026 — Cicilan Tetap Tanpa Riba"
+    description="Panduan lengkap KPR syariah akad murabahah 2026: cara menghitung cicilan tetap, rumus pokok + margin, beda dengan KPR konvensional, dan tips memilih bank."
+    datePublished={datePublished}
+    dateModified={dateModified}
+    slug="cara-menghitung-kpr-syariah"
+    articleSection="Syariah"
+    keywords={['cara hitung kpr syariah', 'kpr syariah murabahah', 'cicilan kpr syariah', 'kpr tanpa riba', 'simulasi kpr syariah 2026']}
+    wordCount={830}
+  />
+
+  <section class="article-hero" style="--cat-color:#0F766E;--cat-color2:#115E59">
+    <div class="wrap"><Breadcrumb items={bcItems} /><div class="article-tag">Syariah</div>
+      <h1>Cara Hitung KPR Syariah Murabahah 2026</h1>
+      <div class="article-meta"><span><i class="ti ti-calendar"></i> {today}</span><span><i class="ti ti-clock"></i> 8 menit baca</span><span><i class="ti ti-user"></i> Tim HitungCerdas</span></div>
+    </div>
+  </section>
+  <AdSlot format="horizontal" />
+  <article class="content-section"><div class="wrap-text">
+    <p class="lead">Ingin punya rumah tanpa riba dan dengan cicilan yang pasti tidak naik? KPR syariah akad murabahah jawabannya. Berbeda dengan KPR konvensional yang cicilannya bisa melonjak saat bunga naik, KPR syariah mengunci cicilan sejak awal. Artikel ini bedah cara menghitungnya, plus hal-hal yang perlu kamu pertimbangkan.</p>
+
+    <h2>1. Apa Itu KPR Syariah Murabahah?</h2>
+    <p>KPR syariah adalah pembiayaan rumah sesuai prinsip syariah, tanpa bunga (riba). Skema paling umum adalah <strong>murabahah</strong> — akad jual-beli. Mekanismenya: bank syariah membeli rumah yang kamu incar, lalu menjualnya kembali kepadamu dengan harga pokok + margin keuntungan yang disepakati di awal. Karena ini transaksi jual-beli dengan harga yang sudah dikunci, cicilan bulananmu <strong>tetap sama sampai lunas</strong>.</p>
+
+    <h2>2. Rumus Perhitungan</h2>
+    <div class="formula-box">
+      <p><strong>Pokok Pembiayaan = Harga Rumah − Uang Muka (DP)</strong></p>
+      <p><strong>Total Margin = Pokok × margin% × tenor (tahun)</strong></p>
+      <p><strong>Total Pembiayaan = Pokok + Total Margin</strong></p>
+      <p><strong>Cicilan Tetap = Total Pembiayaan ÷ (tenor × 12)</strong></p>
+    </div>
+    <p>Perhatikan: margin dihitung secara <strong>flat</strong> dari pokok untuk seluruh tenor, lalu dibagi rata ke seluruh bulan. Inilah yang membuat cicilan benar-benar tetap.</p>
+
+    <h2>3. Contoh Perhitungan</h2>
+    <p>Misal kamu membeli rumah seharga <strong>Rp 500 juta</strong>, membayar DP <strong>Rp 100 juta</strong>, dengan margin setara <strong>8% per tahun</strong> selama <strong>15 tahun</strong>:</p>
+    <ul class="info-list">
+      <li>Pokok = Rp 500 juta − Rp 100 juta = <strong>Rp 400 juta</strong></li>
+      <li>Total margin = Rp 400 juta × 8% × 15 = <strong>Rp 480 juta</strong></li>
+      <li>Total pembiayaan = Rp 400 juta + Rp 480 juta = <strong>Rp 880 juta</strong></li>
+      <li>Cicilan tetap = Rp 880 juta ÷ 180 bulan = <strong>Rp 4.888.889/bulan</strong></li>
+    </ul>
+    <p>Cicilan ini tidak akan berubah sampai bulan ke-180, apa pun yang terjadi pada BI Rate.</p>
+
+    <AdSlot format="horizontal" />
+
+    <h2>4. Beda dengan KPR Konvensional</h2>
+    <p>KPR konvensional memakai <strong>bunga</strong> yang umumnya fixed di tahun-tahun awal lalu <strong>floating</strong> (mengikuti BI Rate) — cicilan bisa melonjak di tengah jalan. KPR syariah murabahah memakai <strong>margin tetap</strong> sehingga cicilan pasti. Keunggulan utama KPR syariah adalah <strong>kepastian</strong> dan bebas riba, bukan selalu soal total lebih murah. Jika kamu berniat melunasi cepat (2-3 tahun) memanfaatkan promo bunga rendah, KPR konvensional kadang lebih hemat. Bandingkan dulu dengan <a href="/kalkulator/kpr">Kalkulator KPR konvensional</a>.</p>
+
+    <h2>5. Tips Memilih KPR Syariah</h2>
+    <ul class="info-list">
+      <li>Minta <strong>tabel angsuran lengkap sampai lunas</strong> dari beberapa bank, lalu bandingkan total pembayarannya.</li>
+      <li>Pastikan akadnya <strong>murabahah</strong> jika ingin cicilan benar-benar tetap (MMQ bisa berubah karena ada komponen sewa).</li>
+      <li>Cek margin promo berjenjang — jangan hanya lihat margin tahun pertama yang rendah.</li>
+      <li>Perhitungkan biaya pra-akad: BPHTB, notaris, appraisal, asuransi.</li>
+      <li>Konfirmasi bank sudah bekerja sama (PKS) dengan developer unit yang kamu incar.</li>
+    </ul>
+
+    <div class="cta-box">
+      <h3>🏡 Coba Kalkulator KPR Syariah HitungCerdas</h3>
+      <p>Hitung cicilan tetap KPR syariah-mu dalam hitungan detik:</p>
+      <ul>
+        <li>✅ Cicilan tetap (flat) sampai lunas</li>
+        <li>✅ Rincian pokok, margin & total pembiayaan</li>
+        <li>✅ Akad murabahah, tanpa bunga</li>
+        <li>✅ Bisa dibandingkan dengan KPR konvensional</li>
+      </ul>
+      <p style="margin-top:14px"><a href="/kalkulator/kpr-syariah" class="btn btn-pri"><i class="ti ti-calculator"></i> Buka Kalkulator KPR Syariah</a></p>
+    </div>
+
+    <h2>Kesimpulan</h2>
+    <p>KPR syariah murabahah menawarkan kepastian cicilan dan ketenangan dari riba. Hitung pokok, margin, dan cicilan tetapnya dengan jelas, lalu bandingkan total pembayaran antar bank dan dengan skema konvensional. Dengan angka yang transparan sejak awal, kamu bisa merencanakan kepemilikan rumah dengan lebih tenang. Catatan: hasil kalkulator bersifat estimasi — konsultasikan dengan bank syariah resmi untuk akad yang mengikat.</p>
+
+    <h3>📚 Artikel & Kalkulator Terkait</h3>
+    <ul class="info-list">
+      <li><a href="/kalkulator/kpr-syariah">Kalkulator KPR Syariah</a></li>
+      <li><a href="/kalkulator/kpr">Kalkulator KPR Konvensional</a></li>
+      <li><a href="/kalkulator/dana-haji-umrah">Kalkulator Dana Haji & Umrah</a></li>
+      <li><a href="/blog/cara-menghitung-kpr">Cara Menghitung Cicilan KPR</a></li>
+    </ul>
+  </div></article>
+  <AdSlot format="horizontal" />
+</Layout>
+<style>
+  .article-hero { background: linear-gradient(135deg, var(--cat-color) 0%, var(--cat-color2) 100%); color: #fff; padding: 20px 0 48px; }
+  .article-hero :global(.breadcrumb-item), .article-hero :global(.breadcrumb-item a) { color: rgba(255, 255, 255, .7); }
+  .article-hero :global(.breadcrumb-item a:hover) { color: var(--gold-soft); }
+  .article-hero :global(.breadcrumb-item span) { color: #fff; }
+  .article-hero :global(.breadcrumb-item i) { color: rgba(255, 255, 255, .4); }
+  .article-tag { display: inline-block; font-size: 11px; font-weight: 700; color: var(--gold-soft); letter-spacing: .1em; text-transform: uppercase; margin: 16px 0 12px; }
+  .article-hero h1 { color: #fff; font-size: clamp(26px, 3.8vw, 42px); margin: 0 0 20px; max-width: 900px; line-height: 1.2; }
+  .article-meta { display: flex; gap: 20px; color: rgba(255, 255, 255, .75); font-size: 13px; flex-wrap: wrap; }
+  .article-meta span { display: inline-flex; align-items: center; gap: 6px; }
+  .lead { font-size: 17px !important; line-height: 1.7 !important; color: var(--text) !important; padding: 20px 24px; background: var(--bg-soft); border-radius: 12px; border-left: 4px solid #0F766E; margin-bottom: 24px !important; }
+</style>
