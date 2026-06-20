@@ -1,0 +1,351 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import FAQ from '../../components/FAQ.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import CalculatorCard from '../../components/CalculatorCard.astro';
+import { getCalculatorBySlug, getRelatedCalculators } from '../../data/calculators';
+
+const calc = getCalculatorBySlug('bagi-hasil')!;
+const related = getRelatedCalculators('bagi-hasil', 3);
+
+const faqs = [
+  { question: 'Apa itu akad mudharabah?', answer: 'Mudharabah adalah <strong>akad kerja sama usaha</strong> antara pemilik modal (<em>shahibul maal</em>) dan pengelola (<em>mudharib</em>). Pemodal menyediakan dana, pengelola menjalankan usaha. Keuntungan dibagi sesuai <strong>nisbah</strong> (rasio bagi hasil) yang disepakati di awal, misalnya 60:40. Bila terjadi kerugian (bukan karena kelalaian pengelola), kerugian finansial ditanggung pemodal, sementara pengelola kehilangan tenaga & waktunya.' },
+  { question: 'Apa itu nisbah bagi hasil?', answer: 'Nisbah adalah <strong>rasio pembagian keuntungan</strong> antara pihak-pihak yang bekerja sama, dinyatakan dalam persentase (mis. 60% pemodal : 40% pengelola). Total nisbah harus 100%. Penting: bagi hasil dihitung dari <strong>keuntungan (laba)</strong>, bukan dari omzet atau modal. Nisbah tidak boleh ditetapkan dalam nominal tetap — harus persentase agar sesuai syariah.' },
+  { question: 'Bagaimana cara menghitung bagi hasil usaha?', answer: 'Sederhana: <strong>Bagian Pemodal = Laba × Nisbah Pemodal%</strong>, dan <strong>Bagian Pengelola = Laba × Nisbah Pengelola%</strong>. Contoh: laba usaha Rp 20 juta dengan nisbah 60:40 → pemodal dapat Rp 12 juta, pengelola Rp 8 juta. Kalkulator juga menghitung return pemodal terhadap modal yang ditanam.' },
+  { question: 'Bagaimana bagi hasil deposito syariah dihitung?', answer: 'Deposito syariah memakai akad mudharabah — kamu (nasabah) jadi pemodal, bank jadi pengelola. Bank biasanya mempublikasikan <strong>indikasi imbal hasil setara (% per tahun)</strong>. Estimasi bagi hasil = Nominal × imbal hasil% × (tenor bulan ÷ 12). Berbeda dengan bunga, angka ini <strong>tidak dijamin tetap</strong> — naik-turun mengikuti kinerja bank, dan bebas riba.' },
+  { question: 'Apa beda mudharabah dan musyarakah?', answer: 'Pada <strong>mudharabah</strong>, modal 100% dari pemodal; pengelola hanya menyumbang keahlian/tenaga. Pada <strong>musyarakah</strong>, kedua pihak sama-sama menyetor modal dan biasanya sama-sama mengelola. Pembagian keuntungan keduanya tetap memakai nisbah persentase yang disepakati. Kalkulator ini cocok untuk skema bagi hasil keduanya selama pembagian berdasar nisbah laba.' },
+];
+
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '/#tools' }, { label: calc.shortTitle }];
+---
+
+<Layout title={calc.title} description={calc.metaDescription} keywords={calc.keywords} canonical={`https://hitungcerdas.net/kalkulator/${calc.slug}`}>
+  <section class="calc-hero" style="--cat-color:#CA8A04;--cat-color2:#A16207">
+    <div class="wrap">
+      <Breadcrumb items={bcItems} />
+      <div class="calc-hero-grid">
+        <div class="calc-hero-text">
+          <div class="calc-hero-tag" style="background:#FEF9C3;color:#854D0E"><i class="ti ti-arrows-split-2"></i> {calc.categoryLabel}</div>
+          <h1 class="calc-hero-title">{calc.h1}</h1>
+          <p class="calc-hero-sub">{calc.introText}</p>
+          <ul class="calc-hero-benefits">{calc.benefits.map(b => <li><i class="ti ti-check"></i> {b}</li>)}</ul>
+        </div>
+        <div class="calc-hero-illust">
+          <svg viewBox="0 0 200 200" fill="none">
+            <circle cx="100" cy="100" r="85" fill="rgba(255,255,255,.08)"/>
+            <circle cx="100" cy="74" r="20" fill="#FFF" stroke="#FDE047" stroke-width="2"/>
+            <text x="92" y="81" fill="#CA8A04" font-size="18" font-weight="bold" font-family="sans-serif">Rp</text>
+            <path d="M100 94 V112 M100 112 L66 138 M100 112 L134 138" stroke="#FDE047" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="60" cy="146" r="13" fill="#FFF" stroke="#FDE047" stroke-width="2"/>
+            <circle cx="140" cy="146" r="13" fill="#FFF" stroke="#FDE047" stroke-width="2"/>
+            <text x="54" y="151" fill="#CA8A04" font-size="12" font-weight="bold" font-family="sans-serif">60</text>
+            <text x="134" y="151" fill="#CA8A04" font-size="12" font-weight="bold" font-family="sans-serif">40</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+
+  <section class="calc-section">
+    <div class="wrap">
+      <div class="calc-card">
+        <div class="calc-card-hdr">
+          <div class="calc-card-hdr-ic" style="background:linear-gradient(135deg,#CA8A04 0%,#A16207 100%)"><i class="ti ti-arrows-split-2"></i></div>
+          <div><h2 class="calc-card-title">Kalkulator Bagi Hasil Mudharabah</h2><p class="calc-card-sub">Pembagian laba usaha & estimasi deposito syariah</p></div>
+        </div>
+
+        <div class="calc-grid">
+          <div class="calc-input">
+            <div class="field">
+              <label>Jenis Perhitungan</label>
+              <select id="mode">
+                <option value="usaha" selected>Bagi Hasil Usaha (Kemitraan)</option>
+                <option value="deposito">Deposito Syariah (Indikasi)</option>
+              </select>
+            </div>
+
+            <!-- MODE USAHA -->
+            <div id="grpUsaha">
+              <div class="field"><label>Modal Usaha (Pemodal) <span class="hint">(opsional)</span></label>
+                <div class="input-wrap"><span class="input-prefix">Rp</span>
+                  <input type="text" id="modal" class="has-prefix" value="100.000.000" inputmode="numeric" /></div>
+                <p class="hint" style="margin-top:6px">Untuk menghitung return pemodal terhadap modal.</p>
+              </div>
+              <div class="field"><label>Keuntungan / Laba Usaha</label>
+                <div class="input-wrap"><span class="input-prefix">Rp</span>
+                  <input type="text" id="laba" class="has-prefix" value="20.000.000" inputmode="numeric" /></div>
+                <p class="hint" style="margin-top:6px">Laba bersih usaha (bukan omzet). Bagi hasil dihitung dari laba.</p>
+              </div>
+              <div class="field"><label>Nisbah Pemodal (Shahibul Maal)</label>
+                <div class="input-wrap"><span class="input-suffix">%</span>
+                  <input type="number" id="nisbah" class="has-suffix" value="60" min="1" max="99" step="1" /></div>
+                <p class="hint" style="margin-top:6px">Bagian pengelola otomatis = sisanya. Contoh 60 berarti 60:40.</p>
+              </div>
+            </div>
+
+            <!-- MODE DEPOSITO -->
+            <div id="grpDeposito" style="display:none">
+              <div class="field"><label>Nominal Deposito / Tabungan</label>
+                <div class="input-wrap"><span class="input-prefix">Rp</span>
+                  <input type="text" id="deposito" class="has-prefix" value="50.000.000" inputmode="numeric" /></div>
+              </div>
+              <div class="field"><label>Indikasi Imbal Hasil Setara</label>
+                <div class="input-wrap"><span class="input-suffix">% / thn</span>
+                  <input type="number" id="rate" class="has-suffix" value="4.5" min="0" max="15" step="0.1" /></div>
+                <p class="hint" style="margin-top:6px">Indikasi return setara yang dipublikasikan bank syariah. Tidak dijamin tetap.</p>
+              </div>
+              <div class="field"><label>Tenor</label>
+                <div class="input-wrap"><span class="input-suffix">bulan</span>
+                  <input type="number" id="tenor" class="has-suffix" value="12" min="1" max="120" step="1" /></div>
+              </div>
+            </div>
+
+            <div class="calc-action-bar">
+              <button type="button" class="btn-hitung" id="btnHitung"><i class="ti ti-calculator"></i> Hitung Sekarang</button>
+              <button type="button" class="btn-reset" id="btnReset"><i class="ti ti-refresh"></i> Reset</button>
+            </div>
+          </div>
+
+          <div class="calc-output">
+            <div class="result-placeholder" id="placeholder">
+              <i class="ti ti-arrows-split-2 result-placeholder-icon"></i>
+              <div class="result-placeholder-title">Bagi hasil akan muncul di sini</div>
+              <div class="result-placeholder-desc">Pilih jenis perhitungan, isi data, klik <strong>"Hitung Sekarang"</strong>.</div>
+            </div>
+
+            <div class="result-wrapper" id="results">
+              <div class="result-main">
+                <div class="result-label" id="mainLabel">Bagian Pemodal</div>
+                <div class="result-value" id="mainValue">Rp 0</div>
+                <div class="result-meta"><i class="ti ti-info-circle"></i> <span id="mainMeta"></span></div>
+              </div>
+
+              <div class="result-grid" id="gridUsaha">
+                <div class="result-item"><div class="result-item-label">Bagian Pemodal</div><div class="result-item-value" id="bagPemodal" style="color:var(--green-dark)">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">Bagian Pengelola</div><div class="result-item-value" id="bagPengelola">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">Nisbah</div><div class="result-item-value" id="nisbahOut">0:0</div></div>
+                <div class="result-item"><div class="result-item-label">Return Pemodal</div><div class="result-item-value" id="returnPemodal">—</div></div>
+              </div>
+
+              <div class="result-grid" id="gridDeposito" style="display:none">
+                <div class="result-item"><div class="result-item-label">Estimasi Bagi Hasil</div><div class="result-item-value" id="depBagiHasil" style="color:var(--green-dark)">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">Total Saat Jatuh Tempo</div><div class="result-item-value" id="depTotal">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">Per Bulan (rata-rata)</div><div class="result-item-value" id="depBulan">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">Tenor</div><div class="result-item-value" id="depTenor">0 bln</div></div>
+              </div>
+
+              <div id="bhInfo" style="margin-top:10px;padding:11px 13px;border-radius:12px;background:#FEFCE8;border:1px solid #FEF08A;font-size:12.5px;line-height:1.55;color:#854D0E"></div>
+
+              <div class="export-row">
+                <button type="button" class="export-btn img" id="exportImg"><i class="ti ti-photo-down"></i><span>Save Image</span></button>
+                <button type="button" class="export-btn wa" id="exportWa"><i class="ti ti-brand-whatsapp"></i><span>Share WA</span></button>
+                <button type="button" class="export-btn pdf" id="exportPdf"><i class="ti ti-printer"></i><span>Print/PDF</span></button>
+                <button type="button" class="export-btn copy" id="exportCopy"><i class="ti ti-copy"></i><span>Copy Teks</span></button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="content-section">
+    <div class="wrap-text">
+      <h2>Memahami Bagi Hasil Mudharabah</h2>
+      <p>Bagi hasil adalah jantung ekonomi syariah. Alih-alih bunga (yang dianggap riba), keuntungan dibagi berdasarkan <strong>nisbah</strong> — rasio yang disepakati di awal. Prinsip ini dipakai dalam dua konteks utama: kemitraan usaha (mudharabah/musyarakah) dan produk simpanan bank syariah (deposito/tabungan mudharabah).</p>
+
+      <h3>Akad Mudharabah</h3>
+      <p>Mudharabah mempertemukan <strong>pemodal (shahibul maal)</strong> yang menyediakan dana dengan <strong>pengelola (mudharib)</strong> yang menjalankan usaha. Keuntungan dibagi sesuai nisbah, misalnya 60:40. Jika usaha rugi tanpa kelalaian pengelola, kerugian finansial ditanggung pemodal — pengelola sudah rugi tenaga dan waktu. Inilah keadilan risiko dalam syariah.</p>
+
+      <h3>Rumus</h3>
+      <ul>
+        <li><strong>Bagian Pemodal</strong> = Laba × Nisbah Pemodal%</li>
+        <li><strong>Bagian Pengelola</strong> = Laba × Nisbah Pengelola%</li>
+        <li><strong>Deposito syariah</strong>: Bagi Hasil = Nominal × imbal hasil setara% × (tenor ÷ 12)</li>
+      </ul>
+
+      <h3>Catatan Penting</h3>
+      <p>Dua hal yang sering keliru: <strong>pertama</strong>, bagi hasil dihitung dari laba/keuntungan, bukan dari omzet atau modal. <strong>Kedua</strong>, nisbah harus berupa persentase, bukan nominal tetap — menetapkan "pengelola dapat Rp X tetap" justru menyalahi prinsip syariah karena menyerupai bunga. Untuk deposito syariah, angka imbal hasil bersifat indikasi dan bisa naik-turun mengikuti kinerja bank, berbeda dengan bunga deposito konvensional yang tetap.</p>
+
+      <div class="cta-box">
+        <h3>Disclaimer</h3>
+        <p>Kalkulator ini alat bantu simulasi &amp; edukasi. Untuk deposito syariah, hasil adalah <strong>estimasi berdasarkan indikasi imbal hasil</strong> yang kamu masukkan dan tidak dijamin — realisasi bergantung kinerja bank. Pembagian bagi hasil usaha mengikuti kesepakatan akad yang sah. Bukan nasihat keuangan; konsultasikan dengan lembaga keuangan syariah atau ahli muamalah untuk keputusan yang mengikat.</p>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+  <FAQ title="Pertanyaan Seputar Bagi Hasil Syariah" items={faqs} />
+
+  <section class="section"><div class="wrap">
+    <div class="section-hdr"><div class="section-eyebrow">Kalkulator Lainnya</div><h2 class="section-title">Hitung Juga yang Lain</h2></div>
+    <div class="related-grid">{related.map(c => <CalculatorCard calc={c} />)}</div>
+  </div></section>
+
+  <p style="text-align:center;font-size:.85rem;color:#64748b;margin:1.2rem auto;max-width:600px;">
+    📅 Diperbarui <strong>Juni 2026</strong> · Kalkulator edukatif berbasis prinsip syariah
+  </p>
+
+<script is:inline>
+  (function() {
+    function ready(fn) { if (window.HC && window.html2canvas) fn(); else setTimeout(() => ready(fn), 100); }
+    ready(() => {
+      const $ = id => document.getElementById(id);
+      const els = { mode: $('mode'), modal: $('modal'), laba: $('laba'), nisbah: $('nisbah'), deposito: $('deposito'), rate: $('rate'), tenor: $('tenor') };
+      [els.modal, els.laba, els.deposito].forEach(el => el.addEventListener('input', HC.fmtInput));
+
+      function toggleMode() {
+        const usaha = els.mode.value === 'usaha';
+        $('grpUsaha').style.display = usaha ? '' : 'none';
+        $('grpDeposito').style.display = usaha ? 'none' : '';
+        if (lastCalc) hitung();
+      }
+      els.mode.addEventListener('change', toggleMode);
+
+      let lastCalc = null;
+
+      function hitung() {
+        if (els.mode.value === 'usaha') hitungUsaha();
+        else hitungDeposito();
+      }
+
+      function hitungUsaha() {
+        const modal = HC.parseRp(els.modal.value);
+        const laba = HC.parseRp(els.laba.value);
+        const nisbah = parseFloat(els.nisbah.value) || 0;
+        if (laba === 0) { HC.toast('Masukkan laba usaha dulu', 'error'); return; }
+        if (nisbah < 1 || nisbah > 99) { HC.toast('Nisbah pemodal antara 1-99%', 'error'); return; }
+
+        const nisbahPengelola = 100 - nisbah;
+        const bagPemodal = laba * (nisbah / 100);
+        const bagPengelola = laba * (nisbahPengelola / 100);
+        const returnPct = modal > 0 ? bagPemodal / modal * 100 : null;
+
+        $('mainLabel').textContent = 'Bagian Pemodal';
+        $('mainValue').textContent = HC.fmt(bagPemodal);
+        $('mainMeta').textContent = `nisbah ${nisbah}:${nisbahPengelola} dari laba ${HC.fmt(laba)}`;
+        $('gridUsaha').style.display = '';
+        $('gridDeposito').style.display = 'none';
+        $('bagPemodal').textContent = HC.fmt(bagPemodal);
+        $('bagPengelola').textContent = HC.fmt(bagPengelola);
+        $('nisbahOut').textContent = `${nisbah} : ${nisbahPengelola}`;
+        $('returnPemodal').textContent = returnPct !== null ? returnPct.toFixed(1) + '%' : '\u2014';
+
+        $('bhInfo').innerHTML = `\ud83e\udd1d Dari laba <b>${HC.fmt(laba)}</b> dengan nisbah <b>${nisbah}:${nisbahPengelola}</b> \u2014 pemodal menerima <b>${HC.fmt(bagPemodal)}</b>, pengelola <b>${HC.fmt(bagPengelola)}</b>.${returnPct !== null ? ` Return pemodal terhadap modal ${HC.fmt(modal)}: <b>${returnPct.toFixed(1)}%</b>.` : ''}`;
+
+        lastCalc = { mode: 'usaha', modal, laba, nisbah, nisbahPengelola, bagPemodal, bagPengelola, returnPct };
+        showResults();
+      }
+
+      function hitungDeposito() {
+        const deposito = HC.parseRp(els.deposito.value);
+        const rate = parseFloat(els.rate.value) || 0;
+        const tenor = parseInt(els.tenor.value) || 0;
+        if (deposito === 0) { HC.toast('Masukkan nominal deposito dulu', 'error'); return; }
+        if (tenor < 1) { HC.toast('Tenor minimal 1 bulan', 'error'); return; }
+
+        const bagiHasil = deposito * (rate / 100) * (tenor / 12);
+        const total = deposito + bagiHasil;
+        const perBulan = bagiHasil / tenor;
+
+        $('mainLabel').textContent = 'Estimasi Bagi Hasil';
+        $('mainValue').textContent = HC.fmt(bagiHasil);
+        $('mainMeta').textContent = `indikasi setara ${rate}%/thn \u00b7 ${tenor} bulan`;
+        $('gridUsaha').style.display = 'none';
+        $('gridDeposito').style.display = '';
+        $('depBagiHasil').textContent = HC.fmt(bagiHasil);
+        $('depTotal').textContent = HC.fmt(total);
+        $('depBulan').textContent = HC.fmt(perBulan);
+        $('depTenor').textContent = tenor + ' bln';
+
+        $('bhInfo').innerHTML = `\ud83c\udfe6 Deposito <b>${HC.fmt(deposito)}</b> dengan indikasi imbal hasil setara <b>${rate}%/thn</b> selama ${tenor} bulan \u2192 estimasi bagi hasil <b>${HC.fmt(bagiHasil)}</b>, total jatuh tempo <b>${HC.fmt(total)}</b>. Ingat: angka ini indikasi (tidak dijamin tetap), beda dengan bunga konvensional.`;
+
+        lastCalc = { mode: 'deposito', deposito, rate, tenor, bagiHasil, total, perBulan };
+        showResults();
+      }
+
+      function showResults() {
+        $('placeholder').style.display = 'none';
+        $('results').classList.add('show');
+        $('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        HC.toast('Berhasil dihitung!');
+      }
+
+      function reset() {
+        els.mode.value = 'usaha';
+        els.modal.value = '100.000.000'; els.laba.value = '20.000.000'; els.nisbah.value = '60';
+        els.deposito.value = '50.000.000'; els.rate.value = '4.5'; els.tenor.value = '12';
+        toggleMode();
+        $('placeholder').style.display = ''; $('results').classList.remove('show');
+        lastCalc = null; HC.toast('Form direset', 'info');
+      }
+
+      function buildReport() {
+        if (!lastCalc) return null;
+        const c = lastCalc;
+        if (c.mode === 'usaha') {
+          const insight = `Akad mudharabah. Laba ${HC.fmt(c.laba)}, nisbah ${c.nisbah}:${c.nisbahPengelola}. Pemodal ${HC.fmt(c.bagPemodal)}, pengelola ${HC.fmt(c.bagPengelola)}.${c.returnPct !== null ? ` Return pemodal ${c.returnPct.toFixed(1)}%.` : ''} Bagi hasil dari laba, bukan omzet. Edukatif.`;
+          return HC.buildReportCard({
+            title: '\ud83e\udd1d Bagi Hasil Usaha (Mudharabah)',
+            color: '#CA8A04', color2: '#A16207',
+            heroLabel: 'Bagian Pemodal',
+            heroValue: HC.fmt(c.bagPemodal),
+            heroSubtext: `nisbah ${c.nisbah}:${c.nisbahPengelola} dari laba ${HC.fmt(c.laba)}`,
+            inputs: [
+              { label: '\ud83d\udcb5 Modal Usaha', value: HC.fmt(c.modal) },
+              { label: '\ud83d\udcc8 Laba Usaha', value: HC.fmt(c.laba) },
+              { label: '\u2696\ufe0f Nisbah', value: c.nisbah + ' : ' + c.nisbahPengelola },
+            ],
+            results: [
+              { label: 'Bagian Pemodal', value: HC.fmt(c.bagPemodal), highlight: true },
+              { label: 'Bagian Pengelola', value: HC.fmt(c.bagPengelola), highlight: true },
+              { label: 'Return Pemodal', value: c.returnPct !== null ? c.returnPct.toFixed(1) + '%' : '\u2014' },
+            ],
+            insight, slug: 'bagi-hasil',
+          });
+        } else {
+          const insight = `Deposito syariah ${HC.fmt(c.deposito)}, indikasi imbal hasil setara ${c.rate}%/thn, tenor ${c.tenor} bulan. Estimasi bagi hasil ${HC.fmt(c.bagiHasil)}, total ${HC.fmt(c.total)}. Indikasi, tidak dijamin tetap.`;
+          return HC.buildReportCard({
+            title: '\ud83c\udfe6 Deposito Syariah (Mudharabah)',
+            color: '#CA8A04', color2: '#A16207',
+            heroLabel: 'Estimasi Bagi Hasil',
+            heroValue: HC.fmt(c.bagiHasil),
+            heroSubtext: `setara ${c.rate}%/thn \u00b7 ${c.tenor} bulan`,
+            inputs: [
+              { label: '\ud83c\udfe6 Nominal Deposito', value: HC.fmt(c.deposito) },
+              { label: '\ud83d\udcca Imbal Hasil Setara', value: c.rate + '%/thn' },
+              { label: '\u23f3 Tenor', value: c.tenor + ' bulan' },
+            ],
+            results: [
+              { label: 'Estimasi Bagi Hasil', value: HC.fmt(c.bagiHasil), highlight: true },
+              { label: 'Total Jatuh Tempo', value: HC.fmt(c.total), highlight: true },
+              { label: 'Per Bulan (rata2)', value: HC.fmt(c.perBulan) },
+            ],
+            insight, slug: 'bagi-hasil',
+          });
+        }
+      }
+
+      function summaryText() {
+        if (!lastCalc) return '';
+        const c = lastCalc;
+        if (c.mode === 'usaha') {
+          return `\ud83e\udd1d *Bagi Hasil Usaha (Mudharabah) - HitungCerdas*\n\nLaba usaha: ${HC.fmt(c.laba)}\nNisbah: ${c.nisbah}:${c.nisbahPengelola}\n\n\ud83d\udcb0 *Pemodal: ${HC.fmt(c.bagPemodal)}*\n\ud83d\udc77 Pengelola: ${HC.fmt(c.bagPengelola)}${c.returnPct !== null ? `\n\ud83d\udcc8 Return pemodal: ${c.returnPct.toFixed(1)}%` : ''}\n\nHitung di: https://hitungcerdas.net/kalkulator/bagi-hasil`;
+        }
+        return `\ud83c\udfe6 *Deposito Syariah (Mudharabah) - HitungCerdas*\n\nNominal: ${HC.fmt(c.deposito)}\nImbal hasil setara: ${c.rate}%/thn\nTenor: ${c.tenor} bulan\n\n\ud83d\udcb0 *Estimasi bagi hasil: ${HC.fmt(c.bagiHasil)}*\n\ud83c\udfe6 Total jatuh tempo: ${HC.fmt(c.total)}\n(indikasi, tidak dijamin tetap)\n\nHitung di: https://hitungcerdas.net/kalkulator/bagi-hasil`;
+      }
+
+      $('btnHitung').addEventListener('click', hitung);
+      $('btnReset').addEventListener('click', reset);
+      $('exportImg').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToImage(c, 'bagi-hasil-' + Date.now()); });
+      $('exportWa').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.shareWhatsApp(c, summaryText(), 'bagi-hasil'); });
+      $('exportPdf').addEventListener('click', () => { if (!lastCalc) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToPDF(); });
+      $('exportCopy').addEventListener('click', () => { if (!lastCalc) { HC.toast('Hitung dulu', 'error'); return; } HC.copyText(summaryText(), 'Tersalin!'); });
+    });
+  })();
+</script>
+</Layout>

@@ -1,0 +1,94 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import ArticleSchema from '../../components/ArticleSchema.astro';
+const datePublished = '2026-06-21';
+const dateModified = '2026-06-21';
+const today = new Date(datePublished).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'Cara Hitung Bagi Hasil Mudharabah' }];
+---
+<Layout title="Cara Hitung Bagi Hasil Syariah (Mudharabah) 2026 — Nisbah & Contoh" description="Panduan lengkap bagi hasil syariah akad mudharabah 2026: apa itu nisbah, rumus pembagian laba pemodal & pengelola, cara hitung deposito syariah, dan beda dengan bunga. Plus kalkulator bagi hasil gratis." keywords={['cara hitung bagi hasil', 'bagi hasil mudharabah', 'nisbah bagi hasil', 'deposito syariah', 'mudharabah adalah', 'bagi hasil usaha syariah']} canonical="https://hitungcerdas.net/blog/cara-menghitung-bagi-hasil" ogType="article">
+  <ArticleSchema
+    headline="Cara Hitung Bagi Hasil Syariah (Mudharabah) 2026 — Nisbah & Contoh"
+    description="Panduan lengkap bagi hasil syariah akad mudharabah 2026: apa itu nisbah, rumus pembagian laba pemodal & pengelola, cara hitung deposito syariah, dan beda dengan bunga."
+    datePublished={datePublished}
+    dateModified={dateModified}
+    slug="cara-menghitung-bagi-hasil"
+    articleSection="Syariah"
+    keywords={['cara hitung bagi hasil', 'bagi hasil mudharabah', 'nisbah bagi hasil', 'deposito syariah', 'mudharabah']}
+    wordCount={810}
+  />
+
+  <section class="article-hero" style="--cat-color:#CA8A04;--cat-color2:#A16207">
+    <div class="wrap"><Breadcrumb items={bcItems} /><div class="article-tag">Syariah</div>
+      <h1>Cara Hitung Bagi Hasil Syariah (Mudharabah) 2026</h1>
+      <div class="article-meta"><span><i class="ti ti-calendar"></i> {today}</span><span><i class="ti ti-clock"></i> 8 menit baca</span><span><i class="ti ti-user"></i> Tim HitungCerdas</span></div>
+    </div>
+  </section>
+  <AdSlot format="horizontal" />
+  <article class="content-section"><div class="wrap-text">
+    <p class="lead">Dalam ekonomi syariah, keuntungan tidak dibagi lewat bunga, melainkan lewat bagi hasil. Tapi bagaimana sebenarnya cara menghitungnya? Artikel ini bedah konsep nisbah dan akad mudharabah, lengkap dengan contoh untuk kemitraan usaha maupun deposito syariah.</p>
+
+    <h2>1. Apa Itu Mudharabah?</h2>
+    <p>Mudharabah adalah akad kerja sama usaha antara <strong>pemilik modal (shahibul maal)</strong> dan <strong>pengelola (mudharib)</strong>. Pemodal menyediakan dana, pengelola menjalankan usaha dengan keahliannya. Keuntungan dibagi sesuai nisbah yang disepakati di awal. Jika usaha merugi tanpa kelalaian pengelola, kerugian finansial ditanggung pemodal — sementara pengelola kehilangan tenaga dan waktunya. Inilah pembagian risiko yang adil dalam Islam.</p>
+
+    <h2>2. Apa Itu Nisbah?</h2>
+    <p>Nisbah adalah <strong>rasio pembagian keuntungan</strong>, dinyatakan dalam persentase, misalnya 60:40. Total nisbah selalu 100%. Dua aturan penting: bagi hasil dihitung dari <strong>keuntungan/laba</strong> (bukan omzet atau modal), dan nisbah harus berupa <strong>persentase</strong>, bukan nominal tetap. Menetapkan "pengelola dapat Rp X tetap setiap bulan" justru menyalahi syariah karena menyerupai bunga.</p>
+
+    <h2>3. Rumus Bagi Hasil Usaha</h2>
+    <div class="formula-box">
+      <p><strong>Bagian Pemodal = Laba × Nisbah Pemodal%</strong></p>
+      <p><strong>Bagian Pengelola = Laba × Nisbah Pengelola%</strong></p>
+    </div>
+    <p>Contoh: sebuah usaha menghasilkan laba <strong>Rp 20 juta</strong> dengan nisbah <strong>60:40</strong> (pemodal:pengelola). Maka pemodal menerima Rp 20 juta × 60% = <strong>Rp 12 juta</strong>, dan pengelola Rp 20 juta × 40% = <strong>Rp 8 juta</strong>. Jika pemodal menanam modal Rp 100 juta, return-nya 12% dari modal.</p>
+
+    <AdSlot format="horizontal" />
+
+    <h2>4. Bagi Hasil Deposito Syariah</h2>
+    <p>Deposito syariah juga memakai akad mudharabah: kamu (nasabah) jadi pemodal, bank jadi pengelola. Bank biasanya mempublikasikan <strong>indikasi imbal hasil setara</strong> dalam persen per tahun. Estimasi bagi hasilnya:</p>
+    <div class="formula-box">
+      <p><strong>Bagi Hasil = Nominal × Imbal Hasil Setara% × (Tenor bulan ÷ 12)</strong></p>
+    </div>
+    <p>Contoh: deposito <strong>Rp 50 juta</strong>, indikasi setara <strong>4,5%/tahun</strong>, tenor 12 bulan → bagi hasil ≈ Rp 2.250.000, total jatuh tempo Rp 52.250.000. Bedanya dengan bunga: angka ini <strong>indikasi, tidak dijamin tetap</strong> — naik-turun mengikuti kinerja bank, dan bebas riba.</p>
+
+    <h2>5. Mudharabah vs Musyarakah</h2>
+    <p>Pada <strong>mudharabah</strong>, seluruh modal dari pemodal; pengelola menyumbang keahlian. Pada <strong>musyarakah</strong>, kedua pihak sama-sama menyetor modal dan umumnya sama-sama mengelola. Keduanya tetap membagi keuntungan dengan nisbah persentase. Skema musyarakah sering dipakai pada pembiayaan modal kerja dan KPR jenis Musyarakah Mutanaqisah.</p>
+
+    <div class="cta-box">
+      <h3>🤝 Coba Kalkulator Bagi Hasil HitungCerdas</h3>
+      <p>Hitung pembagian keuntungan syariah dengan mudah:</p>
+      <ul>
+        <li>✅ Mode bagi hasil usaha (kemitraan)</li>
+        <li>✅ Mode deposito syariah</li>
+        <li>✅ Pembagian pemodal & pengelola sesuai nisbah</li>
+        <li>✅ Return pemodal terhadap modal</li>
+      </ul>
+      <p style="margin-top:14px"><a href="/kalkulator/bagi-hasil" class="btn btn-pri"><i class="ti ti-calculator"></i> Buka Kalkulator Bagi Hasil</a></p>
+    </div>
+
+    <h2>Kesimpulan</h2>
+    <p>Bagi hasil mudharabah menggantikan bunga dengan pembagian keuntungan yang adil berdasar nisbah. Kuncinya: hitung dari laba (bukan omzet), pakai persentase (bukan nominal tetap), dan sepakati nisbah di awal akad. Baik untuk kemitraan usaha maupun deposito syariah, prinsipnya sama. Catatan: untuk deposito, angka imbal hasil bersifat indikasi — konsultasikan dengan lembaga keuangan syariah untuk kepastian.</p>
+
+    <h3>📚 Artikel & Kalkulator Terkait</h3>
+    <ul class="info-list">
+      <li><a href="/kalkulator/bagi-hasil">Kalkulator Bagi Hasil</a></li>
+      <li><a href="/kalkulator/kpr-syariah">Kalkulator KPR Syariah</a></li>
+      <li><a href="/kalkulator/investasi">Kalkulator Investasi</a></li>
+      <li><a href="/kalkulator/roi-usaha">Kalkulator ROI Usaha</a></li>
+    </ul>
+  </div></article>
+  <AdSlot format="horizontal" />
+</Layout>
+<style>
+  .article-hero { background: linear-gradient(135deg, var(--cat-color) 0%, var(--cat-color2) 100%); color: #fff; padding: 20px 0 48px; }
+  .article-hero :global(.breadcrumb-item), .article-hero :global(.breadcrumb-item a) { color: rgba(255, 255, 255, .7); }
+  .article-hero :global(.breadcrumb-item a:hover) { color: var(--gold-soft); }
+  .article-hero :global(.breadcrumb-item span) { color: #fff; }
+  .article-hero :global(.breadcrumb-item i) { color: rgba(255, 255, 255, .4); }
+  .article-tag { display: inline-block; font-size: 11px; font-weight: 700; color: #FEF08A; letter-spacing: .1em; text-transform: uppercase; margin: 16px 0 12px; }
+  .article-hero h1 { color: #fff; font-size: clamp(25px, 3.7vw, 40px); margin: 0 0 20px; max-width: 900px; line-height: 1.2; }
+  .article-meta { display: flex; gap: 20px; color: rgba(255, 255, 255, .8); font-size: 13px; flex-wrap: wrap; }
+  .article-meta span { display: inline-flex; align-items: center; gap: 6px; }
+  .lead { font-size: 17px !important; line-height: 1.7 !important; color: var(--text) !important; padding: 20px 24px; background: var(--bg-soft); border-radius: 12px; border-left: 4px solid #CA8A04; margin-bottom: 24px !important; }
+</style>

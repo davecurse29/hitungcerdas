@@ -736,6 +736,32 @@ export const CALCULATORS: CalculatorMeta[] = [
       'Scorecard share-ready (WA/IG/PDF)',
     ],
   },
+
+  {
+    slug: 'bagi-hasil',
+    title: 'Kalkulator Bagi Hasil Syariah 2026 — Mudharabah & Deposito Syariah',
+    shortTitle: 'Kalkulator Bagi Hasil',
+    category: 'islami',
+    categoryLabel: 'Kalkulator Islami',
+    tag: 'Syariah',
+    tagColor: '#854D0E',
+    tagBg: '#FEF9C3',
+    iconColor: '#CA8A04',
+    iconBg: '#FEF9C3',
+    iconSvg: 'margin',
+    description: 'Hitung bagi hasil mudharabah: pembagian laba usaha sesuai nisbah & estimasi deposito syariah.',
+    metaDescription: 'Kalkulator bagi hasil syariah 2026 (akad mudharabah): hitung pembagian laba usaha sesuai nisbah pemodal & pengelola, plus estimasi imbal hasil deposito syariah. Tanpa bunga, sesuai prinsip syariah.',
+    keywords: ['kalkulator bagi hasil', 'bagi hasil mudharabah', 'nisbah bagi hasil', 'deposito syariah', 'cara hitung bagi hasil', 'mudharabah syariah'],
+    h1: 'Kalkulator Bagi Hasil Syariah (Mudharabah)',
+    introText: 'Hitung pembagian keuntungan sesuai akad mudharabah. Mode Bagi Hasil Usaha membagi laba antara pemodal (shahibul maal) dan pengelola (mudharib) sesuai nisbah yang disepakati. Mode Deposito Syariah mengestimasi imbal hasil tabungan/deposito syariah. Adil, transparan, dan bebas riba.',
+    benefits: [
+      '2 mode: bagi hasil usaha & deposito syariah',
+      'Pembagian laba sesuai nisbah pemodal:pengelola',
+      'Estimasi imbal hasil deposito syariah',
+      'Hitung return pemodal terhadap modal',
+      'Scorecard share-ready (WA/IG/PDF)',
+    ],
+  },
 ];
 
 // Helper functions
