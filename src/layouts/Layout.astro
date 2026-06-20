@@ -29,10 +29,7 @@ const {
 } = Astro.props;
 
 const siteUrl = 'https://hitungcerdas.net';
-const _rawUrl = canonical || new URL(Astro.url.pathname, siteUrl).toString();
-// trailingSlash: 'always' — canonical & og:url HARUS diakhiri "/" agar konsisten
-// dengan URL yang dilayani server (hindari "Page with redirect" di Google Search Console).
-const fullUrl = /[?#]/.test(_rawUrl) || _rawUrl.endsWith('/') ? _rawUrl : _rawUrl + '/';
+const fullUrl = canonical || new URL(Astro.url.pathname, siteUrl).toString();
 
 // ── Conditional heavy scripts: load hanya di halaman yang butuh ──
 const _path = Astro.url.pathname;
@@ -288,8 +285,25 @@ const websiteSchema = {
     crossorigin="anonymous"
   ></script>
 
-  {/* ── HTML to Canvas (export, hanya halaman kalkulator) ── */}
-  {_isCalc && <script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>}
+  {/* ── HTML to Canvas (export) — LAZY: lib asli baru dimuat saat "Save Image" diklik ── */}
+  {_isCalc && <script is:inline set:html={`
+    /* Stub truthy agar ready() di kalkulator tetap lolos; html2canvas asli (~150KB) dimuat on-demand */
+    (function(){
+      var p = null;
+      function load(){
+        if (p) return p;
+        p = new Promise(function(res, rej){
+          var sc = document.createElement('script');
+          sc.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+          sc.onload = function(){ res(window.html2canvas); };
+          sc.onerror = function(){ p = null; rej(new Error('html2canvas gagal dimuat')); };
+          document.head.appendChild(sc);
+        });
+        return p;
+      }
+      window.html2canvas = function(el, opts){ return load().then(function(real){ return real(el, opts); }); };
+    })();
+  `} />}
 
   {/* ── Chart.js (charts, hanya KPR/motor/mobil) ── */}
   {_needsCharts && <script is:inline src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>}
