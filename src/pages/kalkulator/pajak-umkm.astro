@@ -1,0 +1,274 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import FAQ from '../../components/FAQ.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import CalculatorCard from '../../components/CalculatorCard.astro';
+import { getCalculatorBySlug, getRelatedCalculators } from '../../data/calculators';
+
+const calc = getCalculatorBySlug('pajak-umkm')!;
+const related = getRelatedCalculators('pajak-umkm', 3);
+
+const faqs = [
+  { question: 'Berapa tarif pajak UMKM 2026?', answer: 'Tarif PPh Final UMKM adalah <strong>0,5% dari omzet bruto (peredaran bruto)</strong>, bukan dari laba bersih — sesuai PP 23/2018 yang dipertahankan oleh PP 20/2026 (berlaku 22 April 2026). Berlaku untuk usaha dengan omzet tidak melebihi <strong>Rp 4,8 miliar per tahun</strong>.' },
+  { question: 'Apakah benar omzet Rp 500 juta bebas pajak?', answer: 'Ya, tapi <strong>hanya untuk Wajib Pajak Orang Pribadi</strong>. Omzet hingga Rp 500 juta pertama dalam satu tahun tidak dikenai PPh Final. Hanya bagian omzet <strong>di atas Rp 500 juta</strong> yang dikenai tarif 0,5%. Fasilitas ini <strong>tidak berlaku untuk Wajib Pajak Badan</strong> (PT Perorangan, Koperasi) — mereka kena 0,5% dari rupiah pertama.' },
+  { question: 'Bagaimana cara menghitungnya?', answer: 'Sangat sederhana. Untuk <strong>Orang Pribadi</strong>: PPh = (Omzet setahun − Rp 500 juta) × 0,5%. Contoh omzet Rp 700 juta → (700jt − 500jt) × 0,5% = Rp 1 juta/tahun. Untuk <strong>Badan</strong>: PPh = Omzet × 0,5% langsung. Pembayaran dilakukan tiap bulan dari omzet bulan tersebut, paling lambat tanggal 15 bulan berikutnya.' },
+  { question: 'Apa yang berubah di PP 20/2026?', answer: 'Tarif 0,5% dan batas omzet Rp 4,8 miliar <strong>tetap sama</strong>. Yang berubah: (1) untuk Orang Pribadi & PT Perorangan, fasilitas 0,5% kini <strong>tanpa batas waktu</strong> (selama omzet masih memenuhi syarat); (2) CV, firma, PT biasa, dan BUMDes tidak lagi bisa pakai skema ini (ada masa transisi); (3) batas Rp 4,8 miliar untuk pasangan suami-istri dihitung gabungan.' },
+  { question: 'Kalau omzet di atas Rp 4,8 miliar bagaimana?', answer: 'Jika omzet setahun melebihi Rp 4,8 miliar, kamu <strong>tidak lagi berhak</strong> atas tarif PPh Final 0,5%. Mulai tahun berikutnya wajib menggunakan tarif PPh normal (Pasal 17) dengan pembukuan lengkap. Untuk kondisi ini, sebaiknya konsultasikan dengan konsultan pajak atau Account Representative di KPP.' },
+];
+
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '/#tools' }, { label: calc.shortTitle }];
+---
+
+<Layout title={calc.title} description={calc.metaDescription} keywords={calc.keywords} canonical={`https://hitungcerdas.net/kalkulator/${calc.slug}`}>
+  <section class="calc-hero" style="--cat-color:#0891B2;--cat-color2:#0E7490">
+    <div class="wrap">
+      <Breadcrumb items={bcItems} />
+      <div class="calc-hero-grid">
+        <div class="calc-hero-text">
+          <div class="calc-hero-tag" style="background:#CFFAFE;color:#155E75"><i class="ti ti-receipt-2"></i> {calc.categoryLabel}</div>
+          <h1 class="calc-hero-title">{calc.h1}</h1>
+          <p class="calc-hero-sub">{calc.introText}</p>
+          <ul class="calc-hero-benefits">{calc.benefits.map(b => <li><i class="ti ti-check"></i> {b}</li>)}</ul>
+        </div>
+        <div class="calc-hero-illust">
+          <svg viewBox="0 0 200 200" fill="none">
+            <circle cx="100" cy="100" r="85" fill="rgba(255,255,255,.08)"/>
+            <path d="M68 52 h64 a4 4 0 0 1 4 4 v92 l-12 -7 -12 7 -12 -7 -12 7 -12 -7 -12 7 V56 a4 4 0 0 1 4 -4 Z" fill="#FFF" stroke="#67E8F9" stroke-width="2"/>
+            <rect x="78" y="72" width="44" height="7" rx="3" fill="#A5F3FC"/>
+            <rect x="78" y="88" width="34" height="7" rx="3" fill="#CFFAFE"/>
+            <text x="96" y="124" fill="#0891B2" font-size="26" font-weight="bold" font-family="sans-serif">%</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+
+  <section class="calc-section">
+    <div class="wrap">
+      <div class="calc-card">
+        <div class="calc-card-hdr">
+          <div class="calc-card-hdr-ic" style="background:linear-gradient(135deg,#0891B2 0%,#0E7490 100%)"><i class="ti ti-receipt-2"></i></div>
+          <div><h2 class="calc-card-title">Kalkulator PPh Final UMKM 0,5%</h2><p class="calc-card-sub">Sesuai PP 20/2026 · fasilitas bebas Rp 500 juta untuk Orang Pribadi</p></div>
+        </div>
+
+        <div class="calc-grid">
+          <div class="calc-input">
+            <div class="field">
+              <label>Jenis Wajib Pajak</label>
+              <select id="jenis">
+                <option value="op" selected>Orang Pribadi (bebas s/d Rp 500 jt/thn)</option>
+                <option value="badan">Badan — PT Perorangan / Koperasi</option>
+              </select>
+              <p class="hint" style="margin-top:6px">Fasilitas bebas Rp 500 juta hanya untuk Orang Pribadi.</p>
+            </div>
+
+            <div class="field">
+              <label>Periode Omzet</label>
+              <select id="periode">
+                <option value="bulan" selected>Per Bulan</option>
+                <option value="tahun">Per Tahun</option>
+              </select>
+            </div>
+
+            <div class="field"><label>Omzet Bruto (Peredaran Bruto)</label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span>
+                <input type="text" id="omzet" class="has-prefix" value="50.000.000" inputmode="numeric" /></div>
+              <p class="hint" style="margin-top:6px">Total pendapatan usaha <strong>sebelum dikurangi biaya apapun</strong>. PPh Final dihitung dari omzet, bukan laba.</p>
+            </div>
+
+            <div class="calc-action-bar">
+              <button type="button" class="btn-hitung" id="btnHitung"><i class="ti ti-calculator"></i> Hitung Sekarang</button>
+              <button type="button" class="btn-reset" id="btnReset"><i class="ti ti-refresh"></i> Reset</button>
+            </div>
+          </div>
+
+          <div class="calc-output">
+            <div class="result-placeholder" id="placeholder">
+              <i class="ti ti-receipt-2 result-placeholder-icon"></i>
+              <div class="result-placeholder-title">Pajak UMKM akan muncul di sini</div>
+              <div class="result-placeholder-desc">Pilih jenis WP, masukkan omzet, klik <strong>"Hitung Sekarang"</strong>.</div>
+            </div>
+
+            <div class="result-wrapper" id="results">
+              <div class="result-main">
+                <div class="result-label">PPh Final Setahun</div>
+                <div class="result-value" id="pphTahun">Rp 0</div>
+                <div class="result-meta"><i class="ti ti-info-circle"></i> <span id="pphMeta">tarif 0,5% dari omzet kena pajak</span></div>
+              </div>
+
+              <div class="result-grid">
+                <div class="result-item"><div class="result-item-label">PPh per Bulan (rata-rata)</div><div class="result-item-value" id="pphBulan">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">Omzet Kena Pajak/Thn</div><div class="result-item-value" id="kenaPajak">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">Omzet Setahun</div><div class="result-item-value" id="omzetThn">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">Tarif Efektif</div><div class="result-item-value" id="tarifEf">0%</div></div>
+              </div>
+
+              <div id="pphInfo" style="margin-top:10px;padding:11px 13px;border-radius:12px;background:#ECFEFF;border:1px solid #A5F3FC;font-size:12.5px;line-height:1.55;color:#155E75"></div>
+
+              <div id="warnBox" style="display:none;margin-top:10px;padding:11px 13px;border-radius:12px;background:#FEE2E2;border:1px solid #FECACA;font-size:12.5px;line-height:1.55;color:#991B1B"></div>
+
+              <div class="export-row">
+                <button type="button" class="export-btn img" id="exportImg"><i class="ti ti-photo-down"></i><span>Save Image</span></button>
+                <button type="button" class="export-btn wa" id="exportWa"><i class="ti ti-brand-whatsapp"></i><span>Share WA</span></button>
+                <button type="button" class="export-btn pdf" id="exportPdf"><i class="ti ti-printer"></i><span>Print/PDF</span></button>
+                <button type="button" class="export-btn copy" id="exportCopy"><i class="ti ti-copy"></i><span>Copy Teks</span></button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="content-section">
+    <div class="wrap-text">
+      <h2>Pajak UMKM 2026: PPh Final 0,5% Sesuai PP 20/2026</h2>
+      <p>Pajak UMKM atau PPh Final UMKM adalah skema pajak penghasilan yang dihitung langsung dari <strong>omzet (peredaran bruto)</strong>, bukan dari laba bersih. Tarifnya hanya 0,5%, dirancang agar pelaku usaha kecil bisa patuh pajak tanpa pembukuan rumit. Aturan ini awalnya dari PP 23/2018, lalu disempurnakan PP 55/2022, dan diperbarui lewat <strong>PP 20/2026</strong> yang berlaku 22 April 2026.</p>
+
+      <h3>Yang Perlu Kamu Tahu</h3>
+      <ul>
+        <li><strong>Tarif 0,5%</strong> dari omzet bruto, batas omzet <strong>Rp 4,8 miliar/tahun</strong>.</li>
+        <li><strong>Orang Pribadi</strong>: omzet Rp 500 juta pertama per tahun <strong>bebas pajak</strong> — hanya bagian di atasnya yang kena 0,5%.</li>
+        <li><strong>Badan</strong> (PT Perorangan, Koperasi): kena 0,5% dari rupiah pertama, tanpa fasilitas Rp 500 juta.</li>
+        <li>Untuk Orang Pribadi & PT Perorangan, fasilitas ini kini <strong>tanpa batas waktu</strong> selama syarat omzet terpenuhi.</li>
+      </ul>
+
+      <h3>Cara Setor & Lapor</h3>
+      <p>Hitung omzet bruto tiap bulan, kalikan 0,5%, lalu setor paling lambat <strong>tanggal 15 bulan berikutnya</strong> lewat e-billing/Coretax DJP. Jangan lupa tetap lapor <strong>SPT Tahunan</strong> (Orang Pribadi sebelum 31 Maret, Badan sebelum 30 April). Simpan bukti setor (NTPN) minimal 5 tahun.</p>
+
+      <h3>Catatan Penting 2026</h3>
+      <p>Mulai PP 20/2026, CV, firma, PT biasa, dan BUMDes tidak lagi berhak atas tarif final 0,5% (ada masa transisi). Untuk pasangan suami-istri, batas Rp 4,8 miliar dihitung dari gabungan omzet keduanya beserta seluruh PT Perorangan yang didirikan — ini mencegah pemecahan usaha untuk menghindari pajak.</p>
+
+      <div class="cta-box">
+        <h3>Disclaimer</h3>
+        <p>Kalkulator ini alat bantu edukasi & estimasi berdasarkan ketentuan PP 20/2026 yang berlaku saat halaman ini diperbarui (Juni 2026). Untuk Orang Pribadi, perhitungan mengasumsikan fasilitas bebas Rp 500 juta diterapkan tahunan. Ketentuan pajak dapat berubah dan kasus tertentu (omzet &gt; Rp 4,8 M, pekerjaan bebas, masa transisi badan) perlu penanganan khusus. HitungCerdas bukan konsultan pajak — untuk kepastian, konsultasikan dengan Ditjen Pajak atau konsultan pajak.</p>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+  <FAQ title="Pertanyaan Seputar Pajak UMKM" items={faqs} />
+
+  <section class="section"><div class="wrap">
+    <div class="section-hdr"><div class="section-eyebrow">Kalkulator Lainnya</div><h2 class="section-title">Hitung Juga yang Lain</h2></div>
+    <div class="related-grid">{related.map(c => <CalculatorCard calc={c} />)}</div>
+  </div></section>
+
+  <p style="text-align:center;font-size:.85rem;color:#64748b;margin:1.2rem auto;max-width:600px;">
+    📅 Berdasarkan <strong>PP 20/2026</strong> · Diperbarui Juni 2026 · Sumber: Ditjen Pajak (pajak.go.id)
+  </p>
+
+<script is:inline>
+  (function() {
+    function ready(fn) { if (window.HC && window.html2canvas) fn(); else setTimeout(() => ready(fn), 100); }
+    ready(() => {
+      const $ = id => document.getElementById(id);
+      const FREE = 500000000, LIMIT = 4800000000, RATE = 0.005;
+      const els = { jenis: $('jenis'), periode: $('periode'), omzet: $('omzet') };
+      els.omzet.addEventListener('input', HC.fmtInput);
+
+      let lastCalc = null;
+
+      function hitung() {
+        const jenis = els.jenis.value;
+        const periode = els.periode.value;
+        const omzetInput = HC.parseRp(els.omzet.value);
+        if (omzetInput === 0) { HC.toast('Masukkan omzet dulu', 'error'); return; }
+
+        const omzetThn = periode === 'bulan' ? omzetInput * 12 : omzetInput;
+        const isOP = jenis === 'op';
+        const kenaPajak = isOP ? Math.max(0, omzetThn - FREE) : omzetThn;
+        const pphTahun = kenaPajak * RATE;
+        const pphBulan = pphTahun / 12;
+        const tarifEf = omzetThn > 0 ? (pphTahun / omzetThn) * 100 : 0;
+
+        $('pphTahun').textContent = HC.fmt(pphTahun);
+        $('pphMeta').textContent = isOP ? 'Orang Pribadi · 0,5% di atas Rp 500 jt' : 'Badan · 0,5% dari seluruh omzet';
+        $('pphBulan').textContent = HC.fmt(pphBulan);
+        $('kenaPajak').textContent = HC.fmt(kenaPajak);
+        $('omzetThn').textContent = HC.fmt(omzetThn);
+        $('tarifEf').textContent = tarifEf.toFixed(3) + '%';
+
+        let info;
+        if (isOP) {
+          if (omzetThn <= FREE) {
+            info = `\u2705 Dengan omzet setahun <b>${HC.fmt(omzetThn)}</b> (masih di bawah Rp 500 juta), sebagai Orang Pribadi kamu <b>bebas PPh Final</b> tahun ini. Tetap wajib lapor SPT Tahunan ya.`;
+          } else {
+            info = `\ud83d\udca1 Omzet setahun <b>${HC.fmt(omzetThn)}</b>. Jatah bebas Rp 500 juta dikurangi dulu, sisanya <b>${HC.fmt(kenaPajak)}</b> kena PPh Final 0,5% = <b>${HC.fmt(pphTahun)}/tahun</b>. Bagi Orang Pribadi, bulan-bulan awal tahun bisa Rp 0 sampai akumulasi omzet melewati Rp 500 juta.`;
+          }
+        } else {
+          info = `\ud83d\udca1 Sebagai Wajib Pajak Badan, seluruh omzet <b>${HC.fmt(omzetThn)}</b> kena PPh Final 0,5% = <b>${HC.fmt(pphTahun)}/tahun</b> (tanpa fasilitas bebas Rp 500 juta). Setor tiap bulan paling lambat tanggal 15 bulan berikutnya.`;
+        }
+        $('pphInfo').innerHTML = info;
+
+        const warn = $('warnBox');
+        if (omzetThn > LIMIT) {
+          warn.style.display = '';
+          warn.innerHTML = `\u26a0\ufe0f Omzet setahun <b>${HC.fmt(omzetThn)}</b> melebihi batas <b>Rp 4,8 miliar</b>. Kamu <b>tidak lagi berhak</b> atas tarif PPh Final 0,5% dan wajib pakai tarif PPh normal (Pasal 17) dengan pembukuan lengkap. Hitungan di atas tidak berlaku \u2014 konsultasikan dengan konsultan pajak.`;
+        } else {
+          warn.style.display = 'none';
+        }
+
+        lastCalc = { jenis, isOP, periode, omzetInput, omzetThn, kenaPajak, pphTahun, pphBulan, tarifEf, overLimit: omzetThn > LIMIT };
+        $('placeholder').style.display = 'none';
+        $('results').classList.add('show');
+        $('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        HC.toast('Pajak UMKM berhasil dihitung!');
+      }
+
+      function reset() {
+        els.jenis.value = 'op'; els.periode.value = 'bulan'; els.omzet.value = '50.000.000';
+        $('warnBox').style.display = 'none';
+        $('placeholder').style.display = ''; $('results').classList.remove('show');
+        lastCalc = null; HC.toast('Form direset', 'info');
+      }
+
+      function buildReport() {
+        if (!lastCalc) return null;
+        const c = lastCalc;
+        const jenisLabel = c.isOP ? 'Orang Pribadi' : 'Badan';
+        let insight = `PPh Final UMKM 0,5% (PP 20/2026). ${jenisLabel}, omzet setahun ${HC.fmt(c.omzetThn)}, omzet kena pajak ${HC.fmt(c.kenaPajak)}, PPh ${HC.fmt(c.pphTahun)}/tahun (\u2248 ${HC.fmt(c.pphBulan)}/bulan).`;
+        if (c.overLimit) insight += ' CATATAN: omzet > Rp 4,8 M, tarif final tidak berlaku.';
+        insight += ' Estimasi edukatif, bukan nasihat pajak.';
+        return HC.buildReportCard({
+          title: '\ud83e\uddfe Pajak UMKM (PPh Final 0,5%)',
+          color: '#0891B2', color2: '#0E7490',
+          heroLabel: 'PPh Final Setahun',
+          heroValue: HC.fmt(c.pphTahun),
+          heroSubtext: `${jenisLabel} \u00b7 tarif 0,5%`,
+          inputs: [
+            { label: '\ud83d\udc64 Jenis WP', value: jenisLabel },
+            { label: '\ud83d\udcb5 Omzet Setahun', value: HC.fmt(c.omzetThn) },
+            { label: '\ud83c\udd93 Omzet Kena Pajak', value: HC.fmt(c.kenaPajak) },
+          ],
+          results: [
+            { label: 'PPh/tahun', value: HC.fmt(c.pphTahun), highlight: true },
+            { label: 'PPh/bulan (rata2)', value: HC.fmt(c.pphBulan) },
+            { label: 'Tarif Efektif', value: c.tarifEf.toFixed(3) + '%' },
+          ],
+          insight, slug: 'pajak-umkm',
+        });
+      }
+
+      function summaryText() {
+        if (!lastCalc) return '';
+        const c = lastCalc;
+        const jenisLabel = c.isOP ? 'Orang Pribadi' : 'Badan';
+        return `\ud83e\uddfe *Pajak UMKM PPh Final 0,5% - HitungCerdas*\n(PP 20/2026)\n\nJenis WP: ${jenisLabel}\nOmzet setahun: ${HC.fmt(c.omzetThn)}\nOmzet kena pajak: ${HC.fmt(c.kenaPajak)}\n\n\ud83e\uddfe *PPh Final: ${HC.fmt(c.pphTahun)}/tahun*\n\ud83d\udcc5 \u2248 ${HC.fmt(c.pphBulan)}/bulan\n\nHitung di: https://hitungcerdas.net/kalkulator/pajak-umkm`;
+      }
+
+      $('btnHitung').addEventListener('click', hitung);
+      $('btnReset').addEventListener('click', reset);
+      [els.jenis, els.periode].forEach(el => el.addEventListener('change', () => { if (lastCalc) hitung(); }));
+      $('exportImg').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToImage(c, 'pajak-umkm-' + Date.now()); });
+      $('exportWa').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.shareWhatsApp(c, summaryText(), 'pajak-umkm'); });
+      $('exportPdf').addEventListener('click', () => { if (!lastCalc) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToPDF(); });
+      $('exportCopy').addEventListener('click', () => { if (!lastCalc) { HC.toast('Hitung dulu', 'error'); return; } HC.copyText(summaryText(), 'Tersalin!'); });
+    });
+  })();
+</script>
+</Layout>

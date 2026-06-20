@@ -456,6 +456,32 @@ export const CALCULATORS: CalculatorMeta[] = [
     ],
   },
 
+  {
+    slug: 'pajak-umkm',
+    title: 'Kalkulator Pajak UMKM 2026 — PPh Final 0,5% (PP 20/2026)',
+    shortTitle: 'Kalkulator Pajak UMKM',
+    category: 'bisnis',
+    categoryLabel: 'Kalkulator Bisnis',
+    tag: 'Pajak',
+    tagColor: '#155E75',
+    tagBg: '#CFFAFE',
+    iconColor: '#0891B2',
+    iconBg: '#CFFAFE',
+    iconSvg: 'invoice',
+    description: 'Hitung PPh Final UMKM 0,5% dari omzet sesuai PP 20/2026, dengan fasilitas bebas Rp 500 juta.',
+    metaDescription: 'Kalkulator Pajak UMKM 2026 (PPh Final 0,5%) sesuai PP 20/2026: hitung pajak dari omzet bruto, fasilitas bebas pajak Rp 500 juta untuk Orang Pribadi, dan cek batas omzet Rp 4,8 miliar. Gratis & sesuai aturan terbaru.',
+    keywords: ['kalkulator pajak umkm', 'pph final umkm', 'pajak umkm 0,5 persen', 'pph final 0,5%', 'pajak umkm 2026', 'pp 20 2026'],
+    h1: 'Kalkulator Pajak UMKM 2026',
+    introText: 'Hitung PPh Final UMKM 0,5% dari omzet bruto sesuai aturan terbaru PP 20/2026 (berlaku 22 April 2026). Kalkulator otomatis menerapkan fasilitas bebas pajak Rp 500 juta pertama untuk Wajib Pajak Orang Pribadi, dan mengecek batas omzet Rp 4,8 miliar. Sederhana, akurat, sesuai ketentuan Ditjen Pajak.',
+    benefits: [
+      'PPh Final 0,5% dari omzet (PP 20/2026)',
+      'Fasilitas bebas Rp 500 juta untuk Orang Pribadi',
+      'Cek batas omzet Rp 4,8 miliar otomatis',
+      'Estimasi pajak per bulan & per tahun',
+      'Scorecard share-ready (WA/IG/PDF)',
+    ],
+  },
+
   // ═══════════════ ISLAMI ═══════════════
   {
     slug: 'zakat-fitrah',
