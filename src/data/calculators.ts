@@ -482,6 +482,32 @@ export const CALCULATORS: CalculatorMeta[] = [
     ],
   },
 
+  {
+    slug: 'roi-usaha',
+    title: 'Kalkulator ROI & Balik Modal Usaha 2026 — Payback Period UMKM',
+    shortTitle: 'Kalkulator ROI Usaha',
+    category: 'bisnis',
+    categoryLabel: 'Kalkulator Bisnis',
+    tag: 'UMKM',
+    tagColor: '#166534',
+    tagBg: '#DCFCE7',
+    iconColor: '#16A34A',
+    iconBg: '#DCFCE7',
+    iconSvg: 'margin',
+    description: 'Hitung ROI (Return on Investment) & lama balik modal usaha dari modal dan laba bersih.',
+    metaDescription: 'Kalkulator ROI & balik modal usaha 2026: hitung Return on Investment (%), lama balik modal (payback period), dan proyeksi laba dari modal & keuntungan bersih. Untuk UMKM, franchise, dan rencana usaha.',
+    keywords: ['kalkulator roi', 'roi usaha', 'balik modal', 'payback period', 'return on investment', 'hitung balik modal usaha'],
+    h1: 'Kalkulator ROI & Balik Modal Usaha',
+    introText: 'Hitung Return on Investment (ROI) dan berapa lama modal usahamu akan balik (payback period). Cukup masukkan modal awal dan laba bersih per bulan — kalkulator menampilkan ROI persen, lama balik modal, dan proyeksi keuntungan. Cocok untuk evaluasi usaha baru, franchise, atau membeli aset produktif.',
+    benefits: [
+      'ROI (%) per bulan & per tahun',
+      'Lama balik modal (payback period)',
+      'Proyeksi laba dalam periode tertentu',
+      'Bandingkan kelayakan beberapa usaha',
+      'Scorecard share-ready (WA/IG/PDF)',
+    ],
+  },
+
   // ═══════════════ ISLAMI ═══════════════
   {
     slug: 'zakat-fitrah',

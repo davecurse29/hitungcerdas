@@ -1,0 +1,97 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import ArticleSchema from '../../components/ArticleSchema.astro';
+const datePublished = '2026-06-21';
+const dateModified = '2026-06-21';
+const today = new Date(datePublished).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'Cara Menghitung ROI Usaha' }];
+---
+<Layout title="Cara Hitung ROI & Balik Modal Usaha 2026 — Rumus & Contoh" description="Panduan lengkap menghitung ROI (Return on Investment) dan balik modal (payback period) usaha 2026: rumus, contoh, cara pakai laba bersih, dan pembanding dengan investasi pasif. Plus kalkulator ROI gratis." keywords={['cara hitung roi', 'roi usaha', 'balik modal', 'payback period', 'return on investment', 'kalkulator roi usaha']} canonical="https://hitungcerdas.net/blog/cara-menghitung-roi-usaha" ogType="article">
+  <ArticleSchema
+    headline="Cara Hitung ROI & Balik Modal Usaha 2026 — Rumus & Contoh"
+    description="Panduan lengkap menghitung ROI (Return on Investment) dan balik modal (payback period) usaha 2026: rumus, contoh, cara pakai laba bersih, dan pembanding dengan investasi pasif."
+    datePublished={datePublished}
+    dateModified={dateModified}
+    slug="cara-menghitung-roi-usaha"
+    articleSection="UMKM"
+    keywords={['cara hitung roi', 'roi usaha', 'balik modal', 'payback period', 'return on investment']}
+    wordCount={780}
+  />
+
+  <section class="article-hero" style="--cat-color:#16A34A;--cat-color2:#15803D">
+    <div class="wrap"><Breadcrumb items={bcItems} /><div class="article-tag">UMKM</div>
+      <h1>Cara Hitung ROI & Balik Modal Usaha 2026</h1>
+      <div class="article-meta"><span><i class="ti ti-calendar"></i> {today}</span><span><i class="ti ti-clock"></i> 7 menit baca</span><span><i class="ti ti-user"></i> Tim HitungCerdas</span></div>
+    </div>
+  </section>
+  <AdSlot format="horizontal" />
+  <article class="content-section"><div class="wrap-text">
+    <p class="lead">"Modal segini, untungnya seberapa, kapan baliknya?" — pertanyaan wajib sebelum memulai usaha, beli franchise, atau menambah aset. Jawabannya ada di dua angka: ROI dan payback period. Artikel ini bedah cara menghitungnya dengan benar, plus cara membandingkannya dengan investasi lain di 2026.</p>
+
+    <h2>1. Apa Itu ROI?</h2>
+    <p>ROI (Return on Investment) adalah <strong>persentase keuntungan dibanding modal yang ditanam</strong>. Ia mengukur seberapa efisien modalmu menghasilkan untung. Semakin tinggi ROI, semakin produktif modalmu — dengan catatan risikonya sepadan.</p>
+    <div class="formula-box">
+      <p><strong>ROI per bulan = (Laba Bersih per bulan ÷ Modal) × 100%</strong></p>
+      <p><strong>ROI per tahun = ROI per bulan × 12</strong></p>
+      <p><strong>Payback Period = Modal ÷ Laba Bersih per bulan</strong></p>
+    </div>
+
+    <h2>2. Pakai Laba Bersih, Bukan Omzet</h2>
+    <p>Ini kesalahan paling umum. ROI hanya bermakna kalau memakai <strong>laba bersih</strong> — pendapatan dikurangi SEMUA biaya: HPP/biaya variabel, sewa, gaji (termasuk gajimu sendiri), pajak, dan biaya lain. Memakai omzet atau laba kotor membuat ROI terlihat jauh lebih bagus dari kenyataan. Pastikan juga modal awal lengkap: peralatan, renovasi, stok awal, perizinan.</p>
+
+    <AdSlot format="horizontal" />
+
+    <h2>3. Contoh Kasus</h2>
+    <p>Seseorang membuka kedai kopi dengan modal awal <strong>Rp 50.000.000</strong> (mesin, renovasi, stok). Setelah berjalan, laba bersihnya <strong>Rp 2.500.000/bulan</strong>.</p>
+    <ul class="info-list">
+      <li>ROI per bulan = Rp 2.500.000 ÷ Rp 50.000.000 = <strong>5%</strong></li>
+      <li>ROI per tahun = 5% × 12 = <strong>60%</strong></li>
+      <li>Payback period = Rp 50.000.000 ÷ Rp 2.500.000 = <strong>20 bulan</strong></li>
+    </ul>
+    <p>Artinya, modal kembali dalam 1 tahun 8 bulan, dan tiap tahun modal menghasilkan untung setara 60% dari nilainya. Dalam 24 bulan, total laba Rp 60 juta — sudah balik modal plus untung bersih Rp 10 juta.</p>
+
+    <h2>4. ROI Berapa yang "Bagus"?</h2>
+    <p>Tidak ada angka mutlak — tergantung jenis usaha dan risikonya. Sebagai pembanding, instrumen investasi pasif di 2026 memberi imbal hasil kira-kira: <strong>deposito 4-6%/tahun, reksa dana 6-12%/tahun</strong>. Usaha riil idealnya memberi ROI lebih tinggi karena risiko dan tenaganya juga lebih besar. Jika ROI usahamu hanya setara deposito, pertimbangkan ulang: apakah sepadan dengan tenaga dan risikonya?</p>
+
+    <h2>5. Hati-hati Jebakan ROI Tinggi</h2>
+    <p>ROI tinggi di atas kertas tidak otomatis berarti usaha aman. Waspadai: laba yang belum dikurangi biaya tersembunyi (gaji sendiri, penyusutan), modal yang belum lengkap, atau laba yang tidak stabil tiap bulan. ROI dan payback period juga belum memperhitungkan nilai waktu uang dan risiko. Jadikan keduanya sebagai panduan awal, bukan satu-satunya dasar keputusan.</p>
+
+    <div class="cta-box">
+      <h3>📈 Coba Kalkulator ROI HitungCerdas</h3>
+      <p>Hitung ROI & balik modal usahamu dalam hitungan detik:</p>
+      <ul>
+        <li>✅ ROI per bulan & per tahun</li>
+        <li>✅ Lama balik modal (payback period)</li>
+        <li>✅ Proyeksi total laba dalam periode tertentu</li>
+        <li>✅ Pembanding dengan investasi pasif</li>
+      </ul>
+      <p style="margin-top:14px"><a href="/kalkulator/roi-usaha" class="btn btn-pri"><i class="ti ti-calculator"></i> Buka Kalkulator ROI</a></p>
+    </div>
+
+    <h2>Kesimpulan</h2>
+    <p>ROI dan payback period adalah kompas kelayakan usaha. Hitung dengan laba bersih yang realistis dan modal yang lengkap, lalu bandingkan dengan peluang lain. Kombinasikan dengan <a href="/kalkulator/bep">BEP</a> untuk tahu titik aman, dan <a href="/kalkulator/investasi">simulasi investasi</a> untuk membandingkan dengan opsi pasif. Keputusan modal yang cerdas dimulai dari angka yang jujur.</p>
+
+    <h3>📚 Artikel & Kalkulator Terkait</h3>
+    <ul class="info-list">
+      <li><a href="/kalkulator/roi-usaha">Kalkulator ROI & Balik Modal</a></li>
+      <li><a href="/kalkulator/bep">Kalkulator BEP</a></li>
+      <li><a href="/kalkulator/investasi">Kalkulator Investasi</a></li>
+      <li><a href="/blog/cara-menghitung-bep">Cara Menghitung BEP</a></li>
+    </ul>
+  </div></article>
+  <AdSlot format="horizontal" />
+</Layout>
+<style>
+  .article-hero { background: linear-gradient(135deg, var(--cat-color) 0%, var(--cat-color2) 100%); color: #fff; padding: 20px 0 48px; }
+  .article-hero :global(.breadcrumb-item), .article-hero :global(.breadcrumb-item a) { color: rgba(255, 255, 255, .7); }
+  .article-hero :global(.breadcrumb-item a:hover) { color: var(--gold-soft); }
+  .article-hero :global(.breadcrumb-item span) { color: #fff; }
+  .article-hero :global(.breadcrumb-item i) { color: rgba(255, 255, 255, .4); }
+  .article-tag { display: inline-block; font-size: 11px; font-weight: 700; color: var(--gold-soft); letter-spacing: .1em; text-transform: uppercase; margin: 16px 0 12px; }
+  .article-hero h1 { color: #fff; font-size: clamp(26px, 3.8vw, 42px); margin: 0 0 20px; max-width: 900px; line-height: 1.2; }
+  .article-meta { display: flex; gap: 20px; color: rgba(255, 255, 255, .75); font-size: 13px; flex-wrap: wrap; }
+  .article-meta span { display: inline-flex; align-items: center; gap: 6px; }
+  .lead { font-size: 17px !important; line-height: 1.7 !important; color: var(--text) !important; padding: 20px 24px; background: var(--bg-soft); border-radius: 12px; border-left: 4px solid #16A34A; margin-bottom: 24px !important; }
+</style>

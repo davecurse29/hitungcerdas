@@ -1,0 +1,262 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import FAQ from '../../components/FAQ.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import CalculatorCard from '../../components/CalculatorCard.astro';
+import { getCalculatorBySlug, getRelatedCalculators } from '../../data/calculators';
+
+const calc = getCalculatorBySlug('roi-usaha')!;
+const related = getRelatedCalculators('roi-usaha', 3);
+
+const faqs = [
+  { question: 'Apa itu ROI (Return on Investment)?', answer: 'ROI adalah <strong>persentase keuntungan dibanding modal yang ditanam</strong>. Rumusnya: (Laba Bersih ÷ Modal) × 100%. ROI mengukur seberapa efisien modalmu menghasilkan untung. Misal modal Rp 50 juta menghasilkan laba Rp 30 juta setahun, ROI tahunannya 60% — artinya tiap Rp 100 modal menghasilkan Rp 60 untung per tahun.' },
+  { question: 'Apa itu payback period (balik modal)?', answer: 'Payback period adalah <strong>lama waktu sampai total laba menutup modal awal</strong>. Rumusnya: Modal ÷ Laba Bersih per bulan. Misal modal Rp 50 juta dengan laba Rp 2,5 juta/bulan → balik modal dalam 20 bulan. Semakin cepat balik modal, semakin rendah risiko usaha.' },
+  { question: 'Berapa ROI usaha yang bagus?', answer: 'Tidak ada angka mutlak — tergantung jenis usaha dan risikonya. Sebagai pembanding kasar: deposito ~4-6%/tahun, reksa dana ~6-12%/tahun. Usaha UMKM biasanya diharapkan memberi ROI <strong>lebih tinggi dari instrumen pasif</strong> karena risikonya juga lebih besar. ROI tinggi belum tentu lebih baik kalau risikonya juga tinggi atau tidak berkelanjutan.' },
+  { question: 'Laba bersih itu yang mana?', answer: '<strong>Laba bersih</strong> adalah pendapatan dikurangi SEMUA biaya: HPP/biaya variabel, biaya tetap (sewa, gaji), pajak, dan biaya lain. Jangan pakai omzet atau laba kotor — itu membuat ROI terlihat lebih bagus dari kenyataan. Hitung dulu laba bersih yang realistis, baru masukkan ke sini.' },
+  { question: 'ROI saya terlihat tinggi tapi usaha terasa berat, kenapa?', answer: 'Bisa jadi karena beberapa hal: laba yang dipakai belum dikurangi biaya tersembunyi (gaji sendiri, penyusutan alat), modal awal belum lengkap (lupa biaya renovasi/perizinan), atau labanya tidak stabil tiap bulan. ROI hanya seakurat data yang kamu masukkan — pastikan modal dan laba bersihnya realistis dan lengkap.' },
+];
+
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '/#tools' }, { label: calc.shortTitle }];
+---
+
+<Layout title={calc.title} description={calc.metaDescription} keywords={calc.keywords} canonical={`https://hitungcerdas.net/kalkulator/${calc.slug}`}>
+  <section class="calc-hero" style="--cat-color:#16A34A;--cat-color2:#15803D">
+    <div class="wrap">
+      <Breadcrumb items={bcItems} />
+      <div class="calc-hero-grid">
+        <div class="calc-hero-text">
+          <div class="calc-hero-tag" style="background:#DCFCE7;color:#166534"><i class="ti ti-trending-up"></i> {calc.categoryLabel}</div>
+          <h1 class="calc-hero-title">{calc.h1}</h1>
+          <p class="calc-hero-sub">{calc.introText}</p>
+          <ul class="calc-hero-benefits">{calc.benefits.map(b => <li><i class="ti ti-check"></i> {b}</li>)}</ul>
+        </div>
+        <div class="calc-hero-illust">
+          <svg viewBox="0 0 200 200" fill="none">
+            <circle cx="100" cy="100" r="85" fill="rgba(255,255,255,.08)"/>
+            <path d="M52 140 L86 108 L112 128 L150 78" stroke="#86EFAC" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M134 78 H150 V94" stroke="#86EFAC" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="100" cy="110" r="22" fill="#FFF" stroke="#16A34A" stroke-width="3"/>
+            <text x="92" y="119" fill="#16A34A" font-size="22" font-weight="bold" font-family="sans-serif">%</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+
+  <section class="calc-section">
+    <div class="wrap">
+      <div class="calc-card">
+        <div class="calc-card-hdr">
+          <div class="calc-card-hdr-ic" style="background:linear-gradient(135deg,#16A34A 0%,#15803D 100%)"><i class="ti ti-trending-up"></i></div>
+          <div><h2 class="calc-card-title">Kalkulator ROI & Balik Modal</h2><p class="calc-card-sub">Berapa persen untung dari modal & kapan balik modal</p></div>
+        </div>
+
+        <div class="calc-grid">
+          <div class="calc-input">
+            <div class="field"><label>Modal Awal Usaha</label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span>
+                <input type="text" id="modal" class="has-prefix" value="50.000.000" inputmode="numeric" /></div>
+              <p class="hint" style="margin-top:6px">Total investasi awal: alat, renovasi, stok awal, perizinan, dll.</p>
+            </div>
+
+            <div class="field"><label>Laba Bersih per Bulan</label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span>
+                <input type="text" id="laba" class="has-prefix" value="2.500.000" inputmode="numeric" /></div>
+              <p class="hint" style="margin-top:6px">Pendapatan dikurangi <strong>semua</strong> biaya (HPP, sewa, gaji, pajak). Bukan omzet.</p>
+            </div>
+
+            <div class="field"><label>Lihat Proyeksi Selama</label>
+              <div class="input-wrap"><span class="input-suffix">bulan</span>
+                <input type="number" id="periode" class="has-suffix" value="24" min="1" max="120" step="1" /></div>
+              <p class="hint" style="margin-top:6px">Untuk melihat total laba & ROI dalam periode tertentu.</p>
+            </div>
+
+            <div class="calc-action-bar">
+              <button type="button" class="btn-hitung" id="btnHitung"><i class="ti ti-calculator"></i> Hitung Sekarang</button>
+              <button type="button" class="btn-reset" id="btnReset"><i class="ti ti-refresh"></i> Reset</button>
+            </div>
+          </div>
+
+          <div class="calc-output">
+            <div class="result-placeholder" id="placeholder">
+              <i class="ti ti-trending-up result-placeholder-icon"></i>
+              <div class="result-placeholder-title">ROI & balik modal akan muncul di sini</div>
+              <div class="result-placeholder-desc">Isi modal & laba bersih per bulan, klik <strong>"Hitung Sekarang"</strong>.</div>
+            </div>
+
+            <div class="result-wrapper" id="results">
+              <div class="result-main">
+                <div class="result-label">Balik Modal Dalam</div>
+                <div class="result-value" id="payback">0 bulan</div>
+                <div class="result-meta"><i class="ti ti-info-circle"></i> <span id="paybackMeta">ROI per tahun 0%</span></div>
+              </div>
+
+              <div class="result-grid">
+                <div class="result-item"><div class="result-item-label">ROI per Bulan</div><div class="result-item-value" id="roiBulan" style="color:var(--green-dark)">0%</div></div>
+                <div class="result-item"><div class="result-item-label">ROI per Tahun</div><div class="result-item-value" id="roiTahun" style="color:var(--green-dark)">0%</div></div>
+                <div class="result-item"><div class="result-item-label">Total Laba Periode</div><div class="result-item-value" id="totalLaba">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">Untung Bersih (stlh modal)</div><div class="result-item-value" id="netGain">Rp 0</div></div>
+              </div>
+
+              <div id="roiInfo" style="margin-top:10px;padding:11px 13px;border-radius:12px;background:#F0FDF4;border:1px solid #BBF7D0;font-size:12.5px;line-height:1.55;color:#166534"></div>
+
+              <div id="bandingInfo" style="margin-top:10px;padding:11px 13px;border-radius:12px;background:#F8FAFC;border:1px solid #E2E8F0;font-size:12.5px;line-height:1.55;color:#475569"></div>
+
+              <div class="export-row">
+                <button type="button" class="export-btn img" id="exportImg"><i class="ti ti-photo-down"></i><span>Save Image</span></button>
+                <button type="button" class="export-btn wa" id="exportWa"><i class="ti ti-brand-whatsapp"></i><span>Share WA</span></button>
+                <button type="button" class="export-btn pdf" id="exportPdf"><i class="ti ti-printer"></i><span>Print/PDF</span></button>
+                <button type="button" class="export-btn copy" id="exportCopy"><i class="ti ti-copy"></i><span>Copy Teks</span></button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="content-section">
+    <div class="wrap-text">
+      <h2>Memahami ROI & Balik Modal Usaha</h2>
+      <p>Sebelum memulai usaha, membeli franchise, atau menambah aset produktif, dua angka wajib kamu tahu: <strong>ROI</strong> (seberapa menguntungkan modalmu) dan <strong>payback period</strong> (kapan modal kembali). Keduanya membantu menilai apakah sebuah usaha layak dijalankan, dan membandingkan beberapa peluang sekaligus. Sebelum menghitung ROI, pastikan kamu sudah tahu <a href="/kalkulator/bep">titik impas (BEP)</a> dan <a href="/kalkulator/hpp">HPP</a> usahamu.</p>
+
+      <h3>Rumus</h3>
+      <ul>
+        <li><strong>ROI per bulan</strong> = (Laba Bersih per bulan ÷ Modal) × 100%</li>
+        <li><strong>ROI per tahun</strong> = ROI per bulan × 12</li>
+        <li><strong>Payback period</strong> = Modal ÷ Laba Bersih per bulan (dalam bulan)</li>
+      </ul>
+
+      <h3>Gunakan Laba Bersih, Bukan Omzet</h3>
+      <p>Kesalahan paling umum: memakai omzet atau laba kotor. ROI hanya bermakna kalau kamu pakai <strong>laba bersih</strong> — pendapatan dikurangi semua biaya termasuk HPP, sewa, gaji (termasuk gaji dirimu sendiri), dan pajak. Modal awal juga harus lengkap: peralatan, renovasi, stok awal, dan perizinan.</p>
+
+      <h3>Konteks 2026</h3>
+      <p>Sebagai pembanding, instrumen investasi pasif di 2026 memberi imbal hasil kira-kira: deposito 4-6%/tahun, reksa dana 6-12%/tahun. Usaha riil idealnya memberi ROI lebih tinggi karena risikonya lebih besar dan butuh tenaga. Tapi ingat — ROI tinggi di atas kertas tidak otomatis berarti usaha aman. Pertimbangkan juga kestabilan laba, ketahanan terhadap kenaikan biaya, dan apakah modelnya berkelanjutan. Kombinasikan dengan <a href="/kalkulator/investasi">simulasi investasi</a> untuk membandingkan dengan opsi pasif.</p>
+
+      <div class="cta-box">
+        <h3>Disclaimer</h3>
+        <p>Kalkulator ini alat bantu simulasi &amp; edukasi. Perhitungan mengasumsikan laba bersih per bulan konstan; pada praktiknya laba bisa fluktuatif. ROI dan payback period bukan jaminan hasil dan tidak memperhitungkan nilai waktu uang (time value of money) atau risiko usaha. Gunakan sebagai panduan awal, bukan keputusan investasi final.</p>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+  <FAQ title="Pertanyaan Seputar ROI & Balik Modal" items={faqs} />
+
+  <section class="section"><div class="wrap">
+    <div class="section-hdr"><div class="section-eyebrow">Kalkulator Lainnya</div><h2 class="section-title">Hitung Juga yang Lain</h2></div>
+    <div class="related-grid">{related.map(c => <CalculatorCard calc={c} />)}</div>
+  </div></section>
+
+  <p style="text-align:center;font-size:.85rem;color:#64748b;margin:1.2rem auto;max-width:600px;">
+    📅 Diperbarui <strong>Juni 2026</strong> · Kalkulator edukatif untuk UMKM Indonesia
+  </p>
+
+<script is:inline>
+  (function() {
+    function ready(fn) { if (window.HC && window.html2canvas) fn(); else setTimeout(() => ready(fn), 100); }
+    ready(() => {
+      const $ = id => document.getElementById(id);
+      const els = { modal: $('modal'), laba: $('laba'), periode: $('periode') };
+      [els.modal, els.laba].forEach(el => el.addEventListener('input', HC.fmtInput));
+
+      let lastCalc = null;
+
+      function bulanText(bln) {
+        if (bln <= 0) return '0 bulan';
+        const th = Math.floor(bln / 12), sisa = Math.round(bln % 12);
+        if (th >= 1 && sisa > 0) return `${th} thn ${sisa} bln`;
+        if (th >= 1) return `${th} tahun`;
+        return `${Math.round(bln)} bulan`;
+      }
+
+      function hitung() {
+        const modal = HC.parseRp(els.modal.value);
+        const laba = HC.parseRp(els.laba.value);
+        const periode = parseInt(els.periode.value) || 0;
+
+        if (modal === 0) { HC.toast('Masukkan modal awal dulu', 'error'); return; }
+        if (laba <= 0) { HC.toast('Masukkan laba bersih per bulan', 'error'); return; }
+        if (periode < 1) { HC.toast('Periode minimal 1 bulan', 'error'); return; }
+
+        const payback = modal / laba;
+        const roiBulan = laba / modal * 100;
+        const roiTahun = roiBulan * 12;
+        const totalLaba = laba * periode;
+        const netGain = totalLaba - modal;
+
+        $('payback').textContent = bulanText(payback);
+        $('paybackMeta').textContent = `ROI per tahun ${roiTahun.toFixed(1)}%`;
+        $('roiBulan').textContent = roiBulan.toFixed(2) + '%';
+        $('roiTahun').textContent = roiTahun.toFixed(1) + '%';
+        $('totalLaba').textContent = HC.fmt(totalLaba);
+        $('netGain').textContent = HC.fmt(netGain);
+        $('netGain').style.color = netGain >= 0 ? 'var(--green-dark)' : 'var(--red)';
+
+        const balikDalamPeriode = payback <= periode;
+        $('roiInfo').innerHTML = `\ud83d\udcb0 Modal <b>${HC.fmt(modal)}</b> dengan laba <b>${HC.fmt(laba)}/bulan</b> balik dalam <b>${bulanText(payback)}</b> (ROI <b>${roiTahun.toFixed(1)}%/tahun</b>). Dalam ${periode} bulan, total laba <b>${HC.fmt(totalLaba)}</b> \u2014 ${balikDalamPeriode ? `untung bersih <b>${HC.fmt(netGain)}</b> setelah modal kembali.` : `modal <b>belum kembali</b> (kurang ${HC.fmt(modal - totalLaba)}).`}`;
+
+        let banding;
+        if (roiTahun >= 12) banding = `\ud83d\udcca ROI ${roiTahun.toFixed(1)}%/tahun ini di atas imbal hasil instrumen pasif (deposito ~4-6%, reksa dana ~6-12%). Wajar untuk usaha riil karena risikonya lebih besar \u2014 pastikan labanya stabil & berkelanjutan.`;
+        else if (roiTahun >= 6) banding = `\ud83d\udcca ROI ${roiTahun.toFixed(1)}%/tahun setara reksa dana, tapi usaha butuh tenaga & risiko lebih besar. Pertimbangkan apakah sepadan dibanding investasi pasif.`;
+        else banding = `\u26a0\ufe0f ROI ${roiTahun.toFixed(1)}%/tahun tergolong rendah \u2014 di bawah atau setara deposito (~4-6%), padahal usaha berisiko & butuh tenaga. Evaluasi ulang modal, harga jual, atau efisiensi biaya.`;
+        $('bandingInfo').innerHTML = banding;
+
+        lastCalc = { modal, laba, periode, payback, roiBulan, roiTahun, totalLaba, netGain, balikDalamPeriode };
+        $('placeholder').style.display = 'none';
+        $('results').classList.add('show');
+        $('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        HC.toast('ROI berhasil dihitung!');
+      }
+
+      function reset() {
+        els.modal.value = '50.000.000'; els.laba.value = '2.500.000'; els.periode.value = '24';
+        $('placeholder').style.display = ''; $('results').classList.remove('show');
+        lastCalc = null; HC.toast('Form direset', 'info');
+      }
+
+      function buildReport() {
+        if (!lastCalc) return null;
+        const c = lastCalc;
+        const insight = `Modal ${HC.fmt(c.modal)}, laba ${HC.fmt(c.laba)}/bln. Balik modal ${bulanText(c.payback)}, ROI ${c.roiTahun.toFixed(1)}%/tahun. Dalam ${c.periode} bln total laba ${HC.fmt(c.totalLaba)}. Asumsi laba konstan; estimasi edukatif, bukan jaminan hasil.`;
+        return HC.buildReportCard({
+          title: '\ud83d\udcc8 ROI & Balik Modal Usaha',
+          color: '#16A34A', color2: '#15803D',
+          heroLabel: 'Balik Modal Dalam',
+          heroValue: bulanText(c.payback),
+          heroSubtext: `ROI ${c.roiTahun.toFixed(1)}%/tahun`,
+          inputs: [
+            { label: '\ud83d\udcb5 Modal Awal', value: HC.fmt(c.modal) },
+            { label: '\ud83d\udcc8 Laba Bersih/bln', value: HC.fmt(c.laba) },
+            { label: '\ud83d\udcc5 Periode Proyeksi', value: c.periode + ' bulan' },
+          ],
+          results: [
+            { label: 'Balik Modal', value: bulanText(c.payback), highlight: true },
+            { label: 'ROI/tahun', value: c.roiTahun.toFixed(1) + '%', highlight: true },
+            { label: 'ROI/bulan', value: c.roiBulan.toFixed(2) + '%' },
+            { label: 'Total Laba ' + c.periode + ' bln', value: HC.fmt(c.totalLaba) },
+          ],
+          insight, slug: 'roi-usaha',
+        });
+      }
+
+      function summaryText() {
+        if (!lastCalc) return '';
+        const c = lastCalc;
+        return `\ud83d\udcc8 *ROI & Balik Modal Usaha - HitungCerdas*\n\nModal awal: ${HC.fmt(c.modal)}\nLaba bersih/bln: ${HC.fmt(c.laba)}\n\n\u23f1\ufe0f *Balik modal: ${bulanText(c.payback)}*\n\ud83d\udcca ROI: ${c.roiTahun.toFixed(1)}%/tahun (${c.roiBulan.toFixed(2)}%/bln)\n\ud83d\udcb0 Total laba ${c.periode} bln: ${HC.fmt(c.totalLaba)}\n\nHitung di: https://hitungcerdas.net/kalkulator/roi-usaha`;
+      }
+
+      $('btnHitung').addEventListener('click', hitung);
+      $('btnReset').addEventListener('click', reset);
+      $('exportImg').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToImage(c, 'roi-usaha-' + Date.now()); });
+      $('exportWa').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.shareWhatsApp(c, summaryText(), 'roi-usaha'); });
+      $('exportPdf').addEventListener('click', () => { if (!lastCalc) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToPDF(); });
+      $('exportCopy').addEventListener('click', () => { if (!lastCalc) { HC.toast('Hitung dulu', 'error'); return; } HC.copyText(summaryText(), 'Tersalin!'); });
+    });
+  })();
+</script>
+</Layout>
