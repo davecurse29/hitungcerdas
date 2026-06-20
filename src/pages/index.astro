@@ -6,7 +6,9 @@ import AdSlot from '../components/AdSlot.astro';
 import FAQ from '../components/FAQ.astro';
 import { CALCULATORS, CATEGORIES } from '../data/calculators';
 
-const homepageTitle = 'HitungCerdas — 21 Kalkulator Keuangan, Bisnis & Islami Online Gratis Indonesia';
+const calcCount = CALCULATORS.length; // otomatis ikut jumlah kalkulator
+
+const homepageTitle = `HitungCerdas — ${calcCount} Kalkulator Keuangan, Bisnis & Islami Online Gratis Indonesia`;
 const homepageDesc = 'Kalkulator finansial Indonesia GRATIS: KPR Premium, PPh 21 UU HPP 2026, gaji bersih, zakat mal, investasi & pinjol legal. Mobile-friendly, no login.';
 
 const faqs = [
@@ -130,7 +132,7 @@ const popularCalcs = POPULAR_SLUGS.map(s => CALCULATORS.find(c => c.slug === s))
       <div class="hero-content">
         <div class="badge">
           <span class="dot"></span>
-          21 kalkulator gratis · Keuangan · Bisnis · Islami
+          {calcCount} kalkulator gratis · Keuangan · Bisnis · Islami
         </div>
 
         <h1>
@@ -141,7 +143,7 @@ const popularCalcs = POPULAR_SLUGS.map(s => CALCULATORS.find(c => c.slug === s))
         <p class="hero-sub">
           Hitung cicilan KPR &amp; kredit kendaraan, KTA, pinjol legal, dana darurat, pajak PPh 21,
           gaji bersih, investasi, zakat fitrah/mal/penghasilan, warisan faraidh, dan dana haji —
-          21 kalkulator gratis dalam satu website, optimal di HP.
+          {calcCount} kalkulator gratis dalam satu website, optimal di HP.
         </p>
 
         <div class="hero-btns">
@@ -222,10 +224,10 @@ const popularCalcs = POPULAR_SLUGS.map(s => CALCULATORS.find(c => c.slug === s))
   <section class="section" id="tools">
     <div class="wrap">
       <div class="section-hdr">
-        <div class="section-eyebrow">21 Kalkulator Gratis</div>
+        <div class="section-eyebrow">{calcCount} Kalkulator Gratis</div>
         <h2 class="section-title">Pilih Kalkulator yang Kamu Butuhkan</h2>
         <p class="section-desc">
-          21 kalkulator gratis untuk keuangan, bisnis, dan kebutuhan Islami — dirancang sederhana
+          {calcCount} kalkulator gratis untuk keuangan, bisnis, dan kebutuhan Islami — dirancang sederhana
           untuk karyawan, UMKM, freelancer, hingga keluarga Muslim Indonesia.
         </p>
       </div>
