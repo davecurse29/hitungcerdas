@@ -105,6 +105,12 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
                 <input type="text" id="admin" class="has-prefix" value="500.000" inputmode="numeric" /></div>
             </div>
 
+            <div class="field"><label>Masa Tenggang / Grace Period <span class="hint">(opsional)</span></label>
+              <div class="input-wrap"><span class="input-suffix">bln</span>
+                <input type="number" id="grace" class="has-suffix" value="0" min="0" step="1" /></div>
+              <p class="hint" style="margin-top:6px">\ud83c\udfd7\ufe0f Bulan awal hanya bayar bunga (saat konstruksi). Pokok dicicil setelahnya, dalam sisa tenor. Isi 0 jika tidak ada.</p>
+            </div>
+
             <div class="field-divider"><span><i class="ti ti-cash-banknote"></i> Simulasi Pelunasan Sebagian <span class="hint">(opsional)</span></span></div>
 
             <div class="field"><label>Jumlah Pelunasan</label>
@@ -154,6 +160,8 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
               <div id="effInfo" style="display:none;margin-top:10px;padding:11px 13px;border-radius:12px;background:#FEF3C7;border:1px solid #FDE68A;font-size:12.5px;line-height:1.55;color:#92400E"></div>
 
               <div id="biayaInfo" style="margin-top:10px;padding:11px 13px;border-radius:12px;background:#F0FDFA;border:1px solid #99F6E4;font-size:12.5px;line-height:1.55;color:#115E59"></div>
+
+              <div id="graceInfo" style="display:none;margin-top:10px;padding:11px 13px;border-radius:12px;background:#FFFBEB;border:1px solid #FDE68A;font-size:12.5px;line-height:1.55;color:#92400E"></div>
 
               <div class="adv-section">
                 <div class="adv-toggle"><span><i class="ti ti-list-details"></i>&nbsp; Jadwal Amortisasi (5 Bulan Pertama)</span><i class="ti ti-chevron-down chev"></i></div>
@@ -257,7 +265,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       const $ = id => document.getElementById(id);
       const els = {
         plafon: $('plafon'), tenor: $('tenor'), metode: $('metode'), bunga: $('bunga'),
-        provisi: $('provisi'), admin: $('admin'),
+        provisi: $('provisi'), admin: $('admin'), grace: $('grace'),
         pelJumlah: $('pelJumlah'), pelBulan: $('pelBulan'), penalti: $('penalti'),
       };
       [els.plafon, els.admin, els.pelJumlah].forEach(el => el.addEventListener('input', HC.fmtInput));
@@ -320,36 +328,44 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         const pelJumlah = HC.parseRp(els.pelJumlah.value);
         const pelBulan = parseInt(els.pelBulan.value) || 0;
         const penaltiPct = parseFloat(els.penalti.value) || 0;
+        const grace = Math.max(0, parseInt(els.grace.value) || 0);
 
         if (pokok === 0) { HC.toast('Masukkan plafon pinjaman dulu', 'error'); return; }
         if (!bunga || bunga <= 0) { HC.toast('Masukkan suku bunga', 'error'); return; }
+        if (grace >= tenor) { HC.toast('Masa tenggang harus lebih kecil dari tenor', 'error'); return; }
 
+        const amortTenor = tenor - grace;
         let result;
-        if (metode === 'flat') result = calcFlat(pokok, bunga, tenor);
-        else if (metode === 'efektif') result = calcEfektif(pokok, bunga, tenor);
-        else result = calcAnuitas(pokok, bunga, tenor);
+        if (metode === 'flat') result = calcFlat(pokok, bunga, amortTenor);
+        else if (metode === 'efektif') result = calcEfektif(pokok, bunga, amortTenor);
+        else result = calcAnuitas(pokok, bunga, amortTenor);
 
         const i = bunga / 12 / 100;
+        const graceInterestBln = pokok * i;
+        const graceInterestTotal = grace * graceInterestBln;
+        const totalBunga = result.totalBunga + graceInterestTotal;
+        const totalBayar = pokok + totalBunga;
         const provisi = provPct / 100 * pokok;
         const biayaMuka = provisi + adm;
         const danaCair = pokok - biayaMuka;
-        const totalBiayaKredit = biayaMuka + result.totalBunga;
+        const totalBiayaKredit = biayaMuka + totalBunga;
         const metodeLabel = { flat: 'Flat', efektif: 'Efektif', anuitas: 'Anuitas' }[metode];
 
         // Hero
+        const graceNote = grace > 0 ? ` \u00b7 +${grace} bln grace` : '';
         let heroVal, heroMeta;
         if (metode === 'efektif') {
-          const angN = (pokok / tenor) + (pokok / tenor) * i;
+          const angN = (pokok / amortTenor) + (pokok / amortTenor) * i;
           heroVal = HC.fmt(result.cicilan);
-          heroMeta = `${metodeLabel} \u00b7 ${bunga}%/thn \u00b7 ${tenor} bln \u00b7 menurun s/d ${HC.fmt(angN)}`;
+          heroMeta = `${metodeLabel} \u00b7 ${bunga}%/thn \u00b7 ${tenor} bln${graceNote} \u00b7 menurun s/d ${HC.fmt(angN)}`;
         } else {
           heroVal = HC.fmt(result.cicilan);
-          heroMeta = `${metodeLabel} \u00b7 ${bunga}%/thn \u00b7 ${tenor} bln`;
+          heroMeta = `${metodeLabel} \u00b7 ${bunga}%/thn \u00b7 ${tenor} bln${graceNote}`;
         }
         $('angsuran').textContent = heroVal;
         $('metodeLabel').textContent = heroMeta;
-        $('totalBunga').textContent = HC.fmt(result.totalBunga);
-        $('totalBayar').textContent = HC.fmt(result.totalBayar);
+        $('totalBunga').textContent = HC.fmt(totalBunga);
+        $('totalBayar').textContent = HC.fmt(totalBayar);
         $('totalBiaya').textContent = HC.fmt(totalBiayaKredit);
         $('danaCair').textContent = HC.fmt(danaCair);
 
@@ -368,30 +384,43 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         // Biaya info
         $('biayaInfo').innerHTML = `\ud83d\udcb0 Provisi ${provPct}% = <b>${HC.fmt(provisi)}</b> + Admin <b>${HC.fmt(adm)}</b> = biaya muka <b>${HC.fmt(biayaMuka)}</b>. Jika dipotong dari pencairan, dana yang kamu terima \u2248 <b>${HC.fmt(danaCair)}</b>. Belum termasuk notaris, appraisal, asuransi & pengikatan agunan.`;
 
-        // Amortisasi 5 bln
+        // Grace info
+        const graceEl = $('graceInfo');
+        if (grace > 0) {
+          graceEl.style.display = '';
+          graceEl.innerHTML = `\ud83c\udfd7\ufe0f Grace period <b>${grace} bln</b>: bayar <b>bunga saja \u2248 ${HC.fmt(graceInterestBln)}/bln</b> (total bunga grace ${HC.fmt(graceInterestTotal)}). Setelah itu pokok dicicil ${amortTenor} bln, angsuran <b>${HC.fmt(result.cicilan)}/bln</b>. Grace meringankan kas awal saat konstruksi, tapi menambah total bunga.`;
+        } else {
+          graceEl.style.display = 'none';
+        }
+
+        // Amortisasi: baris grace (bunga saja) + 5 bln pertama amortisasi pokok
         let amortHtml = '';
+        for (let g = 1; g <= Math.min(grace, 3); g++) {
+          amortHtml += `<tr style="background:#FFFBEB"><td>G${g}</td><td class="right">Rp 0</td><td class="right">${HC.fmt(graceInterestBln)}</td><td class="right">${HC.fmt(pokok)}</td></tr>`;
+        }
+        if (grace > 3) amortHtml += `<tr style="background:#FFFBEB"><td colspan="4" style="text-align:center;color:#92400E">\u2026 grace ${grace} bln total (bunga saja) \u2026</td></tr>`;
         if (result.rows) {
           result.rows.slice(0, 5).forEach(r => {
-            amortHtml += `<tr><td>${r.bln}</td><td class="right">${HC.fmt(r.pokok)}</td><td class="right">${HC.fmt(r.bunga)}</td><td class="right">${HC.fmt(Math.max(0, r.sisa))}</td></tr>`;
+            amortHtml += `<tr><td>${grace + r.bln}</td><td class="right">${HC.fmt(r.pokok)}</td><td class="right">${HC.fmt(r.bunga)}</td><td class="right">${HC.fmt(Math.max(0, r.sisa))}</td></tr>`;
           });
         } else {
-          const cicPokok = pokok / tenor;
+          const cicPokok = pokok / amortTenor;
           const cicBunga = pokok * i;
           let sisa = pokok;
-          for (let k = 1; k <= Math.min(5, tenor); k++) {
+          for (let k = 1; k <= Math.min(5, amortTenor); k++) {
             sisa -= cicPokok;
-            amortHtml += `<tr><td>${k}</td><td class="right">${HC.fmt(cicPokok)}</td><td class="right">${HC.fmt(cicBunga)}</td><td class="right">${HC.fmt(Math.max(0, sisa))}</td></tr>`;
+            amortHtml += `<tr><td>${grace + k}</td><td class="right">${HC.fmt(cicPokok)}</td><td class="right">${HC.fmt(cicBunga)}</td><td class="right">${HC.fmt(Math.max(0, sisa))}</td></tr>`;
           }
         }
         $('amortBody').innerHTML = amortHtml;
 
         // Pelunasan sebagian
         let pel = null;
-        if (pelJumlah > 0 && pelBulan >= 1 && pelBulan < tenor) {
+        if (pelJumlah > 0 && pelBulan >= 1 && pelBulan < amortTenor) {
           let sisaPokok;
           if (result.rows) sisaPokok = Math.max(0, result.rows[pelBulan - 1].sisa);
-          else sisaPokok = pokok - pelBulan * (pokok / tenor);
-          const sisaBln = tenor - pelBulan;
+          else sisaPokok = pokok - pelBulan * (pokok / amortTenor);
+          const sisaBln = amortTenor - pelBulan;
           const aCur = anuitasCicilan(sisaPokok, i, sisaBln);
           const Bnew = Math.max(0, sisaPokok - pelJumlah);
           const penalti = penaltiPct / 100 * pelJumlah;
@@ -434,7 +463,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
           $('pelSection').style.display = 'none';
         }
 
-        lastCalc = { pokok, tenor, metode, metodeLabel, bunga, provPct, provisi, adm, biayaMuka, danaCair, cicilan: result.cicilan, totalBunga: result.totalBunga, totalBayar: result.totalBayar, totalBiayaKredit, pel };
+        lastCalc = { pokok, tenor, grace, amortTenor, metode, metodeLabel, bunga, provPct, provisi, adm, biayaMuka, danaCair, graceInterestBln, graceInterestTotal, cicilan: result.cicilan, totalBunga, totalBayar, totalBiayaKredit, pel };
         $('placeholder').style.display = 'none';
         $('results').classList.add('show');
         $('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -445,7 +474,9 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         els.plafon.value = '500.000.000'; els.tenor.value = '60'; els.metode.value = 'anuitas';
         els.bunga.value = '11'; els.provisi.value = '1'; els.admin.value = '500.000';
         els.pelJumlah.value = '0'; els.pelBulan.value = '24'; els.penalti.value = '2';
+        els.grace.value = '0';
         var ei = $('effInfo'); if (ei) ei.style.display = 'none';
+        var gi = $('graceInfo'); if (gi) gi.style.display = 'none';
         $('pelSection').style.display = 'none';
         $('placeholder').style.display = ''; $('results').classList.remove('show');
         lastCalc = null; HC.toast('Form direset', 'info');
@@ -455,6 +486,9 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         if (!lastCalc) return null;
         const c = lastCalc;
         let insight = `Metode ${c.metodeLabel}, bunga ${c.bunga}%/thn, tenor ${c.tenor} bln. Total biaya kredit (provisi+admin+bunga) ${HC.fmt(c.totalBiayaKredit)}.`;
+        if (c.grace > 0) {
+          insight += ` Grace period ${c.grace} bln (bunga saja ${HC.fmt(c.graceInterestBln)}/bln), lalu cicil pokok ${c.amortTenor} bln.`;
+        }
         if (c.pel && c.pel.Bnew > 0) {
           insight += ` Pelunasan sebagian ${HC.fmt(c.pel.pelJumlah)}: perpendek tenor jadi ${c.pel.nNew} bln (hemat bunga ~${HC.fmt(c.pel.hematBunga)}) atau perkecil angsuran jadi ${HC.fmt(c.pel.aNew)}/bln.`;
         }
@@ -473,7 +507,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
           color: '#0D9488', color2: '#0F766E',
           heroLabel: 'Angsuran per Bulan',
           heroValue: HC.fmt(c.cicilan),
-          heroSubtext: `${c.metodeLabel} \u00b7 ${c.bunga}%/thn \u00b7 ${c.tenor} bulan`,
+          heroSubtext: `${c.metodeLabel} \u00b7 ${c.bunga}%/thn \u00b7 ${c.tenor} bln${c.grace > 0 ? ' (+' + c.grace + ' grace)' : ''}`,
           inputs: [
             { label: '\ud83c\udfe6 Plafon', value: HC.fmt(c.pokok) },
             { label: '\ud83d\udcc5 Tenor', value: c.tenor + ' bulan' },
@@ -488,7 +522,8 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       function summaryText() {
         if (!lastCalc) return '';
         const c = lastCalc;
-        let t = `\ud83c\udfed *Simulasi Kredit Investasi - HitungCerdas*\n\nPlafon: ${HC.fmt(c.pokok)}\nTenor: ${c.tenor} bulan\nMetode: ${c.metodeLabel}\nBunga: ${c.bunga}%/thn\n\n\ud83d\udcb0 *Angsuran/bln: ${HC.fmt(c.cicilan)}*\n\ud83d\udcca Total Bunga: ${HC.fmt(c.totalBunga)}\n\ud83d\udcb5 Total Bayar: ${HC.fmt(c.totalBayar)}\n\ud83e\uddfe Total Biaya Kredit: ${HC.fmt(c.totalBiayaKredit)}\n\ud83c\udfe6 Dana Cair Bersih: ${HC.fmt(c.danaCair)}`;
+        const graceLine = c.grace > 0 ? `\nGrace: ${c.grace} bln (bunga saja ${HC.fmt(c.graceInterestBln)}/bln)` : '';
+        let t = `\ud83c\udfed *Simulasi Kredit Investasi - HitungCerdas*\n\nPlafon: ${HC.fmt(c.pokok)}\nTenor: ${c.tenor} bulan\nMetode: ${c.metodeLabel}\nBunga: ${c.bunga}%/thn${graceLine}\n\n\ud83d\udcb0 *Angsuran/bln: ${HC.fmt(c.cicilan)}*\n\ud83d\udcca Total Bunga: ${HC.fmt(c.totalBunga)}\n\ud83d\udcb5 Total Bayar: ${HC.fmt(c.totalBayar)}\n\ud83e\uddfe Total Biaya Kredit: ${HC.fmt(c.totalBiayaKredit)}\n\ud83c\udfe6 Dana Cair Bersih: ${HC.fmt(c.danaCair)}`;
         if (c.pel && c.pel.Bnew > 0) {
           t += `\n\n\u2702\ufe0f Pelunasan ${HC.fmt(c.pel.pelJumlah)}:\nA) Perpendek tenor: ${c.pel.nNew} bln (hemat bunga ~${HC.fmt(c.pel.hematBunga)})\nB) Perkecil angsuran: ${HC.fmt(c.pel.aNew)}/bln`;
         }

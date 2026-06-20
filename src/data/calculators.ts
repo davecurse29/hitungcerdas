@@ -270,7 +270,7 @@ export const CALCULATORS: CalculatorMeta[] = [
     introText: 'Simulasi fasilitas Kredit Investasi (KI) bank untuk modal usaha jangka panjang — beli mesin, bangun pabrik, atau ekspansi usaha. Hitung angsuran metode anuitas/efektif/flat, biaya provisi & administrasi, total biaya kredit sebenarnya, plus simulasi pelunasan sebagian (perpendek tenor atau perkecil angsuran) lengkap dengan estimasi penalti.',
     benefits: [
       'Metode Anuitas / Efektif / Flat — semua bisa diedit',
-      'Hitung provisi, admin & total biaya kredit',
+      'Provisi, admin, grace period & total biaya kredit',
       'Simulasi pelunasan sebagian + estimasi penalti',
       'Pilih: perpendek tenor atau perkecil angsuran',
       'Scorecard share-ready (WA/IG/PDF)',
