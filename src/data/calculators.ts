@@ -404,6 +404,32 @@ export const CALCULATORS: CalculatorMeta[] = [
     ],
   },
 
+  {
+    slug: 'hpp',
+    title: 'Kalkulator HPP 2026 — Harga Pokok Produksi per Unit untuk UMKM',
+    shortTitle: 'Kalkulator HPP',
+    category: 'bisnis',
+    categoryLabel: 'Kalkulator Bisnis',
+    tag: 'UMKM',
+    tagColor: '#9A3412',
+    tagBg: '#FFEDD5',
+    iconColor: '#EA580C',
+    iconBg: '#FFEDD5',
+    iconSvg: 'margin',
+    description: 'Hitung Harga Pokok Produksi (HPP) per unit: bahan baku, tenaga kerja & overhead.',
+    metaDescription: 'Kalkulator HPP (Harga Pokok Produksi) 2026 untuk UMKM: hitung biaya per unit dari bahan baku, tenaga kerja langsung & overhead, plus rekomendasi harga jual di margin sehat. Gratis, akurat.',
+    keywords: ['kalkulator hpp', 'cara hitung hpp', 'harga pokok produksi', 'hpp per unit umkm', 'hpp makanan', 'modal produksi'],
+    h1: 'Kalkulator HPP 2026',
+    introText: 'Hitung Harga Pokok Produksi (HPP) per unit dengan akurat — fondasi penentuan harga jual yang menguntungkan. Masukkan biaya bahan baku, tenaga kerja langsung, dan overhead produksi, lalu lihat HPP per unit, komposisi biaya, dan rekomendasi harga jual di margin sehat. Cocok untuk usaha kuliner, kerajinan, dan produk UMKM.',
+    benefits: [
+      'HPP per unit otomatis dari 3 komponen biaya',
+      'Komposisi biaya: bahan baku, tenaga kerja, overhead',
+      'Rekomendasi harga jual di margin sehat',
+      'Untung per unit langsung kelihatan',
+      'Scorecard share-ready (WA/IG/PDF)',
+    ],
+  },
+
   // ═══════════════ ISLAMI ═══════════════
   {
     slug: 'zakat-fitrah',

@@ -1,0 +1,100 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import ArticleSchema from '../../components/ArticleSchema.astro';
+const datePublished = '2026-06-20';
+const dateModified = '2026-06-20';
+const today = new Date(datePublished).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'Cara Menghitung HPP' }];
+---
+<Layout title="Cara Hitung HPP (Harga Pokok Produksi) UMKM 2026 — Rumus & Contoh" description="Panduan lengkap menghitung HPP untuk UMKM 2026: rumus, 3 komponen biaya (bahan baku, tenaga kerja, overhead), contoh kuliner, dan cara menentukan harga jual. Plus kalkulator HPP gratis." keywords={['cara hitung hpp', 'harga pokok produksi', 'hpp umkm', 'rumus hpp', 'hpp makanan', 'kalkulator hpp']} canonical="https://hitungcerdas.net/blog/cara-menghitung-hpp" ogType="article">
+  <ArticleSchema
+    headline="Cara Hitung HPP (Harga Pokok Produksi) UMKM 2026 — Rumus & Contoh"
+    description="Panduan lengkap menghitung HPP untuk UMKM 2026: rumus, 3 komponen biaya, contoh kuliner, dan cara menentukan harga jual. Plus kalkulator HPP gratis."
+    datePublished={datePublished}
+    dateModified={dateModified}
+    slug="cara-menghitung-hpp"
+    articleSection="UMKM"
+    keywords={['cara hitung hpp', 'harga pokok produksi', 'hpp umkm', 'rumus hpp', 'hpp makanan']}
+    wordCount={750}
+  />
+
+  <section class="article-hero" style="--cat-color:#EA580C;--cat-color2:#C2410C">
+    <div class="wrap"><Breadcrumb items={bcItems} /><div class="article-tag">UMKM</div>
+      <h1>Cara Hitung HPP (Harga Pokok Produksi) UMKM 2026</h1>
+      <div class="article-meta"><span><i class="ti ti-calendar"></i> {today}</span><span><i class="ti ti-clock"></i> 7 menit baca</span><span><i class="ti ti-user"></i> Tim HitungCerdas</span></div>
+    </div>
+  </section>
+  <AdSlot format="horizontal" />
+  <article class="content-section"><div class="wrap-text">
+    <p class="lead">Banyak UMKM menetapkan harga jual hanya dari "kira-kira", lalu bingung kenapa untungnya tipis. Akar masalahnya satu: tidak tahu HPP yang sebenarnya. Artikel ini bedah cara menghitung Harga Pokok Produksi dengan benar, lengkap dengan contoh kuliner dan tips untuk kondisi 2026.</p>
+
+    <h2>1. Apa Itu HPP?</h2>
+    <p>HPP (Harga Pokok Produksi) adalah <strong>total biaya untuk memproduksi satu unit produk</strong>. HPP adalah modal sebenarnya tiap produk — fondasi untuk menentukan harga jual. Kalau HPP salah hitung, harga jual ikut salah, dan bisnis bisa rugi tanpa sadar. Rumus dasarnya:</p>
+    <div class="formula-box">
+      <p><strong>HPP per unit = Total Biaya Produksi ÷ Jumlah Unit</strong></p>
+      <p>Total Biaya Produksi = Bahan Baku + Tenaga Kerja Langsung + Overhead</p>
+    </div>
+
+    <h2>2. Tiga Komponen Biaya HPP</h2>
+    <ul class="info-list">
+      <li><strong>Bahan baku</strong> — bahan utama yang menjadi produk (tepung, gula, kain, komponen). Umumnya komponen terbesar.</li>
+      <li><strong>Tenaga kerja langsung</strong> — upah orang yang langsung memproduksi. Kalau kamu kerjakan sendiri, tetap masukkan nilai jasa wajar agar harga tidak "memakan" gajimu sendiri.</li>
+      <li><strong>Overhead produksi</strong> — biaya produksi lain: kemasan, gas/listrik, penyusutan alat, bahan penolong.</li>
+    </ul>
+
+    <AdSlot format="horizontal" />
+
+    <h2>3. Contoh Kasus: Usaha Roti</h2>
+    <p>Sebuah usaha roti memproduksi <strong>100 roti</strong> dalam satu batch dengan biaya:</p>
+    <ul class="info-list">
+      <li>Bahan baku (tepung, gula, telur, ragi): <strong>Rp 500.000</strong></li>
+      <li>Tenaga kerja langsung: <strong>Rp 150.000</strong></li>
+      <li>Overhead (gas, kemasan, listrik): <strong>Rp 100.000</strong></li>
+    </ul>
+    <p>Total biaya = Rp 750.000. HPP per roti = Rp 750.000 ÷ 100 = <strong>Rp 7.500</strong>. Kalau ingin margin 40%, harga jual = Rp 7.500 ÷ (1 − 0,40) = <strong>Rp 12.500</strong> per roti, dengan untung kotor Rp 5.000 per roti.</p>
+
+    <h2>4. Jangan Salah Masukkan Biaya</h2>
+    <p>Biaya <strong>pemasaran, gaji admin, ongkir penjualan, dan biaya marketplace</strong> bukan bagian HPP. Itu biaya operasional/penjualan yang dihitung terpisah saat menentukan harga jual akhir. Mencampurnya ke HPP membuat HPP terlihat membengkak dan harga jual jadi tidak kompetitif.</p>
+
+    <h2>5. Sesuaikan dengan Kondisi 2026</h2>
+    <p>Harga bahan baku, energi, dan kemasan terus bergerak. Di tengah fluktuasi harga pangan dan biaya energi tahun 2026, HPP yang dihitung bulan lalu bisa sudah meleset. Biasakan menghitung ulang HPP setiap kali harga bahan baku utama berubah signifikan (di atas 10%), supaya harga jual selalu menutup biaya dan margin tetap sehat. Untuk produk yang dijual lewat GoFood, GrabFood, ShopeeFood, atau marketplace, ingat ada potongan platform yang menggerus margin — perhitungkan setelah HPP.</p>
+
+    <div class="cta-box">
+      <h3>📦 Coba Kalkulator HPP HitungCerdas</h3>
+      <p>Hitung HPP per unit otomatis dalam hitungan detik:</p>
+      <ul>
+        <li>✅ HPP per unit dari 3 komponen biaya</li>
+        <li>✅ Komposisi biaya (bahan baku / tenaga kerja / overhead)</li>
+        <li>✅ Rekomendasi harga jual di margin sehat</li>
+        <li>✅ Untung per unit langsung kelihatan</li>
+      </ul>
+      <p style="margin-top:14px"><a href="/kalkulator/hpp" class="btn btn-pri"><i class="ti ti-calculator"></i> Buka Kalkulator HPP</a></p>
+    </div>
+
+    <h2>Kesimpulan</h2>
+    <p>HPP yang akurat adalah dasar bisnis yang sehat. Hitung ketiga komponen biaya dengan jujur, bagi dengan jumlah unit, lalu tetapkan harga jual dengan margin yang sehat. Jangan campur biaya operasional ke HPP, dan hitung ulang berkala mengikuti pergerakan harga. Dari situ, keputusan harga jadi berbasis data, bukan tebakan.</p>
+
+    <h3>📚 Artikel & Kalkulator Terkait</h3>
+    <ul class="info-list">
+      <li><a href="/kalkulator/hpp">Kalkulator HPP</a></li>
+      <li><a href="/kalkulator/harga-jual">Kalkulator Harga Jual</a></li>
+      <li><a href="/kalkulator/margin">Kalkulator Margin</a></li>
+      <li><a href="/blog/cara-menghitung-margin">Cara Menghitung Margin</a></li>
+    </ul>
+  </div></article>
+  <AdSlot format="horizontal" />
+</Layout>
+<style>
+  .article-hero { background: linear-gradient(135deg, var(--cat-color) 0%, var(--cat-color2) 100%); color: #fff; padding: 20px 0 48px; }
+  .article-hero :global(.breadcrumb-item), .article-hero :global(.breadcrumb-item a) { color: rgba(255, 255, 255, .7); }
+  .article-hero :global(.breadcrumb-item a:hover) { color: var(--gold-soft); }
+  .article-hero :global(.breadcrumb-item span) { color: #fff; }
+  .article-hero :global(.breadcrumb-item i) { color: rgba(255, 255, 255, .4); }
+  .article-tag { display: inline-block; font-size: 11px; font-weight: 700; color: var(--gold-soft); letter-spacing: .1em; text-transform: uppercase; margin: 16px 0 12px; }
+  .article-hero h1 { color: #fff; font-size: clamp(26px, 3.8vw, 42px); margin: 0 0 20px; max-width: 900px; line-height: 1.2; }
+  .article-meta { display: flex; gap: 20px; color: rgba(255, 255, 255, .75); font-size: 13px; flex-wrap: wrap; }
+  .article-meta span { display: inline-flex; align-items: center; gap: 6px; }
+  .lead { font-size: 17px !important; line-height: 1.7 !important; color: var(--text) !important; padding: 20px 24px; background: var(--bg-soft); border-radius: 12px; border-left: 4px solid #EA580C; margin-bottom: 24px !important; }
+</style>

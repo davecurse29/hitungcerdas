@@ -1,0 +1,288 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import FAQ from '../../components/FAQ.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import CalculatorCard from '../../components/CalculatorCard.astro';
+import { getCalculatorBySlug, getRelatedCalculators } from '../../data/calculators';
+
+const calc = getCalculatorBySlug('hpp')!;
+const related = getRelatedCalculators('hpp', 3);
+
+const faqs = [
+  { question: 'Apa itu HPP (Harga Pokok Produksi)?', answer: 'HPP adalah <strong>total biaya untuk memproduksi satu unit produk</strong> — mencakup bahan baku, tenaga kerja langsung, dan overhead produksi (kemasan, gas, listrik, penyusutan alat). HPP per unit dihitung dengan membagi total biaya produksi dengan jumlah unit yang dihasilkan. HPP adalah fondasi penentuan harga jual: kalau HPP salah, harga jual ikut salah dan bisnis bisa rugi tanpa sadar.' },
+  { question: 'Bedanya HPP dengan harga jual apa?', answer: '<strong>HPP adalah modal/biaya produksi</strong>, sedangkan <strong>harga jual adalah HPP + margin keuntungan</strong>. Contoh: HPP Rp 7.500/unit, kamu mau margin 40%, maka harga jual = Rp 7.500 ÷ (1 − 0,40) = Rp 12.500. Selisihnya (Rp 5.000) adalah untung kotor per unit. Pakai <a href="/kalkulator/harga-jual">kalkulator harga jual</a> untuk hitung lengkap dengan biaya marketplace.' },
+  { question: 'Biaya apa saja yang masuk overhead produksi?', answer: 'Overhead produksi adalah biaya produksi <strong>selain bahan baku & tenaga kerja langsung</strong>: kemasan, gas/listrik produksi, sewa dapur/workshop (porsi produksi), penyusutan peralatan, dan bahan penolong. Jangan masukkan biaya pemasaran, gaji admin, atau ongkir penjualan ke HPP — itu masuk biaya operasional, dihitung terpisah saat menentukan harga jual akhir.' },
+  { question: 'Kenapa HPP perlu dihitung ulang berkala?', answer: 'Karena harga bahan baku terus bergerak. Di tengah <strong>kondisi 2026 dengan harga pangan & energi yang fluktuatif</strong>, HPP bulan lalu bisa sudah tidak akurat. Idealnya hitung ulang HPP setiap kali harga bahan baku utama berubah signifikan (di atas 10%), agar harga jual tetap menutup biaya dan margin tetap sehat.' },
+  { question: 'HPP untuk usaha dagang (bukan produksi) gimana?', answer: 'Untuk usaha dagang/reseller yang tidak memproduksi sendiri, "HPP" lebih tepat disebut <strong>Harga Pokok Penjualan</strong>: harga beli barang + ongkir masuk + biaya kemasan ulang, dibagi jumlah unit. Kalkulator ini bisa dipakai dengan memasukkan harga beli barang sebagai "bahan baku", lalu ongkir/kemasan sebagai overhead.' },
+];
+
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '/#tools' }, { label: calc.shortTitle }];
+---
+
+<Layout title={calc.title} description={calc.metaDescription} keywords={calc.keywords} canonical={`https://hitungcerdas.net/kalkulator/${calc.slug}`}>
+  <section class="calc-hero" style="--cat-color:#EA580C;--cat-color2:#C2410C">
+    <div class="wrap">
+      <Breadcrumb items={bcItems} />
+      <div class="calc-hero-grid">
+        <div class="calc-hero-text">
+          <div class="calc-hero-tag" style="background:#FFEDD5;color:#9A3412"><i class="ti ti-box"></i> {calc.categoryLabel}</div>
+          <h1 class="calc-hero-title">{calc.h1}</h1>
+          <p class="calc-hero-sub">{calc.introText}</p>
+          <ul class="calc-hero-benefits">{calc.benefits.map(b => <li><i class="ti ti-check"></i> {b}</li>)}</ul>
+        </div>
+        <div class="calc-hero-illust">
+          <svg viewBox="0 0 200 200" fill="none">
+            <circle cx="100" cy="100" r="85" fill="rgba(255,255,255,.08)"/>
+            <rect x="58" y="70" width="84" height="74" rx="8" fill="#FFF" stroke="#FB923C" stroke-width="2"/>
+            <path d="M58 88 H142" stroke="#FED7AA" stroke-width="2"/>
+            <rect x="70" y="100" width="38" height="9" rx="4" fill="#FDBA74"/>
+            <rect x="70" y="116" width="58" height="9" rx="4" fill="#FED7AA"/>
+            <circle cx="124" cy="64" r="16" fill="#EA580C"/>
+            <path d="M118 64 l4 4 l8 -8" stroke="#FFF" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+
+  <section class="calc-section">
+    <div class="wrap">
+      <div class="calc-card">
+        <div class="calc-card-hdr">
+          <div class="calc-card-hdr-ic" style="background:linear-gradient(135deg,#EA580C 0%,#C2410C 100%)"><i class="ti ti-box"></i></div>
+          <div><h2 class="calc-card-title">Kalkulator HPP per Unit</h2><p class="calc-card-sub">Hitung biaya produksi per unit + rekomendasi harga jual</p></div>
+        </div>
+
+        <div class="calc-grid">
+          <div class="calc-input">
+            <div class="field"><label>Biaya Bahan Baku <span class="hint">(total 1 batch)</span></label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span>
+                <input type="text" id="bahan" class="has-prefix" value="500.000" inputmode="numeric" /></div>
+              <p class="hint" style="margin-top:6px">Total bahan baku untuk sekali produksi (mis. tepung, gula, telur).</p>
+            </div>
+
+            <div class="field"><label>Biaya Tenaga Kerja Langsung <span class="hint">(opsional)</span></label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span>
+                <input type="text" id="tkl" class="has-prefix" value="150.000" inputmode="numeric" /></div>
+              <p class="hint" style="margin-top:6px">Upah orang yang langsung memproduksi (bukan admin/marketing).</p>
+            </div>
+
+            <div class="field"><label>Biaya Overhead Produksi <span class="hint">(opsional)</span></label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span>
+                <input type="text" id="overhead" class="has-prefix" value="100.000" inputmode="numeric" /></div>
+              <p class="hint" style="margin-top:6px">Kemasan, gas/listrik, penyusutan alat, bahan penolong.</p>
+            </div>
+
+            <div class="field"><label>Jumlah Produk Dihasilkan</label>
+              <div class="input-wrap"><span class="input-suffix">unit</span>
+                <input type="number" id="unit" class="has-suffix" value="100" min="1" step="1" /></div>
+            </div>
+
+            <div class="field"><label>Target Margin Keuntungan</label>
+              <div class="input-wrap"><span class="input-suffix">% dari harga jual</span>
+                <input type="number" id="margin" class="has-suffix" value="40" min="0" max="90" step="1" /></div>
+              <p class="hint" style="margin-top:6px">Untuk rekomendasi harga jual. Margin sehat UMKM kuliner ~50-65%, retail ~20-40%.</p>
+            </div>
+
+            <div class="calc-action-bar">
+              <button type="button" class="btn-hitung" id="btnHitung"><i class="ti ti-calculator"></i> Hitung Sekarang</button>
+              <button type="button" class="btn-reset" id="btnReset"><i class="ti ti-refresh"></i> Reset</button>
+            </div>
+          </div>
+
+          <div class="calc-output">
+            <div class="result-placeholder" id="placeholder">
+              <i class="ti ti-box result-placeholder-icon"></i>
+              <div class="result-placeholder-title">HPP akan muncul di sini</div>
+              <div class="result-placeholder-desc">Isi biaya produksi & jumlah unit, klik <strong>"Hitung Sekarang"</strong>.</div>
+            </div>
+
+            <div class="result-wrapper" id="results">
+              <div class="result-main">
+                <div class="result-label">HPP per Unit</div>
+                <div class="result-value" id="hppUnit">Rp 0</div>
+                <div class="result-meta"><i class="ti ti-info-circle"></i> <span id="hppMeta">100 unit · total biaya Rp 0</span></div>
+              </div>
+
+              <div class="result-grid">
+                <div class="result-item"><div class="result-item-label">Total Biaya Produksi</div><div class="result-item-value" id="totalBiaya">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">Harga Jual Disarankan</div><div class="result-item-value" id="hargaJual">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">Untung per Unit</div><div class="result-item-value" id="untungUnit" style="color:var(--green-dark)">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">Margin</div><div class="result-item-value" id="marginOut">0%</div></div>
+              </div>
+
+              <div id="hppInfo" style="margin-top:10px;padding:11px 13px;border-radius:12px;background:#FFF7ED;border:1px solid #FED7AA;font-size:12.5px;line-height:1.55;color:#9A3412"></div>
+
+              <div class="adv-section">
+                <div class="adv-toggle"><span><i class="ti ti-chart-pie"></i>&nbsp; Komposisi Biaya Produksi</span><i class="ti ti-chevron-down chev"></i></div>
+                <div class="adv-content">
+                  <div id="kompBar" style="display:flex;height:14px;border-radius:7px;overflow:hidden;margin-bottom:12px"></div>
+                  <table class="compare-table">
+                    <thead><tr><th>Komponen</th><th class="right">Biaya</th><th class="right">Porsi</th></tr></thead>
+                    <tbody id="kompBody"></tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div class="export-row">
+                <button type="button" class="export-btn img" id="exportImg"><i class="ti ti-photo-down"></i><span>Save Image</span></button>
+                <button type="button" class="export-btn wa" id="exportWa"><i class="ti ti-brand-whatsapp"></i><span>Share WA</span></button>
+                <button type="button" class="export-btn pdf" id="exportPdf"><i class="ti ti-printer"></i><span>Print/PDF</span></button>
+                <button type="button" class="export-btn copy" id="exportCopy"><i class="ti ti-copy"></i><span>Copy Teks</span></button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="content-section">
+    <div class="wrap-text">
+      <h2>Cara Menghitung HPP (Harga Pokok Produksi) yang Benar</h2>
+      <p>HPP adalah jantung dari penetapan harga. Banyak UMKM menetapkan harga jual hanya dari "kira-kira", lalu heran kenapa untungnya tipis atau malah rugi. Rumusnya sederhana: jumlahkan semua biaya produksi (bahan baku + tenaga kerja langsung + overhead), lalu bagi dengan jumlah unit yang dihasilkan. Hasilnya adalah HPP per unit — modal sebenarnya tiap produk. Setelah tahu HPP, kamu bisa tentukan harga jual dengan <a href="/kalkulator/harga-jual">kalkulator harga jual</a> dan cek kesehatan <a href="/kalkulator/margin">margin keuntungan</a>.</p>
+
+      <h3>3 Komponen Biaya dalam HPP</h3>
+      <ul>
+        <li><strong>Bahan baku</strong> — bahan utama yang jadi produk (tepung, kain, komponen). Biasanya komponen terbesar.</li>
+        <li><strong>Tenaga kerja langsung</strong> — upah orang yang langsung memproduksi. Untuk usaha mikro yang dikerjakan sendiri, bisa diisi nilai jasa wajar agar harga tidak "memakan" gaji sendiri.</li>
+        <li><strong>Overhead produksi</strong> — biaya produksi lain: kemasan, gas/listrik, penyusutan alat, bahan penolong.</li>
+      </ul>
+
+      <h3>Jangan Salah Masukkan Biaya</h3>
+      <p>Biaya <strong>pemasaran, gaji admin, ongkir penjualan, dan biaya marketplace</strong> bukan bagian HPP — itu biaya operasional/penjualan yang dihitung terpisah saat menentukan harga jual akhir. Mencampurnya ke HPP membuat HPP terlihat besar dan harga jual jadi tidak kompetitif.</p>
+
+      <h3>Sesuaikan dengan Kondisi 2026</h3>
+      <p>Harga bahan baku, energi, dan kemasan terus bergerak. Di tengah fluktuasi harga pangan dan biaya energi tahun 2026, HPP yang dihitung bulan lalu bisa sudah meleset. Biasakan hitung ulang HPP setiap kali harga bahan baku utama berubah signifikan, supaya harga jual selalu menutup biaya dan margin tetap terjaga. Untuk produk yang dijual lewat marketplace atau GoFood/GrabFood/ShopeeFood, ingat masih ada potongan platform yang menggerus margin — perhitungkan setelah HPP.</p>
+
+      <div class="cta-box">
+        <h3>Disclaimer</h3>
+        <p>Kalkulator ini alat bantu simulasi &amp; edukasi. Hasil bersifat estimasi berdasarkan input yang kamu masukkan. Akurasi HPP bergantung pada kelengkapan & ketepatan data biaya. Untuk pembukuan resmi & pelaporan pajak, gunakan pencatatan akuntansi yang lengkap atau konsultasikan dengan akuntan.</p>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+  <FAQ title="Pertanyaan Seputar HPP" items={faqs} />
+
+  <section class="section"><div class="wrap">
+    <div class="section-hdr"><div class="section-eyebrow">Kalkulator Lainnya</div><h2 class="section-title">Hitung Juga yang Lain</h2></div>
+    <div class="related-grid">{related.map(c => <CalculatorCard calc={c} />)}</div>
+  </div></section>
+
+  <p style="text-align:center;font-size:.85rem;color:#64748b;margin:1.2rem auto;max-width:600px;">
+    📅 Diperbarui <strong>Juni 2026</strong> · Kalkulator edukatif untuk UMKM Indonesia
+  </p>
+
+<script is:inline>
+  (function() {
+    function ready(fn) { if (window.HC && window.html2canvas) fn(); else setTimeout(() => ready(fn), 100); }
+    ready(() => {
+      const $ = id => document.getElementById(id);
+      const els = { bahan: $('bahan'), tkl: $('tkl'), overhead: $('overhead'), unit: $('unit'), margin: $('margin') };
+      [els.bahan, els.tkl, els.overhead].forEach(el => el.addEventListener('input', HC.fmtInput));
+
+      let lastCalc = null;
+
+      function hitung() {
+        const bahan = HC.parseRp(els.bahan.value);
+        const tkl = HC.parseRp(els.tkl.value);
+        const overhead = HC.parseRp(els.overhead.value);
+        const unit = parseInt(els.unit.value) || 0;
+        let margin = parseFloat(els.margin.value) || 0;
+
+        const totalBiaya = bahan + tkl + overhead;
+        if (totalBiaya === 0) { HC.toast('Masukkan biaya produksi dulu', 'error'); return; }
+        if (unit < 1) { HC.toast('Jumlah unit minimal 1', 'error'); return; }
+        if (margin >= 90) { margin = 89; els.margin.value = 89; HC.toast('Margin dibatasi maksimal 89%', 'info'); }
+
+        const hppUnit = totalBiaya / unit;
+        const hargaJual = margin > 0 ? hppUnit / (1 - margin / 100) : hppUnit;
+        const untungUnit = hargaJual - hppUnit;
+        const marginReal = hargaJual > 0 ? (untungUnit / hargaJual) * 100 : 0;
+
+        $('hppUnit').textContent = HC.fmt(hppUnit);
+        $('hppMeta').textContent = `${unit} unit \u00b7 total biaya ${HC.fmt(totalBiaya)}`;
+        $('totalBiaya').textContent = HC.fmt(totalBiaya);
+        $('hargaJual').textContent = HC.fmt(hargaJual);
+        $('untungUnit').textContent = HC.fmt(untungUnit);
+        $('marginOut').textContent = marginReal.toFixed(1) + '%';
+
+        $('hppInfo').innerHTML = `\ud83d\udca1 Modal tiap produk <b>${HC.fmt(hppUnit)}</b>. Dengan margin ${margin}%, jual di <b>${HC.fmt(hargaJual)}/unit</b> \u2192 untung kotor <b>${HC.fmt(untungUnit)}/unit</b>. Ingat: harga jual ini belum dikurangi biaya marketplace/ongkir & biaya operasional (sewa, marketing, admin).`;
+
+        // Komposisi
+        const comps = [
+          { label: 'Bahan Baku', val: bahan, color: '#EA580C' },
+          { label: 'Tenaga Kerja Langsung', val: tkl, color: '#F59E0B' },
+          { label: 'Overhead Produksi', val: overhead, color: '#FBBF24' },
+        ];
+        let barHtml = '', bodyHtml = '';
+        comps.forEach(c => {
+          const pct = totalBiaya > 0 ? (c.val / totalBiaya) * 100 : 0;
+          if (pct > 0) barHtml += `<div style="width:${pct}%;background:${c.color}" title="${c.label}"></div>`;
+          bodyHtml += `<tr><td><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:${c.color};margin-right:6px"></span>${c.label}</td><td class="right">${HC.fmt(c.val)}</td><td class="right" style="font-weight:700">${pct.toFixed(1)}%</td></tr>`;
+        });
+        $('kompBar').innerHTML = barHtml;
+        $('kompBody').innerHTML = bodyHtml;
+
+        lastCalc = { bahan, tkl, overhead, unit, margin, totalBiaya, hppUnit, hargaJual, untungUnit, marginReal };
+        $('placeholder').style.display = 'none';
+        $('results').classList.add('show');
+        $('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        HC.toast('HPP berhasil dihitung!');
+      }
+
+      function reset() {
+        els.bahan.value = '500.000'; els.tkl.value = '150.000'; els.overhead.value = '100.000';
+        els.unit.value = '100'; els.margin.value = '40';
+        $('placeholder').style.display = ''; $('results').classList.remove('show');
+        lastCalc = null; HC.toast('Form direset', 'info');
+      }
+
+      function buildReport() {
+        if (!lastCalc) return null;
+        const c = lastCalc;
+        const insight = `HPP per unit ${HC.fmt(c.hppUnit)} dari total biaya ${HC.fmt(c.totalBiaya)} untuk ${c.unit} unit. Dengan margin ${c.margin}%, harga jual disarankan ${HC.fmt(c.hargaJual)}/unit (untung ${HC.fmt(c.untungUnit)}/unit). Belum termasuk biaya marketplace & operasional. Estimasi edukatif.`;
+        return HC.buildReportCard({
+          title: '\ud83d\udce6 Hitung HPP',
+          color: '#EA580C', color2: '#C2410C',
+          heroLabel: 'HPP per Unit',
+          heroValue: HC.fmt(c.hppUnit),
+          heroSubtext: `${c.unit} unit \u00b7 total biaya ${HC.fmt(c.totalBiaya)}`,
+          inputs: [
+            { label: '\ud83e\uddfa Bahan Baku', value: HC.fmt(c.bahan) },
+            { label: '\ud83d\udc77 Tenaga Kerja', value: HC.fmt(c.tkl) },
+            { label: '\u2699\ufe0f Overhead', value: HC.fmt(c.overhead) },
+            { label: '\ud83d\udce6 Jumlah Unit', value: c.unit + ' unit' },
+          ],
+          results: [
+            { label: 'HPP/unit', value: HC.fmt(c.hppUnit), highlight: true },
+            { label: 'Total Biaya', value: HC.fmt(c.totalBiaya) },
+            { label: 'Harga Jual (margin ' + c.margin + '%)', value: HC.fmt(c.hargaJual), highlight: true },
+            { label: 'Untung/unit', value: HC.fmt(c.untungUnit) },
+          ],
+          insight, slug: 'hpp',
+        });
+      }
+
+      function summaryText() {
+        if (!lastCalc) return '';
+        const c = lastCalc;
+        return `\ud83d\udce6 *Hitung HPP - HitungCerdas*\n\nBahan baku: ${HC.fmt(c.bahan)}\nTenaga kerja: ${HC.fmt(c.tkl)}\nOverhead: ${HC.fmt(c.overhead)}\nJumlah: ${c.unit} unit\n\n\ud83d\udce6 *HPP/unit: ${HC.fmt(c.hppUnit)}*\n\ud83d\udcb0 Harga jual (margin ${c.margin}%): ${HC.fmt(c.hargaJual)}\n\ud83d\udcc8 Untung/unit: ${HC.fmt(c.untungUnit)}\n\nHitung di: https://hitungcerdas.net/kalkulator/hpp`;
+      }
+
+      $('btnHitung').addEventListener('click', hitung);
+      $('btnReset').addEventListener('click', reset);
+      document.querySelectorAll('.adv-toggle').forEach(t => t.addEventListener('click', () => t.parentElement.classList.toggle('open')));
+      $('exportImg').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToImage(c, 'hpp-' + Date.now()); });
+      $('exportWa').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.shareWhatsApp(c, summaryText(), 'hpp'); });
+      $('exportPdf').addEventListener('click', () => { if (!lastCalc) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToPDF(); });
+      $('exportCopy').addEventListener('click', () => { if (!lastCalc) { HC.toast('Hitung dulu', 'error'); return; } HC.copyText(summaryText(), 'Tersalin!'); });
+    });
+  })();
+</script>
+</Layout>
