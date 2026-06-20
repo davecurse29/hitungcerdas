@@ -1,0 +1,101 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import ArticleSchema from '../../components/ArticleSchema.astro';
+const datePublished = '2026-06-21';
+const dateModified = '2026-06-21';
+const today = new Date(datePublished).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'Cara Menghitung BEP' }];
+---
+<Layout title="Cara Hitung BEP (Break Even Point) Usaha 2026 — Rumus & Contoh" description="Panduan lengkap menghitung BEP (titik impas) untuk UMKM 2026: rumus BEP unit & rupiah, margin kontribusi, beda biaya tetap vs variabel, dan target penjualan untuk laba. Plus kalkulator BEP gratis." keywords={['cara hitung bep', 'break even point', 'titik impas', 'rumus bep', 'bep usaha umkm', 'kalkulator bep']} canonical="https://hitungcerdas.net/blog/cara-menghitung-bep" ogType="article">
+  <ArticleSchema
+    headline="Cara Hitung BEP (Break Even Point) Usaha 2026 — Rumus & Contoh"
+    description="Panduan lengkap menghitung BEP (titik impas) untuk UMKM 2026: rumus BEP unit & rupiah, margin kontribusi, beda biaya tetap vs variabel, dan target penjualan untuk laba."
+    datePublished={datePublished}
+    dateModified={dateModified}
+    slug="cara-menghitung-bep"
+    articleSection="UMKM"
+    keywords={['cara hitung bep', 'break even point', 'titik impas', 'rumus bep', 'bep usaha umkm']}
+    wordCount={780}
+  />
+
+  <section class="article-hero" style="--cat-color:#4F46E5;--cat-color2:#4338CA">
+    <div class="wrap"><Breadcrumb items={bcItems} /><div class="article-tag">UMKM</div>
+      <h1>Cara Hitung BEP (Break Even Point) Usaha 2026</h1>
+      <div class="article-meta"><span><i class="ti ti-calendar"></i> {today}</span><span><i class="ti ti-clock"></i> 7 menit baca</span><span><i class="ti ti-user"></i> Tim HitungCerdas</span></div>
+    </div>
+  </section>
+  <AdSlot format="horizontal" />
+  <article class="content-section"><div class="wrap-text">
+    <p class="lead">"Berapa banyak saya harus jual supaya tidak rugi?" — itu pertanyaan yang dijawab oleh BEP. Titik impas adalah angka paling mendasar yang wajib diketahui sebelum kamu menetapkan target penjualan. Artikel ini bedah cara menghitungnya dengan contoh nyata dan tips untuk kondisi 2026.</p>
+
+    <h2>1. Apa Itu BEP?</h2>
+    <p>BEP (Break Even Point) atau titik impas adalah <strong>kondisi saat total pendapatan persis sama dengan total biaya</strong> — tidak untung, tidak rugi. Di bawah BEP kamu masih rugi, tepat di BEP biaya tertutup penuh, dan di atasnya barulah laba mengalir. BEP memberi tahu berapa unit (atau berapa rupiah omzet) yang harus terjual sebelum bisnis mulai menghasilkan.</p>
+
+    <h2>2. Rumus BEP</h2>
+    <div class="formula-box">
+      <p><strong>Margin Kontribusi/unit = Harga Jual − Biaya Variabel/unit</strong></p>
+      <p><strong>BEP (unit) = Biaya Tetap ÷ Margin Kontribusi/unit</strong></p>
+      <p><strong>BEP (rupiah) = BEP unit × Harga Jual</strong></p>
+    </div>
+    <p>Margin kontribusi adalah "kontribusi" tiap unit untuk menutup biaya tetap. Semakin besar margin kontribusi, semakin sedikit unit yang perlu dijual untuk impas.</p>
+
+    <h2>3. Beda Biaya Tetap & Biaya Variabel</h2>
+    <ul class="info-list">
+      <li><strong>Biaya tetap</strong> — tidak berubah meski jualan ramai atau sepi: sewa tempat, gaji tetap, langganan internet, penyusutan alat.</li>
+      <li><strong>Biaya variabel</strong> — naik-turun mengikuti volume produksi: bahan baku, kemasan, komisi penjualan. Biaya variabel per unit umumnya sama dengan <a href="/kalkulator/hpp">HPP per unit</a> ditambah biaya jual yang variabel.</li>
+    </ul>
+    <p>Salah mengklasifikasi biaya membuat BEP meleset jauh, jadi pisahkan keduanya dengan teliti.</p>
+
+    <AdSlot format="horizontal" />
+
+    <h2>4. Contoh Kasus</h2>
+    <p>Sebuah usaha kuliner punya biaya tetap <strong>Rp 5.000.000/bulan</strong> (sewa + gaji). Harga jual <strong>Rp 12.500/porsi</strong>, biaya variabel <strong>Rp 7.500/porsi</strong>.</p>
+    <ul class="info-list">
+      <li>Margin kontribusi = Rp 12.500 − Rp 7.500 = <strong>Rp 5.000/porsi</strong></li>
+      <li>BEP unit = Rp 5.000.000 ÷ Rp 5.000 = <strong>1.000 porsi/bulan</strong></li>
+      <li>BEP omzet = 1.000 × Rp 12.500 = <strong>Rp 12.500.000/bulan</strong></li>
+    </ul>
+    <p>Artinya, sebelum menjual 1.000 porsi, usaha ini masih rugi. Porsi ke-1.001 dan seterusnya barulah menghasilkan laba Rp 5.000 per porsi. Kalau ingin laba <strong>Rp 2.000.000/bulan</strong>: (Rp 5.000.000 + Rp 2.000.000) ÷ Rp 5.000 = <strong>1.400 porsi</strong>.</p>
+
+    <h2>5. BEP di Tengah Kondisi 2026</h2>
+    <p>Kenaikan biaya sewa, energi, dan bahan baku sepanjang 2026 membuat biaya tetap maupun variabel cenderung naik — yang otomatis menggeser titik impas ke atas. Kamu jadi perlu menjual lebih banyak untuk sekadar impas. Karena itu hitung ulang BEP secara berkala. Kalau titik impas terasa makin berat, ada tiga tuas yang bisa kamu tarik: <strong>tekan biaya tetap</strong> (sewa lebih efisien), <strong>naikkan harga jual</strong>, atau <strong>turunkan biaya variabel per unit</strong> (negosiasi bahan baku, efisiensi produksi).</p>
+
+    <div class="cta-box">
+      <h3>🎯 Coba Kalkulator BEP HitungCerdas</h3>
+      <p>Hitung titik impas usahamu dalam hitungan detik:</p>
+      <ul>
+        <li>✅ BEP dalam unit & rupiah (omzet)</li>
+        <li>✅ Margin kontribusi per unit otomatis</li>
+        <li>✅ Target penjualan untuk capai laba tertentu</li>
+        <li>✅ Tahu batas aman sebelum rugi</li>
+      </ul>
+      <p style="margin-top:14px"><a href="/kalkulator/bep" class="btn btn-pri"><i class="ti ti-calculator"></i> Buka Kalkulator BEP</a></p>
+    </div>
+
+    <h2>Kesimpulan</h2>
+    <p>BEP adalah garis aman bisnismu. Dengan tahu titik impas, target penjualan jadi realistis dan kamu tahu persis kapan usaha mulai untung. Pisahkan biaya tetap dan variabel dengan benar, hitung margin kontribusi, lalu temukan titik impasmu. Kombinasikan dengan perhitungan <a href="/kalkulator/hpp">HPP</a> dan <a href="/kalkulator/harga-jual">harga jual</a> untuk fondasi keuangan usaha yang kuat.</p>
+
+    <h3>📚 Artikel & Kalkulator Terkait</h3>
+    <ul class="info-list">
+      <li><a href="/kalkulator/bep">Kalkulator BEP</a></li>
+      <li><a href="/kalkulator/hpp">Kalkulator HPP</a></li>
+      <li><a href="/kalkulator/harga-jual">Kalkulator Harga Jual</a></li>
+      <li><a href="/blog/cara-menghitung-hpp">Cara Menghitung HPP</a></li>
+    </ul>
+  </div></article>
+  <AdSlot format="horizontal" />
+</Layout>
+<style>
+  .article-hero { background: linear-gradient(135deg, var(--cat-color) 0%, var(--cat-color2) 100%); color: #fff; padding: 20px 0 48px; }
+  .article-hero :global(.breadcrumb-item), .article-hero :global(.breadcrumb-item a) { color: rgba(255, 255, 255, .7); }
+  .article-hero :global(.breadcrumb-item a:hover) { color: var(--gold-soft); }
+  .article-hero :global(.breadcrumb-item span) { color: #fff; }
+  .article-hero :global(.breadcrumb-item i) { color: rgba(255, 255, 255, .4); }
+  .article-tag { display: inline-block; font-size: 11px; font-weight: 700; color: var(--gold-soft); letter-spacing: .1em; text-transform: uppercase; margin: 16px 0 12px; }
+  .article-hero h1 { color: #fff; font-size: clamp(26px, 3.8vw, 42px); margin: 0 0 20px; max-width: 900px; line-height: 1.2; }
+  .article-meta { display: flex; gap: 20px; color: rgba(255, 255, 255, .75); font-size: 13px; flex-wrap: wrap; }
+  .article-meta span { display: inline-flex; align-items: center; gap: 6px; }
+  .lead { font-size: 17px !important; line-height: 1.7 !important; color: var(--text) !important; padding: 20px 24px; background: var(--bg-soft); border-radius: 12px; border-left: 4px solid #4F46E5; margin-bottom: 24px !important; }
+</style>

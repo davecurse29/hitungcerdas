@@ -1,0 +1,275 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import FAQ from '../../components/FAQ.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import CalculatorCard from '../../components/CalculatorCard.astro';
+import { getCalculatorBySlug, getRelatedCalculators } from '../../data/calculators';
+
+const calc = getCalculatorBySlug('bep')!;
+const related = getRelatedCalculators('bep', 3);
+
+const faqs = [
+  { question: 'Apa itu BEP (Break Even Point)?', answer: 'BEP atau titik impas adalah <strong>kondisi saat total pendapatan persis menutup total biaya</strong> — tidak untung, tidak rugi. BEP memberi tahu kamu berapa unit (atau berapa rupiah omzet) yang harus terjual sebelum mulai untung. Di bawah BEP berarti rugi, di atas BEP berarti laba.' },
+  { question: 'Bagaimana rumus menghitung BEP?', answer: '<strong>BEP (unit) = Biaya Tetap ÷ (Harga Jual per unit − Biaya Variabel per unit)</strong>. Selisih harga jual dan biaya variabel disebut <strong>margin kontribusi</strong> — yaitu kontribusi tiap unit untuk menutup biaya tetap. <strong>BEP (rupiah) = BEP unit × harga jual</strong>. Untuk mencapai target laba: (Biaya Tetap + Target Laba) ÷ margin kontribusi.' },
+  { question: 'Apa beda biaya tetap dan biaya variabel?', answer: '<strong>Biaya tetap</strong> tidak berubah meski produksi naik/turun: sewa tempat, gaji tetap, langganan internet, penyusutan. <strong>Biaya variabel</strong> naik-turun mengikuti jumlah produksi: bahan baku, kemasan, komisi penjualan. Biaya variabel per unit umumnya sama dengan <a href="/kalkulator/hpp">HPP per unit</a> ditambah biaya jual yang variabel.' },
+  { question: 'Kenapa BEP penting sebelum menetapkan target?', answer: 'Karena BEP adalah <strong>garis aman</strong> bisnismu. Tanpa tahu BEP, kamu bisa menetapkan target penjualan yang ternyata masih di bawah titik impas — artinya makin banyak jualan malah makin rugi. Dengan tahu BEP, target penjualan jadi realistis dan kamu tahu persis kapan bisnis mulai menghasilkan laba.' },
+  { question: 'BEP saya sangat tinggi, apa artinya?', answer: 'BEP tinggi berarti kamu harus menjual banyak sekali sebelum impas — biasanya karena biaya tetap terlalu besar atau margin kontribusi per unit terlalu tipis. Solusinya: tekan biaya tetap (mis. sewa lebih murah), naikkan harga jual, atau turunkan biaya variabel per unit (negosiasi bahan baku, efisiensi produksi). Coba ubah angka di kalkulator untuk lihat dampaknya.' },
+];
+
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '/#tools' }, { label: calc.shortTitle }];
+---
+
+<Layout title={calc.title} description={calc.metaDescription} keywords={calc.keywords} canonical={`https://hitungcerdas.net/kalkulator/${calc.slug}`}>
+  <section class="calc-hero" style="--cat-color:#4F46E5;--cat-color2:#4338CA">
+    <div class="wrap">
+      <Breadcrumb items={bcItems} />
+      <div class="calc-hero-grid">
+        <div class="calc-hero-text">
+          <div class="calc-hero-tag" style="background:#E0E7FF;color:#3730A3"><i class="ti ti-target-arrow"></i> {calc.categoryLabel}</div>
+          <h1 class="calc-hero-title">{calc.h1}</h1>
+          <p class="calc-hero-sub">{calc.introText}</p>
+          <ul class="calc-hero-benefits">{calc.benefits.map(b => <li><i class="ti ti-check"></i> {b}</li>)}</ul>
+        </div>
+        <div class="calc-hero-illust">
+          <svg viewBox="0 0 200 200" fill="none">
+            <circle cx="100" cy="100" r="85" fill="rgba(255,255,255,.08)"/>
+            <path d="M50 150 H150" stroke="#C7D2FE" stroke-width="2.5" stroke-linecap="round"/>
+            <path d="M50 150 V60" stroke="#C7D2FE" stroke-width="2.5" stroke-linecap="round"/>
+            <path d="M58 135 L142 75" stroke="#A5B4FC" stroke-width="3" stroke-linecap="round"/>
+            <path d="M58 95 L142 120" stroke="#FBBF24" stroke-width="3" stroke-linecap="round"/>
+            <circle cx="108" cy="106" r="8" fill="#FFF" stroke="#4F46E5" stroke-width="3"/>
+            <text x="112" y="70" fill="#A5B4FC" font-size="11" font-family="sans-serif">Rp</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+
+  <section class="calc-section">
+    <div class="wrap">
+      <div class="calc-card">
+        <div class="calc-card-hdr">
+          <div class="calc-card-hdr-ic" style="background:linear-gradient(135deg,#4F46E5 0%,#4338CA 100%)"><i class="ti ti-target-arrow"></i></div>
+          <div><h2 class="calc-card-title">Kalkulator BEP (Titik Impas)</h2><p class="calc-card-sub">Berapa unit & omzet harus terjual agar tidak rugi</p></div>
+        </div>
+
+        <div class="calc-grid">
+          <div class="calc-input">
+            <div class="field"><label>Biaya Tetap per Bulan</label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span>
+                <input type="text" id="fixed" class="has-prefix" value="5.000.000" inputmode="numeric" /></div>
+              <p class="hint" style="margin-top:6px">Sewa, gaji tetap, langganan, penyusutan — tidak berubah meski produksi naik/turun.</p>
+            </div>
+
+            <div class="field"><label>Harga Jual per Unit</label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span>
+                <input type="text" id="harga" class="has-prefix" value="12.500" inputmode="numeric" /></div>
+            </div>
+
+            <div class="field"><label>Biaya Variabel per Unit</label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span>
+                <input type="text" id="variabel" class="has-prefix" value="7.500" inputmode="numeric" /></div>
+              <p class="hint" style="margin-top:6px">Biaya yang naik mengikuti produksi — umumnya = HPP/unit + biaya jual variabel.</p>
+            </div>
+
+            <div class="field"><label>Target Laba per Bulan <span class="hint">(opsional)</span></label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span>
+                <input type="text" id="target" class="has-prefix" value="0" inputmode="numeric" /></div>
+              <p class="hint" style="margin-top:6px">Isi jika ingin tahu berapa harus dijual untuk capai laba tertentu.</p>
+            </div>
+
+            <div class="calc-action-bar">
+              <button type="button" class="btn-hitung" id="btnHitung"><i class="ti ti-calculator"></i> Hitung Sekarang</button>
+              <button type="button" class="btn-reset" id="btnReset"><i class="ti ti-refresh"></i> Reset</button>
+            </div>
+          </div>
+
+          <div class="calc-output">
+            <div class="result-placeholder" id="placeholder">
+              <i class="ti ti-target-arrow result-placeholder-icon"></i>
+              <div class="result-placeholder-title">Titik impas akan muncul di sini</div>
+              <div class="result-placeholder-desc">Isi biaya tetap, harga jual & biaya variabel, klik <strong>"Hitung Sekarang"</strong>.</div>
+            </div>
+
+            <div class="result-wrapper" id="results">
+              <div class="result-main">
+                <div class="result-label">BEP (Titik Impas)</div>
+                <div class="result-value" id="bepUnit">0 unit</div>
+                <div class="result-meta"><i class="ti ti-info-circle"></i> <span id="bepMeta">setara omzet Rp 0</span></div>
+              </div>
+
+              <div class="result-grid">
+                <div class="result-item"><div class="result-item-label">BEP (Omzet)</div><div class="result-item-value" id="bepRupiah">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">Margin Kontribusi/Unit</div><div class="result-item-value" id="mk" style="color:var(--green-dark)">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">Rasio Margin Kontribusi</div><div class="result-item-value" id="mkRatio">0%</div></div>
+                <div class="result-item"><div class="result-item-label">Biaya Tetap/Bulan</div><div class="result-item-value" id="fcOut">Rp 0</div></div>
+              </div>
+
+              <div id="bepInfo" style="margin-top:10px;padding:11px 13px;border-radius:12px;background:#EEF2FF;border:1px solid #C7D2FE;font-size:12.5px;line-height:1.55;color:#3730A3"></div>
+
+              <div id="targetSection" style="display:none;margin-top:10px;padding:13px 15px;border-radius:12px;background:#F0FDF4;border:1px solid #BBF7D0">
+                <div style="font-size:13px;font-weight:700;color:#15803D;margin-bottom:8px"><i class="ti ti-trophy"></i> Untuk Capai Target Laba</div>
+                <div id="targetBody" style="font-size:13px;line-height:1.7;color:#166534"></div>
+              </div>
+
+              <div class="export-row">
+                <button type="button" class="export-btn img" id="exportImg"><i class="ti ti-photo-down"></i><span>Save Image</span></button>
+                <button type="button" class="export-btn wa" id="exportWa"><i class="ti ti-brand-whatsapp"></i><span>Share WA</span></button>
+                <button type="button" class="export-btn pdf" id="exportPdf"><i class="ti ti-printer"></i><span>Print/PDF</span></button>
+                <button type="button" class="export-btn copy" id="exportCopy"><i class="ti ti-copy"></i><span>Copy Teks</span></button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="content-section">
+    <div class="wrap-text">
+      <h2>Memahami Break Even Point (Titik Impas)</h2>
+      <p>BEP adalah salah satu angka terpenting yang wajib diketahui setiap pemilik usaha. Ia menjawab pertanyaan sederhana tapi krusial: "Berapa banyak saya harus jual agar tidak rugi?" Di bawah titik impas, setiap penjualan masih menambah kerugian; tepat di titik impas, biaya tertutup penuh; di atasnya, barulah laba mulai mengalir. Sebelum menghitung BEP, pastikan kamu sudah tahu <a href="/kalkulator/hpp">HPP per unit</a> dan <a href="/kalkulator/harga-jual">harga jual</a> yang tepat.</p>
+
+      <h3>Rumus BEP</h3>
+      <ul>
+        <li><strong>Margin kontribusi/unit</strong> = Harga Jual − Biaya Variabel. Inilah "kontribusi" tiap unit untuk menutup biaya tetap.</li>
+        <li><strong>BEP (unit)</strong> = Biaya Tetap ÷ Margin Kontribusi per unit.</li>
+        <li><strong>BEP (rupiah)</strong> = BEP unit × Harga Jual.</li>
+        <li><strong>Untuk target laba</strong> = (Biaya Tetap + Target Laba) ÷ Margin Kontribusi.</li>
+      </ul>
+
+      <h3>Biaya Tetap vs Biaya Variabel</h3>
+      <p>Kunci akurasi BEP adalah memisahkan biaya dengan benar. <strong>Biaya tetap</strong> tidak berubah meski jualan sepi atau ramai: sewa, gaji tetap, langganan. <strong>Biaya variabel</strong> bergerak mengikuti volume: bahan baku, kemasan, komisi. Salah klasifikasi membuat BEP meleset jauh.</p>
+
+      <h3>BEP di Tengah Kondisi 2026</h3>
+      <p>Kenaikan biaya sewa, energi, dan bahan baku tahun 2026 mendorong biaya tetap dan variabel naik — yang otomatis menggeser titik impas ke atas. Artinya kamu perlu menjual lebih banyak untuk tetap impas. Hitung ulang BEP secara berkala, dan kalau titik impas terasa makin berat, evaluasi tiga tuas utama: tekan biaya tetap, naikkan harga jual, atau efisienkan biaya variabel per unit.</p>
+
+      <div class="cta-box">
+        <h3>Disclaimer</h3>
+        <p>Kalkulator ini alat bantu simulasi &amp; edukasi. Hasil bersifat estimasi berdasarkan input. Model BEP mengasumsikan harga jual & biaya variabel per unit konstan; pada praktiknya bisa berubah karena diskon, skala produksi, atau fluktuasi harga. Gunakan sebagai panduan perencanaan, bukan jaminan.</p>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+  <FAQ title="Pertanyaan Seputar BEP" items={faqs} />
+
+  <section class="section"><div class="wrap">
+    <div class="section-hdr"><div class="section-eyebrow">Kalkulator Lainnya</div><h2 class="section-title">Hitung Juga yang Lain</h2></div>
+    <div class="related-grid">{related.map(c => <CalculatorCard calc={c} />)}</div>
+  </div></section>
+
+  <p style="text-align:center;font-size:.85rem;color:#64748b;margin:1.2rem auto;max-width:600px;">
+    📅 Diperbarui <strong>Juni 2026</strong> · Kalkulator edukatif untuk UMKM Indonesia
+  </p>
+
+<script is:inline>
+  (function() {
+    function ready(fn) { if (window.HC && window.html2canvas) fn(); else setTimeout(() => ready(fn), 100); }
+    ready(() => {
+      const $ = id => document.getElementById(id);
+      const els = { fixed: $('fixed'), harga: $('harga'), variabel: $('variabel'), target: $('target') };
+      [els.fixed, els.harga, els.variabel, els.target].forEach(el => el.addEventListener('input', HC.fmtInput));
+
+      let lastCalc = null;
+
+      function hitung() {
+        const fixed = HC.parseRp(els.fixed.value);
+        const harga = HC.parseRp(els.harga.value);
+        const variabel = HC.parseRp(els.variabel.value);
+        const target = HC.parseRp(els.target.value);
+
+        if (fixed === 0) { HC.toast('Masukkan biaya tetap dulu', 'error'); return; }
+        if (harga === 0) { HC.toast('Masukkan harga jual per unit', 'error'); return; }
+        if (harga <= variabel) { HC.toast('Harga jual harus di atas biaya variabel', 'error'); return; }
+
+        const mk = harga - variabel;
+        const mkRatio = mk / harga * 100;
+        const bepUnit = fixed / mk;
+        const bepRupiah = bepUnit * harga;
+
+        $('bepUnit').textContent = Math.ceil(bepUnit).toLocaleString('id-ID') + ' unit';
+        $('bepMeta').textContent = `setara omzet ${HC.fmt(bepRupiah)}`;
+        $('bepRupiah').textContent = HC.fmt(bepRupiah);
+        $('mk').textContent = HC.fmt(mk);
+        $('mkRatio').textContent = mkRatio.toFixed(1) + '%';
+        $('fcOut').textContent = HC.fmt(fixed);
+
+        $('bepInfo').innerHTML = `\ud83c\udfaf Kamu harus menjual <b>${Math.ceil(bepUnit).toLocaleString('id-ID')} unit/bulan</b> (omzet <b>${HC.fmt(bepRupiah)}</b>) hanya untuk menutup biaya \u2014 belum untung. Penjualan ke-${(Math.ceil(bepUnit) + 1).toLocaleString('id-ID')} dan seterusnya barulah menghasilkan laba <b>${HC.fmt(mk)}/unit</b>.`;
+
+        let targetData = null;
+        if (target > 0) {
+          const unitTarget = (fixed + target) / mk;
+          const omzetTarget = unitTarget * harga;
+          $('targetSection').style.display = '';
+          $('targetBody').innerHTML = `Untuk laba <b>${HC.fmt(target)}/bulan</b>, kamu perlu menjual <b>${Math.ceil(unitTarget).toLocaleString('id-ID')} unit</b> (omzet <b>${HC.fmt(omzetTarget)}</b>) \u2014 yaitu ${Math.ceil(unitTarget - bepUnit).toLocaleString('id-ID')} unit di atas titik impas.`;
+          targetData = { target, unitTarget: Math.ceil(unitTarget), omzetTarget };
+        } else {
+          $('targetSection').style.display = 'none';
+        }
+
+        lastCalc = { fixed, harga, variabel, mk, mkRatio, bepUnit: Math.ceil(bepUnit), bepRupiah, target: targetData };
+        $('placeholder').style.display = 'none';
+        $('results').classList.add('show');
+        $('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        HC.toast('BEP berhasil dihitung!');
+      }
+
+      function reset() {
+        els.fixed.value = '5.000.000'; els.harga.value = '12.500'; els.variabel.value = '7.500'; els.target.value = '0';
+        $('targetSection').style.display = 'none';
+        $('placeholder').style.display = ''; $('results').classList.remove('show');
+        lastCalc = null; HC.toast('Form direset', 'info');
+      }
+
+      function buildReport() {
+        if (!lastCalc) return null;
+        const c = lastCalc;
+        let insight = `Titik impas ${c.bepUnit.toLocaleString('id-ID')} unit/bulan (omzet ${HC.fmt(c.bepRupiah)}). Margin kontribusi ${HC.fmt(c.mk)}/unit (${c.mkRatio.toFixed(1)}%). Di atas BEP, tiap unit beri laba ${HC.fmt(c.mk)}.`;
+        if (c.target) insight += ` Untuk laba ${HC.fmt(c.target.target)}/bln perlu jual ${c.target.unitTarget.toLocaleString('id-ID')} unit.`;
+        insight += ' Estimasi edukatif.';
+        const results = [
+          { label: 'BEP (unit)', value: c.bepUnit.toLocaleString('id-ID') + ' unit', highlight: true },
+          { label: 'BEP (omzet)', value: HC.fmt(c.bepRupiah), highlight: true },
+          { label: 'Margin Kontribusi/unit', value: HC.fmt(c.mk) },
+          { label: 'Rasio MK', value: c.mkRatio.toFixed(1) + '%' },
+        ];
+        if (c.target) results.push({ label: 'Unit utk Target Laba', value: c.target.unitTarget.toLocaleString('id-ID') + ' unit' });
+        return HC.buildReportCard({
+          title: '\ud83c\udfaf Hitung BEP (Titik Impas)',
+          color: '#4F46E5', color2: '#4338CA',
+          heroLabel: 'BEP (Titik Impas)',
+          heroValue: c.bepUnit.toLocaleString('id-ID') + ' unit',
+          heroSubtext: `setara omzet ${HC.fmt(c.bepRupiah)}/bulan`,
+          inputs: [
+            { label: '\ud83c\udfe2 Biaya Tetap', value: HC.fmt(c.fixed) },
+            { label: '\ud83c\udff7\ufe0f Harga Jual/unit', value: HC.fmt(c.harga) },
+            { label: '\ud83d\udce6 Biaya Variabel/unit', value: HC.fmt(c.variabel) },
+          ],
+          results, insight, slug: 'bep',
+        });
+      }
+
+      function summaryText() {
+        if (!lastCalc) return '';
+        const c = lastCalc;
+        let t = `\ud83c\udfaf *Hitung BEP - HitungCerdas*\n\nBiaya tetap/bln: ${HC.fmt(c.fixed)}\nHarga jual/unit: ${HC.fmt(c.harga)}\nBiaya variabel/unit: ${HC.fmt(c.variabel)}\n\n\ud83c\udfaf *BEP: ${c.bepUnit.toLocaleString('id-ID')} unit/bln*\n\ud83d\udcb0 Setara omzet: ${HC.fmt(c.bepRupiah)}\n\ud83d\udcc8 Margin kontribusi: ${HC.fmt(c.mk)}/unit (${c.mkRatio.toFixed(1)}%)`;
+        if (c.target) t += `\n\n\ud83c\udfc6 Target laba ${HC.fmt(c.target.target)}: jual ${c.target.unitTarget.toLocaleString('id-ID')} unit`;
+        t += `\n\nHitung di: https://hitungcerdas.net/kalkulator/bep`;
+        return t;
+      }
+
+      $('btnHitung').addEventListener('click', hitung);
+      $('btnReset').addEventListener('click', reset);
+      $('exportImg').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToImage(c, 'bep-' + Date.now()); });
+      $('exportWa').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.shareWhatsApp(c, summaryText(), 'bep'); });
+      $('exportPdf').addEventListener('click', () => { if (!lastCalc) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToPDF(); });
+      $('exportCopy').addEventListener('click', () => { if (!lastCalc) { HC.toast('Hitung dulu', 'error'); return; } HC.copyText(summaryText(), 'Tersalin!'); });
+    });
+  })();
+</script>
+</Layout>

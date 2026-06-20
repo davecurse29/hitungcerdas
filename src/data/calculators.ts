@@ -430,6 +430,32 @@ export const CALCULATORS: CalculatorMeta[] = [
     ],
   },
 
+  {
+    slug: 'bep',
+    title: 'Kalkulator BEP 2026 — Titik Impas & Target Penjualan UMKM',
+    shortTitle: 'Kalkulator BEP',
+    category: 'bisnis',
+    categoryLabel: 'Kalkulator Bisnis',
+    tag: 'UMKM',
+    tagColor: '#3730A3',
+    tagBg: '#E0E7FF',
+    iconColor: '#4F46E5',
+    iconBg: '#E0E7FF',
+    iconSvg: 'margin',
+    description: 'Hitung titik impas (BEP) dalam unit & rupiah, plus target penjualan untuk capai laba.',
+    metaDescription: 'Kalkulator BEP (Break Even Point) 2026 untuk UMKM: hitung titik impas dalam unit & rupiah dari biaya tetap, harga jual, dan biaya variabel. Plus target penjualan untuk mencapai laba tertentu. Gratis & akurat.',
+    keywords: ['kalkulator bep', 'cara hitung bep', 'break even point', 'titik impas usaha', 'target penjualan', 'balik modal jualan'],
+    h1: 'Kalkulator BEP 2026',
+    introText: 'Hitung titik impas (Break Even Point) usahamu — berapa unit dan berapa rupiah omzet yang harus dicapai agar tidak rugi. Cukup masukkan biaya tetap bulanan, harga jual, dan biaya variabel per unit. Bisa juga hitung berapa harus dijual untuk mencapai target laba tertentu. Wajib tahu sebelum menetapkan target penjualan.',
+    benefits: [
+      'BEP dalam unit & rupiah (omzet)',
+      'Margin kontribusi per unit otomatis',
+      'Target penjualan untuk capai laba tertentu',
+      'Tahu batas aman sebelum rugi',
+      'Scorecard share-ready (WA/IG/PDF)',
+    ],
+  },
+
   // ═══════════════ ISLAMI ═══════════════
   {
     slug: 'zakat-fitrah',
