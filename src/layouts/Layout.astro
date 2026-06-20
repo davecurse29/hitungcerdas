@@ -29,7 +29,10 @@ const {
 } = Astro.props;
 
 const siteUrl = 'https://hitungcerdas.net';
-const fullUrl = canonical || new URL(Astro.url.pathname, siteUrl).toString();
+const _rawUrl = canonical || new URL(Astro.url.pathname, siteUrl).toString();
+// trailingSlash: 'always' — canonical & og:url HARUS diakhiri "/" agar konsisten
+// dengan URL yang dilayani server (hindari "Page with redirect" di Google Search Console).
+const fullUrl = /[?#]/.test(_rawUrl) || _rawUrl.endsWith('/') ? _rawUrl : _rawUrl + '/';
 
 // ── Conditional heavy scripts: load hanya di halaman yang butuh ──
 const _path = Astro.url.pathname;
