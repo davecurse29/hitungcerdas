@@ -11,7 +11,7 @@ const related = getRelatedCalculators('harga-jual', 3);
 
 const faqs = [
   { question: 'Bagaimana cara menentukan harga jual yang benar?', answer: 'Rumus dasar: <strong>Harga Jual = HPP + Profit Margin + Fee Marketplace</strong>. Atau: <strong>Harga Jual = (HPP + Margin Rp) ÷ (1 - Fee%)</strong>. Pastikan harga di atas kompetitor minus 5-10% sebagai cushion.' },
-  { question: 'Berapa target margin yang sehat untuk UMKM?', answer: 'Benchmark per industri: <strong>Fashion ritel</strong> 30-50%, <strong>F&B/kuliner</strong> 40-60%, <strong>Beauty/skincare</strong> 50-70%, <strong>Handmade/craft</strong> 100-300%, <strong>Digital/SaaS</strong> 70-90%, <strong>Jasa profesional</strong> 50-80%, <strong>Grocery/retail</strong> 5-15% (high volume).' },
+  { question: 'Berapa target margin yang sehat untuk UMKM?', answer: 'Benchmark per industri: <strong>Fashion ritel</strong> 30-50%, <strong>F&B/kuliner</strong> 40-60%, <strong>Beauty/skincare</strong> 50-70%, <strong>Handmade/craft</strong> 50-75%, <strong>Digital/SaaS</strong> 70-90%, <strong>Jasa profesional</strong> 50-80%, <strong>Grocery/retail</strong> 5-15% (high volume).' },
   { question: 'Berapa fee marketplace di Indonesia?', answer: 'Estimasi fee 2026: <strong>Shopee</strong> 4-5% (Free Shipping) / 1,5-3% reguler. <strong>Tokopedia</strong> 4-8% (TopAds) / 1-2% reguler. <strong>TikTok Shop</strong> 1-3%. <strong>Lazada</strong> 4-6%. Belum termasuk biaya iklan/ads 2-15% dari penjualan.' },
   { question: 'Apa beda margin dan markup?', answer: '<strong>Margin</strong> = Profit ÷ Harga Jual × 100%. <strong>Markup</strong> = Profit ÷ HPP × 100%. Untuk profit Rp 20: HPP Rp 80, Harga Rp 100 → Margin 20%, Markup 25%. Margin SELALU lebih kecil dari markup untuk profit yang sama. Banyak UMKM bilang "margin 50%" padahal yang dimaksud markup 50% (= margin 33%).' },
 ];
@@ -66,14 +66,14 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
               <div class="input-wrap"><span class="input-prefix">Rp</span>
                 <input type="text" id="opex" class="has-prefix" value="3.000" inputmode="numeric" /></div></div>
 
-            <div class="field"><label>Target Margin Profit</label>
-              <div class="input-wrap"><input type="number" id="margin" class="has-suffix" value="40" step="5" min="0" max="500" /><span class="input-suffix">%</span></div>
+            <div class="field"><label>Target Margin Profit <span class="hint">(% dari harga jual)</span></label>
+              <div class="input-wrap"><input type="number" id="margin" class="has-suffix" value="40" step="5" min="0" max="95" /><span class="input-suffix">%</span></div>
               <div class="quick-btns">
                 <button type="button" data-m="20">20%</button>
                 <button type="button" data-m="30">30%</button>
                 <button type="button" data-m="40">40%</button>
                 <button type="button" data-m="60">60%</button>
-                <button type="button" data-m="100">100%</button>
+                <button type="button" data-m="70">70%</button>
               </div></div>
 
             <div class="field"><label>Fee Marketplace</label>
@@ -179,8 +179,9 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       document.querySelectorAll('.adv-toggle').forEach(t => t.addEventListener('click', () => t.parentElement.classList.toggle('open')));
 
       function calcHarga(hpp, marginPct, feePct) {
-        const profit = hpp * (marginPct / 100);
-        const subtotal = hpp + profit;
+        const m = Math.min(Math.max(marginPct, 0), 95) / 100;  // margin = profit/harga jual, jaga < 100%
+        const subtotal = hpp / (1 - m);                         // Harga (sblm fee) = HPP / (1 - margin)
+        const profit = subtotal - hpp;
         const harga = subtotal / (1 - feePct / 100);
         const fee = harga * feePct / 100;
         return { harga, profit, fee, profitNet: harga - hpp - fee };
@@ -212,7 +213,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         $('feeAmt').textContent = HC.fmt(fee);
         $('marginReal').textContent = marginReal.toFixed(1) + '%';
 
-        const marginComp = [20, 30, 40, 60, 100, 150];
+        const marginComp = [20, 30, 40, 50, 60, 70];
         $('marginBody').innerHTML = marginComp.map(m => {
           const r = calcHarga(hpp, m, feePct);
           return `<tr class="${m === marginPct ? 'active' : ''}"><td>Margin ${m}%</td><td class="right">${HC.fmt(Math.ceil(r.harga / 100) * 100)}</td><td class="right" style="color:var(--green-dark);font-weight:700">${HC.fmt(r.profitNet)}</td></tr>`;
