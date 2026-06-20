@@ -1,0 +1,508 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import FAQ from '../../components/FAQ.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import CalculatorCard from '../../components/CalculatorCard.astro';
+import { getCalculatorBySlug, getRelatedCalculators } from '../../data/calculators';
+
+const calc = getCalculatorBySlug('kredit-investasi')!;
+const related = getRelatedCalculators('kredit-investasi', 3);
+
+const faqs = [
+  { question: 'Apa itu Kredit Investasi (KI)?', answer: 'KI adalah fasilitas kredit bank untuk membiayai <strong>barang modal jangka panjang</strong> — beli mesin, bangun pabrik, kendaraan operasional, atau ekspansi usaha. Beda dengan Kredit Modal Kerja (KMK) yang untuk kebutuhan operasional harian. KI biasanya bertenor panjang (5-10 tahun), berplafon besar, dan memerlukan agunan.' },
+  { question: 'Metode bunga mana yang paling murah: flat, efektif, atau anuitas?', answer: '<strong>Efektif dan anuitas jauh lebih murah dari flat</strong>. Bunga flat dihitung dari pokok awal terus-menerus, sedangkan efektif/anuitas dari sisa pokok yang menyusut. Sebagai gambaran, bunga flat ~11%/tahun kira-kira setara efektif ~20%/tahun. KI korporasi umumnya memakai efektif/anuitas. Selalu tanya bank: angka bunganya flat atau efektif?' },
+  { question: 'Berapa biaya provisi dan administrasi KI?', answer: 'Biaya <strong>provisi umumnya 1-2% dari plafon</strong> (sebagian bank sampai 1-4%), dipotong di muka saat pencairan. Biaya administrasi biasanya nominal tetap. Di luar itu masih ada biaya notaris, appraisal (penilaian agunan), asuransi, dan pengikatan agunan (APHT). Hitung semua biaya ini sebagai "total biaya kredit", bukan hanya bunga.' },
+  { question: 'Kalau dilunasi/dipercepat, kena penalti?', answer: 'Umumnya ya. Besaran penalti <strong>tidak diatur baku oleh BI/OJK</strong> sehingga berbeda tiap bank — umumnya sekitar <strong>1-3% dari sisa pokok</strong> (sebagian produk 2-5%). Untuk pelunasan sebagian, kamu bisa memilih: <strong>perpendek tenor</strong> (angsuran tetap, lunas lebih cepat, hemat bunga maksimal) atau <strong>perkecil angsuran</strong> (tenor tetap, cicilan jadi ringan). Selalu konfirmasi besaran penalti & masa berlakunya ke bank.' },
+  { question: 'Apa itu grace period (masa tenggang) di KI?', answer: 'Khas KI: pada <strong>masa konstruksi</strong> (mis. saat pabrik masih dibangun dan belum menghasilkan), debitur sering hanya diwajibkan <strong>membayar bunga saja</strong> dulu, sementara cicilan pokok ditunda sampai proyek mulai beroperasi. Ini meringankan arus kas di awal. (Fitur simulasi grace period akan ditambahkan di versi berikutnya.)' },
+];
+
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '/#tools' }, { label: calc.shortTitle }];
+---
+
+<Layout title={calc.title} description={calc.metaDescription} keywords={calc.keywords} canonical={`https://hitungcerdas.net/kalkulator/${calc.slug}`}>
+  <section class="calc-hero" style="--cat-color:#0D9488;--cat-color2:#0F766E">
+    <div class="wrap">
+      <Breadcrumb items={bcItems} />
+      <div class="calc-hero-grid">
+        <div class="calc-hero-text">
+          <div class="calc-hero-tag" style="background:#CCFBF1;color:#0F766E"><i class="ti ti-building-factory"></i> {calc.categoryLabel}</div>
+          <h1 class="calc-hero-title">{calc.h1}</h1>
+          <p class="calc-hero-sub">{calc.introText}</p>
+          <ul class="calc-hero-benefits">{calc.benefits.map(b => <li><i class="ti ti-check"></i> {b}</li>)}</ul>
+        </div>
+        <div class="calc-hero-illust">
+          <svg viewBox="0 0 200 200" fill="none">
+            <circle cx="100" cy="100" r="85" fill="rgba(255,255,255,.08)"/>
+            <rect x="48" y="95" width="104" height="55" rx="4" fill="#FFF" stroke="#FBBF24" stroke-width="2"/>
+            <path d="M62 95 V70 l16 12 V70 l16 12 V70 l16 12 V95 Z" fill="#0F766E"/>
+            <rect x="118" y="78" width="14" height="72" fill="#0D9488"/>
+            <rect x="58" y="120" width="14" height="14" rx="2" fill="#FBBF24" opacity=".85"/>
+            <rect x="82" y="120" width="14" height="14" rx="2" fill="#FBBF24" opacity=".6"/>
+            <circle cx="125" cy="66" r="6" fill="#FBBF24" opacity=".8"/>
+            <circle cx="125" cy="66" r="11" fill="none" stroke="#FBBF24" stroke-width="1.5" opacity=".4"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+
+  <section class="calc-section">
+    <div class="wrap">
+      <div class="calc-card">
+        <div class="calc-card-hdr">
+          <div class="calc-card-hdr-ic" style="background:linear-gradient(135deg,#0D9488 0%,#0F766E 100%)"><i class="ti ti-building-factory"></i></div>
+          <div><h2 class="calc-card-title">Kalkulator Kredit Investasi 2026</h2><p class="calc-card-sub">Simulasi cicilan KI bank: anuitas / efektif / flat + biaya & pelunasan sebagian</p></div>
+        </div>
+
+        <div class="calc-grid">
+          <div class="calc-input">
+            <div class="field"><label>Plafon Pinjaman</label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span>
+                <input type="text" id="plafon" class="has-prefix" value="500.000.000" inputmode="numeric" /></div>
+            </div>
+
+            <div class="field">
+              <label>Tenor Pinjaman</label>
+              <select id="tenor">
+                <option value="12">12 bulan (1 thn)</option>
+                <option value="24">24 bulan (2 thn)</option>
+                <option value="36">36 bulan (3 thn)</option>
+                <option value="48">48 bulan (4 thn)</option>
+                <option value="60" selected>60 bulan (5 thn)</option>
+                <option value="72">72 bulan (6 thn)</option>
+                <option value="84">84 bulan (7 thn)</option>
+                <option value="96">96 bulan (8 thn)</option>
+                <option value="120">120 bulan (10 thn)</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label>Metode Perhitungan Bunga</label>
+              <select id="metode">
+                <option value="anuitas" selected>Anuitas (cicilan tetap — umum KI)</option>
+                <option value="efektif">Efektif (sliding — cicilan menurun)</option>
+                <option value="flat">Flat (bunga dari pokok awal)</option>
+              </select>
+              <p class="hint" style="margin-top:6px">Anuitas: cicilan tetap. Efektif: cicilan menurun. Flat: terlihat murah tapi paling mahal.</p>
+            </div>
+
+            <div class="field"><label>Suku Bunga per Tahun</label>
+              <div class="input-wrap"><span class="input-suffix">%/thn</span>
+                <input type="number" id="bunga" class="has-suffix" value="11" min="5" max="24" step="0.1" /></div>
+              <p class="hint" style="margin-top:6px">💡 KI komersial umumnya ~9-13% efektif (BI Rate Juni 2026: 5,75%). Sesuaikan penawaran bank.</p>
+            </div>
+
+            <div class="field"><label>Biaya Provisi</label>
+              <div class="input-wrap"><span class="input-suffix">% plafon</span>
+                <input type="number" id="provisi" class="has-suffix" value="1" min="0" max="5" step="0.1" /></div>
+            </div>
+
+            <div class="field"><label>Biaya Administrasi</label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span>
+                <input type="text" id="admin" class="has-prefix" value="500.000" inputmode="numeric" /></div>
+            </div>
+
+            <div class="field-divider"><span><i class="ti ti-cash-banknote"></i> Simulasi Pelunasan Sebagian <span class="hint">(opsional)</span></span></div>
+
+            <div class="field"><label>Jumlah Pelunasan</label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span>
+                <input type="text" id="pelJumlah" class="has-prefix" value="0" inputmode="numeric" /></div>
+              <p class="hint" style="margin-top:6px">Isi 0 jika tidak ada simulasi pelunasan.</p>
+            </div>
+
+            <div class="calc-grid-2">
+              <div class="field"><label>Di Bulan Ke-</label>
+                <div class="input-wrap"><span class="input-suffix">bln</span>
+                  <input type="number" id="pelBulan" class="has-suffix" value="24" min="1" step="1" /></div>
+              </div>
+              <div class="field"><label>Penalti Pelunasan</label>
+                <div class="input-wrap"><span class="input-suffix">% dilunasi</span>
+                  <input type="number" id="penalti" class="has-suffix" value="2" min="0" max="10" step="0.1" /></div>
+              </div>
+            </div>
+
+            <div class="calc-action-bar">
+              <button type="button" class="btn-hitung" id="btnHitung"><i class="ti ti-calculator"></i> Hitung Sekarang</button>
+              <button type="button" class="btn-reset" id="btnReset"><i class="ti ti-refresh"></i> Reset</button>
+            </div>
+          </div>
+
+          <div class="calc-output">
+            <div class="result-placeholder" id="placeholder">
+              <i class="ti ti-building-factory result-placeholder-icon"></i>
+              <div class="result-placeholder-title">Simulasi KI akan muncul di sini</div>
+              <div class="result-placeholder-desc">Isi plafon, tenor, bunga, metode, lalu klik <strong>"Hitung Sekarang"</strong>.</div>
+            </div>
+
+            <div class="result-wrapper" id="results">
+              <div class="result-main">
+                <div class="result-label">Angsuran per Bulan</div>
+                <div class="result-value" id="angsuran">Rp 0</div>
+                <div class="result-meta"><i class="ti ti-info-circle"></i> <span id="metodeLabel">Anuitas · 11%/thn · 60 bln</span></div>
+              </div>
+
+              <div class="result-grid">
+                <div class="result-item"><div class="result-item-label">Total Bunga</div><div class="result-item-value result-warn" id="totalBunga">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">Total Bayar (pokok+bunga)</div><div class="result-item-value" id="totalBayar">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">Total Biaya Kredit</div><div class="result-item-value result-warn" id="totalBiaya">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">Dana Cair Bersih</div><div class="result-item-value" id="danaCair">Rp 0</div></div>
+              </div>
+
+              <div id="effInfo" style="display:none;margin-top:10px;padding:11px 13px;border-radius:12px;background:#FEF3C7;border:1px solid #FDE68A;font-size:12.5px;line-height:1.55;color:#92400E"></div>
+
+              <div id="biayaInfo" style="margin-top:10px;padding:11px 13px;border-radius:12px;background:#F0FDFA;border:1px solid #99F6E4;font-size:12.5px;line-height:1.55;color:#115E59"></div>
+
+              <div class="adv-section">
+                <div class="adv-toggle"><span><i class="ti ti-list-details"></i>&nbsp; Jadwal Amortisasi (5 Bulan Pertama)</span><i class="ti ti-chevron-down chev"></i></div>
+                <div class="adv-content">
+                  <table class="compare-table">
+                    <thead><tr><th>Bln</th><th class="right">Pokok</th><th class="right">Bunga</th><th class="right">Sisa Pokok</th></tr></thead>
+                    <tbody id="amortBody"></tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div class="adv-section" id="pelSection" style="display:none">
+                <div class="adv-toggle"><span><i class="ti ti-cash-banknote"></i>&nbsp; Hasil Simulasi Pelunasan Sebagian</span><i class="ti ti-chevron-down chev"></i></div>
+                <div class="adv-content" id="pelBox"></div>
+              </div>
+
+              <div class="export-row">
+                <button type="button" class="export-btn img" id="exportImg"><i class="ti ti-photo-down"></i><span>Save Image</span></button>
+                <button type="button" class="export-btn wa" id="exportWa"><i class="ti ti-brand-whatsapp"></i><span>Share WA</span></button>
+                <button type="button" class="export-btn pdf" id="exportPdf"><i class="ti ti-printer"></i><span>Print/PDF</span></button>
+                <button type="button" class="export-btn copy" id="exportCopy"><i class="ti ti-copy"></i><span>Copy Teks</span></button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="content-section">
+    <div class="wrap-text">
+      <h2>Memahami Kredit Investasi (KI) Sebelum Mengajukan</h2>
+      <p>Kredit Investasi adalah fasilitas pembiayaan bank untuk barang modal jangka panjang: membeli mesin produksi, membangun pabrik atau gudang, kendaraan operasional, hingga ekspansi usaha. Berbeda dengan Kredit Modal Kerja (KMK) yang membiayai kebutuhan operasional harian, KI bertenor panjang dan berplafon besar. Sebelum ekspansi dengan utang, pastikan arus kas usaha sehat — bandingkan juga dengan <a href="/kalkulator/investasi">simulasi investasi</a> dan siapkan <a href="/kalkulator/dana-darurat">dana darurat</a> usaha.</p>
+
+      <h3>Flat vs Efektif vs Anuitas — Jangan Tertukar</h3>
+      <ul>
+        <li><strong>Flat</strong>: bunga dihitung dari pokok awal sepanjang tenor. Cicilan tetap, persentase terlihat kecil, tapi biaya riilnya jauh lebih tinggi (flat ~11% bisa setara efektif ~20%).</li>
+        <li><strong>Efektif (sliding)</strong>: bunga dari sisa pokok yang menyusut. Cicilan menurun tiap bulan. Lebih adil dan lebih murah.</li>
+        <li><strong>Anuitas</strong>: cicilan tetap seperti flat, tapi bunga dihitung efektif dari sisa pokok. Komposisi pokok-bunga berubah (bunga besar di awal). Umum dipakai KI.</li>
+      </ul>
+
+      <h3>Biaya-biaya yang Sering Terlupa</h3>
+      <ul>
+        <li><strong>Provisi</strong> — umumnya 1-2% dari plafon, dipotong di muka saat pencairan.</li>
+        <li><strong>Administrasi</strong> — nominal tetap.</li>
+        <li><strong>Eksternal</strong> — notaris, appraisal agunan, asuransi, dan pengikatan agunan (APHT). Bisa menambah 2-5% dari plafon.</li>
+        <li><strong>Penalti pelunasan dipercepat</strong> — umumnya 1-3% dari sisa pokok, berbeda tiap bank.</li>
+      </ul>
+
+      <h3>Pelunasan Sebagian: Perpendek Tenor atau Perkecil Angsuran?</h3>
+      <ul>
+        <li><strong>Perpendek tenor</strong> — angsuran tetap, kredit lunas lebih cepat. Hemat bunga paling besar. Cocok jika arus kas kuat.</li>
+        <li><strong>Perkecil angsuran</strong> — tenor tetap, cicilan bulanan jadi lebih ringan. Cocok jika ingin meringankan beban kas bulanan.</li>
+      </ul>
+
+      <div class="cta-box">
+        <h3>Disclaimer Penting</h3>
+        <p>Kalkulator ini alat bantu simulasi &amp; edukasi. Hasil bersifat estimasi. Suku bunga, provisi, administrasi, penalti, dan ketentuan aktual ditentukan masing-masing bank berdasarkan analisis kelayakan &amp; profil kredit usaha kamu. Simulasi pelunasan sebagian mengasumsikan skema re-amortisasi anuitas (umum dipakai bank). HitungCerdas <strong>tidak berafiliasi</strong> dengan bank manapun dan tidak menerima komisi. Selalu konsultasi langsung ke bank sebelum mengambil keputusan kredit.</p>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+  <FAQ title="Pertanyaan Seputar Kredit Investasi" items={faqs} />
+
+  <section class="section"><div class="wrap">
+    <div class="section-hdr"><div class="section-eyebrow">Kalkulator Lainnya</div><h2 class="section-title">Hitung Juga yang Lain</h2></div>
+    <div class="related-grid">{related.map(c => <CalculatorCard calc={c} />)}</div>
+  </div></section>
+
+  <p style="text-align:center;font-size:.85rem;color:#64748b;margin:1.2rem auto;max-width:600px;">
+    📅 Data &amp; acuan diperbarui <strong>Juni 2026</strong> · Sumber: Bank Indonesia, OJK
+  </p>
+
+<style is:global>
+  .field-divider{display:flex;align-items:center;gap:8px;margin:18px 0 4px;font-size:13px;font-weight:700;color:var(--text,#0A2540)}
+  .field-divider span{display:flex;align-items:center;gap:7px}
+  .field-divider i{color:#0D9488}
+  .field-divider::after{content:"";flex:1;height:1px;background:#E5EAF1;margin-left:4px}
+  .calc-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media (max-width:520px){.calc-grid-2{grid-template-columns:1fr}}
+  .pel-opt{padding:12px 13px;border-radius:12px;border:1px solid #E5EAF1;margin-top:10px}
+  .pel-opt.a{background:#F0FDF4;border-color:#BBF7D0}
+  .pel-opt.b{background:#EFF6FF;border-color:#BFDBFE}
+  .pel-opt-hdr{font-size:13px;font-weight:700;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+  .pel-opt.a .pel-opt-hdr{color:#15803D}
+  .pel-opt.b .pel-opt-hdr{color:#1D4ED8}
+  .pel-opt-row{display:flex;justify-content:space-between;font-size:12.5px;line-height:1.7;color:var(--text-mute,#475569)}
+  .pel-opt-row b{color:var(--text,#0A2540);font-weight:700}
+  .pel-pre{font-size:12.5px;line-height:1.7;color:var(--text-mute,#475569);margin-bottom:4px}
+  .pel-pre .pr{display:flex;justify-content:space-between}
+  .pel-pre b{color:var(--text,#0A2540)}
+</style>
+</Layout>
+
+<script is:inline>
+  (function() {
+    function ready(fn) { if (window.HC && window.html2canvas) fn(); else setTimeout(() => ready(fn), 100); }
+    ready(() => {
+      const $ = id => document.getElementById(id);
+      const els = {
+        plafon: $('plafon'), tenor: $('tenor'), metode: $('metode'), bunga: $('bunga'),
+        provisi: $('provisi'), admin: $('admin'),
+        pelJumlah: $('pelJumlah'), pelBulan: $('pelBulan'), penalti: $('penalti'),
+      };
+      [els.plafon, els.admin, els.pelJumlah].forEach(el => el.addEventListener('input', HC.fmtInput));
+      document.querySelectorAll('.adv-toggle').forEach(t => t.addEventListener('click', () => t.parentElement.classList.toggle('open')));
+
+      function calcFlat(pokok, bungaThn, tenor) {
+        const bungaBln = bungaThn / 12 / 100;
+        const cicilanPokok = pokok / tenor;
+        const cicilanBunga = pokok * bungaBln;
+        const cicilan = cicilanPokok + cicilanBunga;
+        return { cicilan, totalBunga: cicilanBunga * tenor, totalBayar: cicilan * tenor };
+      }
+
+      function calcEfektif(pokok, bungaThn, tenor) {
+        const bungaBln = bungaThn / 12 / 100;
+        const cicilanPokok = pokok / tenor;
+        let sisa = pokok, totalBunga = 0, totalBayar = 0, firstCicilan = 0;
+        const rows = [];
+        for (let i = 1; i <= tenor; i++) {
+          const bunga = sisa * bungaBln;
+          const cicilan = cicilanPokok + bunga;
+          if (i === 1) firstCicilan = cicilan;
+          totalBunga += bunga; totalBayar += cicilan;
+          rows.push({ bln: i, pokok: cicilanPokok, bunga, sisa: sisa - cicilanPokok });
+          sisa -= cicilanPokok;
+        }
+        return { cicilan: firstCicilan, totalBunga, totalBayar, rows };
+      }
+
+      function anuitasCicilan(pokok, bungaBln, tenor) {
+        if (bungaBln <= 0) return pokok / tenor;
+        return (pokok * bungaBln) / (1 - Math.pow(1 + bungaBln, -tenor));
+      }
+
+      function calcAnuitas(pokok, bungaThn, tenor) {
+        const bungaBln = bungaThn / 12 / 100;
+        const cicilan = anuitasCicilan(pokok, bungaBln, tenor);
+        const totalBayar = cicilan * tenor;
+        const totalBunga = totalBayar - pokok;
+        let sisa = pokok;
+        const rows = [];
+        for (let i = 1; i <= tenor; i++) {
+          const bunga = sisa * bungaBln;
+          const cicPokok = cicilan - bunga;
+          rows.push({ bln: i, pokok: cicPokok, bunga, sisa: sisa - cicPokok });
+          sisa -= cicPokok;
+        }
+        return { cicilan, totalBunga, totalBayar, rows };
+      }
+
+      let lastCalc = null;
+
+      function hitung() {
+        const pokok = HC.parseRp(els.plafon.value);
+        const tenor = parseInt(els.tenor.value);
+        const metode = els.metode.value;
+        const bunga = parseFloat(els.bunga.value);
+        const provPct = parseFloat(els.provisi.value) || 0;
+        const adm = HC.parseRp(els.admin.value);
+        const pelJumlah = HC.parseRp(els.pelJumlah.value);
+        const pelBulan = parseInt(els.pelBulan.value) || 0;
+        const penaltiPct = parseFloat(els.penalti.value) || 0;
+
+        if (pokok === 0) { HC.toast('Masukkan plafon pinjaman dulu', 'error'); return; }
+        if (!bunga || bunga <= 0) { HC.toast('Masukkan suku bunga', 'error'); return; }
+
+        let result;
+        if (metode === 'flat') result = calcFlat(pokok, bunga, tenor);
+        else if (metode === 'efektif') result = calcEfektif(pokok, bunga, tenor);
+        else result = calcAnuitas(pokok, bunga, tenor);
+
+        const i = bunga / 12 / 100;
+        const provisi = provPct / 100 * pokok;
+        const biayaMuka = provisi + adm;
+        const danaCair = pokok - biayaMuka;
+        const totalBiayaKredit = biayaMuka + result.totalBunga;
+        const metodeLabel = { flat: 'Flat', efektif: 'Efektif', anuitas: 'Anuitas' }[metode];
+
+        // Hero
+        let heroVal, heroMeta;
+        if (metode === 'efektif') {
+          const angN = (pokok / tenor) + (pokok / tenor) * i;
+          heroVal = HC.fmt(result.cicilan);
+          heroMeta = `${metodeLabel} \u00b7 ${bunga}%/thn \u00b7 ${tenor} bln \u00b7 menurun s/d ${HC.fmt(angN)}`;
+        } else {
+          heroVal = HC.fmt(result.cicilan);
+          heroMeta = `${metodeLabel} \u00b7 ${bunga}%/thn \u00b7 ${tenor} bln`;
+        }
+        $('angsuran').textContent = heroVal;
+        $('metodeLabel').textContent = heroMeta;
+        $('totalBunga').textContent = HC.fmt(result.totalBunga);
+        $('totalBayar').textContent = HC.fmt(result.totalBayar);
+        $('totalBiaya').textContent = HC.fmt(totalBiayaKredit);
+        $('danaCair').textContent = HC.fmt(danaCair);
+
+        // Metode note
+        const effEl = $('effInfo');
+        effEl.style.display = '';
+        if (metode === 'flat') {
+          const efSetara = bunga * 1.8;
+          effEl.innerHTML = `\u26a0\ufe0f Bunga <b>${bunga}%/thn flat</b> kira-kira setara <b>~${efSetara.toFixed(1)}% efektif/tahun</b>. Cicilan flat terlihat ringan, tapi bunga dihitung dari pokok awal terus \u2014 biaya riilnya jauh lebih tinggi. Minta bank simulasi versi <b>efektif/anuitas</b> untuk perbandingan adil.`;
+        } else if (metode === 'anuitas') {
+          effEl.innerHTML = `\u2705 Anuitas: cicilan tetap <b>${HC.fmt(result.cicilan)}/bln</b>, bunga dihitung efektif dari sisa pokok. Metode paling umum untuk Kredit Investasi.`;
+        } else {
+          effEl.innerHTML = `\u2139\ufe0f Efektif (sliding): bunga dari sisa pokok, cicilan menurun tiap bulan. Beban di awal lebih besar, makin ringan seiring pokok menyusut.`;
+        }
+
+        // Biaya info
+        $('biayaInfo').innerHTML = `\ud83d\udcb0 Provisi ${provPct}% = <b>${HC.fmt(provisi)}</b> + Admin <b>${HC.fmt(adm)}</b> = biaya muka <b>${HC.fmt(biayaMuka)}</b>. Jika dipotong dari pencairan, dana yang kamu terima \u2248 <b>${HC.fmt(danaCair)}</b>. Belum termasuk notaris, appraisal, asuransi & pengikatan agunan.`;
+
+        // Amortisasi 5 bln
+        let amortHtml = '';
+        if (result.rows) {
+          result.rows.slice(0, 5).forEach(r => {
+            amortHtml += `<tr><td>${r.bln}</td><td class="right">${HC.fmt(r.pokok)}</td><td class="right">${HC.fmt(r.bunga)}</td><td class="right">${HC.fmt(Math.max(0, r.sisa))}</td></tr>`;
+          });
+        } else {
+          const cicPokok = pokok / tenor;
+          const cicBunga = pokok * i;
+          let sisa = pokok;
+          for (let k = 1; k <= Math.min(5, tenor); k++) {
+            sisa -= cicPokok;
+            amortHtml += `<tr><td>${k}</td><td class="right">${HC.fmt(cicPokok)}</td><td class="right">${HC.fmt(cicBunga)}</td><td class="right">${HC.fmt(Math.max(0, sisa))}</td></tr>`;
+          }
+        }
+        $('amortBody').innerHTML = amortHtml;
+
+        // Pelunasan sebagian
+        let pel = null;
+        if (pelJumlah > 0 && pelBulan >= 1 && pelBulan < tenor) {
+          let sisaPokok;
+          if (result.rows) sisaPokok = Math.max(0, result.rows[pelBulan - 1].sisa);
+          else sisaPokok = pokok - pelBulan * (pokok / tenor);
+          const sisaBln = tenor - pelBulan;
+          const aCur = anuitasCicilan(sisaPokok, i, sisaBln);
+          const Bnew = Math.max(0, sisaPokok - pelJumlah);
+          const penalti = penaltiPct / 100 * pelJumlah;
+
+          let nNew = 0;
+          if (Bnew > 0) {
+            if (i > 0) nNew = Math.ceil(-Math.log(1 - Bnew * i / aCur) / Math.log(1 + i));
+            else nNew = Math.ceil(Bnew / aCur);
+          }
+          const bungaNoPrepay = aCur * sisaBln - sisaPokok;
+          const bungaA = Bnew > 0 ? (aCur * nNew - Bnew) : 0;
+          const hematBunga = Math.max(0, bungaNoPrepay - bungaA);
+          const aNew = Bnew > 0 ? anuitasCicilan(Bnew, i, sisaBln) : 0;
+
+          let html = `<div class="pel-pre">`;
+          html += `<div class="pr"><span>Sisa pokok sebelum (akhir bln ${pelBulan})</span><b>${HC.fmt(sisaPokok)}</b></div>`;
+          html += `<div class="pr"><span>Jumlah pelunasan</span><b>${HC.fmt(pelJumlah)}</b></div>`;
+          html += `<div class="pr"><span>Penalti ${penaltiPct}% \u00d7 pelunasan</span><b>${HC.fmt(penalti)}</b></div>`;
+          html += `<div class="pr"><span>Sisa pokok setelah pelunasan</span><b>${HC.fmt(Bnew)}</b></div>`;
+          html += `</div>`;
+          if (Bnew > 0) {
+            html += `<div class="pel-opt a"><div class="pel-opt-hdr"><i class="ti ti-clock-bolt"></i> Opsi A \u2014 Perpendek Tenor</div>`;
+            html += `<div class="pel-opt-row"><span>Angsuran (tetap)</span><b>${HC.fmt(aCur)}/bln</b></div>`;
+            html += `<div class="pel-opt-row"><span>Sisa tenor</span><b>${nNew} bln</b> <span style="color:#15803D">(dari ${sisaBln} bln)</span></div>`;
+            html += `<div class="pel-opt-row"><span>Estimasi hemat bunga</span><b style="color:#15803D">${HC.fmt(hematBunga)}</b></div></div>`;
+            html += `<div class="pel-opt b"><div class="pel-opt-hdr"><i class="ti ti-arrow-down"></i> Opsi B \u2014 Perkecil Angsuran</div>`;
+            html += `<div class="pel-opt-row"><span>Tenor (tetap)</span><b>${sisaBln} bln</b></div>`;
+            html += `<div class="pel-opt-row"><span>Angsuran baru</span><b style="color:#1D4ED8">${HC.fmt(aNew)}/bln</b> <span style="color:#64748b">(dari ${HC.fmt(aCur)})</span></div></div>`;
+          } else {
+            html += `<div class="pel-opt a"><div class="pel-opt-hdr"><i class="ti ti-circle-check"></i> Kredit LUNAS</div>`;
+            html += `<div class="pel-opt-row"><span>Pelunasan menutup seluruh sisa pokok. Total ditebus</span><b>${HC.fmt(sisaPokok + penalti)}</b></div>`;
+            html += `<div class="pel-opt-row"><span>(sisa pokok ${HC.fmt(sisaPokok)} + penalti ${HC.fmt(penalti)})</span><b></b></div></div>`;
+          }
+          html += `<p style="font-size:11px;color:var(--text-mute,#64748b);margin-top:8px;line-height:1.5">Simulasi memakai skema re-amortisasi anuitas. Hemat bunga belum dikurangi penalti ${HC.fmt(penalti)}. Besaran penalti aktual berbeda tiap bank.</p>`;
+          $('pelBox').innerHTML = html;
+          $('pelSection').style.display = '';
+          $('pelSection').classList.add('open');
+          pel = { sisaPokok, pelJumlah, penalti, Bnew, sisaBln, aCur, nNew, hematBunga, aNew };
+        } else {
+          $('pelSection').style.display = 'none';
+        }
+
+        lastCalc = { pokok, tenor, metode, metodeLabel, bunga, provPct, provisi, adm, biayaMuka, danaCair, cicilan: result.cicilan, totalBunga: result.totalBunga, totalBayar: result.totalBayar, totalBiayaKredit, pel };
+        $('placeholder').style.display = 'none';
+        $('results').classList.add('show');
+        $('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        HC.toast('Simulasi Kredit Investasi berhasil dihitung!');
+      }
+
+      function reset() {
+        els.plafon.value = '500.000.000'; els.tenor.value = '60'; els.metode.value = 'anuitas';
+        els.bunga.value = '11'; els.provisi.value = '1'; els.admin.value = '500.000';
+        els.pelJumlah.value = '0'; els.pelBulan.value = '24'; els.penalti.value = '2';
+        var ei = $('effInfo'); if (ei) ei.style.display = 'none';
+        $('pelSection').style.display = 'none';
+        $('placeholder').style.display = ''; $('results').classList.remove('show');
+        lastCalc = null; HC.toast('Form direset', 'info');
+      }
+
+      function buildReport() {
+        if (!lastCalc) return null;
+        const c = lastCalc;
+        let insight = `Metode ${c.metodeLabel}, bunga ${c.bunga}%/thn, tenor ${c.tenor} bln. Total biaya kredit (provisi+admin+bunga) ${HC.fmt(c.totalBiayaKredit)}.`;
+        if (c.pel && c.pel.Bnew > 0) {
+          insight += ` Pelunasan sebagian ${HC.fmt(c.pel.pelJumlah)}: perpendek tenor jadi ${c.pel.nNew} bln (hemat bunga ~${HC.fmt(c.pel.hematBunga)}) atau perkecil angsuran jadi ${HC.fmt(c.pel.aNew)}/bln.`;
+        }
+        insight += ' Estimasi \u2014 konfirmasi ke bank.';
+
+        const results = [
+          { label: 'Angsuran/bln', value: HC.fmt(c.cicilan), highlight: true },
+          { label: 'Total Bunga', value: HC.fmt(c.totalBunga) },
+          { label: 'Total Bayar', value: HC.fmt(c.totalBayar) },
+          { label: 'Total Biaya Kredit', value: HC.fmt(c.totalBiayaKredit), highlight: true },
+          { label: 'Dana Cair Bersih', value: HC.fmt(c.danaCair) },
+        ];
+
+        return HC.buildReportCard({
+          title: '\ud83c\udfed Simulasi Kredit Investasi',
+          color: '#0D9488', color2: '#0F766E',
+          heroLabel: 'Angsuran per Bulan',
+          heroValue: HC.fmt(c.cicilan),
+          heroSubtext: `${c.metodeLabel} \u00b7 ${c.bunga}%/thn \u00b7 ${c.tenor} bulan`,
+          inputs: [
+            { label: '\ud83c\udfe6 Plafon', value: HC.fmt(c.pokok) },
+            { label: '\ud83d\udcc5 Tenor', value: c.tenor + ' bulan' },
+            { label: '\ud83d\udcca Metode', value: c.metodeLabel },
+            { label: '\ud83d\udcb0 Provisi+Admin', value: HC.fmt(c.biayaMuka) },
+          ],
+          results,
+          insight, slug: 'kredit-investasi',
+        });
+      }
+
+      function summaryText() {
+        if (!lastCalc) return '';
+        const c = lastCalc;
+        let t = `\ud83c\udfed *Simulasi Kredit Investasi - HitungCerdas*\n\nPlafon: ${HC.fmt(c.pokok)}\nTenor: ${c.tenor} bulan\nMetode: ${c.metodeLabel}\nBunga: ${c.bunga}%/thn\n\n\ud83d\udcb0 *Angsuran/bln: ${HC.fmt(c.cicilan)}*\n\ud83d\udcca Total Bunga: ${HC.fmt(c.totalBunga)}\n\ud83d\udcb5 Total Bayar: ${HC.fmt(c.totalBayar)}\n\ud83e\uddfe Total Biaya Kredit: ${HC.fmt(c.totalBiayaKredit)}\n\ud83c\udfe6 Dana Cair Bersih: ${HC.fmt(c.danaCair)}`;
+        if (c.pel && c.pel.Bnew > 0) {
+          t += `\n\n\u2702\ufe0f Pelunasan ${HC.fmt(c.pel.pelJumlah)}:\nA) Perpendek tenor: ${c.pel.nNew} bln (hemat bunga ~${HC.fmt(c.pel.hematBunga)})\nB) Perkecil angsuran: ${HC.fmt(c.pel.aNew)}/bln`;
+        }
+        t += `\n\nHitung di: https://hitungcerdas.net/kalkulator/kredit-investasi`;
+        return t;
+      }
+
+      $('btnHitung').addEventListener('click', hitung);
+      els.metode.addEventListener('change', () => { if (lastCalc) hitung(); });
+      $('btnReset').addEventListener('click', reset);
+      $('exportImg').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToImage(c, 'kredit-investasi-' + Date.now()); });
+      $('exportWa').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.shareWhatsApp(c, summaryText(), 'kredit-investasi'); });
+      $('exportPdf').addEventListener('click', () => { if (!lastCalc) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToPDF(); });
+      $('exportCopy').addEventListener('click', () => { if (!lastCalc) { HC.toast('Hitung dulu', 'error'); return; } HC.copyText(summaryText(), 'Tersalin!'); });
+    });
+  })();
+</script>

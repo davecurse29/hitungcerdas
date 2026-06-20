@@ -251,6 +251,32 @@ export const CALCULATORS: CalculatorMeta[] = [
     ],
   },
 
+  {
+    slug: 'kredit-investasi',
+    title: 'Kalkulator Kredit Investasi 2026 — Simulasi Cicilan KI, Provisi & Pelunasan Sebagian',
+    shortTitle: 'Kalkulator Kredit Investasi',
+    category: 'keuangan',
+    categoryLabel: 'Kalkulator Keuangan',
+    tag: 'Usaha',
+    tagColor: '#0F766E',
+    tagBg: '#CCFBF1',
+    iconColor: '#0D9488',
+    iconBg: '#CCFBF1',
+    iconSvg: 'kpr',
+    description: 'Simulasi cicilan kredit investasi bank: anuitas/efektif/flat, provisi, admin & pelunasan sebagian.',
+    metaDescription: 'Kalkulator Kredit Investasi (KI) 2026: hitung angsuran metode anuitas/efektif/flat, biaya provisi & administrasi, total biaya kredit, dan simulasi pelunasan sebagian (perpendek tenor vs perkecil angsuran) lengkap estimasi penalti.',
+    keywords: ['kalkulator kredit investasi', 'simulasi kredit investasi', 'cicilan ki bank', 'bunga anuitas efektif flat', 'pelunasan sebagian kredit', 'provisi kredit investasi'],
+    h1: 'Kalkulator Kredit Investasi 2026',
+    introText: 'Simulasi fasilitas Kredit Investasi (KI) bank untuk modal usaha jangka panjang — beli mesin, bangun pabrik, atau ekspansi usaha. Hitung angsuran metode anuitas/efektif/flat, biaya provisi & administrasi, total biaya kredit sebenarnya, plus simulasi pelunasan sebagian (perpendek tenor atau perkecil angsuran) lengkap dengan estimasi penalti.',
+    benefits: [
+      'Metode Anuitas / Efektif / Flat — semua bisa diedit',
+      'Hitung provisi, admin & total biaya kredit',
+      'Simulasi pelunasan sebagian + estimasi penalti',
+      'Pilih: perpendek tenor atau perkecil angsuran',
+      'Scorecard share-ready (WA/IG/PDF)',
+    ],
+  },
+
   // ═══════════════ BISNIS ═══════════════
   {
     slug: 'invoice-generator',
