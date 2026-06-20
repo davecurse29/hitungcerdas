@@ -4,7 +4,7 @@ import Breadcrumb from '../../components/Breadcrumb.astro';
 import AdSlot from '../../components/AdSlot.astro';
 import ArticleSchema from '../../components/ArticleSchema.astro';
 const datePublished = '2026-06-08';
-const dateModified = '2026-06-11';
+const dateModified = '2026-06-20';
 const today = new Date(datePublished).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
 const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'Cara Hitung Zakat Mal' }];
 ---
@@ -28,9 +28,9 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog'
   </section>
   <AdSlot format="horizontal" />
   <article class="content-section"><div class="wrap-text">
-    <p class="lead">Zakat mal wajib bagi muslim yang harta-nya capai nisab <strong>85 gram emas</strong> (~Rp 102 juta di 2026) dan sudah <strong>1 tahun (haul)</strong>. Tarif: <strong>2.5%</strong>. Mari hitung untuk berbagai jenis harta.</p>
+    <p class="lead">Zakat mal wajib bagi muslim yang harta-nya capai nisab <strong>85 gram emas</strong> (~Rp 229 juta di 2026, mengikuti harga emas terkini) dan sudah <strong>1 tahun (haul)</strong>. Tarif: <strong>2.5%</strong>. Mari hitung untuk berbagai jenis harta.</p>
     <h2>1. Syarat Wajib Zakat Mal</h2>
-    <ul class="info-list"><li><strong>Muslim</strong>: non-muslim tidak wajib</li><li><strong>Harta milik penuh</strong>: bukan kredit, bukan amanah</li><li><strong>Nisab</strong>: minimum 85 gram emas (~Rp 102 juta di 2026, asumsi Rp 1.2jt/gram)</li><li><strong>Haul</strong>: harta sudah disimpan minimum 1 tahun (kecuali emas trading)</li><li><strong>Bersifat berkembang</strong>: bukan pakai harian (rumah huni, mobil pakai, dll bukan obyek zakat)</li></ul>
+    <ul class="info-list"><li><strong>Muslim</strong>: non-muslim tidak wajib</li><li><strong>Harta milik penuh</strong>: bukan kredit, bukan amanah</li><li><strong>Nisab</strong>: minimum 85 gram emas (~Rp 229 juta di 2026, asumsi ~Rp 2,7jt/gram acuan Antam)</li><li><strong>Haul</strong>: harta sudah disimpan minimum 1 tahun (kecuali emas trading)</li><li><strong>Bersifat berkembang</strong>: bukan pakai harian (rumah huni, mobil pakai, dll bukan obyek zakat)</li></ul>
     <h2>2. Tarif Zakat Mal</h2>
     <div class="formula-box"><p><strong>Zakat Mal = 2.5% × Harta yang Wajib Dizakati</strong></p></div>
     <h2>3. Jenis Harta yang Dizakati</h2>
@@ -40,9 +40,9 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog'
     <AdSlot format="horizontal" />
     <h2>5. Simulasi Zakat Mal</h2>
     <h3>Kasus A: Tabungan + Emas</h3>
-    <p>Tabungan Rp 80 juta + Emas 50 gram (~Rp 60 juta) = Total Rp 140 juta. Di atas nisab Rp 102 juta. Zakat: 2.5% × Rp 140 juta = <strong>Rp 3.500.000</strong>.</p>
+    <p>Tabungan Rp 150 juta + Emas 50 gram (~Rp 135 juta) = Total Rp 285 juta. Di atas nisab ~Rp 229 juta. Zakat: 2,5% × Rp 285 juta = <strong>Rp 7.125.000</strong>.</p>
     <h3>Kasus B: Saham + Reksa Dana</h3>
-    <p>Saham Rp 50 juta + Reksa Dana Rp 70 juta = Rp 120 juta. Di atas nisab. Zakat: 2.5% × Rp 120 juta = <strong>Rp 3.000.000</strong>.</p>
+    <p>Saham Rp 150 juta + Reksa Dana Rp 120 juta = Rp 270 juta. Di atas nisab ~Rp 229 juta. Zakat: 2,5% × Rp 270 juta = <strong>Rp 6.750.000</strong>.</p>
     <h3>Kasus C: Properti Investasi</h3>
     <p>Rumah disewakan, nilai pasar Rp 800 juta. Zakat dari nilai sewa tahunan (Rp 24 juta/tahun): 2.5% × Rp 24 juta = <strong>Rp 600.000</strong>. (Bukan dari nilai properti karena untuk produktif.)</p>
     <h2>6. Cara Hitung Haul</h2>
