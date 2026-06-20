@@ -177,38 +177,54 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         $('setelahPotongan').textContent = `Setelah ${HC.fmt(hutang + makam + wasiat)} potongan`;
 
         const adaAnak = (anakL + anakP) > 0;
+        const adaAnakL = anakL > 0;
         let shares = [];
 
+        // ── Pembagian faraidh (cakupan: pasangan, ayah, ibu, anak L/P) ──
+        // Hitung fraksi dulu, lalu tangani 'asabah, radd, 'awl, & kasus Umariyyatan.
+        let frSpouse = 0, spouseName = '';
         if (pasanganHidup) {
-          if (status === 'suami') {
-            const r = adaAnak ? 1/8 : 1/4;
-            shares.push({ name: 'Istri (janda)', fraction: r, amount: bersih * r });
-          } else {
-            const r = adaAnak ? 1/4 : 1/2;
-            shares.push({ name: 'Suami (duda)', fraction: r, amount: bersih * r });
-          }
+          if (status === 'suami') { frSpouse = adaAnak ? 1/8 : 1/4; spouseName = 'Istri (janda)'; }
+          else { frSpouse = adaAnak ? 1/4 : 1/2; spouseName = 'Suami (duda)'; }
         }
-
-        if (adaIbu) {
-          const r = adaAnak ? 1/6 : 1/3;
-          shares.push({ name: 'Ibu Almarhum', fraction: r, amount: bersih * r });
-        }
+        let frIbu = adaIbu ? (adaAnak ? 1/6 : 1/3) : 0;
+        let frAyah = 0, ayahResidu = false;
         if (adaAyah) {
-          if (adaAnak) {
-            shares.push({ name: 'Ayah Almarhum', fraction: 1/6, amount: bersih / 6 });
-          } else {
-            const used = shares.reduce((s, x) => s + x.fraction, 0);
-            const r = 1 - used;
-            shares.push({ name: 'Ayah (sisa/ashabah)', fraction: r, amount: bersih * r });
-          }
+          if (adaAnakL) { frAyah = 1/6; }                       // ada anak laki → ayah 1/6 tetap
+          else if (adaAnak) { frAyah = 1/6; ayahResidu = true; } // anak perempuan saja → 1/6 + sisa
+          else { ayahResidu = true; }                            // tanpa anak → ayah 'asabah penuh
         }
+        // Anak perempuan SAJA → bagian tetap 1/2 (1 anak) atau 2/3 (2+ anak), BUKAN 'asabah
+        let frAnakP = 0;
+        if (adaAnak && !adaAnakL) { frAnakP = (anakP === 1) ? 1/2 : 2/3; }
+        // Umariyyatan: pasangan + ayah + ibu, TANPA anak → ibu 1/3 dari SISA setelah pasangan
+        if (!adaAnak && adaAyah && adaIbu) { frIbu = (1 - frSpouse) / 3; }
 
-        if (adaAnak) {
-          const used = shares.reduce((s, x) => s + x.fraction, 0);
-          const anakTotal = 1 - used;
-          const unit = anakTotal / (anakL * 2 + anakP);
-          for (let i = 0; i < anakL; i++) shares.push({ name: `Anak Laki-Laki ${i + 1}`, fraction: unit * 2, amount: bersih * unit * 2 });
-          for (let i = 0; i < anakP; i++) shares.push({ name: `Anak Perempuan ${i + 1}`, fraction: unit, amount: bersih * unit });
+        const fixedSum = frSpouse + frIbu + frAyah + frAnakP;
+        const residu = 1 - fixedSum;
+        let anakUnit = 0;
+        if (adaAnakL) {
+          anakUnit = residu / (anakL * 2 + anakP);              // anak laki+perempuan 'asabah 2:1
+        } else if (adaAyah && residu > 1e-9) {
+          frAyah += residu;                                     // ayah ambil sisa
+        } else if (residu > 1e-9) {
+          // RADD: tak ada 'asabah → sisa ke ahli waris tetap KECUALI pasangan
+          const raddBase = frIbu + frAnakP;
+          if (raddBase > 1e-9) { frIbu += residu * (frIbu / raddBase); frAnakP += residu * (frAnakP / raddBase); }
+        }
+        // 'AWL: total bagian > 1 → kurangi proporsional
+        const s = frSpouse + frIbu + frAyah + frAnakP + (adaAnakL ? residu : 0);
+        if (s > 1 + 1e-9) { frSpouse /= s; frIbu /= s; frAyah /= s; frAnakP /= s; anakUnit /= s; }
+
+        if (frSpouse > 1e-9) shares.push({ name: spouseName, fraction: frSpouse, amount: bersih * frSpouse });
+        if (frIbu > 1e-9) shares.push({ name: 'Ibu Almarhum', fraction: frIbu, amount: bersih * frIbu });
+        if (frAyah > 1e-9) shares.push({ name: ayahResidu ? 'Ayah (bagian + sisa/ashabah)' : 'Ayah Almarhum', fraction: frAyah, amount: bersih * frAyah });
+        if (adaAnakL) {
+          for (let i = 0; i < anakL; i++) shares.push({ name: `Anak Laki-Laki ${i + 1}`, fraction: anakUnit * 2, amount: bersih * anakUnit * 2 });
+          for (let i = 0; i < anakP; i++) shares.push({ name: `Anak Perempuan ${i + 1}`, fraction: anakUnit, amount: bersih * anakUnit });
+        } else if (anakP > 0) {
+          const per = frAnakP / anakP;
+          for (let i = 0; i < anakP; i++) shares.push({ name: `Anak Perempuan ${i + 1}`, fraction: per, amount: bersih * per });
         }
 
         let html = '', total = 0;
