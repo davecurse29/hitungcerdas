@@ -1,0 +1,119 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import ArticleSchema from '../../components/ArticleSchema.astro';
+const datePublished = '2026-06-20';
+const dateModified = '2026-06-20';
+const today = new Date(datePublished).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'Cara Hitung Cicilan Kredit Investasi' }];
+---
+<Layout title="Cara Hitung Cicilan Kredit Investasi 2026 — Bunga, Biaya & Pelunasan" description="Panduan lengkap Kredit Investasi (KI) bank 2026: beda flat/efektif/anuitas, biaya provisi & administrasi, grace period, dan simulasi pelunasan sebagian. Plus kalkulator KI gratis." keywords={['cara hitung kredit investasi', 'simulasi kredit investasi', 'bunga flat efektif anuitas', 'provisi kredit investasi', 'pelunasan sebagian kredit', 'kredit investasi bank 2026']} canonical="https://hitungcerdas.net/blog/cara-menghitung-kredit-investasi" ogType="article">
+  <ArticleSchema
+    headline="Cara Hitung Cicilan Kredit Investasi 2026 — Bunga, Biaya & Pelunasan"
+    description="Panduan lengkap Kredit Investasi (KI) bank 2026: beda flat/efektif/anuitas, biaya provisi & administrasi, grace period, dan simulasi pelunasan sebagian. Plus kalkulator KI gratis."
+    datePublished={datePublished}
+    dateModified={dateModified}
+    slug="cara-menghitung-kredit-investasi"
+    articleSection="Keuangan"
+    keywords={['cara hitung kredit investasi', 'simulasi kredit investasi', 'bunga flat efektif anuitas', 'provisi kredit investasi', 'pelunasan sebagian kredit']}
+    wordCount={900}
+  />
+
+  <section class="article-hero" style="--cat-color:#0D9488;--cat-color2:#0F766E">
+    <div class="wrap"><Breadcrumb items={bcItems} /><div class="article-tag">Keuangan</div>
+      <h1>Cara Hitung Cicilan Kredit Investasi 2026</h1>
+      <div class="article-meta"><span><i class="ti ti-calendar"></i> {today}</span><span><i class="ti ti-clock"></i> 8 menit baca</span><span><i class="ti ti-user"></i> Tim HitungCerdas</span></div>
+    </div>
+  </section>
+  <AdSlot format="horizontal" />
+  <article class="content-section"><div class="wrap-text">
+    <p class="lead">Mau ekspansi usaha — beli mesin, bangun pabrik, atau tambah armada — dan butuh Kredit Investasi (KI) dari bank? Sebelum tanda tangan akad, pahami dulu cara cicilannya dihitung, biaya tersembunyi yang sering terlupa, dan pilihan cerdas saat ingin melunasi lebih cepat. Artikel ini bedah tuntas, lengkap dengan contoh angka.</p>
+
+    <h2>1. Apa Itu Kredit Investasi (KI)?</h2>
+    <p>Kredit Investasi adalah fasilitas pembiayaan bank untuk membiayai <strong>barang modal jangka panjang</strong>: mesin produksi, bangunan pabrik atau gudang, kendaraan operasional, hingga ekspansi usaha. Bedanya dengan <strong>Kredit Modal Kerja (KMK)</strong> yang membiayai kebutuhan operasional harian (stok, bahan baku, gaji), KI bertenor panjang — umumnya 5 sampai 10 tahun — dengan plafon besar dan biasanya memerlukan agunan.</p>
+
+    <h2>2. Flat vs Efektif vs Anuitas — Jangan Tertukar</h2>
+    <p>Ini bagian paling sering bikin pengusaha salah hitung. Tiga metode bunga menghasilkan total biaya yang sangat berbeda meski persentasenya sama.</p>
+    <div class="formula-box">
+      <p><strong>Flat</strong>: bunga dihitung dari pokok awal, tetap sepanjang tenor.</p>
+      <p><strong>Efektif</strong>: bunga dari sisa pokok yang menyusut — cicilan menurun.</p>
+      <p><strong>Anuitas</strong>: cicilan tetap, tapi bunga dihitung efektif dari sisa pokok.</p>
+    </div>
+    <p>Contoh nyata: plafon <strong>Rp 500 juta</strong>, bunga <strong>11%/tahun</strong>, tenor <strong>60 bulan</strong>:</p>
+    <ul class="info-list">
+      <li><strong>Anuitas</strong>: cicilan tetap Rp 10.871.212/bln — total bunga <strong>Rp 152,3 juta</strong></li>
+      <li><strong>Efektif</strong>: cicilan Rp 12,9 juta turun ke Rp 8,4 juta — total bunga <strong>Rp 139,8 juta</strong></li>
+      <li><strong>Flat</strong>: cicilan tetap Rp 12,9 juta — total bunga <strong>Rp 275 juta</strong> ⚠️</li>
+    </ul>
+    <p>Lihat selisihnya: dengan angka bunga yang <em>sama</em> (11%), metode flat membebankan bunga hampir <strong>dua kali lipat</strong> dibanding efektif. Bunga flat 11% kira-kira setara <strong>~20% efektif</strong>. Karena itu, saat bank menawarkan "bunga 11%", selalu tanyakan: <strong>itu flat atau efektif?</strong> KI korporasi umumnya memakai efektif/anuitas.</p>
+
+    <AdSlot format="horizontal" />
+
+    <h2>3. Biaya-biaya yang Sering Terlupa</h2>
+    <p>Cicilan bukan satu-satunya biaya. Hitung semuanya sebagai <strong>"total biaya kredit"</strong>:</p>
+    <ul class="info-list">
+      <li><strong>Provisi</strong> — umumnya 1-2% dari plafon (sebagian bank sampai 1-4%), dipotong di muka saat pencairan. Plafon Rp 500 juta dengan provisi 1% = Rp 5 juta langsung terpotong.</li>
+      <li><strong>Administrasi</strong> — biasanya nominal tetap (ratusan ribu sampai jutaan rupiah).</li>
+      <li><strong>Biaya eksternal</strong> — notaris, appraisal (penilaian agunan), asuransi, dan pengikatan agunan (APHT). Bisa menambah 2-5% dari plafon.</li>
+    </ul>
+    <p>Akibat provisi dan admin dipotong di muka, <strong>dana yang benar-benar cair lebih kecil dari plafon</strong>. Pastikan dana cair bersih cukup untuk kebutuhan investasimu.</p>
+
+    <h2>4. Grace Period: Napas Lega Saat Konstruksi</h2>
+    <p>Fitur khas KI yang jarang dimiliki kredit lain: <strong>masa tenggang (grace period)</strong>. Saat pabrik masih dibangun dan belum menghasilkan, banyak bank mengizinkan debitur <strong>membayar bunga saja</strong> dulu, sementara cicilan pokok ditunda sampai proyek mulai beroperasi. Ini meringankan arus kas di tahap awal yang paling rawan. Tanyakan apakah bank menyediakan skema ini dan berapa lama masa tenggangnya.</p>
+
+    <h2>5. Pelunasan Sebagian: Perpendek Tenor atau Perkecil Angsuran?</h2>
+    <p>Saat usaha mulai untung dan punya dana lebih, kamu bisa melakukan <strong>pelunasan sebagian</strong> (partial prepayment). Setelah itu, ada dua pilihan:</p>
+    <ul class="info-list">
+      <li><strong>Perpendek tenor</strong> — angsuran tetap, tapi kredit lunas lebih cepat. <strong>Hemat bunga paling besar</strong>. Cocok jika arus kas kuat.</li>
+      <li><strong>Perkecil angsuran</strong> — tenor tetap, cicilan bulanan jadi lebih ringan. Cocok jika ingin melegakan beban kas bulanan.</li>
+    </ul>
+    <p>Contoh: di bulan ke-24, kamu melunasi Rp 100 juta. Sisa pokok dari Rp 332 juta turun jadi Rp 232 juta. Pilih <strong>perpendek tenor</strong> → sisa tenor 36 bulan bisa jadi ~24 bulan (hemat bunga puluhan juta). Atau <strong>perkecil angsuran</strong> → cicilan turun dari Rp 10,9 juta jadi ~Rp 7,6 juta/bulan.</p>
+    <p>Tapi hati-hati: pelunasan dipercepat sering kena <strong>penalti</strong>. Besarannya tidak diatur baku oleh BI/OJK — umumnya 1-3% dari sisa pokok, berbeda tiap bank. Selalu konfirmasi besaran penalti dan masa berlakunya sebelum memutuskan.</p>
+
+    <div class="cta-box">
+      <h3>🏭 Coba Kalkulator Kredit Investasi HitungCerdas</h3>
+      <p>Simulasikan cicilan KI-mu dalam hitungan detik:</p>
+      <ul>
+        <li>✅ Bandingkan metode anuitas, efektif & flat</li>
+        <li>✅ Hitung provisi, admin & total biaya kredit</li>
+        <li>✅ Simulasi pelunasan sebagian + estimasi penalti</li>
+        <li>✅ Pilih perpendek tenor atau perkecil angsuran</li>
+      </ul>
+      <p style="margin-top:14px"><a href="/kalkulator/kredit-investasi" class="btn btn-pri"><i class="ti ti-calculator"></i> Buka Kalkulator Kredit Investasi</a></p>
+    </div>
+
+    <h2>6. Tips Sebelum Mengajukan KI</h2>
+    <ul class="info-list">
+      <li><strong>Siapkan legalitas usaha</strong> — PT/CV, NIB, NPWP, izin usaha, dan laporan keuangan yang rapi.</li>
+      <li><strong>Jaga rekam jejak kredit (SLIK OJK)</strong> — riwayat lancar memperbesar peluang & menurunkan bunga.</li>
+      <li><strong>Bandingkan minimal 3 bank</strong> — bunga, provisi, dan penalti bisa berbeda jauh.</li>
+      <li><strong>Minta simulasi versi efektif</strong> — jangan hanya lihat angka flat yang terlihat kecil.</li>
+      <li><strong>Pastikan proyeksi arus kas</strong> — cicilan tidak boleh mencekik operasional usaha.</li>
+    </ul>
+
+    <h2>Kesimpulan</h2>
+    <p>Kredit Investasi bisa jadi pendorong ekspansi yang kuat — asal kamu paham biayanya secara utuh. Selalu hitung total biaya kredit (bukan cuma bunga), tanyakan metode bunga flat atau efektif, manfaatkan grace period saat konstruksi, dan rencanakan pelunasan sebagian dengan bijak. Keputusan kredit yang cerdas dimulai dari simulasi yang akurat.</p>
+
+    <h3>📚 Artikel & Kalkulator Terkait</h3>
+    <ul class="info-list">
+      <li><a href="/kalkulator/kredit-investasi">Kalkulator Kredit Investasi</a></li>
+      <li><a href="/kalkulator/kta">Kalkulator KTA</a></li>
+      <li><a href="/kalkulator/investasi">Kalkulator Investasi</a></li>
+      <li><a href="/kalkulator/dana-darurat">Kalkulator Dana Darurat</a></li>
+    </ul>
+  </div></article>
+  <AdSlot format="horizontal" />
+</Layout>
+<style>
+  .article-hero { background: linear-gradient(135deg, var(--cat-color) 0%, var(--cat-color2) 100%); color: #fff; padding: 20px 0 48px; }
+  .article-hero :global(.breadcrumb-item), .article-hero :global(.breadcrumb-item a) { color: rgba(255, 255, 255, .7); }
+  .article-hero :global(.breadcrumb-item a:hover) { color: var(--gold-soft); }
+  .article-hero :global(.breadcrumb-item span) { color: #fff; }
+  .article-hero :global(.breadcrumb-item i) { color: rgba(255, 255, 255, .4); }
+  .article-tag { display: inline-block; font-size: 11px; font-weight: 700; color: var(--gold-soft); letter-spacing: .1em; text-transform: uppercase; margin: 16px 0 12px; }
+  .article-hero h1 { color: #fff; font-size: clamp(26px, 3.8vw, 42px); margin: 0 0 20px; max-width: 900px; line-height: 1.2; }
+  .article-meta { display: flex; gap: 20px; color: rgba(255, 255, 255, .75); font-size: 13px; flex-wrap: wrap; }
+  .article-meta span { display: inline-flex; align-items: center; gap: 6px; }
+  .lead { font-size: 17px !important; line-height: 1.7 !important; color: var(--text) !important; padding: 20px 24px; background: var(--bg-soft); border-radius: 12px; border-left: 4px solid #0D9488; margin-bottom: 24px !important; }
+</style>
