@@ -1,0 +1,257 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import FAQ from '../../components/FAQ.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import CalculatorCard from '../../components/CalculatorCard.astro';
+import { getCalculatorBySlug, getRelatedCalculators } from '../../data/calculators';
+
+const calc = getCalculatorBySlug('gadai-syariah')!;
+const related = getRelatedCalculators('gadai-syariah', 3);
+
+const faqs = [
+  { question: 'Apa itu gadai syariah (Rahn)?', answer: 'Rahn adalah akad gadai sesuai syariah: kamu menyerahkan barang berharga (umumnya emas) sebagai jaminan (<em>marhun</em>) untuk mendapat pinjaman (<em>marhun bih</em>). Berbeda dengan gadai konvensional, Rahn <strong>tidak mengenakan bunga (riba)</strong>. Yang dikenakan hanya biaya administrasi dan <strong>biaya pemeliharaan (mu&rsquo;nah)</strong> atas penyimpanan barangmu.' },
+  { question: 'Apa itu mu&rsquo;nah?', answer: 'Mu&rsquo;nah (atau ujrah) adalah <strong>biaya pemeliharaan/penyimpanan</strong> barang jaminan selama digadaikan. Inilah pengganti "bunga" pada gadai konvensional, tapi sifatnya biaya jasa titip yang halal. Mu&rsquo;nah biasanya dihitung dari nilai taksiran barang per periode tertentu (mis. per 10 hari). Tarifnya berbeda per golongan pinjaman dan dapat berubah sesuai kebijakan.' },
+  { question: 'Berapa uang pinjaman yang bisa saya dapat?', answer: 'Uang pinjaman (marhun bih) adalah <strong>persentase dari nilai taksiran</strong> barang. Untuk emas, umumnya bisa mencapai sekitar 85-95% dari taksiran karena nilainya stabil dan mudah dicairkan. Nilai taksiran sendiri ditentukan petugas berdasarkan berat, karat, dan harga emas saat itu.' },
+  { question: 'Bagaimana cara menghitung total tebusan?', answer: 'Saat menebus barang, kamu membayar <strong>pokok pinjaman + total mu&rsquo;nah</strong> selama masa gadai. Rumus mu&rsquo;nah di kalkulator ini: tarif mu&rsquo;nah × nilai taksiran × jumlah periode (tenor dibagi 10 hari, dibulatkan ke atas). Biaya administrasi umumnya dibayar di awal akad. Jika belum mampu menebus, gadai biasanya bisa diperpanjang dengan membayar mu&rsquo;nah berjalan.' },
+  { question: 'Apakah angka kalkulator ini pasti akurat?', answer: 'Tidak pasti \u2014 ini <strong>estimasi</strong>. Tarif mu&rsquo;nah, persentase pinjaman, biaya admin, dan definisi periode berbeda antar produk (Rahn reguler, Gadai Tabungan Emas, dll) dan golongan, serta bisa berubah sewaktu-waktu. Selalu cek angka resmi lewat aplikasi Pegadaian Syariah Digital atau outlet Pegadaian sebelum bertransaksi. Kamu bisa mengubah semua tarif di kalkulator agar sesuai.' },
+];
+
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '/#tools' }, { label: calc.shortTitle }];
+---
+
+<Layout title={calc.title} description={calc.metaDescription} keywords={calc.keywords} canonical={`https://hitungcerdas.net/kalkulator/${calc.slug}`}>
+  <section class="calc-hero" style="--cat-color:#65A30D;--cat-color2:#4D7C0F">
+    <div class="wrap">
+      <Breadcrumb items={bcItems} />
+      <div class="calc-hero-grid">
+        <div class="calc-hero-text">
+          <div class="calc-hero-tag" style="background:#ECFCCB;color:#3F6212"><i class="ti ti-diamond"></i> {calc.categoryLabel}</div>
+          <h1 class="calc-hero-title">{calc.h1}</h1>
+          <p class="calc-hero-sub">{calc.introText}</p>
+          <ul class="calc-hero-benefits">{calc.benefits.map(b => <li><i class="ti ti-check"></i> {b}</li>)}</ul>
+        </div>
+        <div class="calc-hero-illust">
+          <svg viewBox="0 0 200 200" fill="none">
+            <circle cx="100" cy="100" r="85" fill="rgba(255,255,255,.08)"/>
+            <path d="M76 70 H124 L142 92 L100 140 L58 92 Z" fill="#FFF" stroke="#BEF264" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M58 92 H142 M76 70 L86 92 M124 70 L114 92 M100 70 V92 M86 92 L100 140 M114 92 L100 140" stroke="#BEF264" stroke-width="2" fill="none"/>
+            <text x="86" y="116" fill="#65A30D" font-size="15" font-weight="bold" font-family="sans-serif">Rp</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+
+  <section class="calc-section">
+    <div class="wrap">
+      <div class="calc-card">
+        <div class="calc-card-hdr">
+          <div class="calc-card-hdr-ic" style="background:linear-gradient(135deg,#65A30D 0%,#4D7C0F 100%)"><i class="ti ti-diamond"></i></div>
+          <div><h2 class="calc-card-title">Kalkulator Gadai Syariah (Rahn)</h2><p class="calc-card-sub">Pinjaman dari taksiran emas &middot; tanpa bunga</p></div>
+        </div>
+
+        <div class="calc-grid">
+          <div class="calc-input">
+            <div class="field"><label>Nilai Taksiran Barang (Emas)</label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span>
+                <input type="text" id="taksiran" class="has-prefix" value="10.000.000" inputmode="numeric" /></div>
+              <p class="hint" style="margin-top:6px">Nilai taksiran ditentukan petugas dari berat, karat & harga emas saat itu.</p>
+            </div>
+
+            <div class="field"><label>Pinjaman Diambil (% dari Taksiran)</label>
+              <div class="input-wrap"><span class="input-suffix">%</span>
+                <input type="number" id="pct" class="has-suffix" value="90" min="10" max="95" step="1" /></div>
+              <p class="hint" style="margin-top:6px">Emas umumnya bisa s/d ~85-95% dari taksiran.</p>
+            </div>
+
+            <div class="field"><label>Tarif Mu&rsquo;nah (Biaya Pemeliharaan)</label>
+              <div class="input-wrap"><span class="input-suffix">% / 10 hari</span>
+                <input type="number" id="munah" class="has-suffix" value="0.5" min="0" max="3" step="0.01" /></div>
+              <p class="hint" style="margin-top:6px">Dari nilai taksiran, per 10 hari. <strong>Estimasi</strong> &mdash; cek tarif terkini di Pegadaian.</p>
+            </div>
+
+            <div class="field"><label>Lama Gadai</label>
+              <div class="input-wrap"><span class="input-suffix">hari</span>
+                <input type="number" id="hari" class="has-suffix" value="60" min="1" max="120" step="1" /></div>
+              <p class="hint" style="margin-top:6px">Umumnya maksimal 120 hari, bisa diperpanjang.</p>
+            </div>
+
+            <div class="field"><label>Biaya Administrasi</label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span>
+                <input type="text" id="admin" class="has-prefix" value="25.000" inputmode="numeric" /></div>
+              <p class="hint" style="margin-top:6px">Dibayar di awal akad. Berbeda per golongan pinjaman.</p>
+            </div>
+
+            <div class="calc-action-bar">
+              <button type="button" class="btn-hitung" id="btnHitung"><i class="ti ti-calculator"></i> Hitung Sekarang</button>
+              <button type="button" class="btn-reset" id="btnReset"><i class="ti ti-refresh"></i> Reset</button>
+            </div>
+          </div>
+
+          <div class="calc-output">
+            <div class="result-placeholder" id="placeholder">
+              <i class="ti ti-diamond result-placeholder-icon"></i>
+              <div class="result-placeholder-title">Estimasi gadai akan muncul di sini</div>
+              <div class="result-placeholder-desc">Isi taksiran & tarif, klik <strong>"Hitung Sekarang"</strong>.</div>
+            </div>
+
+            <div class="result-wrapper" id="results">
+              <div class="result-main">
+                <div class="result-label">Uang Pinjaman (Marhun Bih)</div>
+                <div class="result-value" id="pinjaman">Rp 0</div>
+                <div class="result-meta"><i class="ti ti-info-circle"></i> <span id="pinjamanMeta">tebus Rp 0 di akhir</span></div>
+              </div>
+
+              <div class="result-grid">
+                <div class="result-item"><div class="result-item-label">Total Mu&rsquo;nah</div><div class="result-item-value" id="totalMunah" style="color:var(--gold-dark)">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">Biaya Administrasi</div><div class="result-item-value" id="adminOut">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">Total Tebusan</div><div class="result-item-value" id="totalTebus">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">Total Biaya Gadai</div><div class="result-item-value" id="totalBiaya">Rp 0</div></div>
+              </div>
+
+              <div id="gadaiInfo" style="margin-top:10px;padding:11px 13px;border-radius:12px;background:#F7FEE7;border:1px solid #D9F99D;font-size:12.5px;line-height:1.55;color:#3F6212"></div>
+
+              <div class="export-row">
+                <button type="button" class="export-btn img" id="exportImg"><i class="ti ti-photo-down"></i><span>Save Image</span></button>
+                <button type="button" class="export-btn wa" id="exportWa"><i class="ti ti-brand-whatsapp"></i><span>Share WA</span></button>
+                <button type="button" class="export-btn pdf" id="exportPdf"><i class="ti ti-printer"></i><span>Print/PDF</span></button>
+                <button type="button" class="export-btn copy" id="exportCopy"><i class="ti ti-copy"></i><span>Copy Teks</span></button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="content-section">
+    <div class="wrap-text">
+      <h2>Memahami Gadai Syariah (Rahn)</h2>
+      <p>Gadai syariah atau <strong>Rahn</strong> adalah solusi dana cepat tanpa riba. Kamu menyerahkan barang berharga &mdash; paling umum emas &mdash; sebagai jaminan, lalu menerima pinjaman senilai sebagian dari taksirannya. Yang membedakannya dari gadai konvensional: <strong>tidak ada bunga atau sewa modal</strong>. Sebagai gantinya, kamu hanya membayar biaya administrasi dan biaya pemeliharaan (mu&rsquo;nah) atas jasa penyimpanan barang. Layanan ini diawasi OJK.</p>
+
+      <h3>Istilah Penting</h3>
+      <ul>
+        <li><strong>Marhun</strong> &mdash; barang yang digadaikan (emas, perhiasan).</li>
+        <li><strong>Marhun bih</strong> &mdash; uang pinjaman yang kamu terima.</li>
+        <li><strong>Mu&rsquo;nah / ujrah</strong> &mdash; biaya pemeliharaan barang, dihitung dari taksiran per periode.</li>
+        <li><strong>SBR</strong> &mdash; Surat Bukti Rahn, bukti transaksi gadai.</li>
+      </ul>
+
+      <h3>Cara Kerja</h3>
+      <p>Petugas menaksir nilai barangmu, lalu menetapkan uang pinjaman sebagai persentase dari taksiran (untuk emas bisa s/d sekitar 85-95%). Selama masa gadai, kamu dikenai mu&rsquo;nah per periode. Saat menebus, kamu membayar pokok pinjaman + total mu&rsquo;nah. Jika belum mampu menebus di jatuh tempo, gadai umumnya bisa diperpanjang dengan membayar mu&rsquo;nah berjalan.</p>
+
+      <h3>Catatan 2026</h3>
+      <p>Tarif mu&rsquo;nah, biaya admin, dan persentase pinjaman berbeda antar produk (Rahn reguler, Gadai Tabungan Emas, Krasida cicilan) dan golongan pinjaman, serta dapat berubah sewaktu-waktu. Angka default di kalkulator ini adalah estimasi untuk gambaran awal &mdash; sesuaikan dengan tarif riil. Untuk kepastian, gunakan fitur Simulasi Gadai di aplikasi Pegadaian Syariah Digital atau tanyakan langsung ke outlet.</p>
+
+      <div class="cta-box">
+        <h3>Disclaimer</h3>
+        <p>Kalkulator ini alat bantu simulasi &amp; edukasi. Angka mu&rsquo;nah, admin, dan persentase pinjaman bersifat <strong>estimasi</strong> dan dapat berbeda dengan ketentuan riil Pegadaian Syariah maupun lembaga gadai syariah lain. HitungCerdas tidak berafiliasi dengan Pegadaian. Verifikasi tarif resmi melalui aplikasi/outlet Pegadaian Syariah sebelum bertransaksi. Bukan nasihat keuangan.</p>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+  <FAQ title="Pertanyaan Seputar Gadai Syariah" items={faqs} />
+
+  <section class="section"><div class="wrap">
+    <div class="section-hdr"><div class="section-eyebrow">Kalkulator Lainnya</div><h2 class="section-title">Hitung Juga yang Lain</h2></div>
+    <div class="related-grid">{related.map(c => <CalculatorCard calc={c} />)}</div>
+  </div></section>
+
+  <p style="text-align:center;font-size:.85rem;color:#64748b;margin:1.2rem auto;max-width:600px;">
+    📅 Diperbarui <strong>Juni 2026</strong> · Angka estimasi · HitungCerdas tidak berafiliasi dengan Pegadaian
+  </p>
+
+<script is:inline>
+  (function() {
+    function ready(fn) { if (window.HC && window.html2canvas) fn(); else setTimeout(() => ready(fn), 100); }
+    ready(() => {
+      const $ = id => document.getElementById(id);
+      const els = { taksiran: $('taksiran'), pct: $('pct'), munah: $('munah'), hari: $('hari'), admin: $('admin') };
+      [els.taksiran, els.admin].forEach(el => el.addEventListener('input', HC.fmtInput));
+
+      let lastCalc = null;
+
+      function hitung() {
+        const taksiran = HC.parseRp(els.taksiran.value);
+        const pct = parseFloat(els.pct.value) || 0;
+        const munahRate = parseFloat(els.munah.value) || 0;
+        const hari = parseInt(els.hari.value) || 0;
+        const admin = HC.parseRp(els.admin.value);
+
+        if (taksiran === 0) { HC.toast('Masukkan nilai taksiran dulu', 'error'); return; }
+        if (hari < 1) { HC.toast('Lama gadai minimal 1 hari', 'error'); return; }
+
+        const pinjaman = taksiran * (pct / 100);
+        const periode = Math.ceil(hari / 10);
+        const totalMunah = taksiran * (munahRate / 100) * periode;
+        const totalTebus = pinjaman + totalMunah;
+        const totalBiaya = totalMunah + admin;
+
+        $('pinjaman').textContent = HC.fmt(pinjaman);
+        $('pinjamanMeta').textContent = `tebus ${HC.fmt(totalTebus)} di akhir (${periode} periode)`;
+        $('totalMunah').textContent = HC.fmt(totalMunah);
+        $('adminOut').textContent = HC.fmt(admin);
+        $('totalTebus').textContent = HC.fmt(totalTebus);
+        $('totalBiaya').textContent = HC.fmt(totalBiaya);
+
+        $('gadaiInfo').innerHTML = `\ud83d\udc8e Dari taksiran <b>${HC.fmt(taksiran)}</b>, kamu bisa pinjam <b>${HC.fmt(pinjaman)}</b> (${pct}%). Selama ${hari} hari (${periode} periode \u00d7 10 hari), mu\u2019nah <b>${HC.fmt(totalMunah)}</b> + admin ${HC.fmt(admin)}. Total ditebus di akhir: <b>${HC.fmt(totalTebus)}</b>. Tanpa bunga \u2014 hanya biaya titip & admin.`;
+
+        lastCalc = { taksiran, pct, munahRate, hari, periode, admin, pinjaman, totalMunah, totalTebus, totalBiaya };
+        $('placeholder').style.display = 'none';
+        $('results').classList.add('show');
+        $('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        HC.toast('Estimasi gadai berhasil dihitung!');
+      }
+
+      function reset() {
+        els.taksiran.value = '10.000.000'; els.pct.value = '90'; els.munah.value = '0.5'; els.hari.value = '60'; els.admin.value = '25.000';
+        $('placeholder').style.display = ''; $('results').classList.remove('show');
+        lastCalc = null; HC.toast('Form direset', 'info');
+      }
+
+      function buildReport() {
+        if (!lastCalc) return null;
+        const c = lastCalc;
+        const insight = `Akad Rahn (tanpa bunga). Taksiran ${HC.fmt(c.taksiran)}, pinjaman ${HC.fmt(c.pinjaman)} (${c.pct}%). Mu\u2019nah ${HC.fmt(c.totalMunah)} (${c.munahRate}%/10hari x ${c.periode} periode) + admin ${HC.fmt(c.admin)}. Total tebus ${HC.fmt(c.totalTebus)}. Estimasi \u2014 cek tarif resmi Pegadaian.`;
+        return HC.buildReportCard({
+          title: '\ud83d\udc8e Gadai Syariah (Rahn)',
+          color: '#65A30D', color2: '#4D7C0F',
+          heroLabel: 'Uang Pinjaman (Marhun Bih)',
+          heroValue: HC.fmt(c.pinjaman),
+          heroSubtext: `${c.pct}% dari taksiran ${HC.fmt(c.taksiran)}`,
+          inputs: [
+            { label: '\ud83d\udc8e Taksiran', value: HC.fmt(c.taksiran) },
+            { label: '\ud83d\udcc5 Lama Gadai', value: c.hari + ' hari' },
+            { label: '\ud83c\udff7\ufe0f Mu\u2019nah', value: c.munahRate + '%/10hari' },
+          ],
+          results: [
+            { label: 'Uang Pinjaman', value: HC.fmt(c.pinjaman), highlight: true },
+            { label: 'Total Mu\u2019nah', value: HC.fmt(c.totalMunah) },
+            { label: 'Biaya Admin', value: HC.fmt(c.admin) },
+            { label: 'Total Tebusan', value: HC.fmt(c.totalTebus), highlight: true },
+          ],
+          insight, slug: 'gadai-syariah',
+        });
+      }
+
+      function summaryText() {
+        if (!lastCalc) return '';
+        const c = lastCalc;
+        return `\ud83d\udc8e *Gadai Syariah (Rahn) - HitungCerdas*\n\nTaksiran emas: ${HC.fmt(c.taksiran)}\nLama gadai: ${c.hari} hari\nMu\u2019nah: ${c.munahRate}%/10hari\n\n\ud83d\udcb0 *Uang pinjaman: ${HC.fmt(c.pinjaman)}*\n\ud83c\udff7\ufe0f Total mu\u2019nah: ${HC.fmt(c.totalMunah)}\n\ud83d\udd13 Total tebusan: ${HC.fmt(c.totalTebus)}\n(tanpa bunga, akad Rahn)\n\nHitung di: https://hitungcerdas.net/kalkulator/gadai-syariah`;
+      }
+
+      $('btnHitung').addEventListener('click', hitung);
+      $('btnReset').addEventListener('click', reset);
+      $('exportImg').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToImage(c, 'gadai-syariah-' + Date.now()); });
+      $('exportWa').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.shareWhatsApp(c, summaryText(), 'gadai-syariah'); });
+      $('exportPdf').addEventListener('click', () => { if (!lastCalc) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToPDF(); });
+      $('exportCopy').addEventListener('click', () => { if (!lastCalc) { HC.toast('Hitung dulu', 'error'); return; } HC.copyText(summaryText(), 'Tersalin!'); });
+    });
+  })();
+</script>
+</Layout>

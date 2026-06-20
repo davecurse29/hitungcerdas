@@ -762,6 +762,32 @@ export const CALCULATORS: CalculatorMeta[] = [
       'Scorecard share-ready (WA/IG/PDF)',
     ],
   },
+
+  {
+    slug: 'gadai-syariah',
+    title: 'Kalkulator Gadai Syariah (Rahn) 2026 — Pinjaman & Biaya Mu\'nah',
+    shortTitle: 'Gadai Syariah (Rahn)',
+    category: 'islami',
+    categoryLabel: 'Kalkulator Islami',
+    tag: 'Syariah',
+    tagColor: '#3F6212',
+    tagBg: '#ECFCCB',
+    iconColor: '#65A30D',
+    iconBg: '#ECFCCB',
+    iconSvg: 'margin',
+    description: 'Estimasi pinjaman gadai emas syariah (Rahn): uang pinjaman, biaya mu\'nah & total tebusan.',
+    metaDescription: 'Kalkulator gadai syariah (Rahn) 2026: estimasi uang pinjaman dari taksiran emas, biaya pemeliharaan (mu\'nah), biaya admin, dan total tebusan. Tanpa bunga, sesuai akad Rahn. Angka dapat disesuaikan.',
+    keywords: ['kalkulator gadai syariah', 'gadai emas syariah', 'rahn pegadaian', 'biaya munah gadai', 'simulasi gadai emas', 'gadai tanpa riba'],
+    h1: 'Kalkulator Gadai Syariah (Rahn)',
+    introText: 'Estimasi gadai emas syariah dengan akad Rahn: berapa uang pinjaman yang bisa kamu terima dari nilai taksiran, berapa biaya pemeliharaan (mu\'nah), dan total yang harus ditebus. Tanpa bunga (riba) — hanya biaya titip & administrasi. Semua tarif bisa kamu sesuaikan dengan ketentuan terkini Pegadaian Syariah.',
+    benefits: [
+      'Estimasi uang pinjaman dari taksiran emas',
+      'Biaya pemeliharaan (mu\'nah) per periode',
+      'Total tebusan saat menebus barang',
+      'Akad Rahn, tanpa bunga/riba',
+      'Scorecard share-ready (WA/IG/PDF)',
+    ],
+  },
 ];
 
 // Helper functions

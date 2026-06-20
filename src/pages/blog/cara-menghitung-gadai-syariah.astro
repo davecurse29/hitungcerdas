@@ -1,0 +1,103 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import ArticleSchema from '../../components/ArticleSchema.astro';
+const datePublished = '2026-06-21';
+const dateModified = '2026-06-21';
+const today = new Date(datePublished).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'Cara Hitung Gadai Syariah' }];
+---
+<Layout title="Cara Hitung Gadai Syariah (Rahn) 2026 — Pinjaman, Mu'nah & Tebusan" description="Panduan lengkap gadai emas syariah akad Rahn 2026: cara hitung uang pinjaman dari taksiran, biaya pemeliharaan (mu'nah), total tebusan, dan beda dengan gadai konvensional. Plus kalkulator gadai syariah gratis." keywords={['cara hitung gadai syariah', 'gadai emas syariah', 'rahn pegadaian', 'biaya munah', 'simulasi gadai emas 2026', 'gadai tanpa riba']} canonical="https://hitungcerdas.net/blog/cara-menghitung-gadai-syariah" ogType="article">
+  <ArticleSchema
+    headline="Cara Hitung Gadai Syariah (Rahn) 2026 — Pinjaman, Mu'nah & Tebusan"
+    description="Panduan lengkap gadai emas syariah akad Rahn 2026: cara hitung uang pinjaman dari taksiran, biaya pemeliharaan (mu'nah), total tebusan, dan beda dengan gadai konvensional."
+    datePublished={datePublished}
+    dateModified={dateModified}
+    slug="cara-menghitung-gadai-syariah"
+    articleSection="Syariah"
+    keywords={['cara hitung gadai syariah', 'gadai emas syariah', 'rahn pegadaian', 'biaya munah', 'gadai tanpa riba']}
+    wordCount={800}
+  />
+
+  <section class="article-hero" style="--cat-color:#65A30D;--cat-color2:#4D7C0F">
+    <div class="wrap"><Breadcrumb items={bcItems} /><div class="article-tag">Syariah</div>
+      <h1>Cara Hitung Gadai Syariah (Rahn) 2026</h1>
+      <div class="article-meta"><span><i class="ti ti-calendar"></i> {today}</span><span><i class="ti ti-clock"></i> 7 menit baca</span><span><i class="ti ti-user"></i> Tim HitungCerdas</span></div>
+    </div>
+  </section>
+  <AdSlot format="horizontal" />
+  <article class="content-section"><div class="wrap-text">
+    <p class="lead">Butuh dana cepat tapi ingin terhindar dari riba? Gadai syariah (Rahn) bisa jadi jalan keluar. Kamu menjaminkan emas, menerima pinjaman, dan hanya membayar biaya titip — bukan bunga. Artikel ini bedah cara menghitung pinjaman, biaya mu'nah, dan total tebusannya.</p>
+
+    <h2>1. Apa Itu Gadai Syariah (Rahn)?</h2>
+    <p>Rahn adalah akad gadai sesuai prinsip syariah. Kamu menyerahkan barang berharga — paling umum emas — sebagai jaminan (<strong>marhun</strong>), lalu menerima pinjaman (<strong>marhun bih</strong>) senilai sebagian dari taksirannya. Bedanya dengan gadai konvensional: <strong>tidak ada bunga atau sewa modal</strong>. Yang dikenakan hanya biaya administrasi dan biaya pemeliharaan (<strong>mu'nah</strong>) atas jasa penyimpanan barangmu. Layanan ini diawasi OJK.</p>
+
+    <h2>2. Istilah Penting</h2>
+    <ul class="info-list">
+      <li><strong>Marhun</strong> — barang yang digadaikan (emas, perhiasan).</li>
+      <li><strong>Marhun bih</strong> — uang pinjaman yang kamu terima.</li>
+      <li><strong>Mu'nah / ujrah</strong> — biaya pemeliharaan barang, dihitung dari taksiran per periode.</li>
+      <li><strong>SBR</strong> — Surat Bukti Rahn, bukti transaksi gadaimu.</li>
+    </ul>
+
+    <h2>3. Rumus Perhitungan</h2>
+    <div class="formula-box">
+      <p><strong>Uang Pinjaman = Nilai Taksiran × % pinjaman</strong></p>
+      <p><strong>Total Mu'nah = Taksiran × tarif mu'nah% × jumlah periode</strong></p>
+      <p><strong>Total Tebusan = Uang Pinjaman + Total Mu'nah</strong></p>
+    </div>
+    <p>Jumlah periode dihitung dari lama gadai dibagi periode penagihan (umumnya per 10 hari, dibulatkan ke atas). Biaya administrasi biasanya dibayar di awal akad.</p>
+
+    <AdSlot format="horizontal" />
+
+    <h2>4. Contoh Perhitungan</h2>
+    <p>Misal kamu menggadaikan emas dengan taksiran <strong>Rp 10.000.000</strong>, mengambil pinjaman 90%, tarif mu'nah 0,5% dari taksiran per 10 hari, lama gadai 60 hari, admin Rp 25.000:</p>
+    <ul class="info-list">
+      <li>Uang pinjaman = Rp 10 juta × 90% = <strong>Rp 9.000.000</strong></li>
+      <li>Jumlah periode = 60 hari ÷ 10 = <strong>6 periode</strong></li>
+      <li>Total mu'nah = Rp 10 juta × 0,5% × 6 = <strong>Rp 300.000</strong></li>
+      <li>Total tebusan = Rp 9 juta + Rp 300 ribu = <strong>Rp 9.300.000</strong></li>
+    </ul>
+    <p>Jadi kamu menerima Rp 9 juta, dan saat menebus membayar Rp 9,3 juta. Tidak ada bunga — selisihnya murni biaya pemeliharaan yang halal.</p>
+
+    <h2>5. Beda dengan Gadai Konvensional</h2>
+    <p>Gadai konvensional mengenakan <strong>sewa modal/bunga</strong> yang dihitung dari jumlah pinjaman. Gadai syariah mengenakan <strong>mu'nah</strong> yang dihitung dari nilai taksiran barang sebagai biaya jasa titip — bukan bunga atas utang. Secara konsep ini menghindari riba. Besaran biaya bisa mirip atau berbeda; yang membedakan adalah akad dan dasar perhitungannya.</p>
+
+    <div class="cta-box">
+      <h3>💎 Coba Kalkulator Gadai Syariah HitungCerdas</h3>
+      <p>Estimasi pinjaman & biaya gadai emas syariah-mu:</p>
+      <ul>
+        <li>✅ Uang pinjaman dari nilai taksiran</li>
+        <li>✅ Biaya mu'nah (pemeliharaan) per periode</li>
+        <li>✅ Total tebusan saat menebus barang</li>
+        <li>✅ Semua tarif bisa disesuaikan</li>
+      </ul>
+      <p style="margin-top:14px"><a href="/kalkulator/gadai-syariah" class="btn btn-pri"><i class="ti ti-calculator"></i> Buka Kalkulator Gadai Syariah</a></p>
+    </div>
+
+    <h2>Kesimpulan</h2>
+    <p>Gadai syariah (Rahn) menawarkan dana cepat tanpa riba — kamu hanya membayar biaya titip, bukan bunga. Pahami taksiran, persentase pinjaman, dan mu'nah agar tahu persis berapa yang diterima dan ditebus. Catatan penting: tarif mu'nah dan biaya berbeda antar produk & golongan serta bisa berubah — selalu verifikasi lewat aplikasi Pegadaian Syariah Digital atau outlet resmi sebelum bertransaksi.</p>
+
+    <h3>📚 Artikel & Kalkulator Terkait</h3>
+    <ul class="info-list">
+      <li><a href="/kalkulator/gadai-syariah">Kalkulator Gadai Syariah</a></li>
+      <li><a href="/kalkulator/zakat-mal">Kalkulator Zakat Mal (Emas)</a></li>
+      <li><a href="/kalkulator/bagi-hasil">Kalkulator Bagi Hasil</a></li>
+      <li><a href="/kalkulator/kpr-syariah">Kalkulator KPR Syariah</a></li>
+    </ul>
+  </div></article>
+  <AdSlot format="horizontal" />
+</Layout>
+<style>
+  .article-hero { background: linear-gradient(135deg, var(--cat-color) 0%, var(--cat-color2) 100%); color: #fff; padding: 20px 0 48px; }
+  .article-hero :global(.breadcrumb-item), .article-hero :global(.breadcrumb-item a) { color: rgba(255, 255, 255, .75); }
+  .article-hero :global(.breadcrumb-item a:hover) { color: #fff; }
+  .article-hero :global(.breadcrumb-item span) { color: #fff; }
+  .article-hero :global(.breadcrumb-item i) { color: rgba(255, 255, 255, .5); }
+  .article-tag { display: inline-block; font-size: 11px; font-weight: 700; color: #ECFCCB; letter-spacing: .1em; text-transform: uppercase; margin: 16px 0 12px; }
+  .article-hero h1 { color: #fff; font-size: clamp(26px, 3.8vw, 42px); margin: 0 0 20px; max-width: 900px; line-height: 1.2; }
+  .article-meta { display: flex; gap: 20px; color: rgba(255, 255, 255, .85); font-size: 13px; flex-wrap: wrap; }
+  .article-meta span { display: inline-flex; align-items: center; gap: 6px; }
+  .lead { font-size: 17px !important; line-height: 1.7 !important; color: var(--text) !important; padding: 20px 24px; background: var(--bg-soft); border-radius: 12px; border-left: 4px solid #65A30D; margin-bottom: 24px !important; }
+</style>
