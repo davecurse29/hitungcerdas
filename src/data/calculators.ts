@@ -508,6 +508,32 @@ export const CALCULATORS: CalculatorMeta[] = [
     ],
   },
 
+  {
+    slug: 'komisi-ojol',
+    title: 'Kalkulator Komisi GoFood, GrabFood, ShopeeFood 2026 — Potongan Merchant',
+    shortTitle: 'Kalkulator Komisi Ojol',
+    category: 'bisnis',
+    categoryLabel: 'Kalkulator Bisnis',
+    tag: 'UMKM',
+    tagColor: '#92400E',
+    tagBg: '#FEF3C7',
+    iconColor: '#D97706',
+    iconBg: '#FEF3C7',
+    iconSvg: 'margin',
+    description: 'Hitung potongan komisi GoFood, GrabFood, ShopeeFood & uang bersih yang merchant terima.',
+    metaDescription: 'Kalkulator komisi GoFood, GrabFood, ShopeeFood 2026: hitung total potongan (komisi + biaya transaksi + PPN atas komisi) dan uang bersih yang diterima merchant. Plus harga jual disarankan agar untung tetap aman.',
+    keywords: ['kalkulator komisi gofood', 'potongan grabfood', 'komisi shopeefood', 'potongan merchant ojol', 'harga jual gofood', 'biaya admin grabfood'],
+    h1: 'Kalkulator Komisi GoFood, GrabFood & ShopeeFood',
+    introText: 'Hitung berapa potongan platform delivery (GoFood, GrabFood, ShopeeFood) dan berapa uang bersih yang benar-benar kamu terima per pesanan. Kalkulator memperhitungkan komisi, biaya per transaksi, dan PPN atas komisi. Bisa juga hitung mundur: berapa harga jual di app supaya kamu tetap untung sesuai target.',
+    benefits: [
+      'Preset GoFood, GrabFood, ShopeeFood',
+      'Hitung uang bersih diterima per pesanan',
+      'Rincian komisi + biaya transaksi + PPN',
+      'Harga jual disarankan untuk target bersih',
+      'Scorecard share-ready (WA/IG/PDF)',
+    ],
+  },
+
   // ═══════════════ ISLAMI ═══════════════
   {
     slug: 'zakat-fitrah',
