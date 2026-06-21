@@ -29,7 +29,16 @@ const {
 } = Astro.props;
 
 const siteUrl = 'https://hitungcerdas.net';
-const fullUrl = canonical || new URL(Astro.url.pathname, siteUrl).toString();
+let fullUrl = canonical || new URL(Astro.url.pathname, siteUrl).toString();
+// Normalisasi trailing slash agar canonical = URL yang benar-benar disajikan
+// (Cloudflare Pages pakai trailing slash; kecuali root & file ber-ekstensi).
+try {
+  const _cu = new URL(fullUrl);
+  if (!/\.[a-z0-9]+$/i.test(_cu.pathname) && !_cu.pathname.endsWith('/')) {
+    _cu.pathname += '/';
+    fullUrl = _cu.toString();
+  }
+} catch (e) {}
 
 // ── Conditional heavy scripts: load hanya di halaman yang butuh ──
 const _path = Astro.url.pathname;
