@@ -449,9 +449,9 @@ export const CALCULATORS: CalculatorMeta[] = [
     introText: 'Hitung titik impas (Break Even Point) usahamu — berapa unit dan berapa rupiah omzet yang harus dicapai agar tidak rugi. Cukup masukkan biaya tetap bulanan, harga jual, dan biaya variabel per unit. Bisa juga hitung berapa harus dijual untuk mencapai target laba tertentu. Wajib tahu sebelum menetapkan target penjualan.',
     benefits: [
       'BEP dalam unit & rupiah (omzet)',
-      'Margin kontribusi per unit otomatis',
+      'Grafik titik impas: biaya vs pendapatan',
+      'Margin of safety: batas aman sebelum rugi',
       'Target penjualan untuk capai laba tertentu',
-      'Tahu batas aman sebelum rugi',
       'Scorecard share-ready (WA/IG/PDF)',
     ],
   },

@@ -81,6 +81,12 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
               <p class="hint" style="margin-top:6px">Isi jika ingin tahu berapa harus dijual untuk capai laba tertentu.</p>
             </div>
 
+            <div class="field"><label>Proyeksi Penjualan <span class="hint">(opsional, untuk margin of safety)</span></label>
+              <div class="input-wrap"><span class="input-suffix">unit</span>
+                <input type="number" id="proyeksi" class="has-suffix" value="0" min="0" step="1" /></div>
+              <p class="hint" style="margin-top:6px">Perkiraan unit terjual per bulan — untuk lihat seberapa aman dari titik rugi.</p>
+            </div>
+
             <div class="calc-action-bar">
               <button type="button" class="btn-hitung" id="btnHitung"><i class="ti ti-calculator"></i> Hitung Sekarang</button>
               <button type="button" class="btn-reset" id="btnReset"><i class="ti ti-refresh"></i> Reset</button>
@@ -110,9 +116,24 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
 
               <div id="bepInfo" style="margin-top:10px;padding:11px 13px;border-radius:12px;background:#EEF2FF;border:1px solid #C7D2FE;font-size:12.5px;line-height:1.55;color:#3730A3"></div>
 
+              <div style="margin-top:12px;padding:12px;border:1px solid var(--border);border-radius:12px;background:var(--bg-soft)">
+                <div style="font-size:12.5px;font-weight:700;color:var(--text);margin-bottom:6px"><i class="ti ti-chart-line"></i> Grafik Titik Impas</div>
+                <div id="bepChart"></div>
+                <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:8px;font-size:11px;color:var(--text-soft)">
+                  <span><span style="display:inline-block;width:14px;height:3px;background:#4F46E5;vertical-align:middle;margin-right:4px"></span>Pendapatan</span>
+                  <span><span style="display:inline-block;width:14px;height:3px;background:#DC2626;vertical-align:middle;margin-right:4px"></span>Total Biaya</span>
+                  <span><span style="display:inline-block;width:14px;height:3px;background:#94A3B8;vertical-align:middle;margin-right:4px"></span>Biaya Tetap</span>
+                </div>
+              </div>
+
               <div id="targetSection" style="display:none;margin-top:10px;padding:13px 15px;border-radius:12px;background:#F0FDF4;border:1px solid #BBF7D0">
                 <div style="font-size:13px;font-weight:700;color:#15803D;margin-bottom:8px"><i class="ti ti-trophy"></i> Untuk Capai Target Laba</div>
                 <div id="targetBody" style="font-size:13px;line-height:1.7;color:#166534"></div>
+              </div>
+
+              <div id="mosSection" style="display:none;margin-top:10px;padding:13px 15px;border-radius:12px">
+                <div style="font-size:13px;font-weight:700;margin-bottom:8px"><i class="ti ti-shield-check"></i> Margin of Safety</div>
+                <div id="mosBody" style="font-size:13px;line-height:1.7"></div>
               </div>
 
               <div class="export-row">
@@ -172,7 +193,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
     function ready(fn) { if (window.HC && window.html2canvas) fn(); else setTimeout(() => ready(fn), 100); }
     ready(() => {
       const $ = id => document.getElementById(id);
-      const els = { fixed: $('fixed'), harga: $('harga'), variabel: $('variabel'), target: $('target') };
+      const els = { fixed: $('fixed'), harga: $('harga'), variabel: $('variabel'), target: $('target'), proyeksi: $('proyeksi') };
       [els.fixed, els.harga, els.variabel, els.target].forEach(el => el.addEventListener('input', HC.fmtInput));
 
       let lastCalc = null;
@@ -212,7 +233,55 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
           $('targetSection').style.display = 'none';
         }
 
-        lastCalc = { fixed, harga, variabel, mk, mkRatio, bepUnit: Math.ceil(bepUnit), bepRupiah, target: targetData };
+        // ===== Grafik Titik Impas =====
+        var proyeksi = parseInt(els.proyeksi.value) || 0;
+        var xMax = Math.ceil(bepUnit * 2);
+        if (proyeksi > xMax) xMax = Math.ceil(proyeksi * 1.15);
+        if (xMax < 2) xMax = 2;
+        var yMax = harga * xMax;
+        var PL = 46, PR = 306, PT = 14, PB = 164;
+        var X = function(u) { return (PL + (u / xMax) * (PR - PL)).toFixed(1); };
+        var Y = function(v) { return (PB - (v / yMax) * (PB - PT)).toFixed(1); };
+        var svg = '<svg viewBox="0 0 320 190" style="width:100%;height:auto" xmlns="http://www.w3.org/2000/svg">';
+        svg += '<polygon points="' + X(0) + ',' + Y(0) + ' ' + X(bepUnit) + ',' + Y(bepRupiah) + ' ' + X(0) + ',' + Y(fixed) + '" fill="#FEE2E2"/>';
+        svg += '<polygon points="' + X(bepUnit) + ',' + Y(bepRupiah) + ' ' + X(xMax) + ',' + Y(harga * xMax) + ' ' + X(xMax) + ',' + Y(fixed + variabel * xMax) + '" fill="#DCFCE7"/>';
+        svg += '<line x1="' + X(0) + '" y1="' + Y(0) + '" x2="' + X(xMax) + '" y2="' + Y(0) + '" stroke="#CBD5E1" stroke-width="1"/>';
+        svg += '<line x1="' + X(0) + '" y1="' + Y(0) + '" x2="' + X(0) + '" y2="' + PT + '" stroke="#CBD5E1" stroke-width="1"/>';
+        svg += '<line x1="' + X(0) + '" y1="' + Y(fixed) + '" x2="' + X(xMax) + '" y2="' + Y(fixed) + '" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="4 3"/>';
+        svg += '<line x1="' + X(0) + '" y1="' + Y(fixed) + '" x2="' + X(xMax) + '" y2="' + Y(fixed + variabel * xMax) + '" stroke="#DC2626" stroke-width="2"/>';
+        svg += '<line x1="' + X(0) + '" y1="' + Y(0) + '" x2="' + X(xMax) + '" y2="' + Y(harga * xMax) + '" stroke="#4F46E5" stroke-width="2"/>';
+        svg += '<line x1="' + X(bepUnit) + '" y1="' + Y(0) + '" x2="' + X(bepUnit) + '" y2="' + Y(bepRupiah) + '" stroke="#4338CA" stroke-width="1" stroke-dasharray="3 3"/>';
+        svg += '<circle cx="' + X(bepUnit) + '" cy="' + Y(bepRupiah) + '" r="4" fill="#4338CA"/>';
+        svg += '<text x="' + X(bepUnit) + '" y="' + (PB + 13) + '" font-size="9" fill="#4338CA" text-anchor="middle" font-weight="700">BEP ' + Math.ceil(bepUnit) + '</text>';
+        svg += '<text x="' + X(xMax) + '" y="' + (PB + 13) + '" font-size="8" fill="#94A3B8" text-anchor="end">unit →</text>';
+        svg += '<text x="' + PL + '" y="' + (PT - 4) + '" font-size="8" fill="#94A3B8">Rp</text>';
+        svg += '</svg>';
+        $('bepChart').innerHTML = svg;
+
+        // ===== Margin of Safety =====
+        var mosData = null;
+        if (proyeksi > 0) {
+          var sec = $('mosSection'); sec.style.display = '';
+          if (proyeksi >= bepUnit) {
+            var mosPct = (proyeksi - bepUnit) / proyeksi * 100;
+            var labaP = (proyeksi - bepUnit) * mk;
+            sec.style.background = '#F0FDF4'; sec.style.border = '1px solid #BBF7D0';
+            $('mosBody').style.color = '#166534';
+            $('mosBody').innerHTML = 'Di proyeksi <b>' + proyeksi.toLocaleString('id-ID') + ' unit</b>, kamu <b>' + mosPct.toFixed(1) + '% di atas titik impas</b>. Penjualan boleh turun s/d ' + mosPct.toFixed(1) + '% sebelum mulai rugi. Perkiraan laba: <b>' + HC.fmt(labaP) + '/bulan</b>.';
+            mosData = { proyeksi: proyeksi, mosPct: mosPct, laba: labaP, aman: true };
+          } else {
+            var kurang = Math.ceil(bepUnit) - proyeksi;
+            var rugiP = (bepUnit - proyeksi) * mk;
+            sec.style.background = '#FEF2F2'; sec.style.border = '1px solid #FECACA';
+            $('mosBody').style.color = '#991B1B';
+            $('mosBody').innerHTML = 'Proyeksi <b>' + proyeksi.toLocaleString('id-ID') + ' unit</b> masih <b>' + kurang.toLocaleString('id-ID') + ' unit di bawah titik impas</b> — pada level ini usaha masih rugi sekitar <b>' + HC.fmt(rugiP) + '/bulan</b>. Naikkan penjualan/harga atau tekan biaya.';
+            mosData = { proyeksi: proyeksi, shortfall: kurang, rugi: rugiP, aman: false };
+          }
+        } else {
+          $('mosSection').style.display = 'none';
+        }
+
+        lastCalc = { fixed, harga, variabel, mk, mkRatio, bepUnit: Math.ceil(bepUnit), bepRupiah, target: targetData, mos: mosData };
         $('placeholder').style.display = 'none';
         $('results').classList.add('show');
         $('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -220,8 +289,8 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       }
 
       function reset() {
-        els.fixed.value = '5.000.000'; els.harga.value = '12.500'; els.variabel.value = '7.500'; els.target.value = '0';
-        $('targetSection').style.display = 'none';
+        els.fixed.value = '5.000.000'; els.harga.value = '12.500'; els.variabel.value = '7.500'; els.target.value = '0'; els.proyeksi.value = '0';
+        $('targetSection').style.display = 'none'; $('mosSection').style.display = 'none';
         $('placeholder').style.display = ''; $('results').classList.remove('show');
         lastCalc = null; HC.toast('Form direset', 'info');
       }
@@ -231,6 +300,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         const c = lastCalc;
         let insight = `Titik impas ${c.bepUnit.toLocaleString('id-ID')} unit/bulan (omzet ${HC.fmt(c.bepRupiah)}). Margin kontribusi ${HC.fmt(c.mk)}/unit (${c.mkRatio.toFixed(1)}%). Di atas BEP, tiap unit beri laba ${HC.fmt(c.mk)}.`;
         if (c.target) insight += ` Untuk laba ${HC.fmt(c.target.target)}/bln perlu jual ${c.target.unitTarget.toLocaleString('id-ID')} unit.`;
+        if (c.mos && c.mos.aman) insight += ` Margin of safety ${c.mos.mosPct.toFixed(1)}% di proyeksi ${c.mos.proyeksi.toLocaleString('id-ID')} unit (laba ${HC.fmt(c.mos.laba)}).`;
         insight += ' Estimasi edukatif.';
         const results = [
           { label: 'BEP (unit)', value: c.bepUnit.toLocaleString('id-ID') + ' unit', highlight: true },
@@ -239,6 +309,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
           { label: 'Rasio MK', value: c.mkRatio.toFixed(1) + '%' },
         ];
         if (c.target) results.push({ label: 'Unit utk Target Laba', value: c.target.unitTarget.toLocaleString('id-ID') + ' unit' });
+        if (c.mos && c.mos.aman) results.push({ label: 'Margin of Safety', value: c.mos.mosPct.toFixed(1) + '%' });
         return HC.buildReportCard({
           title: '\ud83c\udfaf Hitung BEP (Titik Impas)',
           color: '#4F46E5', color2: '#4338CA',
