@@ -241,7 +241,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         $('ppnRp').textContent = HC.fmt(ppnRp);
         $('netValue').style.color = net >= 0 ? '' : 'var(--red)';
 
-        $('cutInfo').innerHTML = `\ud83d\udecf\ufe0f Dari harga <b>${HC.fmt(harga)}</b> di ${platformLabel}, total potongan <b>${HC.fmt(totalCut)}</b> (${cutPct.toFixed(1)}%) \u2014 terdiri dari komisi ${HC.fmt(komisiRp)} + biaya transaksi ${HC.fmt(biayaTetap)} + PPN ${HC.fmt(ppnRp)}. Uang bersih yang kamu terima: <b>${HC.fmt(net)}</b>.`;
+        $('cutInfo').innerHTML = `\ud83d\udef5 Dari harga <b>${HC.fmt(harga)}</b> di ${platformLabel}, total potongan <b>${HC.fmt(totalCut)}</b> (${cutPct.toFixed(1)}%) \u2014 terdiri dari komisi ${HC.fmt(komisiRp)} + biaya transaksi ${HC.fmt(biayaTetap)} + PPN ${HC.fmt(ppnRp)}. Uang bersih yang kamu terima: <b>${HC.fmt(net)}</b>.`;
 
         let targetData = null;
         const denom = 1 - k * (1 + p);
