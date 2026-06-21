@@ -114,6 +114,28 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
 
               <div id="gadaiInfo" style="margin-top:10px;padding:11px 13px;border-radius:12px;background:#F7FEE7;border:1px solid #D9F99D;font-size:12.5px;line-height:1.55;color:#3F6212"></div>
 
+              <div style="margin-top:12px">
+                <div style="font-size:12.5px;font-weight:700;color:var(--text);margin-bottom:7px"><i class="ti ti-calendar-stats"></i> Jadwal Mu\u2019nah per Periode (10 hari)</div>
+                <div style="overflow-x:auto">
+                  <table class="compare-table" style="width:100%;font-size:11.5px">
+                    <thead><tr><th>Periode</th><th>Hari ke-</th><th class="right">Mu\u2019nah Kumulatif</th><th class="right">Tebus jika Ambil di Sini</th></tr></thead>
+                    <tbody id="schedBody"></tbody>
+                  </table>
+                </div>
+                <p class="hint" style="margin-top:6px">Tiap perpanjangan 10 hari menambah mu\u2019nah tetap. Baris <b>\u2605</b> = lama gadai pilihanmu.</p>
+              </div>
+
+              <div style="margin-top:12px">
+                <div style="font-size:12.5px;font-weight:700;color:var(--text);margin-bottom:7px"><i class="ti ti-percentage"></i> Simulasi Persentase Pinjaman</div>
+                <div style="overflow-x:auto">
+                  <table class="compare-table" style="width:100%;font-size:12px">
+                    <thead><tr><th>% Pinjaman</th><th class="right">Uang Pinjaman</th><th class="right">Total Tebusan</th></tr></thead>
+                    <tbody id="pctBody"></tbody>
+                  </table>
+                </div>
+                <p class="hint" style="margin-top:6px">Ambil lebih sedikit = tebusan lebih ringan. Baris <b>\u2605</b> = pilihanmu.</p>
+              </div>
+
               <div class="export-row">
                 <button type="button" class="export-btn img" id="exportImg"><i class="ti ti-photo-down"></i><span>Save Image</span></button>
                 <button type="button" class="export-btn wa" id="exportWa"><i class="ti ti-brand-whatsapp"></i><span>Share WA</span></button>
@@ -200,6 +222,30 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         $('totalBiaya').textContent = HC.fmt(totalBiaya);
 
         $('gadaiInfo').innerHTML = `\ud83d\udc8e Dari taksiran <b>${HC.fmt(taksiran)}</b>, kamu bisa pinjam <b>${HC.fmt(pinjaman)}</b> (${pct}%). Selama ${hari} hari (${periode} periode \u00d7 10 hari), mu\u2019nah <b>${HC.fmt(totalMunah)}</b> + admin ${HC.fmt(admin)}. Total ditebus di akhir: <b>${HC.fmt(totalTebus)}</b>. Tanpa bunga \u2014 hanya biaya titip & admin.`;
+
+        // V2: jadwal mu\u2019nah per periode
+        var munahPer = taksiran * munahRate / 100;
+        var sHtml = '';
+        for (var i = 1; i <= periode; i++) {
+          var mk = munahPer * i;
+          var tb = pinjaman + mk;
+          var isT = (i === periode);
+          sHtml += '<tr' + (isT ? ' style="background:#F7FEE7;font-weight:700"' : '') + '><td>' + (isT ? '\u2605 ' : '') + i + '</td><td>' + (i * 10) + '</td><td class="right" style="color:var(--gold-dark)">' + HC.fmt(mk) + '</td><td class="right">' + HC.fmt(tb) + '</td></tr>';
+        }
+        $('schedBody').innerHTML = sHtml;
+
+        // V2: simulasi % pinjaman
+        var pPre = [80, 90, 95];
+        if (pPre.indexOf(pct) === -1) pPre.push(pct);
+        pPre.sort(function(a, b) { return a - b; });
+        var pHtml = '';
+        pPre.forEach(function(pp) {
+          var pj = taksiran * pp / 100;
+          var tbz = pj + totalMunah;
+          var isT = (pp === pct);
+          pHtml += '<tr' + (isT ? ' style="background:#F7FEE7;font-weight:700"' : '') + '><td>' + (isT ? '\u2605 ' : '') + pp + '%</td><td class="right" style="color:var(--green-dark)">' + HC.fmt(pj) + '</td><td class="right">' + HC.fmt(tbz) + '</td></tr>';
+        });
+        $('pctBody').innerHTML = pHtml;
 
         lastCalc = { taksiran, pct, munahRate, hari, periode, admin, pinjaman, totalMunah, totalTebus, totalBiaya };
         $('placeholder').style.display = 'none';

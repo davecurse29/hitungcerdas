@@ -782,10 +782,10 @@ export const CALCULATORS: CalculatorMeta[] = [
     introText: 'Estimasi gadai emas syariah dengan akad Rahn: berapa uang pinjaman yang bisa kamu terima dari nilai taksiran, berapa biaya pemeliharaan (mu\'nah), dan total yang harus ditebus. Tanpa bunga (riba) — hanya biaya titip & administrasi. Semua tarif bisa kamu sesuaikan dengan ketentuan terkini Pegadaian Syariah.',
     benefits: [
       'Estimasi uang pinjaman dari taksiran emas',
-      'Biaya pemeliharaan (mu\'nah) per periode',
+      'Jadwal mu\'nah per periode & efek perpanjangan',
+      'Simulasi persentase pinjaman (80/90/95%)',
       'Total tebusan saat menebus barang',
       'Akad Rahn, tanpa bunga/riba',
-      'Scorecard share-ready (WA/IG/PDF)',
     ],
   },
 ];
