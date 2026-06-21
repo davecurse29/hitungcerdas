@@ -294,6 +294,77 @@ const websiteSchema = {
     <span id="toastText">Tersalin!</span>
   </div>
 
+  {/* ── PWA Install Banner ── */}
+  <div id="hc-pwa" role="dialog" aria-label="Pasang aplikasi HitungCerdas">
+    <div class="hc-pwa-card">
+      <div class="hc-pwa-ic"><i class="ti ti-device-mobile-down"></i></div>
+      <div class="hc-pwa-txt">
+        <strong>Pasang HitungCerdas</strong>
+        <span id="hc-pwa-sub">Akses cepat 30 kalkulator dari layar HP-mu, bahkan offline.</span>
+      </div>
+      <div class="hc-pwa-act">
+        <button type="button" id="hc-pwa-install" class="hc-pwa-btn">Pasang</button>
+        <button type="button" id="hc-pwa-close" class="hc-pwa-x" aria-label="Tutup">&times;</button>
+      </div>
+    </div>
+  </div>
+  <style is:global>
+    #hc-pwa{position:fixed;left:12px;right:12px;bottom:12px;z-index:1200;display:none;animation:hcPwaUp .35s cubic-bezier(.34,1.56,.64,1)}
+    #hc-pwa.show{display:block}
+    @keyframes hcPwaUp{from{transform:translateY(120%);opacity:0}to{transform:translateY(0);opacity:1}}
+    .hc-pwa-card{max-width:440px;margin:0 auto;display:flex;align-items:center;gap:12px;padding:12px 14px;background:linear-gradient(135deg,#0A2540,#13335C);color:#fff;border-radius:16px;box-shadow:0 10px 30px rgba(10,37,64,.35);border:1px solid rgba(255,255,255,.08)}
+    .hc-pwa-ic{flex-shrink:0;width:42px;height:42px;border-radius:12px;background:#2563EB;display:flex;align-items:center;justify-content:center;font-size:22px;color:#fff}
+    .hc-pwa-txt{flex:1;display:flex;flex-direction:column;line-height:1.3;min-width:0}
+    .hc-pwa-txt strong{font-size:14px;font-weight:700}
+    .hc-pwa-txt span{font-size:12px;color:#CBD5E1}
+    .hc-pwa-act{display:flex;align-items:center;gap:4px;flex-shrink:0}
+    .hc-pwa-btn{background:#2563EB;color:#fff;border:none;font-weight:700;font-size:13px;padding:9px 16px;border-radius:10px;cursor:pointer;transition:background .15s;white-space:nowrap}
+    .hc-pwa-btn:hover{background:#1E40AF}
+    .hc-pwa-x{background:transparent;border:none;color:#94A3B8;font-size:22px;line-height:1;cursor:pointer;padding:2px 8px;border-radius:8px}
+    .hc-pwa-x:hover{color:#fff}
+    @media(max-width:480px){.hc-pwa-txt span{font-size:11px}.hc-pwa-btn{padding:8px 13px}}
+  </style>
+  <script is:inline>
+    (function () {
+      var KEY = 'hc-pwa-dismissed', DAYS = 14;
+      function dismissed() { try { var t = +localStorage.getItem(KEY) || 0; return (Date.now() - t) < DAYS * 864e5; } catch (e) { return false; } }
+      function setDismissed() { try { localStorage.setItem(KEY, Date.now()); } catch (e) {} }
+      function isStandalone() { return (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true; }
+      var banner = document.getElementById('hc-pwa');
+      if (!banner) return;
+      var btn = document.getElementById('hc-pwa-install');
+      var closeBtn = document.getElementById('hc-pwa-close');
+      var sub = document.getElementById('hc-pwa-sub');
+      var deferred = null;
+      var isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+
+      function show() { if (dismissed() || isStandalone()) return; banner.classList.add('show'); }
+      function hide() { banner.classList.remove('show'); }
+
+      window.addEventListener('beforeinstallprompt', function (e) {
+        e.preventDefault(); deferred = e; setTimeout(show, 3000);
+      });
+
+      btn.addEventListener('click', function () {
+        if (deferred) {
+          deferred.prompt();
+          deferred.userChoice.then(function () { deferred = null; setDismissed(); hide(); });
+        } else {
+          setDismissed(); hide();
+        }
+      });
+      closeBtn.addEventListener('click', function () { setDismissed(); hide(); });
+      window.addEventListener('appinstalled', function () { setDismissed(); hide(); });
+
+      // iOS Safari tidak mendukung beforeinstallprompt -> tampilkan panduan manual
+      if (isIOS && !isStandalone() && !dismissed()) {
+        sub.textContent = 'Ketuk ikon Bagikan, lalu pilih "Tambah ke Layar Utama".';
+        btn.textContent = 'Oke';
+        setTimeout(show, 3000);
+      }
+    })();
+  </script>
+
   {/* ── Cloudflare Analytics ── */}
   <script
     defer
