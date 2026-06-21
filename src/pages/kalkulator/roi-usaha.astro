@@ -105,6 +105,21 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
 
               <div id="bandingInfo" style="margin-top:10px;padding:11px 13px;border-radius:12px;background:#F8FAFC;border:1px solid #E2E8F0;font-size:12.5px;line-height:1.55;color:#475569"></div>
 
+              <div style="margin-top:12px;padding:12px;border:1px solid var(--border);border-radius:12px;background:var(--bg-soft)">
+                <div style="font-size:12.5px;font-weight:700;color:var(--text);margin-bottom:6px"><i class="ti ti-chart-line"></i> Grafik Balik Modal</div>
+                <div id="roiChart"></div>
+                <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:8px;font-size:11px;color:var(--text-soft)">
+                  <span><span style="display:inline-block;width:14px;height:3px;background:#16A34A;vertical-align:middle;margin-right:4px"></span>Laba Kumulatif</span>
+                  <span><span style="display:inline-block;width:14px;height:3px;background:#94A3B8;vertical-align:middle;margin-right:4px"></span>Modal Awal</span>
+                </div>
+              </div>
+
+              <div style="margin-top:12px">
+                <div style="font-size:12.5px;font-weight:700;color:var(--text);margin-bottom:8px"><i class="ti ti-chart-bar"></i> Perbandingan ROI per Tahun</div>
+                <div id="roiBars"></div>
+                <p class="hint" style="margin-top:6px">Pembanding: deposito ~5%/thn, reksa dana ~9%/thn (estimasi umum). Usaha riil wajar lebih tinggi karena risikonya juga lebih besar.</p>
+              </div>
+
               <div class="export-row">
                 <button type="button" class="export-btn img" id="exportImg"><i class="ti ti-photo-down"></i><span>Save Image</span></button>
                 <button type="button" class="export-btn wa" id="exportWa"><i class="ti ti-brand-whatsapp"></i><span>Share WA</span></button>
@@ -205,6 +220,50 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         else if (roiTahun >= 6) banding = `\ud83d\udcca ROI ${roiTahun.toFixed(1)}%/tahun setara reksa dana, tapi usaha butuh tenaga & risiko lebih besar. Pertimbangkan apakah sepadan dibanding investasi pasif.`;
         else banding = `\u26a0\ufe0f ROI ${roiTahun.toFixed(1)}%/tahun tergolong rendah \u2014 di bawah atau setara deposito (~4-6%), padahal usaha berisiko & butuh tenaga. Evaluasi ulang modal, harga jual, atau efisiensi biaya.`;
         $('bandingInfo').innerHTML = banding;
+
+        // ===== Grafik Balik Modal =====
+        var xMax = Math.max(periode, Math.ceil(payback) + 2);
+        if (xMax < 2) xMax = 2;
+        var cumEnd = laba * xMax;
+        var yMax = Math.max(cumEnd, modal) * 1.05;
+        var PL = 46, PR = 306, PT = 14, PB = 150;
+        var X = function(m) { return (PL + (m / xMax) * (PR - PL)).toFixed(1); };
+        var Y = function(v) { return (PB - (v / yMax) * (PB - PT)).toFixed(1); };
+        var svg = '<svg viewBox="0 0 320 174" style="width:100%;height:auto" xmlns="http://www.w3.org/2000/svg">';
+        // area di bawah laba kumulatif sampai payback (hijau muda)
+        svg += '<line x1="' + X(0) + '" y1="' + Y(0) + '" x2="' + X(xMax) + '" y2="' + Y(0) + '" stroke="#CBD5E1" stroke-width="1"/>';
+        svg += '<line x1="' + X(0) + '" y1="' + Y(0) + '" x2="' + X(0) + '" y2="' + PT + '" stroke="#CBD5E1" stroke-width="1"/>';
+        // garis modal (abu)
+        svg += '<line x1="' + X(0) + '" y1="' + Y(modal) + '" x2="' + X(xMax) + '" y2="' + Y(modal) + '" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="4 3"/>';
+        // garis laba kumulatif (hijau)
+        svg += '<line x1="' + X(0) + '" y1="' + Y(0) + '" x2="' + X(xMax) + '" y2="' + Y(cumEnd) + '" stroke="#16A34A" stroke-width="2"/>';
+        // titik balik modal
+        if (payback <= xMax) {
+          svg += '<line x1="' + X(payback) + '" y1="' + Y(0) + '" x2="' + X(payback) + '" y2="' + Y(modal) + '" stroke="#15803D" stroke-width="1" stroke-dasharray="3 3"/>';
+          svg += '<circle cx="' + X(payback) + '" cy="' + Y(modal) + '" r="4" fill="#15803D"/>';
+          svg += '<text x="' + X(payback) + '" y="' + (PB + 13) + '" font-size="9" fill="#15803D" text-anchor="middle" font-weight="700">balik modal</text>';
+        }
+        svg += '<text x="' + X(xMax) + '" y="' + (PB + 13) + '" font-size="8" fill="#94A3B8" text-anchor="end">bulan →</text>';
+        svg += '<text x="' + PL + '" y="' + (PT - 4) + '" font-size="8" fill="#94A3B8">Rp</text>';
+        svg += '</svg>';
+        $('roiChart').innerHTML = svg;
+
+        // ===== Perbandingan ROI (bars) =====
+        var bench = [
+          { label: 'Usaha kamu', val: roiTahun, color: '#16A34A', bold: true },
+          { label: 'Reksa dana', val: 9, color: '#94A3B8', bold: false },
+          { label: 'Deposito', val: 5, color: '#CBD5E1', bold: false }
+        ];
+        var bmax = Math.max(roiTahun, 12);
+        var barsHtml = '';
+        bench.forEach(function(b) {
+          var w = bmax > 0 ? Math.max(2, b.val / bmax * 100) : 0;
+          barsHtml += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:7px">'
+            + '<span style="width:88px;flex-shrink:0;font-size:11.5px;' + (b.bold ? 'font-weight:700;color:var(--text)' : 'color:var(--text-soft)') + '">' + b.label + '</span>'
+            + '<div style="flex:1;height:16px;background:#F1F5F9;border-radius:5px;overflow:hidden"><div style="height:100%;width:' + w.toFixed(1) + '%;background:' + b.color + ';border-radius:5px"></div></div>'
+            + '<span style="width:50px;flex-shrink:0;text-align:right;font-size:11.5px;font-weight:700;color:' + (b.bold ? '#15803D' : 'var(--text-soft)') + '">' + b.val.toFixed(1) + '%</span></div>';
+        });
+        $('roiBars').innerHTML = barsHtml;
 
         lastCalc = { modal, laba, periode, payback, roiBulan, roiTahun, totalLaba, netGain, balikDalamPeriode };
         $('placeholder').style.display = 'none';
