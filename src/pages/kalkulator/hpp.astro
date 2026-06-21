@@ -116,6 +116,17 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
 
               <div id="hppInfo" style="margin-top:10px;padding:11px 13px;border-radius:12px;background:#FFF7ED;border:1px solid #FED7AA;font-size:12.5px;line-height:1.55;color:#9A3412"></div>
 
+              <div style="margin-top:14px">
+                <div style="font-size:12.5px;font-weight:700;color:var(--text);margin-bottom:7px"><i class="ti ti-bulb"></i> Simulasi Harga Jual per Margin</div>
+                <div style="overflow-x:auto">
+                  <table class="compare-table" style="width:100%;font-size:12px">
+                    <thead><tr><th>Margin</th><th class="right">Harga Jual/unit</th><th class="right">Untung/unit</th><th class="right">Untung Total</th></tr></thead>
+                    <tbody id="simBody"></tbody>
+                  </table>
+                </div>
+                <p class="hint" style="margin-top:6px">Baris <b>\u2605</b> = target marginmu. <b>Markup</b> = untung dibanding modal (HPP); <b>margin</b> = untung dibanding harga jual.</p>
+              </div>
+
               <div class="adv-section">
                 <div class="adv-toggle"><span><i class="ti ti-chart-pie"></i>&nbsp; Komposisi Biaya Produksi</span><i class="ti ti-chevron-down chev"></i></div>
                 <div class="adv-content">
@@ -212,7 +223,23 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         $('untungUnit').textContent = HC.fmt(untungUnit);
         $('marginOut').textContent = marginReal.toFixed(1) + '%';
 
-        $('hppInfo').innerHTML = `\ud83d\udca1 Modal tiap produk <b>${HC.fmt(hppUnit)}</b>. Dengan margin ${margin}%, jual di <b>${HC.fmt(hargaJual)}/unit</b> \u2192 untung kotor <b>${HC.fmt(untungUnit)}/unit</b>. Ingat: harga jual ini belum dikurangi biaya marketplace/ongkir & biaya operasional (sewa, marketing, admin).`;
+        const markup = hppUnit > 0 ? (untungUnit / hppUnit) * 100 : 0;
+        $('hppInfo').innerHTML = `\ud83d\udca1 Modal tiap produk <b>${HC.fmt(hppUnit)}</b>. Dengan margin ${margin}%, jual di <b>${HC.fmt(hargaJual)}/unit</b> \u2192 untung <b>${HC.fmt(untungUnit)}/unit</b> (markup ${markup.toFixed(0)}% dari modal). Harga ini belum dikurangi biaya marketplace/ongkir & operasional (sewa, marketing, admin).`;
+
+        // Simulasi harga jual per margin
+        var presets = [15, 20, 25, 30, 40, 50];
+        if (margin > 0 && presets.indexOf(margin) === -1) presets.push(margin);
+        presets.sort(function(a, b) { return a - b; });
+        var simHtml = '';
+        presets.forEach(function(m) {
+          var hj = m > 0 ? hppUnit / (1 - m / 100) : hppUnit;
+          var uu = hj - hppUnit;
+          var ut = uu * unit;
+          var mk = hppUnit > 0 ? uu / hppUnit * 100 : 0;
+          var isT = Math.abs(m - margin) < 0.01;
+          simHtml += '<tr' + (isT ? ' style="background:#FFF7ED;font-weight:700"' : '') + '><td>' + (isT ? '\u2605 ' : '') + m + '% <span style="color:#9A3412;font-weight:400;font-size:11px">(markup ' + mk.toFixed(0) + '%)</span></td><td class="right">' + HC.fmt(hj) + '</td><td class="right" style="color:var(--green-dark)">' + HC.fmt(uu) + '</td><td class="right">' + HC.fmt(ut) + '</td></tr>';
+        });
+        $('simBody').innerHTML = simHtml;
 
         // Komposisi
         const comps = [
@@ -229,7 +256,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         $('kompBar').innerHTML = barHtml;
         $('kompBody').innerHTML = bodyHtml;
 
-        lastCalc = { bahan, tkl, overhead, unit, margin, totalBiaya, hppUnit, hargaJual, untungUnit, marginReal };
+        lastCalc = { bahan, tkl, overhead, unit, margin, totalBiaya, hppUnit, hargaJual, untungUnit, marginReal, markup };
         $('placeholder').style.display = 'none';
         $('results').classList.add('show');
         $('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });

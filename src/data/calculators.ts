@@ -423,9 +423,9 @@ export const CALCULATORS: CalculatorMeta[] = [
     introText: 'Hitung Harga Pokok Produksi (HPP) per unit dengan akurat — fondasi penentuan harga jual yang menguntungkan. Masukkan biaya bahan baku, tenaga kerja langsung, dan overhead produksi, lalu lihat HPP per unit, komposisi biaya, dan rekomendasi harga jual di margin sehat. Cocok untuk usaha kuliner, kerajinan, dan produk UMKM.',
     benefits: [
       'HPP per unit otomatis dari 3 komponen biaya',
-      'Komposisi biaya: bahan baku, tenaga kerja, overhead',
-      'Rekomendasi harga jual di margin sehat',
-      'Untung per unit langsung kelihatan',
+      'Simulasi harga jual untuk beberapa margin sekaligus',
+      'Markup vs margin biar tak ketukar',
+      'Komposisi biaya & untung per unit & total',
       'Scorecard share-ready (WA/IG/PDF)',
     ],
   },
