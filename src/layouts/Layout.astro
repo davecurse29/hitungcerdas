@@ -323,6 +323,12 @@ const websiteSchema = {
     .hc-pwa-x{background:transparent;border:none;color:#94A3B8;font-size:22px;line-height:1;cursor:pointer;padding:2px 8px;border-radius:8px}
     .hc-pwa-x:hover{color:#fff}
     @media(max-width:480px){.hc-pwa-txt span{font-size:11px}.hc-pwa-btn{padding:8px 13px}}
+    /* Soft Aurora background (mode terang saja) */
+    html[data-theme="light"] body{
+      background-color:#F4F6FA;
+      background-image:radial-gradient(125% 620px at 50% -150px, #E3ECFA 0%, rgba(227,236,250,0) 72%);
+      background-repeat:no-repeat;
+    }
   </style>
   <script is:inline>
     (function () {
