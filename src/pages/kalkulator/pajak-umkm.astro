@@ -106,9 +106,35 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
                 <div class="result-item"><div class="result-item-label">Tarif Efektif</div><div class="result-item-value" id="tarifEf">0%</div></div>
               </div>
 
+              <div id="limitGauge" style="margin-top:12px">
+                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px">
+                  <span style="font-weight:700;color:var(--text)"><i class="ti ti-gauge"></i> Posisi Omzet vs Batas UMKM (Rp 4,8 M/thn)</span>
+                  <span id="limitPct" style="font-weight:800">0%</span>
+                </div>
+                <div style="height:10px;border-radius:6px;background:#E2E8F0;overflow:hidden">
+                  <div id="limitBar" style="height:100%;width:0%;border-radius:6px;transition:width .4s"></div>
+                </div>
+                <div id="limitNote" style="font-size:11.5px;margin-top:6px;color:var(--text-soft)"></div>
+              </div>
+
               <div id="pphInfo" style="margin-top:10px;padding:11px 13px;border-radius:12px;background:#ECFEFF;border:1px solid #A5F3FC;font-size:12.5px;line-height:1.55;color:#155E75"></div>
 
               <div id="warnBox" style="display:none;margin-top:10px;padding:11px 13px;border-radius:12px;background:#FEE2E2;border:1px solid #FECACA;font-size:12.5px;line-height:1.55;color:#991B1B"></div>
+
+              <div id="deadlineBox" style="margin-top:10px;padding:11px 13px;border-radius:12px;background:var(--bg-soft);border:1px solid var(--border);font-size:12px;line-height:1.65;color:var(--text-soft)"></div>
+
+              <div class="adv-section" style="margin-top:12px">
+                <div class="adv-toggle"><span><i class="ti ti-calendar-month"></i>&nbsp; Rincian PPh per Bulan</span><i class="ti ti-chevron-down chev"></i></div>
+                <div class="adv-content">
+                  <div style="overflow-x:auto">
+                    <table class="compare-table" style="width:100%;font-size:11.5px">
+                      <thead><tr><th>Bulan</th><th class="right">Omzet Kumulatif</th><th>Status</th><th class="right">PPh Bulan</th></tr></thead>
+                      <tbody id="monthBody"></tbody>
+                    </table>
+                  </div>
+                  <p class="hint" id="monthNote" style="margin-top:6px"></p>
+                </div>
+              </div>
 
               <div class="export-row">
                 <button type="button" class="export-btn img" id="exportImg"><i class="ti ti-photo-down"></i><span>Save Image</span></button>
@@ -213,7 +239,51 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
           warn.style.display = 'none';
         }
 
-        lastCalc = { jenis, isOP, periode, omzetInput, omzetThn, kenaPajak, pphTahun, pphBulan, tarifEf, overLimit: omzetThn > LIMIT };
+        // ===== Gauge batas Rp 4,8 M =====
+        var limitPct = omzetThn / LIMIT * 100;
+        $('limitPct').textContent = limitPct.toFixed(1) + '%';
+        var lbar = $('limitBar');
+        lbar.style.width = Math.min(limitPct, 100).toFixed(1) + '%';
+        var lwarna, lnote;
+        if (limitPct > 100) { lwarna = '#DC2626'; lnote = 'Omzet sudah <b>melebihi</b> batas UMKM \u2014 tidak lagi berhak tarif final 0,5%.'; }
+        else if (limitPct >= 80) { lwarna = '#CA8A04'; lnote = 'Sudah mendekati batas Rp 4,8 M. Pantau terus, siapkan transisi ke pembukuan lengkap bila terlampaui.'; }
+        else { lwarna = '#059669'; lnote = 'Masih aman di bawah batas Rp 4,8 M \u2014 berhak tarif PPh Final 0,5%.'; }
+        lbar.style.background = lwarna; $('limitPct').style.color = lwarna;
+        $('limitNote').innerHTML = lnote;
+
+        // ===== Jadwal setor & lapor SPT =====
+        $('deadlineBox').innerHTML = '<b style="color:var(--text)"><i class="ti ti-calendar-event"></i> Jadwal Kewajiban</b><br>\u2022 <b>Setor PPh Final:</b> tiap tanggal <b>15</b> bulan berikutnya (buat kode billing di Coretax/DJP Online).<br>\u2022 <b>Lapor SPT Tahunan:</b> sebelum <b>' + (isOP ? '31 Maret' : '30 April') + '</b> tahun berikutnya' + (isOP ? ' (Orang Pribadi)' : ' (Badan)') + '.';
+
+        // ===== Rincian PPh per bulan =====
+        var moOmzet = periode === 'bulan' ? omzetInput : omzetThn / 12;
+        var BLN = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+        var cum = 0, mRows = '', firstTax = 0;
+        for (var i = 0; i < 12; i++) {
+          var prev = cum; cum += moOmzet;
+          var taxable;
+          if (isOP) {
+            if (cum <= FREE) taxable = 0;
+            else if (prev >= FREE) taxable = moOmzet;
+            else taxable = cum - FREE;
+          } else { taxable = moOmzet; }
+          var pm = taxable * RATE;
+          var status, scolor;
+          if (taxable <= 0) { status = 'Bebas'; scolor = '#059669'; }
+          else if (taxable < moOmzet - 0.5) { status = 'Sebagian'; scolor = '#CA8A04'; }
+          else { status = 'Kena'; scolor = '#0E7490'; }
+          if (pm > 0 && firstTax === 0) firstTax = i + 1;
+          mRows += '<tr><td>' + BLN[i] + '</td><td class="right">' + HC.fmt(cum) + '</td><td><span style="color:' + scolor + ';font-weight:600">' + status + '</span></td><td class="right">' + HC.fmt(pm) + '</td></tr>';
+        }
+        $('monthBody').innerHTML = mRows;
+        var mNote;
+        if (isOP) {
+          mNote = firstTax > 0 ? ('Fasilitas bebas Rp 500 juta habis di sekitar bulan <b>' + BLN[firstTax - 1] + '</b>; PPh Final mulai berjalan setelahnya. (Asumsi omzet rata per bulan.)') : 'Sepanjang tahun omzet masih dalam jatah bebas Rp 500 juta \u2014 PPh Final Rp 0.';
+        } else {
+          mNote = 'Sebagai Badan, PPh Final 0,5% dibayar tiap bulan dari rupiah pertama (tanpa fasilitas bebas Rp 500 juta).';
+        }
+        $('monthNote').innerHTML = mNote;
+
+        lastCalc = { jenis, isOP, periode, omzetInput, omzetThn, kenaPajak, pphTahun, pphBulan, tarifEf, overLimit: omzetThn > LIMIT, limitPct, firstTax };
         $('placeholder').style.display = 'none';
         $('results').classList.add('show');
         $('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -263,6 +333,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
 
       $('btnHitung').addEventListener('click', hitung);
       $('btnReset').addEventListener('click', reset);
+      document.querySelectorAll('.adv-toggle').forEach(t => t.addEventListener('click', () => t.parentElement.classList.toggle('open')));
       [els.jenis, els.periode].forEach(el => el.addEventListener('change', () => { if (lastCalc) hitung(); }));
       $('exportImg').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToImage(c, 'pajak-umkm-' + Date.now()); });
       $('exportWa').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.shareWhatsApp(c, summaryText(), 'pajak-umkm'); });
