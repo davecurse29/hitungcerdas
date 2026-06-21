@@ -69,11 +69,11 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
               <div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="hargaCustom" class="has-prefix" value="5.000.000" inputmode="numeric" /></div></div>
             <div class="field"><label>Target Tahun Qurban</label>
               <select id="targetTahun">
-                <option value="0">Tahun ini (2026)</option>
-                <option value="1" selected>Tahun depan (2027)</option>
-                <option value="2">2 tahun lagi (2028)</option>
-                <option value="3">3 tahun lagi (2029)</option>
-                <option value="5">5 tahun lagi (2031)</option>
+                <option value="0">Tahun ini</option>
+                <option value="1" selected>Tahun depan</option>
+                <option value="2">2 tahun lagi</option>
+                <option value="3">3 tahun lagi</option>
+                <option value="5">5 tahun lagi</option>
               </select></div>
             <div class="field"><label>Tabungan yang Sudah Ada</label>
               <div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="tabunganAwal" class="has-prefix" placeholder="0" inputmode="numeric" /></div></div>
@@ -150,6 +150,19 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
 
 <script is:inline>
   (function() {
+    // ── Label tahun otomatis (anti-usang, tak perlu update manual tiap tahun) ──
+    (function fillYears(){
+      var sel = document.getElementById('targetTahun');
+      if (!sel) return;
+      var y = new Date().getFullYear();
+      for (var i = 0; i < sel.options.length; i++) {
+        var off = parseInt(sel.options[i].value, 10) || 0;
+        var th = y + off;
+        sel.options[i].textContent = off === 0 ? ('Tahun ini (' + th + ')')
+          : off === 1 ? ('Tahun depan (' + th + ')')
+          : (off + ' tahun lagi (' + th + ')');
+      }
+    })();
     function ready(fn) { if (window.HC && window.html2canvas) fn(); else setTimeout(() => ready(fn), 100); }
     ready(() => {
       const $ = id => document.getElementById(id);
