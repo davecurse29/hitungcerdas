@@ -126,6 +126,17 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
 
               <div id="cutInfo" style="margin-top:10px;padding:11px 13px;border-radius:12px;background:#FFFBEB;border:1px solid #FDE68A;font-size:12.5px;line-height:1.55;color:#92400E"></div>
 
+              <div style="margin-top:12px">
+                <div style="font-size:12.5px;font-weight:700;color:var(--text);margin-bottom:7px"><i class="ti ti-scale"></i> Perbandingan Platform (harga sama)</div>
+                <div style="overflow-x:auto">
+                  <table class="compare-table" style="width:100%;font-size:12px">
+                    <thead><tr><th>Platform</th><th class="right">Total Potongan</th><th class="right">Diterima Bersih</th></tr></thead>
+                    <tbody id="cmpBody"></tbody>
+                  </table>
+                </div>
+                <p class="hint" style="margin-top:6px">Baris <b>\u2605</b> = bersih terbesar. Pakai harga & PPN yang sama untuk ketiga platform (komisi default tiap platform). Sesuaikan dengan skema riil akunmu.</p>
+              </div>
+
               <div id="targetSection" style="display:none;margin-top:10px;padding:13px 15px;border-radius:12px;background:#F0FDF4;border:1px solid #BBF7D0">
                 <div style="font-size:13px;font-weight:700;color:#15803D;margin-bottom:8px"><i class="ti ti-tag"></i> Harga Jual Disarankan di Aplikasi</div>
                 <div id="targetBody" style="font-size:13px;line-height:1.7;color:#166534"></div>
@@ -247,6 +258,30 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         } else {
           $('targetSection').style.display = 'none';
         }
+
+        // ===== Perbandingan 3 platform (harga & PPN sama) =====
+        var cmpList = [
+          { key: 'gofood', label: 'GoFood', komisi: 20, fixed: 1000 },
+          { key: 'grabfood', label: 'GrabFood', komisi: 30, fixed: 0 },
+          { key: 'shopeefood', label: 'ShopeeFood', komisi: 20, fixed: 0 }
+        ];
+        cmpList.forEach(function(c) {
+          var kr = harga * c.komisi / 100;
+          var pr = kr * p;
+          c.cut = kr + c.fixed + pr;
+          c.net = harga - c.cut;
+        });
+        var bestNet = Math.max.apply(null, cmpList.map(function(c) { return c.net; }));
+        var cmpHtml = '';
+        cmpList.forEach(function(c) {
+          var isBest = Math.abs(c.net - bestNet) < 0.5;
+          var isCur = (platform === c.key);
+          cmpHtml += '<tr' + (isBest ? ' style="background:#F0FDF4;font-weight:700"' : '') + '>'
+            + '<td>' + (isBest ? '\u2605 ' : '') + c.label + ' <span style="color:#92400E;font-weight:400;font-size:11px">(' + c.komisi + '%' + (c.fixed ? '+' + (c.fixed / 1000) + 'rb' : '') + ')</span>' + (isCur ? ' <span style="color:#0891B2;font-size:10px">\u2022 dipilih</span>' : '') + '</td>'
+            + '<td class="right" style="color:var(--red)">' + HC.fmt(c.cut) + '</td>'
+            + '<td class="right" style="color:var(--green-dark)">' + HC.fmt(c.net) + '</td></tr>';
+        });
+        $('cmpBody').innerHTML = cmpHtml;
 
         lastCalc = { platform, platformLabel, harga, komisiPct, biayaTetap, ppnPct, komisiRp, ppnRp, totalCut, net, cutPct, target: targetData };
         $('placeholder').style.display = 'none';

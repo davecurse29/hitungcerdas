@@ -526,8 +526,8 @@ export const CALCULATORS: CalculatorMeta[] = [
     h1: 'Kalkulator Komisi GoFood, GrabFood & ShopeeFood',
     introText: 'Hitung berapa potongan platform delivery (GoFood, GrabFood, ShopeeFood) dan berapa uang bersih yang benar-benar kamu terima per pesanan. Kalkulator memperhitungkan komisi, biaya per transaksi, dan PPN atas komisi. Bisa juga hitung mundur: berapa harga jual di app supaya kamu tetap untung sesuai target.',
     benefits: [
-      'Preset GoFood, GrabFood, ShopeeFood',
       'Hitung uang bersih diterima per pesanan',
+      'Bandingkan GoFood vs GrabFood vs ShopeeFood',
       'Rincian komisi + biaya transaksi + PPN',
       'Harga jual disarankan untuk target bersih',
       'Scorecard share-ready (WA/IG/PDF)',
