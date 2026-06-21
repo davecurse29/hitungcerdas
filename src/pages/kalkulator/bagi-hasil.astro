@@ -139,6 +139,42 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
 
               <div id="bhInfo" style="margin-top:10px;padding:11px 13px;border-radius:12px;background:#FEFCE8;border:1px solid #FEF08A;font-size:12.5px;line-height:1.55;color:#854D0E"></div>
 
+              <div id="v2Usaha" style="display:none">
+                <div style="margin-top:12px">
+                  <div style="font-size:12px;font-weight:600;color:var(--text-soft);margin-bottom:6px">Pembagian Laba</div>
+                  <div style="display:flex;height:22px;border-radius:6px;overflow:hidden;font-size:10px;font-weight:700;color:#fff">
+                    <div id="barPemodal" style="background:#CA8A04;display:flex;align-items:center;justify-content:center;width:50%">Pemodal</div>
+                    <div id="barPengelola" style="background:#0F766E;display:flex;align-items:center;justify-content:center;width:50%">Pengelola</div>
+                  </div>
+                  <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-soft);margin-top:4px">
+                    <span id="lblBarPemodal">Pemodal 0%</span><span id="lblBarPengelola">Pengelola 0%</span>
+                  </div>
+                </div>
+                <div style="margin-top:12px">
+                  <div style="font-size:12.5px;font-weight:700;color:var(--text);margin-bottom:7px"><i class="ti ti-table"></i> Simulasi Beberapa Nisbah</div>
+                  <div style="overflow-x:auto">
+                    <table class="compare-table" style="width:100%;font-size:12px">
+                      <thead><tr><th>Nisbah (Pemodal:Pengelola)</th><th class="right">Pemodal</th><th class="right">Pengelola</th></tr></thead>
+                      <tbody id="nisbahBody"></tbody>
+                    </table>
+                  </div>
+                  <p class="hint" style="margin-top:6px">Baris <b>\u2605</b> = nisbah pilihanmu. Bantu menimbang pembagian yang adil saat akad.</p>
+                </div>
+              </div>
+
+              <div id="v2Deposito" style="display:none">
+                <div style="margin-top:12px">
+                  <div style="font-size:12.5px;font-weight:700;color:var(--text);margin-bottom:7px"><i class="ti ti-calendar-stats"></i> Proyeksi Bagi Hasil per Tenor</div>
+                  <div style="overflow-x:auto">
+                    <table class="compare-table" style="width:100%;font-size:12px">
+                      <thead><tr><th>Tenor</th><th class="right">Estimasi Bagi Hasil</th><th class="right">Total Jatuh Tempo</th></tr></thead>
+                      <tbody id="tenorBody"></tbody>
+                    </table>
+                  </div>
+                  <p class="hint" style="margin-top:6px">Baris <b>\u2605</b> = tenor pilihanmu. Indikasi setara \u2014 tidak dijamin tetap.</p>
+                </div>
+              </div>
+
               <div class="export-row">
                 <button type="button" class="export-btn img" id="exportImg"><i class="ti ti-photo-down"></i><span>Save Image</span></button>
                 <button type="button" class="export-btn wa" id="exportWa"><i class="ti ti-brand-whatsapp"></i><span>Share WA</span></button>
@@ -237,6 +273,24 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
 
         $('bhInfo').innerHTML = `\ud83e\udd1d Dari laba <b>${HC.fmt(laba)}</b> dengan nisbah <b>${nisbah}:${nisbahPengelola}</b> \u2014 pemodal menerima <b>${HC.fmt(bagPemodal)}</b>, pengelola <b>${HC.fmt(bagPengelola)}</b>.${returnPct !== null ? ` Return pemodal terhadap modal ${HC.fmt(modal)}: <b>${returnPct.toFixed(1)}%</b>.` : ''}`;
 
+        // V2: bar pembagian + simulasi nisbah
+        $('v2Usaha').style.display = '';
+        $('v2Deposito').style.display = 'none';
+        $('barPemodal').style.width = nisbah + '%';
+        $('barPengelola').style.width = nisbahPengelola + '%';
+        $('lblBarPemodal').textContent = 'Pemodal ' + nisbah + '%';
+        $('lblBarPengelola').textContent = 'Pengelola ' + nisbahPengelola + '%';
+        var nPre = [50, 60, 70, 80];
+        if (nPre.indexOf(nisbah) === -1) nPre.push(nisbah);
+        nPre.sort(function(a, b) { return a - b; });
+        var nHtml = '';
+        nPre.forEach(function(n) {
+          var pm = laba * n / 100, pg = laba * (100 - n) / 100;
+          var isT = (n === nisbah);
+          nHtml += '<tr' + (isT ? ' style="background:#FEFCE8;font-weight:700"' : '') + '><td>' + (isT ? '\u2605 ' : '') + n + ' : ' + (100 - n) + '</td><td class="right" style="color:var(--green-dark)">' + HC.fmt(pm) + '</td><td class="right">' + HC.fmt(pg) + '</td></tr>';
+        });
+        $('nisbahBody').innerHTML = nHtml;
+
         lastCalc = { mode: 'usaha', modal, laba, nisbah, nisbahPengelola, bagPemodal, bagPengelola, returnPct };
         showResults();
       }
@@ -263,6 +317,20 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         $('depTenor').textContent = tenor + ' bln';
 
         $('bhInfo').innerHTML = `\ud83c\udfe6 Deposito <b>${HC.fmt(deposito)}</b> dengan indikasi imbal hasil setara <b>${rate}%/thn</b> selama ${tenor} bulan \u2192 estimasi bagi hasil <b>${HC.fmt(bagiHasil)}</b>, total jatuh tempo <b>${HC.fmt(total)}</b>. Ingat: angka ini indikasi (tidak dijamin tetap), beda dengan bunga konvensional.`;
+
+        // V2: proyeksi multi-tenor
+        $('v2Deposito').style.display = '';
+        $('v2Usaha').style.display = 'none';
+        var tPre = [3, 6, 12, 24];
+        if (tPre.indexOf(tenor) === -1) tPre.push(tenor);
+        tPre.sort(function(a, b) { return a - b; });
+        var tHtml = '';
+        tPre.forEach(function(t) {
+          var bh = deposito * (rate / 100) * (t / 12), tot = deposito + bh;
+          var isT = (t === tenor);
+          tHtml += '<tr' + (isT ? ' style="background:#FEFCE8;font-weight:700"' : '') + '><td>' + (isT ? '\u2605 ' : '') + t + ' bln</td><td class="right" style="color:var(--green-dark)">' + HC.fmt(bh) + '</td><td class="right">' + HC.fmt(tot) + '</td></tr>';
+        });
+        $('tenorBody').innerHTML = tHtml;
 
         lastCalc = { mode: 'deposito', deposito, rate, tenor, bagiHasil, total, perBulan };
         showResults();

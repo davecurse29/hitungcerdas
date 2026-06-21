@@ -756,9 +756,9 @@ export const CALCULATORS: CalculatorMeta[] = [
     introText: 'Hitung pembagian keuntungan sesuai akad mudharabah. Mode Bagi Hasil Usaha membagi laba antara pemodal (shahibul maal) dan pengelola (mudharib) sesuai nisbah yang disepakati. Mode Deposito Syariah mengestimasi imbal hasil tabungan/deposito syariah. Adil, transparan, dan bebas riba.',
     benefits: [
       '2 mode: bagi hasil usaha & deposito syariah',
-      'Pembagian laba sesuai nisbah pemodal:pengelola',
-      'Estimasi imbal hasil deposito syariah',
-      'Hitung return pemodal terhadap modal',
+      'Visual pembagian pemodal vs pengelola',
+      'Simulasi beberapa nisbah untuk negosiasi',
+      'Proyeksi bagi hasil deposito beberapa tenor',
       'Scorecard share-ready (WA/IG/PDF)',
     ],
   },
