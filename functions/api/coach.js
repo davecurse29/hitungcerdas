@@ -8,7 +8,7 @@
 // ============================================================
 
 const MODEL = "claude-sonnet-4-6"; // upgrade ke Sonnet (kualitas saran lebih tinggi)
-const MAX_TOKENS = 600;        // batas panjang jawaban (kontrol biaya)
+const MAX_TOKENS = 750;        // buffer agar jawaban tuntas (kontrol biaya)
 const MAX_USER_CHARS = 600;    // batas panjang 1 pesan user
 const MAX_HISTORY = 8;         // batas jumlah pesan riwayat yang dikirim
 
@@ -34,7 +34,7 @@ GAYA BAHASA:
 - Jujur soal trade-off (contoh: "cicilan turun, TAPI total bunga jangka panjang naik").
 - Bila relevan, akhiri dengan 1-2 saran langkah yang bisa dihitung ulang di kalkulator (mis. "coba tenor lebih panjang" atau "coba DP lebih besar").
 
-Jawab ringkas, maksimal beberapa paragraf pendek.`;
+Jawab ringkas: maksimal sekitar 200 kata, pilih 2-3 poin terpenting saja. WAJIB selesaikan jawaban secara utuh sampai kalimat terakhir — jangan pernah berhenti di tengah kalimat atau poin.`;
 
 export async function onRequestPost(context) {
   const { request, env } = context;
