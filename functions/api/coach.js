@@ -7,7 +7,7 @@
 //  (ANTHROPIC_API_KEY) — TIDAK PERNAH ada di frontend/browser.
 // ============================================================
 
-const MODEL = "claude-haiku-4-5-20251001"; // model termurah & cepat
+const MODEL = "claude-sonnet-4-6"; // upgrade ke Sonnet (kualitas saran lebih tinggi)
 const MAX_TOKENS = 600;        // batas panjang jawaban (kontrol biaya)
 const MAX_USER_CHARS = 600;    // batas panjang 1 pesan user
 const MAX_HISTORY = 8;         // batas jumlah pesan riwayat yang dikirim
