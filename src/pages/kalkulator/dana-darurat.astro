@@ -150,6 +150,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
                 <button type="button" class="export-btn wa" id="exportWa"><i class="ti ti-brand-whatsapp"></i><span>Share WA</span></button>
                 <button type="button" class="export-btn pdf" id="exportPdf"><i class="ti ti-printer"></i><span>Print/PDF</span></button>
                 <button type="button" class="export-btn copy" id="exportCopy"><i class="ti ti-copy"></i><span>Copy Teks</span></button>
+                <button type="button" class="export-btn link" id="exportLink"><i class="ti ti-link" style="color:#0891B2"></i><span style="color:#0891B2">Salin Link</span></button>
               </div>
 
               <!-- ===== AI COACH KEPUTUSAN (mandiri) ===== -->
@@ -487,6 +488,30 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       $('exportWa').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.shareWhatsApp(c, summaryText(), 'dana-darurat'); });
       $('exportPdf').addEventListener('click', () => { if (!lastCalc) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToPDF(); });
       $('exportCopy').addEventListener('click', () => { if (!lastCalc) { HC.toast('Hitung dulu', 'error'); return; } HC.copyText(summaryText(), 'Tersalin!'); });
+
+      // ── Salin Link Hasil (share via URL) ──
+      function buildShareUrl(){
+        var p = new URLSearchParams();
+        p.set('pg', String(HC.parseRp(els.pengeluaran.value)||0));
+        p.set('dn', String(HC.parseRp(els.dananow.value)||0));
+        p.set('nb', String(HC.parseRp(els.nabung.value)||0));
+        p.set('st', els.status.value);
+        p.set('pk', els.pekerjaan.value);
+        return location.origin + location.pathname + '?' + p.toString();
+      }
+      function setNum(el, val){ el.value = val; el.dispatchEvent(new Event('input', {bubbles:true})); }
+      function loadFromUrl(){
+        var q = new URLSearchParams(location.search);
+        if (!q.has('pg')) return false;
+        setNum(els.pengeluaran, q.get('pg'));
+        if (q.has('dn')) setNum(els.dananow, q.get('dn'));
+        if (q.has('nb')) setNum(els.nabung, q.get('nb'));
+        if (q.has('st')) els.status.value = q.get('st');
+        if (q.has('pk')) els.pekerjaan.value = q.get('pk');
+        return true;
+      }
+      $('exportLink').addEventListener('click', function(){ HC.copyText(buildShareUrl(), 'Link tersalin!'); });
+      if (loadFromUrl()) { hitung(); }
     });
   })();
 </script>
