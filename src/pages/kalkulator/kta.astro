@@ -156,6 +156,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
                 <button type="button" class="export-btn wa" id="exportWa"><i class="ti ti-brand-whatsapp"></i><span>Share WA</span></button>
                 <button type="button" class="export-btn pdf" id="exportPdf"><i class="ti ti-printer"></i><span>Print/PDF</span></button>
                 <button type="button" class="export-btn copy" id="exportCopy"><i class="ti ti-copy"></i><span>Copy Teks</span></button>
+                <button type="button" class="export-btn link" id="exportLink"><i class="ti ti-link" style="color:#0891B2"></i><span style="color:#0891B2">Salin Link</span></button>
               </div>
 
               <!-- ===== AI COACH KEPUTUSAN (mandiri) ===== -->
@@ -563,6 +564,32 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       $('exportWa').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.shareWhatsApp(c, summaryText(), 'kta'); });
       $('exportPdf').addEventListener('click', () => { if (!lastCalc) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToPDF(); });
       $('exportCopy').addEventListener('click', () => { if (!lastCalc) { HC.toast('Hitung dulu', 'error'); return; } HC.copyText(summaryText(), 'Tersalin!'); });
+
+      // ── Salin Link Hasil (share via URL) ──
+      function buildShareUrl(){
+        var p = new URLSearchParams();
+        p.set('pj', String(HC.parseRp(els.pinjaman.value)||0));
+        p.set('gj', String(HC.parseRp(els.gaji.value)||0));
+        p.set('cl', String(HC.parseRp(els.cicLain.value)||0));
+        p.set('bg', els.bunga.value||'0');
+        p.set('tn', els.tenor.value);
+        p.set('mt', els.metode.value);
+        return location.origin + location.pathname + '?' + p.toString();
+      }
+      function setNum(el, val){ el.value = val; el.dispatchEvent(new Event('input', {bubbles:true})); }
+      function loadFromUrl(){
+        var q = new URLSearchParams(location.search);
+        if (!q.has('pj')) return false;
+        setNum(els.pinjaman, q.get('pj'));
+        if (q.has('gj')) setNum(els.gaji, q.get('gj'));
+        if (q.has('cl')) setNum(els.cicLain, q.get('cl'));
+        if (q.has('bg')) els.bunga.value = q.get('bg');
+        if (q.has('tn')) els.tenor.value = q.get('tn');
+        if (q.has('mt')) els.metode.value = q.get('mt');
+        return true;
+      }
+      $('exportLink').addEventListener('click', function(){ HC.copyText(buildShareUrl(), 'Link tersalin!'); });
+      if (loadFromUrl()) { hitung(); }
     });
   })();
 </script>
