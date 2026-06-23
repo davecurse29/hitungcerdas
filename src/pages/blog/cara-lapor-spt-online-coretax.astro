@@ -1,0 +1,203 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import ArticleSchema from '../../components/ArticleSchema.astro';
+
+const datePublished = '2026-06-23';
+const dateModified = '2026-06-23';
+const today = new Date(datePublished).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'Cara Lapor SPT Online via Coretax' }];
+---
+
+<Layout
+  title="Cara Lapor SPT Tahunan Online via Coretax 2026 — Panduan Lengkap + Atasi Kendala"
+  description="Panduan lengkap lapor SPT Tahunan online lewat Coretax DJP 2026: cara aktivasi & login akun, langkah lapor untuk karyawan, atasi kendala bukti potong, batas waktu, dan denda telat lapor."
+  keywords={['cara lapor spt online', 'coretax djp', 'lapor spt tahunan 2026', 'cara lapor spt karyawan', 'coretax cara pakai', 'aktivasi akun coretax', 'spt tahunan coretax', 'lapor pajak online']}
+  canonical="https://hitungcerdas.net/blog/cara-lapor-spt-online-coretax"
+  ogType="article"
+>
+  <ArticleSchema
+    headline="Cara Lapor SPT Tahunan Online via Coretax 2026 — Panduan Lengkap + Atasi Kendala"
+    description="Panduan lengkap lapor SPT Tahunan online lewat Coretax DJP 2026: cara aktivasi & login akun, langkah lapor untuk karyawan, atasi kendala bukti potong, batas waktu, dan denda telat lapor."
+    datePublished={datePublished}
+    dateModified={dateModified}
+    slug="cara-lapor-spt-online-coretax"
+    articleSection="Pajak"
+    keywords={['cara lapor spt online', 'coretax djp', 'lapor spt tahunan 2026', 'cara lapor spt karyawan', 'aktivasi akun coretax']}
+    wordCount={1750}
+  />
+
+  <section class="article-hero" style="--cat-color:#1D4ED8;--cat-color2:#1E3A8A">
+    <div class="wrap">
+      <Breadcrumb items={bcItems} />
+      <div class="article-tag">PANDUAN PAJAK CORETAX</div>
+      <h1>Cara Lapor SPT Tahunan Online via Coretax 2026</h1>
+      <div class="article-meta">
+        <span><i class="ti ti-calendar"></i> {today}</span>
+        <span><i class="ti ti-clock"></i> 9 menit baca</span>
+        <span><i class="ti ti-user"></i> Tim HitungCerdas</span>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+
+  <article class="content-section">
+    <div class="wrap-text">
+      <p class="lead">
+        Sejak 2025, cara lapor pajak online di Indonesia berpindah ke sistem baru bernama <strong>Coretax DJP</strong>,
+        menggantikan DJP Online yang lama. Kabar baiknya: lapor SPT Tahunan kini bisa dilakukan sepenuhnya online —
+        tanpa antre di kantor pajak — dengan data bukti potong yang sudah <strong>terisi otomatis</strong>. Tapi karena
+        sistemnya baru, banyak yang masih bingung. Artikel ini memandu kamu langkah demi langkah: dari aktivasi akun,
+        cara lapor SPT untuk karyawan, sampai mengatasi kendala yang paling sering muncul.
+      </p>
+
+      <h2>1. Apa Itu Coretax DJP?</h2>
+      <p>
+        <strong>Coretax DJP</strong> (Sistem Inti Administrasi Perpajakan) adalah platform pajak digital terbaru dari
+        Direktorat Jenderal Pajak. Diluncurkan akhir 2024 dan berlaku sejak 1 Januari 2025, Coretax menyatukan hampir
+        semua layanan pajak dalam satu portal: lapor SPT, buat kode billing, bayar pajak, terbitkan faktur pajak, sampai
+        pembuatan bukti potong. Per Maret 2026, lebih dari 15 juta wajib pajak sudah mengaktifkan akun Coretax.
+      </p>
+
+      <h2>2. Coretax vs DJP Online: Apa Bedanya?</h2>
+      <ul class="info-list">
+        <li><strong>Satu pintu</strong> — dulu layanan terpisah (DJP Online, e-Filing, e-Billing, e-Faktur), kini terpusat di Coretax.</li>
+        <li><strong>Login pakai NIK</strong> — bisa masuk dengan NIK (16 digit) atau NPWP (15 digit), tidak lagi mengandalkan EFIN seperti dulu.</li>
+        <li><strong>Data terisi otomatis (prepopulated)</strong> — bukti potong dari pemberi kerja otomatis tertarik ke SPT-mu, jadi tinggal dicek.</li>
+        <li><strong>Tanda tangan elektronik</strong> — pengesahan SPT pakai Kode Otorisasi/Sertifikat Elektronik, bukan EFIN.</li>
+      </ul>
+
+      <h2>3. Langkah 1 — Aktivasi &amp; Login Akun Coretax</h2>
+      <p>Sebelum lapor, akun Coretax-mu harus aktif. Ada dua kondisi:</p>
+      <ul class="info-list">
+        <li><strong>Sudah punya akun DJP Online &amp; NIK sudah dipadankan dengan NPWP</strong>: buka <a href="https://www.pajak.go.id" target="_blank" rel="noopener nofollow">pajak.go.id</a> → menu Coretax → pilih <strong>"Lupa Kata Sandi"</strong> → masukkan NIK → pilih konfirmasi via email/HP → buat kata sandi baru.</li>
+        <li><strong>Belum aktivasi</strong>: lakukan aktivasi akun dan permintaan Sertifikat Elektronik (KO/SE). Cara termudah lewat aplikasi <strong>M-Pajak (Coretax Mobile)</strong> yang bisa diunduh di Play Store / App Store.</li>
+      </ul>
+      <p>Setelah berhasil, login ke Coretax memakai NIK/NPWP + kata sandi.</p>
+
+      <h2>4. Langkah 2 — Siapkan Dokumen</h2>
+      <ul class="info-list">
+        <li><strong>Bukti Potong 1721-A1</strong> (karyawan swasta) atau <strong>1721-A2</strong> (PNS) dari pemberi kerja — biasanya dibagikan awal tahun.</li>
+        <li><strong>Daftar harta &amp; utang</strong> per 31 Desember (saldo rekening, kendaraan, properti, dll.).</li>
+        <li><strong>Daftar tanggungan keluarga</strong> (untuk status PTKP).</li>
+        <li><strong>Akun Coretax aktif</strong> + kata sandi.</li>
+      </ul>
+      <p>
+        Tip: sebelum lapor, pastikan dulu hitungan pajakmu sudah benar. Kamu bisa cek perkiraan PPh 21 lewat
+        <a href="/kalkulator/pph-21">Kalkulator PPh 21</a> dan take-home pay lewat
+        <a href="/kalkulator/gaji-bersih">Kalkulator Gaji Bersih</a> agar angka di bukti potong mudah dipahami.
+      </p>
+
+      <AdSlot format="horizontal" />
+
+      <h2>5. Langkah 3 — Cara Lapor SPT Tahunan Karyawan</h2>
+      <p>Setelah login ke Coretax, ikuti urutan ini:</p>
+      <div class="formula-box">
+        <ul>
+          <li><strong>1.</strong> Buka menu <strong>"Surat Pemberitahuan (SPT)"</strong> → pilih <strong>PPh Orang Pribadi</strong>.</li>
+          <li><strong>2.</strong> Pilih <strong>SPT Tahunan</strong>, masukkan periode (mis. Januari–Desember 2025), pilih <strong>Normal</strong> (atau Pembetulan jika memperbaiki).</li>
+          <li><strong>3.</strong> Klik <strong>"Posting SPT"</strong> di header — ini menarik data bukti potong yang terhubung dengan NIK-mu. <em>Penting: klik ini sebelum mulai mengisi.</em></li>
+          <li><strong>4.</strong> Klik <strong>"Buat Konsep SPT"</strong> → klik ikon pensil (✏️) untuk membuka formulir.</li>
+          <li><strong>5.</strong> Periksa data yang sudah terisi otomatis (penghasilan &amp; pajak dipotong). <strong>Wajib dicek ulang</strong> — sistem hanya membantu, kebenaran tetap tanggung jawabmu.</li>
+          <li><strong>6.</strong> Isi daftar harta, utang, dan tanggungan.</li>
+          <li><strong>7.</strong> Jika status <strong>Nihil/Lebih Bayar</strong> → langsung ke pengesahan. Jika <strong>Kurang Bayar</strong> → buat kode billing &amp; bayar dulu (lewat saldo deposit Coretax atau kanal bank/e-wallet).</li>
+          <li><strong>8.</strong> Tanda tangani secara elektronik (TTE) → <strong>Lapor</strong>.</li>
+          <li><strong>9.</strong> Simpan <strong>Bukti Penerimaan Elektronik (BPE)</strong> sebagai tanda SPT-mu sah diterima.</li>
+        </ul>
+      </div>
+
+      <h2>6. Kendala Umum &amp; Solusinya</h2>
+      <h3>"Data bukti potong baru ditemukan" saat mau bayar/lapor</h3>
+      <p>Ini muncul karena kamu belum menarik data lewat tombol <strong>"Posting SPT"</strong>. Klik tombol itu di header induk SPT, lalu lanjutkan pengisian.</p>
+      <h3>Bukti potong ganda / dari marketplace</h3>
+      <p>Karena sistem menarik data berdasarkan NIK, kadang muncul bukti potong dari affiliate/cashback marketplace. Pastikan setiap bukti potong benar-benar penghasilanmu. Yang tidak relevan bisa dihapus; yang benar dipastikan masuk sebagai penghasilan dan pajak yang sudah dipotong.</p>
+      <h3>Pelaporan suami–istri jadi "kurang bayar"</h3>
+      <p>Jika tidak ada perjanjian pisah harta, cukup suami yang lapor. Bila bukti potong istri (dari satu pemberi kerja) ikut tertarik sehingga hasilnya kurang bayar, data bukti potong istri bisa dipindahkan ke bagian <strong>penghasilan final</strong> ("penghasilan istri dari satu pemberi kerja").</p>
+      <h3>Coretax lemot atau tidak bisa diakses</h3>
+      <p>Saat mendekati batas waktu, jutaan orang lapor bersamaan dan sistem bisa melambat atau sedang pemeliharaan. Solusi paling ampuh: <strong>lapor lebih awal</strong> (Februari–awal Maret), jangan menunggu minggu terakhir.</p>
+
+      <h2>7. Batas Waktu &amp; Denda Telat Lapor</h2>
+      <ul class="info-list">
+        <li><strong>SPT Tahunan Orang Pribadi</strong>: normalnya paling lambat <strong>31 Maret</strong>. Khusus tahun pajak 2025, batasnya diperpanjang hingga <strong>30 April 2026</strong>.</li>
+        <li><strong>SPT Tahunan Badan</strong>: paling lambat <strong>30 April</strong> (4 bulan setelah akhir tahun pajak).</li>
+        <li><strong>Denda telat</strong>: Rp <strong>100.000</strong> untuk Orang Pribadi dan Rp <strong>1.000.000</strong> untuk Badan (sesuai UU KUP).</li>
+      </ul>
+
+      <h2>8. Saluran Tambahan: Coretax Form &amp; M-Pajak</h2>
+      <ul class="info-list">
+        <li><strong>Coretax Form</strong> — formulir elektronik yang bisa diunduh, diisi offline, lalu diunggah kembali. Cocok untuk WP Orang Pribadi <strong>status Nihil</strong> dan area dengan internet kurang stabil.</li>
+        <li><strong>M-Pajak (Coretax Mobile)</strong> — aplikasi HP untuk aktivasi akun &amp; layanan dasar Coretax, tersedia di Play Store dan App Store.</li>
+        <li><strong>Bantuan</strong> — Kring Pajak <strong>1500200</strong> atau kunjungi KPP terdekat untuk bimbingan gratis.</li>
+      </ul>
+
+      <h2>9. FAQ Lapor SPT via Coretax</h2>
+      <h3>Apakah karyawan tetap wajib lapor SPT walau pajaknya sudah dipotong kantor?</h3>
+      <p>Ya. Pajak sudah dipotong perusahaan, tapi kamu tetap wajib melaporkan SPT Tahunan menggunakan bukti potong dari kantor.</p>
+      <h3>Apakah masih perlu EFIN di Coretax?</h3>
+      <p>Tidak. Login Coretax memakai NIK/NPWP + kata sandi, dan pengesahan memakai sertifikat elektronik.</p>
+      <h3>Gaji saya di bawah PTKP, perlu lapor?</h3>
+      <p>Selama kamu punya NPWP aktif, kamu tetap lapor SPT — biasanya statusnya Nihil. Yang penghasilannya di bawah PTKP umumnya tidak ada pajak terutang.</p>
+      <h3>Bagaimana kalau bukti potong belum muncul otomatis?</h3>
+      <p>Klik "Posting SPT" untuk menarik data. Bila tetap belum muncul, minta bukti potong ke bagian HRD/keuangan dan input manual sesuai angkanya.</p>
+      <h3>Lebih bayar, apa uangnya bisa kembali?</h3>
+      <p>Status lebih bayar bisa diajukan restitusi/pemindahbukuan sesuai ketentuan, namun prosesnya melalui pemeriksaan DJP.</p>
+
+      <div class="cta-box">
+        <h3>🧮 Cek Pajakmu Sebelum Lapor</h3>
+        <p>Sebelum input ke Coretax, pastikan hitungan pajakmu masuk akal pakai kalkulator HitungCerdas:</p>
+        <ul>
+          <li>✅ Hitung estimasi PPh 21 tahunan (tarif progresif &amp; PTKP terbaru)</li>
+          <li>✅ Cek take-home pay dari gaji bruto</li>
+          <li>✅ Cocokkan dengan angka di bukti potong 1721-A1</li>
+          <li>✅ Export hasil PNG/PDF untuk arsip</li>
+        </ul>
+        <p style="margin-top:14px"><a href="/kalkulator/pph-21" class="btn btn-pri"><i class="ti ti-calculator"></i> Buka Kalkulator PPh 21</a></p>
+      </div>
+
+      <h2>Kesimpulan</h2>
+      <p>
+        Coretax DJP membuat lapor pajak online lebih terpusat — dari aktivasi akun, pengisian SPT dengan data otomatis,
+        sampai pembayaran dan tanda tangan elektronik. Kuncinya: aktifkan akun lebih dulu, klik <strong>"Posting SPT"</strong>
+        untuk menarik bukti potong, cek ulang setiap data, dan lapor lebih awal agar tidak terhambat sistem yang ramai.
+        Hitung dulu pajakmu dengan kalkulator HitungCerdas, lalu cocokkan saat lapor. Selalu rujuk sumber resmi di bawah ini.
+      </p>
+
+      <h3>📋 Sumber Resmi (Bisa Dicek)</h3>
+      <ul class="info-list">
+        <li><a href="https://www.pajak.go.id" target="_blank" rel="noopener nofollow">pajak.go.id</a> — Direktorat Jenderal Pajak (DJP), Kementerian Keuangan</li>
+        <li>Portal &amp; panduan resmi: <strong>Coretax DJP</strong> (akses via pajak.go.id)</li>
+        <li>Bantuan: <strong>Kring Pajak 1500200</strong> atau KPP terdekat</li>
+        <li>Dasar denda telat lapor: <strong>UU KUP (UU No. 6 Tahun 1983 s.t.d.t.d UU HPP)</strong> Pasal 7</li>
+      </ul>
+
+      <h3>📚 Artikel Terkait</h3>
+      <ul class="info-list">
+        <li><a href="/kalkulator/pph-21">Kalkulator PPh 21</a></li>
+        <li><a href="/kalkulator/gaji-bersih">Kalkulator Gaji Bersih</a></li>
+        <li><a href="/blog/cara-menghitung-pph-21">Cara Hitung PPh 21 Karyawan UU HPP 2026</a></li>
+        <li><a href="/blog/cara-menghitung-pajak-umkm">Cara Hitung Pajak UMKM 2026 (PP 20/2026)</a></li>
+      </ul>
+
+      <p style="margin-top: 28px; padding: 16px; background: var(--bg-soft); border-radius: 10px; font-size: 13px; color: var(--text-soft); font-style: italic;">
+        <strong>Disclaimer:</strong> Artikel ini bersifat edukasi dan merangkum aturan serta tampilan sistem yang berlaku per Juni 2026. Tampilan dan fitur Coretax dapat berubah sewaktu-waktu. Untuk keputusan pajak resmi, konsultasikan dengan konsultan pajak berlisensi atau KPP terdekat.
+      </p>
+    </div>
+  </article>
+
+  <AdSlot format="horizontal" />
+</Layout>
+
+<style>
+  .article-hero { background: linear-gradient(135deg, var(--cat-color) 0%, var(--cat-color2) 100%); color: #fff; padding: 20px 0 48px; }
+  .article-hero :global(.breadcrumb-item), .article-hero :global(.breadcrumb-item a) { color: rgba(255, 255, 255, .7); }
+  .article-hero :global(.breadcrumb-item a:hover) { color: var(--gold-soft); }
+  .article-hero :global(.breadcrumb-item span) { color: #fff; }
+  .article-hero :global(.breadcrumb-item i) { color: rgba(255, 255, 255, .4); }
+  .article-tag { display: inline-block; font-size: 11px; font-weight: 700; color: var(--gold-soft); letter-spacing: .1em; text-transform: uppercase; margin: 16px 0 12px; }
+  .article-hero h1 { color: #fff; font-size: clamp(26px, 3.8vw, 42px); margin: 0 0 20px; max-width: 900px; line-height: 1.2; }
+  .article-meta { display: flex; gap: 20px; color: rgba(255, 255, 255, .75); font-size: 13px; flex-wrap: wrap; }
+  .article-meta span { display: inline-flex; align-items: center; gap: 6px; }
+  .lead { font-size: 17px !important; line-height: 1.7 !important; color: var(--text) !important; padding: 20px 24px; background: var(--bg-soft); border-radius: 12px; border-left: 4px solid var(--green); margin-bottom: 24px !important; }
+</style>
