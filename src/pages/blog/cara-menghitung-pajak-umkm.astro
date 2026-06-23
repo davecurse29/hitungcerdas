@@ -3,92 +3,212 @@ import Layout from '../../layouts/Layout.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import AdSlot from '../../components/AdSlot.astro';
 import ArticleSchema from '../../components/ArticleSchema.astro';
-const datePublished = '2026-06-21';
-const dateModified = '2026-06-21';
+
+const datePublished = '2026-06-23';
+const dateModified = '2026-06-23';
 const today = new Date(datePublished).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
 const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'Cara Menghitung Pajak UMKM' }];
 ---
-<Layout title="Cara Hitung Pajak UMKM 2026 — PPh Final 0,5% (PP 20/2026)" description="Panduan lengkap pajak UMKM 2026 sesuai PP 20/2026: tarif PPh Final 0,5%, fasilitas bebas Rp 500 juta untuk Orang Pribadi, batas omzet Rp 4,8 miliar, cara setor & lapor. Plus kalkulator pajak UMKM gratis." keywords={['cara hitung pajak umkm', 'pph final umkm', 'pajak umkm 2026', 'pp 20 2026', 'pajak umkm 0,5 persen', 'omzet 500 juta bebas pajak']} canonical="https://hitungcerdas.net/blog/cara-menghitung-pajak-umkm" ogType="article">
+
+<Layout
+  title="Cara Hitung Pajak UMKM 2026: PPh Final 0,5% & Batas Bebas Rp 500 Juta (PP 20/2026)"
+  description="Panduan lengkap pajak UMKM 2026 sesuai PP 20/2026: tarif PPh Final 0,5%, omzet Rp 500 juta pertama bebas pajak, batas Rp 4,8 miliar, siapa yang berhak, contoh hitung, cara bayar & lapor."
+  keywords={['pajak umkm 2026', 'pph final umkm 0.5 persen', 'pp 20 2026', 'batas omzet bebas pajak umkm', 'cara hitung pajak umkm', 'omzet 500 juta bebas pajak']}
+  canonical="https://hitungcerdas.net/blog/cara-menghitung-pajak-umkm"
+  ogType="article"
+>
   <ArticleSchema
-    headline="Cara Hitung Pajak UMKM 2026 — PPh Final 0,5% (PP 20/2026)"
-    description="Panduan lengkap pajak UMKM 2026 sesuai PP 20/2026: tarif PPh Final 0,5%, fasilitas bebas Rp 500 juta untuk Orang Pribadi, batas omzet Rp 4,8 miliar, cara setor & lapor."
+    headline="Cara Hitung Pajak UMKM 2026: PPh Final 0,5% & Batas Bebas Rp 500 Juta (PP 20/2026)"
+    description="Panduan lengkap pajak UMKM 2026 sesuai PP 20/2026: tarif PPh Final 0,5%, omzet Rp 500 juta pertama bebas pajak, batas Rp 4,8 miliar, siapa yang berhak, contoh hitung, cara bayar & lapor."
     datePublished={datePublished}
     dateModified={dateModified}
     slug="cara-menghitung-pajak-umkm"
     articleSection="Pajak"
-    keywords={['cara hitung pajak umkm', 'pph final umkm', 'pajak umkm 2026', 'pp 20 2026', 'pajak umkm 0,5 persen']}
-    wordCount={820}
+    keywords={['pajak umkm 2026', 'pph final umkm 0.5 persen', 'pp 20 2026', 'batas omzet bebas pajak umkm', 'cara hitung pajak umkm']}
+    wordCount={1600}
   />
 
-  <section class="article-hero" style="--cat-color:#0891B2;--cat-color2:#0E7490">
-    <div class="wrap"><Breadcrumb items={bcItems} /><div class="article-tag">Pajak</div>
-      <h1>Cara Hitung Pajak UMKM 2026 (PPh Final 0,5%)</h1>
-      <div class="article-meta"><span><i class="ti ti-calendar"></i> {today}</span><span><i class="ti ti-clock"></i> 8 menit baca</span><span><i class="ti ti-user"></i> Tim HitungCerdas</span></div>
+  <section class="article-hero" style="--cat-color:#059669;--cat-color2:#047857">
+    <div class="wrap">
+      <Breadcrumb items={bcItems} />
+      <div class="article-tag">PANDUAN PAJAK UMKM</div>
+      <h1>Cara Hitung Pajak UMKM 2026: PPh Final 0,5% &amp; Batas Bebas Rp 500 Juta</h1>
+      <div class="article-meta">
+        <span><i class="ti ti-calendar"></i> {today}</span>
+        <span><i class="ti ti-clock"></i> 9 menit baca</span>
+        <span><i class="ti ti-user"></i> Tim HitungCerdas</span>
+      </div>
     </div>
   </section>
+
   <AdSlot format="horizontal" />
-  <article class="content-section"><div class="wrap-text">
-    <p class="lead">Punya usaha kecil dan bingung soal pajak? Kabar baiknya: pajak UMKM termasuk yang paling sederhana di Indonesia — tarifnya cuma 0,5% dari omzet. Per April 2026 ada aturan baru (PP 20/2026) yang menyempurnakan ketentuannya. Artikel ini bedah tuntas, lengkap dengan contoh hitung.</p>
 
-    <h2>1. Apa Itu PPh Final UMKM?</h2>
-    <p>PPh Final UMKM adalah pajak penghasilan yang dihitung langsung dari <strong>omzet (peredaran bruto)</strong>, bukan dari laba bersih. Inilah yang membuatnya sederhana — kamu tidak perlu pembukuan rumit untuk menghitung laba. Cukup tahu omzet, kalikan tarif, selesai. Aturan ini awalnya dari PP 23/2018, disempurnakan PP 55/2022, dan diperbarui lewat <strong>PP 20/2026</strong> yang berlaku 22 April 2026.</p>
+  <article class="content-section">
+    <div class="wrap-text">
+      <p class="lead">
+        Mulai <strong>22 April 2026</strong>, aturan pajak UMKM diperbarui lewat <strong>PP Nomor 20 Tahun 2026</strong>.
+        Kabar baiknya: tarif <strong>PPh Final 0,5%</strong> tidak dihapus, dan omzet <strong>Rp 500 juta pertama
+        tetap bebas pajak</strong> untuk pelaku usaha perorangan. Contoh: pengusaha dengan omzet Rp 600 juta/tahun
+        cuma bayar pajak <strong>Rp 500 ribu/tahun</strong>. Artikel ini membedah aturan terbarunya, siapa yang berhak,
+        dan cara menghitungnya dengan contoh nyata.
+      </p>
 
-    <h2>2. Tarif & Rumus</h2>
-    <div class="formula-box">
-      <p><strong>Orang Pribadi:</strong> PPh = (Omzet Setahun − Rp 500 juta) × 0,5%</p>
-      <p><strong>Badan (PT Perorangan/Koperasi):</strong> PPh = Omzet × 0,5%</p>
-    </div>
-    <p>Tarifnya tetap <strong>0,5%</strong> dan batas omzet tetap <strong>Rp 4,8 miliar per tahun</strong>. Yang membedakan Orang Pribadi dan Badan adalah fasilitas bebas Rp 500 juta.</p>
+      <h2>1. Apa Itu PPh Final UMKM 0,5%?</h2>
+      <p>
+        PPh Final UMKM adalah skema pajak penghasilan sederhana untuk pelaku usaha dengan omzet (peredaran bruto)
+        di bawah Rp 4,8 miliar setahun. Bedanya dengan pajak biasa: tarifnya rendah (0,5%) dan dihitung langsung
+        dari <strong>omzet</strong>, bukan dari laba bersih. Jadi kamu tidak perlu pembukuan rumit — cukup catat
+        peredaran bruto bulanan.
+      </p>
+      <p>
+        Aturan ini berkembang bertahap: <strong>PP 46/2013 → PP 23/2018 → PP 55/2022</strong>, dan terbaru
+        <strong>PP 20/2026</strong> yang merevisi PP 55/2022. Dasar hukum tarif 0,5% dan batas bebas Rp 500 juta
+        sendiri mengacu pada UU PPh (UU HPP).
+      </p>
 
-    <h2>3. Fasilitas Bebas Rp 500 Juta (Hanya Orang Pribadi)</h2>
-    <p>Untuk Wajib Pajak <strong>Orang Pribadi</strong>, omzet Rp 500 juta pertama dalam setahun <strong>tidak dikenai pajak</strong>. Hanya bagian omzet di atas Rp 500 juta yang kena 0,5%. Fasilitas ini berfungsi seperti "PTKP-nya UMKM". Penting: fasilitas ini <strong>tidak berlaku untuk Wajib Pajak Badan</strong> — PT Perorangan dan Koperasi kena 0,5% dari rupiah pertama.</p>
+      <h2>2. Yang Baru di PP 20/2026</h2>
+      <p>Sempat ramai kabar "pajak UMKM naik" atau "fasilitas 0,5% dihapus" — itu <strong>tidak benar</strong>. Berikut faktanya:</p>
+      <div class="formula-box">
+        <ul>
+          <li>✅ <strong>Tarif tetap 0,5%</strong> dari omzet — tidak naik, tidak dihapus.</li>
+          <li>✅ <strong>Omzet Rp 500 juta pertama bebas pajak</strong> (khusus Orang Pribadi) — tetap berlaku.</li>
+          <li>✅ <strong>Batas omzet Rp 4,8 miliar/tahun</strong> untuk ikut skema ini — tidak berubah.</li>
+          <li>🆕 <strong>Batas waktu dihapus</strong> untuk Orang Pribadi &amp; PT Perorangan — kini bisa pakai 0,5% <strong>tanpa batas waktu</strong> (selama omzet &lt; Rp 4,8 M). Sebelumnya dibatasi 7 tahun.</li>
+          <li>⚠️ <strong>Cakupan dipersempit</strong>: kini hanya untuk <strong>Orang Pribadi, PT Perorangan, dan Koperasi</strong>.</li>
+        </ul>
+      </div>
 
-    <AdSlot format="horizontal" />
-
-    <h2>4. Contoh Perhitungan</h2>
-    <ul class="info-list">
-      <li><strong>Warung (OP), omzet Rp 30 juta/bulan</strong> → setahun Rp 360 juta. Masih di bawah Rp 500 juta, jadi <strong>bebas PPh Final</strong> (tetap wajib lapor SPT).</li>
-      <li><strong>Toko online (OP), omzet Rp 50 juta/bulan</strong> → setahun Rp 600 juta. Kena pajak = (Rp 600 jt − Rp 500 jt) = Rp 100 juta × 0,5% = <strong>Rp 500.000/tahun</strong>.</li>
-      <li><strong>Katering (OP), omzet Rp 700 juta/tahun</strong> → kena pajak Rp 200 juta × 0,5% = <strong>Rp 1.000.000/tahun</strong>.</li>
-      <li><strong>PT Perorangan, omzet Rp 100 juta/bulan</strong> → setahun Rp 1,2 miliar × 0,5% = <strong>Rp 6.000.000/tahun</strong> (Rp 500 ribu/bulan), tanpa potongan Rp 500 juta.</li>
-    </ul>
-
-    <h2>5. Cara Setor & Lapor</h2>
-    <ul class="info-list">
-      <li>Hitung omzet bruto tiap bulan, kalikan 0,5%.</li>
-      <li>Setor paling lambat <strong>tanggal 15 bulan berikutnya</strong> lewat e-billing/Coretax DJP.</li>
-      <li>Lapor <strong>SPT Tahunan</strong>: Orang Pribadi sebelum 31 Maret, Badan sebelum 30 April.</li>
-      <li>Simpan bukti setor (NTPN) minimal 5 tahun.</li>
-    </ul>
-
-    <h2>6. Yang Berubah di PP 20/2026</h2>
-    <p>Tarif dan batas omzet tetap sama, tapi ada tiga perubahan penting: (1) untuk Orang Pribadi & PT Perorangan, fasilitas 0,5% kini <strong>tanpa batas waktu</strong> selama syarat terpenuhi; (2) CV, firma, PT biasa, dan BUMDes <strong>tidak lagi</strong> bisa pakai skema ini (ada masa transisi); (3) batas Rp 4,8 miliar untuk pasangan suami-istri dihitung <strong>gabungan</strong>, untuk mencegah pemecahan usaha. Jika omzet melewati Rp 4,8 miliar, kamu wajib beralih ke tarif PPh normal dengan pembukuan lengkap.</p>
-
-    <div class="cta-box">
-      <h3>🧾 Coba Kalkulator Pajak UMKM HitungCerdas</h3>
-      <p>Hitung PPh Final UMKM-mu otomatis sesuai PP 20/2026:</p>
-      <ul>
-        <li>✅ Tarif 0,5% dari omzet</li>
-        <li>✅ Fasilitas bebas Rp 500 juta untuk Orang Pribadi</li>
-        <li>✅ Cek batas Rp 4,8 miliar otomatis</li>
-        <li>✅ Estimasi pajak per bulan & per tahun</li>
+      <h2>3. Siapa yang Berhak (dan Tidak)?</h2>
+      <h3>✅ Berhak pakai PPh Final 0,5%</h3>
+      <ul class="info-list">
+        <li><strong>Wajib Pajak Orang Pribadi</strong> (pedagang, pemilik warung, online shop, jasa kecil) — tanpa batas waktu.</li>
+        <li><strong>PT Perorangan</strong> (perseroan yang didirikan 1 orang) — tanpa batas waktu.</li>
+        <li><strong>Koperasi</strong> dalam negeri — maksimal 4 tahun.</li>
       </ul>
-      <p style="margin-top:14px"><a href="/kalkulator/pajak-umkm" class="btn btn-pri"><i class="ti ti-calculator"></i> Buka Kalkulator Pajak UMKM</a></p>
+      <h3>❌ Tidak lagi berhak (perubahan PP 20/2026)</h3>
+      <ul class="info-list">
+        <li><strong>CV, Firma, PT biasa, BUMDes</strong> — tidak lagi boleh pakai skema 0,5%. (Sebagai gantinya, PT/CV non-perorangan dengan omzet &lt; Rp 4,8 M dapat potongan 50% dari tarif normal 22% lewat Pasal 31E UU PPh.)</li>
+        <li><strong>Pekerjaan bebas</strong>: dokter, pengacara, akuntan, arsitek, notaris, PPAT, konsultan, aktuaris, dan tenaga ahli sejenis.</li>
+        <li><strong>Content creator &amp; sejenisnya</strong>: influencer, selebgram, blogger, vlogger, kreator konten digital, agen iklan, agen asuransi, distributor MLM.</li>
+      </ul>
+      <p><em>Catatan: batas omzet menggabungkan peredaran bruto suami, istri, dan perseroan perorangan mereka — untuk mencegah pemecahan usaha demi menghindari pajak.</em></p>
+
+      <AdSlot format="horizontal" />
+
+      <h2>4. Rumus Cara Hitung Pajak UMKM</h2>
+      <div class="formula-box">
+        <p><strong>Untuk Orang Pribadi:</strong></p>
+        <ul>
+          <li>PPh Final setahun = <strong>0,5% × (omzet setahun − Rp 500 juta)</strong></li>
+          <li>Kalau omzet setahun ≤ Rp 500 juta → pajak <strong>Rp 0</strong> (bebas).</li>
+        </ul>
+        <p style="margin-top:12px"><strong>Untuk PT Perorangan / Koperasi:</strong></p>
+        <ul>
+          <li>PPh Final = <strong>0,5% × seluruh omzet</strong> (batas bebas Rp 500 juta hanya untuk Orang Pribadi).</li>
+        </ul>
+      </div>
+      <p>
+        Penting: pajak dihitung secara <strong>kumulatif</strong> sepanjang tahun. Selama total omzet sejak Januari
+        belum tembus Rp 500 juta, belum ada pajak. Begitu kumulatif melewati Rp 500 juta, kelebihannya yang kena 0,5%.
+      </p>
+
+      <h2>5. Contoh Kasus (Orang Pribadi)</h2>
+
+      <h3>Kasus A: Warung Kecil, Omzet Rp 30 juta/bulan</h3>
+      <ul class="info-list">
+        <li>Omzet setahun: Rp 360 juta</li>
+        <li>Masih di bawah Rp 500 juta → <strong>bebas pajak (Rp 0)</strong></li>
+        <li>Tetap wajib lapor SPT Tahunan, tapi PPh terutang nol.</li>
+      </ul>
+
+      <h3>Kasus B: Online Shop, Omzet Rp 50 juta/bulan</h3>
+      <ul class="info-list">
+        <li>Omzet setahun: Rp 600 juta</li>
+        <li>Bebas untuk Rp 500 juta pertama; kena pajak untuk sisa Rp 100 juta</li>
+        <li>PPh Final: 0,5% × Rp 100 juta = <strong>Rp 500.000/tahun</strong></li>
+      </ul>
+
+      <h3>Kasus C: Usaha Distribusi, Omzet Rp 300 juta/bulan</h3>
+      <ul class="info-list">
+        <li>Omzet setahun: Rp 3,6 miliar (masih di bawah Rp 4,8 M, jadi tetap eligible)</li>
+        <li>Bebas Rp 500 juta; kena pajak untuk Rp 3,1 miliar</li>
+        <li>PPh Final: 0,5% × Rp 3,1 miliar = <strong>Rp 15,5 juta/tahun</strong></li>
+      </ul>
+      <p><em>Catatan: kalau omzet tembus Rp 4,8 miliar di tahun berjalan, mulai tahun berikutnya kamu wajib pindah ke skema pajak umum (tarif Pasal 17 / pembukuan).</em></p>
+
+      <h2>6. Cara Bayar &amp; Lapor Pajak UMKM</h2>
+      <ul class="info-list">
+        <li><strong>Bayar bulanan</strong>: buat kode billing PPh Final lalu setor paling lambat tanggal 15 bulan berikutnya (lewat e-billing/bank/marketplace pajak atau aplikasi Coretax).</li>
+        <li><strong>Lapor tahunan</strong>: laporkan via SPT Tahunan PPh (Orang Pribadi paling lambat 31 Maret tahun berikutnya).</li>
+        <li><strong>Belum kena pajak (omzet &lt; Rp 500 juta)</strong>: tidak ada setoran bulanan, tapi tetap lapor SPT Tahunan.</li>
+        <li><strong>Syarat dasar</strong>: punya NPWP dan menjalankan usaha secara aktif.</li>
+      </ul>
+
+      <h2>7. Tips Penting untuk Pelaku UMKM</h2>
+      <ul class="info-list">
+        <li><strong>Catat omzet harian rapi</strong> — dasar pajak adalah peredaran bruto, jadi pencatatan yang tertib bikin hitungan akurat.</li>
+        <li><strong>Pantau ambang Rp 500 juta &amp; Rp 4,8 miliar</strong> — dua angka ini menentukan kapan mulai bayar dan kapan harus keluar dari skema 0,5%.</li>
+        <li><strong>Jangan pecah usaha ke banyak entitas</strong> hanya demi pajak — omzet suami-istri kini digabung, dan praktik ini bisa dianggap penghindaran pajak.</li>
+        <li><strong>Pisahkan rekening usaha &amp; pribadi</strong> agar omzet mudah dilacak saat lapor.</li>
+      </ul>
+
+      <h2>8. FAQ Pajak UMKM 2026</h2>
+      <h3>Apakah tarif 0,5% dihapus di PP 20/2026?</h3>
+      <p>Tidak. Tarif PPh Final UMKM tetap 0,5% bagi wajib pajak yang memenuhi syarat.</p>
+      <h3>Omzet di bawah Rp 500 juta tetap bayar pajak?</h3>
+      <p>Tidak. Untuk Orang Pribadi, omzet sampai Rp 500 juta setahun bebas PPh Final. Yang dihitung pajak hanya kelebihannya.</p>
+      <h3>CV atau PT saya masih bisa pakai 0,5%?</h3>
+      <p>Tidak lagi. Sejak PP 20/2026, skema 0,5% hanya untuk Orang Pribadi, PT Perorangan, dan Koperasi. CV/PT non-perorangan memakai skema lain (potongan 50% dari tarif 22%).</p>
+      <h3>Saya content creator/influencer, apakah kena 0,5%?</h3>
+      <p>Penghasilan dari profesi tersebut tidak memakai skema PPh Final UMKM 0,5%; mengikuti ketentuan PPh umum.</p>
+      <h3>Pajak dihitung dari omzet atau laba?</h3>
+      <p>Dari <strong>omzet</strong> (peredaran bruto), bukan laba bersih. Itu sebabnya tarifnya rendah (0,5%).</p>
+
+      <div class="cta-box">
+        <h3>🧮 Coba Kalkulator Pajak UMKM HitungCerdas</h3>
+        <p>Daripada hitung manual, pakai <strong>Kalkulator Pajak UMKM HitungCerdas</strong> yang sudah:</p>
+        <ul>
+          <li>✅ Update PP 20/2026 (PPh Final 0,5%)</li>
+          <li>✅ Otomatis terapkan batas bebas Rp 500 juta (Orang Pribadi)</li>
+          <li>✅ Hitung dari omzet bulanan atau tahunan</li>
+          <li>✅ Tampilkan estimasi pajak per bulan &amp; per tahun</li>
+          <li>✅ Export hasil PNG/PDF/WhatsApp</li>
+        </ul>
+        <p style="margin-top:14px"><a href="/kalkulator/pajak-umkm" class="btn btn-pri"><i class="ti ti-calculator"></i> Buka Kalkulator Pajak UMKM</a></p>
+      </div>
+
+      <h2>Kesimpulan</h2>
+      <p>
+        PP 20/2026 mempertahankan tarif PPh Final UMKM <strong>0,5%</strong> dan batas bebas <strong>Rp 500 juta</strong>
+        untuk Orang Pribadi, bahkan menghapus batas waktu pemanfaatannya. Perubahan utamanya adalah penyempitan
+        penerima fasilitas — kini fokus pada Orang Pribadi, PT Perorangan, dan Koperasi. Hitung kewajibanmu dengan
+        akurat memakai kalkulator HitungCerdas, dan selalu cek aturan resmi di bawah ini.
+      </p>
+
+      <h3>📋 Sumber Resmi (Bisa Dicek)</h3>
+      <ul class="info-list">
+        <li><a href="https://www.pajak.go.id" target="_blank" rel="noopener nofollow">pajak.go.id</a> — Direktorat Jenderal Pajak (DJP), Kementerian Keuangan</li>
+        <li><a href="https://www.pajak.go.id/en/node/119950" target="_blank" rel="noopener nofollow">Artikel DJP: PP 20/2026 — Tarif PPh 0,5% bagi UMKM Orang Pribadi</a></li>
+        <li>Dasar hukum: <strong>PP No. 20 Tahun 2026</strong> (merevisi PP No. 55 Tahun 2022) &amp; UU HPP (UU No. 7 Tahun 2021)</li>
+      </ul>
+
+      <h3>📚 Artikel Terkait</h3>
+      <ul class="info-list">
+        <li><a href="/kalkulator/pajak-umkm">Kalkulator Pajak UMKM</a></li>
+        <li><a href="/blog/cara-menghitung-pph-21">Cara Hitung PPh 21 Karyawan UU HPP 2026</a></li>
+        <li><a href="/blog/cara-menghitung-margin">Cara Hitung Margin Profit &amp; Markup UMKM</a></li>
+        <li><a href="/kalkulator/harga-jual">Kalkulator Harga Jual Produk</a></li>
+      </ul>
+
+      <p style="margin-top: 28px; padding: 16px; background: var(--bg-soft); border-radius: 10px; font-size: 13px; color: var(--text-soft); font-style: italic;">
+        <strong>Disclaimer:</strong> Artikel ini bersifat edukasi dan merangkum aturan yang berlaku per Juni 2026. Untuk keputusan pajak resmi, konsultasikan dengan konsultan pajak berlisensi atau KPP terdekat. Aturan pajak dapat berubah sewaktu-waktu.
+      </p>
     </div>
+  </article>
 
-    <h2>Kesimpulan</h2>
-    <p>Pajak UMKM dirancang ringan dan sederhana: 0,5% dari omzet, dengan jatah bebas Rp 500 juta untuk Orang Pribadi. Yang penting, jangan lupa setor bulanan dan lapor SPT tahunan agar usahamu tertib pajak. Untuk karyawan, beda lagi — itu memakai <a href="/kalkulator/pph-21">PPh 21</a>. Catatan: artikel ini edukatif; untuk kasus khusus, konsultasikan dengan Ditjen Pajak atau konsultan pajak.</p>
-
-    <h3>📚 Artikel & Kalkulator Terkait</h3>
-    <ul class="info-list">
-      <li><a href="/kalkulator/pajak-umkm">Kalkulator Pajak UMKM</a></li>
-      <li><a href="/kalkulator/pph-21">Kalkulator PPh 21 (Karyawan)</a></li>
-      <li><a href="/kalkulator/bep">Kalkulator BEP</a></li>
-      <li><a href="/kalkulator/harga-jual">Kalkulator Harga Jual</a></li>
-    </ul>
-  </div></article>
   <AdSlot format="horizontal" />
 </Layout>
+
 <style>
   .article-hero { background: linear-gradient(135deg, var(--cat-color) 0%, var(--cat-color2) 100%); color: #fff; padding: 20px 0 48px; }
   .article-hero :global(.breadcrumb-item), .article-hero :global(.breadcrumb-item a) { color: rgba(255, 255, 255, .7); }
@@ -99,5 +219,5 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog'
   .article-hero h1 { color: #fff; font-size: clamp(26px, 3.8vw, 42px); margin: 0 0 20px; max-width: 900px; line-height: 1.2; }
   .article-meta { display: flex; gap: 20px; color: rgba(255, 255, 255, .75); font-size: 13px; flex-wrap: wrap; }
   .article-meta span { display: inline-flex; align-items: center; gap: 6px; }
-  .lead { font-size: 17px !important; line-height: 1.7 !important; color: var(--text) !important; padding: 20px 24px; background: var(--bg-soft); border-radius: 12px; border-left: 4px solid #0891B2; margin-bottom: 24px !important; }
+  .lead { font-size: 17px !important; line-height: 1.7 !important; color: var(--text) !important; padding: 20px 24px; background: var(--bg-soft); border-radius: 12px; border-left: 4px solid var(--green); margin-bottom: 24px !important; }
 </style>
