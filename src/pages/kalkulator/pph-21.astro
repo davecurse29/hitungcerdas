@@ -293,6 +293,11 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
   .aic-typing span:nth-child(2){animation-delay:.2s}
   .aic-typing span:nth-child(3){animation-delay:.4s}
   @keyframes aicblink{0%,60%,100%{opacity:.3}30%{opacity:1}}
+  @keyframes aicIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .aic-row{animation:aicIn .25s ease both}
+  .aic-copy{margin-top:8px;display:inline-flex;align-items:center;gap:5px;font-size:11px;color:#64748B;background:#fff;border:1px solid #E2E8F0;border-radius:7px;padding:3px 9px;cursor:pointer;transition:all .15s}
+  .aic-copy:hover{color:#0891B2;border-color:#0891B2;background:#ECFEFF}
+  .aic-copy i{font-size:13px}
 
   .aic-chips{display:flex;flex-wrap:wrap;gap:6px;padding:0 14px 12px}
   .aic-chips:empty{display:none}
@@ -652,6 +657,39 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
 
       function mdInline(t){ t=t.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>'); t=t.replace(/__([^_]+)__/g,'<strong>$1</strong>'); t=t.replace(/(^|[\s(])\*([^*\n]+)\*(?=[\s).,!?:;]|$)/g,'$1<em>$2</em>'); t=t.replace(/`([^`]+)`/g,'<code>$1</code>'); return t; }
       function mdToHtml(raw){ var lines=String(raw).replace(/\r/g,'').split('\n'); var out=[]; for(var i=0;i<lines.length;i++){ var t=lines[i].trim(); if(t==='')continue; if(/^([-*_]\s*){3,}$/.test(t))continue; var h=t.match(/^#{1,6}\s+(.*)$/); if(h){out.push('<p class="aic-h">'+mdInline(esc(h[1]))+'</p>');continue;} var b=t.match(/^[-*\u2022]\s+(.*)$/); if(b){out.push('<div class="aic-li"><span class="aic-mk">\u2022</span><span>'+mdInline(esc(b[1]))+'</span></div>');continue;} var n=t.match(/^(\d+)[.)]\s+(.*)$/); if(n){out.push('<div class="aic-li"><span class="aic-mk">'+n[1]+'.</span><span>'+mdInline(esc(n[2]))+'</span></div>');continue;} out.push('<p>'+mdInline(esc(t))+'</p>'); } return out.join('')||('<p>'+mdInline(esc(String(raw)))+'</p>'); }
+      // ── UI canggih: typewriter (live-format) + copy + chip lanjutan ──
+      function typeInto(bubble, text, done){
+        var n=0, len=text.length, step=Math.max(2, Math.round(len/90));
+        var t=setInterval(function(){
+          n=Math.min(len, n+step);
+          bubble.innerHTML=mdToHtml(text.slice(0,n));
+          msgs.scrollTop=msgs.scrollHeight;
+          if(n>=len){ clearInterval(t); done&&done(); }
+        }, 18);
+      }
+      function mkCopyBtn(text){
+        var b=document.createElement('button'); b.type='button'; b.className='aic-copy';
+        b.innerHTML='<i class="ti ti-copy"></i><span>Salin</span>';
+        b.addEventListener('click', function(){ HC.copyText(text, 'Jawaban tersalin!'); });
+        return b;
+      }
+      function addMsgTyped(text){
+        var row=document.createElement('div'); row.className='aic-row ai';
+        row.innerHTML='<div class="aic-av"><i class="ti ti-sparkles"></i></div><div class="aic-bub aic-rich"></div>';
+        var bub=row.querySelector('.aic-bub'); msgs.appendChild(row); msgs.scrollTop=msgs.scrollHeight;
+        typeInto(bub, text, function(){ bub.appendChild(mkCopyBtn(text)); renderFollowups(); });
+        return row;
+      }
+      var FOLLOWUPS=['Kenapa pajakku segini?','Cara legal kurangi PPh 21?','Tarif efektifku wajar gak?','Bedanya TER dan progresif apa?','Kalau status PTKP-ku berubah, gimana?','BPJS ngaruh berapa ke pajakku?'];
+      function renderFollowups(){
+        chips.innerHTML='';
+        var asked=history.filter(function(m){return m.role==='user';}).map(function(m){return m.content;});
+        var pool=FOLLOWUPS.filter(function(q){return asked.indexOf(q)<0;});
+        pool.slice(0,3).forEach(function(q){
+          var b=document.createElement('button'); b.type='button'; b.className='aic-chip'; b.textContent=q;
+          b.addEventListener('click', function(){ ask(q); }); chips.appendChild(b);
+        });
+      }
       function addMsg(role,text){ var row=document.createElement('div'); row.className='aic-row '+role; if(role==='ai'){ row.innerHTML='<div class="aic-av"><i class="ti ti-sparkles"></i></div><div class="aic-bub aic-rich"></div>'; row.querySelector('.aic-bub').innerHTML=mdToHtml(text); } else { row.innerHTML='<div class="aic-bub"></div>'; row.querySelector('.aic-bub').textContent=text; } msgs.appendChild(row); msgs.scrollTop=msgs.scrollHeight; return row; }
       function addTyping(){ var row=document.createElement('div'); row.className='aic-row ai'; row.innerHTML='<div class="aic-av"><i class="ti ti-sparkles"></i></div><div class="aic-bub aic-typing"><span></span><span></span><span></span></div>'; msgs.appendChild(row); msgs.scrollTop=msgs.scrollHeight; return row; }
       function todayKey(){ var d=new Date(); return 'hc-coach-'+d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate(); }
@@ -660,7 +698,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       function refreshLimit(){ var left=Math.max(0,LIMIT-getCount()); limitEl.textContent='Sisa '+left+' pertanyaan gratis hari ini.'; var done=left<=0; input.disabled=done; send.disabled=done; if(done){ input.placeholder='Batas harian tercapai, balik lagi besok ya.'; } }
       var busy=false;
       async function ask(text){ text=(text||'').trim(); if(!text||busy)return; if(getCount()>=LIMIT){refreshLimit();return;} busy=true; send.disabled=true; addMsg('user',text); history.push({role:'user',content:text}); input.value=''; chips.innerHTML=''; var typing=addTyping(); incCount();
-        try{ var res=await fetch('/api/coach',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({calcContext:buildContext(),messages:history})}); var data=await res.json().catch(function(){return {error:'Respon tidak valid.'};}); typing.parentNode&&typing.remove(); if(data&&data.reply){ addMsg('ai',data.reply); history.push({role:'assistant',content:data.reply}); } else { addMsg('ai','\u26a0\ufe0f '+((data&&data.error)||'Coach lagi sibuk, coba lagi sebentar ya.')); } }
+        try{ var res=await fetch('/api/coach',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({calcContext:buildContext(),messages:history})}); var data=await res.json().catch(function(){return {error:'Respon tidak valid.'};}); typing.parentNode&&typing.remove(); if(data&&data.reply){ addMsgTyped(data.reply); history.push({role:'assistant',content:data.reply}); } else { addMsg('ai','\u26a0\ufe0f '+((data&&data.error)||'Coach lagi sibuk, coba lagi sebentar ya.')); } }
         catch(e){ typing.parentNode&&typing.remove(); addMsg('ai','\u26a0\ufe0f Gagal terhubung ke Coach. Coba lagi ya.'); }
         busy=false; refreshLimit(); if(!input.disabled) input.focus(); }
       var PRESETS=['Kenapa pajakku segini?','Cara legal kurangi PPh 21?','Tarif efektifku wajar gak?'];
