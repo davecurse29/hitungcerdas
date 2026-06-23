@@ -1,0 +1,238 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import ArticleSchema from '../../components/ArticleSchema.astro';
+
+const datePublished = '2026-06-23';
+const dateModified = '2026-06-23';
+const today = new Date(datePublished).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'PPN 12% atau 11% 2026' }];
+---
+
+<Layout
+  title="PPN 12% atau 11% di 2026? Cara Hitung PPN + Daftar Barang Mewah (PMK 131/2024)"
+  description="Benarkah PPN naik 12% di 2026? Faktanya tarif 12% hanya untuk barang mewah; barang & jasa biasa tetap efektif 11% (PMK 131/2024). Lengkap rumus, contoh hitung, daftar barang mewah & barang bebas PPN."
+  keywords={['ppn 12 persen 2026', 'ppn 11 persen', 'pmk 131 2024', 'cara hitung ppn', 'ppn barang mewah', 'dpp nilai lain', 'tarif ppn 2026', 'ppn 12 persen barang mewah']}
+  canonical="https://hitungcerdas.net/blog/ppn-12-persen-2026"
+  ogType="article"
+>
+  <ArticleSchema
+    headline="PPN 12% atau 11% di 2026? Cara Hitung PPN + Daftar Barang Mewah (PMK 131/2024)"
+    description="Benarkah PPN naik 12% di 2026? Faktanya tarif 12% hanya untuk barang mewah; barang & jasa biasa tetap efektif 11% (PMK 131/2024). Lengkap rumus, contoh hitung, daftar barang mewah & barang bebas PPN."
+    datePublished={datePublished}
+    dateModified={dateModified}
+    slug="ppn-12-persen-2026"
+    articleSection="Pajak"
+    keywords={['ppn 12 persen 2026', 'ppn 11 persen', 'pmk 131 2024', 'cara hitung ppn', 'ppn barang mewah', 'dpp nilai lain']}
+    wordCount={1650}
+  />
+
+  <section class="article-hero" style="--cat-color:#0891B2;--cat-color2:#0E7490">
+    <div class="wrap">
+      <Breadcrumb items={bcItems} />
+      <div class="article-tag">PANDUAN PAJAK PPN</div>
+      <h1>PPN 12% atau 11% di 2026? Penjelasan Lengkap &amp; Cara Hitung</h1>
+      <div class="article-meta">
+        <span><i class="ti ti-calendar"></i> {today}</span>
+        <span><i class="ti ti-clock"></i> 8 menit baca</span>
+        <span><i class="ti ti-user"></i> Tim HitungCerdas</span>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+
+  <article class="content-section">
+    <div class="wrap-text">
+      <p class="lead">
+        Banyak yang masih bingung: <strong>"Benarkah PPN naik jadi 12% di 2026?"</strong> Jawaban singkatnya —
+        untuk belanja sehari-hari kamu, <strong>PPN tetap efektif 11%</strong>. Tarif <strong>12% hanya berlaku
+        untuk barang super mewah</strong> seperti mobil mewah, rumah seharga Rp 30 miliar ke atas, dan jet pribadi.
+        Aturan ini diatur dalam <strong>PMK 131/2024</strong>, berlaku sejak 1 Januari 2025 dan <strong>tidak
+        berubah di 2026</strong>. Artikel ini membedah faktanya, daftar barang yang kena 12% vs 11% vs bebas PPN,
+        plus cara menghitungnya dengan contoh nyata.
+      </p>
+
+      <h2>1. Berapa Sebenarnya Tarif PPN Sekarang?</h2>
+      <p>
+        Secara hukum, <strong>tarif umum PPN adalah 12%</strong> sebagaimana diamanatkan UU Harmonisasi Peraturan
+        Perpajakan (UU HPP / UU No. 7 Tahun 2021). Namun, agar daya beli masyarakat tidak terbebani, pemerintah
+        memutuskan: <strong>tarif efektif 12% hanya dikenakan pada barang mewah</strong>, sementara
+        <strong>barang dan jasa biasa tetap dibayar dengan tarif efektif 11%</strong>.
+      </p>
+      <p>
+        Mekanismenya diatur dalam <strong>PMK Nomor 131 Tahun 2024</strong> yang diteken Menteri Keuangan
+        Sri Mulyani pada 31 Desember 2024 dan mulai berlaku 1 Januari 2025. Jadi ringkasnya:
+      </p>
+      <div class="formula-box">
+        <ul>
+          <li>🛒 <strong>Barang &amp; jasa biasa</strong> (sembako olahan, elektronik, pakaian, makanan restoran, langganan digital, dll.) → efektif <strong>11%</strong>.</li>
+          <li>💎 <strong>Barang mewah</strong> (objek PPnBM) → <strong>12%</strong> penuh.</li>
+          <li>🆓 <strong>Barang/jasa tertentu</strong> (sembako pokok, pendidikan, kesehatan, dll.) → <strong>bebas PPN (0%)</strong>.</li>
+        </ul>
+      </div>
+
+      <h2>2. Kenapa Bisa "Tarifnya 12% tapi Bayarnya 11%"?</h2>
+      <p>
+        Ini bagian yang sering bikin bingung. Pemerintah <strong>tidak menurunkan tarif</strong> dari 12% ke 11%.
+        Yang dilakukan adalah memakai mekanisme <strong>DPP Nilai Lain</strong> (Dasar Pengenaan Pajak nilai lain).
+        Untuk barang biasa, dasar pengenaan pajaknya bukan harga penuh, melainkan <strong>11/12 dari harga jual</strong>.
+        Hasil akhirnya identik dengan PPN 11%.
+      </p>
+      <div class="formula-box">
+        <p><strong>Rumus PPN barang/jasa BIASA (non-mewah):</strong></p>
+        <p style="font-size:18px;margin:8px 0"><strong>PPN = 12% × (11/12 × Harga Jual) = 11% × Harga Jual</strong></p>
+        <p style="margin-top:10px"><strong>Rumus PPN barang MEWAH (objek PPnBM):</strong></p>
+        <p style="font-size:18px;margin:8px 0"><strong>PPN = 12% × Harga Jual</strong></p>
+      </div>
+      <p>
+        Praktisnya, untuk belanja biasa kamu cukup hitung <strong>11% × harga</strong> — hasilnya sama persis
+        dengan rumus resmi. Mekanisme DPP nilai lain ini dijamin sah oleh Pasal 8A jo. Pasal 16G UU PPN sebagaimana
+        diubah UU HPP, jadi bukan akal-akalan.
+      </p>
+
+      <AdSlot format="horizontal" />
+
+      <h2>3. Daftar Barang Mewah yang Kena PPN 12%</h2>
+      <p>Yang dimaksud "barang mewah" adalah barang yang selama ini sudah dikenai <strong>PPnBM (Pajak Penjualan atas Barang Mewah)</strong>. Daftarnya:</p>
+      <ul class="info-list">
+        <li><strong>Kendaraan bermotor mewah</strong> — mobil dengan kapasitas mesin &amp; konsumsi BBM tertentu yang masuk kategori PPnBM.</li>
+        <li><strong>Hunian sangat mewah</strong> — rumah, apartemen, kondominium, town house dengan harga jual <strong>Rp 30 miliar atau lebih</strong>.</li>
+        <li><strong>Pesawat udara pribadi</strong> — jet pribadi, helikopter (kecuali untuk keperluan negara/niaga).</li>
+        <li><strong>Balon udara</strong> dan kendaraan udara tanpa tenaga penggerak.</li>
+        <li><strong>Kapal pesiar &amp; yacht</strong> mewah (kecuali untuk keperluan negara, angkutan umum, atau pariwisata).</li>
+        <li><strong>Senjata api &amp; peluru</strong> (kecuali untuk keperluan negara).</li>
+      </ul>
+      <p><em>Catatan: barang mewah ini dikenai PPN 12% penuh <strong>dan</strong> PPnBM secara terpisah sesuai golongannya. Tarif 12% penuh ke konsumen akhir berlaku efektif sejak 1 Februari 2025.</em></p>
+
+      <h2>4. Barang &amp; Jasa yang Bebas PPN (0%)</h2>
+      <p>Sejumlah barang dan jasa kebutuhan pokok tetap <strong>tidak dikenai PPN sama sekali</strong>:</p>
+      <ul class="info-list">
+        <li><strong>Bahan pangan pokok</strong>: beras, jagung, kedelai, daging, telur, susu, buah-buahan, sayuran, ikan.</li>
+        <li><strong>Jasa pendidikan</strong> (sekolah, kuliah) dan <strong>buku pelajaran &amp; kitab suci</strong>.</li>
+        <li><strong>Jasa kesehatan</strong> medis (rumah sakit, dokter).</li>
+        <li><strong>Jasa angkutan umum</strong> darat, air, dan tiket kereta api.</li>
+        <li><strong>Jasa keuangan</strong> dan jasa asuransi.</li>
+      </ul>
+
+      <h2>5. Cara Hitung PPN (Rumus + Contoh)</h2>
+
+      <h3>Contoh A: Beli HP Rp 5 juta (barang biasa)</h3>
+      <ul class="info-list">
+        <li>Cara cepat: 11% × Rp 5.000.000 = <strong>Rp 550.000</strong></li>
+        <li>Cara resmi: DPP nilai lain = 11/12 × Rp 5.000.000 = Rp 4.583.333 → PPN = 12% × Rp 4.583.333 = <strong>Rp 550.000</strong> (sama persis)</li>
+        <li>Total bayar: Rp 5.000.000 + Rp 550.000 = <strong>Rp 5.550.000</strong></li>
+      </ul>
+
+      <h3>Contoh B: Beli laptop Rp 12 juta (barang biasa)</h3>
+      <ul class="info-list">
+        <li>DPP nilai lain = 11/12 × Rp 12.000.000 = Rp 11.000.000</li>
+        <li>PPN = 12% × Rp 11.000.000 = <strong>Rp 1.320.000</strong> (= 11% × Rp 12 juta)</li>
+        <li>Total bayar: <strong>Rp 13.320.000</strong></li>
+      </ul>
+
+      <h3>Contoh C: Beli mobil mewah Rp 1 miliar (objek PPnBM)</h3>
+      <ul class="info-list">
+        <li>PPN = 12% × Rp 1.000.000.000 = <strong>Rp 120.000.000</strong> (tarif penuh, bukan 11%)</li>
+        <li>Ditambah PPnBM terpisah sesuai golongan kendaraan (mis. 20%–95%).</li>
+      </ul>
+      <p><em>Kesimpulan praktis: kalau yang kamu beli bukan barang mewah, anggap saja PPN-nya 11%. Tarif 12% hanya kamu temui saat membeli barang super mewah.</em></p>
+
+      <AdSlot format="horizontal" />
+
+      <h2>6. PPN &amp; UMKM: Kapan Usaha Wajib Pungut PPN?</h2>
+      <p>
+        Tidak semua pelaku usaha wajib memungut PPN dari pelanggan. Kewajiban itu hanya untuk
+        <strong>Pengusaha Kena Pajak (PKP)</strong>, yaitu usaha dengan <strong>omzet ≥ Rp 4,8 miliar setahun</strong>.
+        Di bawah ambang itu, kamu berstatus Non-PKP dan <strong>tidak memungut PPN</strong> (boleh memilih jadi PKP
+        secara sukarela).
+      </p>
+      <ul class="info-list">
+        <li><strong>Omzet &lt; Rp 4,8 M/tahun</strong> → Non-PKP, tidak pungut PPN. (Pajak penghasilannya bisa pakai skema PPh Final UMKM 0,5%.)</li>
+        <li><strong>Omzet ≥ Rp 4,8 M/tahun</strong> → wajib jadi PKP, wajib pungut &amp; setor PPN, dan menerbitkan faktur pajak.</li>
+      </ul>
+      <p>
+        Buat pemilik usaha, ini penting saat menentukan harga jual: kalau kamu PKP, harga ke konsumen biasanya
+        sudah termasuk PPN. Gunakan <a href="/kalkulator/harga-jual">Kalkulator Harga Jual</a> dan
+        <a href="/kalkulator/margin">Kalkulator Margin</a> agar margin tetap aman setelah memperhitungkan PPN.
+      </p>
+
+      <h2>7. Tips untuk Pembeli &amp; Penjual</h2>
+      <ul class="info-list">
+        <li><strong>Pembeli:</strong> cek struk — PPN untuk barang biasa harusnya 11% dari harga, bukan 12%. Kalau ada yang menulis 12% untuk barang biasa, itu keliru.</li>
+        <li><strong>Penjual Non-PKP:</strong> jangan mencantumkan "PPN" di nota karena kamu tidak berhak memungutnya.</li>
+        <li><strong>Penjual PKP:</strong> pastikan sistem kasir/akuntansi memakai DPP nilai lain (11/12) untuk barang biasa.</li>
+        <li><strong>Jangan tertukar</strong> antara PPN (pajak atas transaksi barang/jasa) dengan PPh (pajak atas penghasilan). Keduanya berbeda.</li>
+      </ul>
+
+      <h2>8. FAQ PPN 2026</h2>
+      <h3>Apakah PPN benar-benar naik jadi 12% di 2026?</h3>
+      <p>Untuk barang/jasa biasa, tarif efektif yang kamu bayar tetap 11%. Tarif 12% penuh hanya untuk barang mewah (objek PPnBM). Aturan ini tidak berubah dari 2025 ke 2026.</p>
+      <h3>Kenapa di struk tertulis tarif 12%?</h3>
+      <p>Secara hukum tarif PPN memang 12%, tetapi untuk barang biasa dasar pengenaannya 11/12 dari harga, sehingga nilai PPN yang dibayar setara 11% dari harga.</p>
+      <h3>Sembako kena PPN tidak?</h3>
+      <p>Bahan pangan pokok seperti beras, daging, telur, sayur, dan ikan termasuk barang yang bebas PPN (0%).</p>
+      <h3>Usaha kecil saya wajib pungut PPN?</h3>
+      <p>Tidak, selama omzet di bawah Rp 4,8 miliar setahun (Non-PKP). Kewajiban memungut PPN baru muncul jika kamu jadi Pengusaha Kena Pajak.</p>
+      <h3>Apa bedanya PPN dan PPnBM?</h3>
+      <p>PPN dikenakan ke hampir semua barang/jasa kena pajak. PPnBM adalah pajak tambahan khusus barang mewah, dikenakan terpisah di atas PPN.</p>
+
+      <div class="cta-box">
+        <h3>🧮 Hitung Harga Jual Sudah Termasuk PPN</h3>
+        <p>Pakai kalkulator HitungCerdas untuk menentukan harga jual yang tetap untung setelah memperhitungkan PPN:</p>
+        <ul>
+          <li>✅ Hitung harga jual dari modal + margin target</li>
+          <li>✅ Pisahkan harga sebelum &amp; sesudah PPN</li>
+          <li>✅ Cek margin bersih usaha kamu</li>
+          <li>✅ Export hasil PNG/PDF/WhatsApp</li>
+        </ul>
+        <p style="margin-top:14px"><a href="/kalkulator/harga-jual" class="btn btn-pri"><i class="ti ti-calculator"></i> Buka Kalkulator Harga Jual</a></p>
+      </div>
+
+      <h2>Kesimpulan</h2>
+      <p>
+        PPN di 2026 <strong>tidak naik untuk masyarakat umum</strong>. Tarif efektif untuk barang dan jasa biasa
+        tetap <strong>11%</strong> lewat mekanisme DPP nilai lain (PMK 131/2024), sementara <strong>12% penuh</strong>
+        hanya dikenakan pada barang mewah. Kebutuhan pokok seperti sembako, pendidikan, dan kesehatan tetap bebas PPN.
+        Untuk pelaku usaha, ingat ambang PKP Rp 4,8 miliar sebelum memutuskan memungut PPN. Selalu cek aturan resmi
+        di sumber di bawah ini.
+      </p>
+
+      <h3>📋 Sumber Resmi (Bisa Dicek)</h3>
+      <ul class="info-list">
+        <li><a href="https://www.pajak.go.id" target="_blank" rel="noopener nofollow">pajak.go.id</a> — Direktorat Jenderal Pajak (DJP), Kementerian Keuangan</li>
+        <li>Dasar hukum: <strong>PMK No. 131 Tahun 2024</strong> (ditetapkan 31 Desember 2024, berlaku 1 Januari 2025)</li>
+        <li>Landasan tarif: <strong>UU No. 7 Tahun 2021 (UU HPP)</strong> &amp; UU PPN (UU No. 42 Tahun 2009)</li>
+        <li>Daftar barang mewah: <strong>PMK No. 15 Tahun 2023</strong> (objek PPnBM)</li>
+      </ul>
+
+      <h3>📚 Artikel Terkait</h3>
+      <ul class="info-list">
+        <li><a href="/kalkulator/harga-jual">Kalkulator Harga Jual Produk</a></li>
+        <li><a href="/kalkulator/margin">Kalkulator Margin &amp; Markup</a></li>
+        <li><a href="/blog/cara-menghitung-pajak-umkm">Cara Hitung Pajak UMKM 2026 (PP 20/2026)</a></li>
+        <li><a href="/blog/cara-menghitung-margin">Cara Hitung Margin Profit &amp; Markup UMKM</a></li>
+      </ul>
+
+      <p style="margin-top: 28px; padding: 16px; background: var(--bg-soft); border-radius: 10px; font-size: 13px; color: var(--text-soft); font-style: italic;">
+        <strong>Disclaimer:</strong> Artikel ini bersifat edukasi dan merangkum aturan yang berlaku per Juni 2026. Untuk keputusan pajak resmi, konsultasikan dengan konsultan pajak berlisensi atau KPP terdekat. Aturan pajak dapat berubah sewaktu-waktu.
+      </p>
+    </div>
+  </article>
+
+  <AdSlot format="horizontal" />
+</Layout>
+
+<style>
+  .article-hero { background: linear-gradient(135deg, var(--cat-color) 0%, var(--cat-color2) 100%); color: #fff; padding: 20px 0 48px; }
+  .article-hero :global(.breadcrumb-item), .article-hero :global(.breadcrumb-item a) { color: rgba(255, 255, 255, .7); }
+  .article-hero :global(.breadcrumb-item a:hover) { color: var(--gold-soft); }
+  .article-hero :global(.breadcrumb-item span) { color: #fff; }
+  .article-hero :global(.breadcrumb-item i) { color: rgba(255, 255, 255, .4); }
+  .article-tag { display: inline-block; font-size: 11px; font-weight: 700; color: var(--gold-soft); letter-spacing: .1em; text-transform: uppercase; margin: 16px 0 12px; }
+  .article-hero h1 { color: #fff; font-size: clamp(26px, 3.8vw, 42px); margin: 0 0 20px; max-width: 900px; line-height: 1.2; }
+  .article-meta { display: flex; gap: 20px; color: rgba(255, 255, 255, .75); font-size: 13px; flex-wrap: wrap; }
+  .article-meta span { display: inline-flex; align-items: center; gap: 6px; }
+  .lead { font-size: 17px !important; line-height: 1.7 !important; color: var(--text) !important; padding: 20px 24px; background: var(--bg-soft); border-radius: 12px; border-left: 4px solid var(--green); margin-bottom: 24px !important; }
+</style>
