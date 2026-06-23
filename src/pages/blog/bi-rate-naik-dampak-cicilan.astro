@@ -1,0 +1,194 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import ArticleSchema from '../../components/ArticleSchema.astro';
+
+const datePublished = '2026-06-23';
+const dateModified = '2026-06-23';
+const today = new Date(datePublished).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'Dampak BI Rate Naik ke Cicilan' }];
+---
+
+<Layout
+  title="BI Rate Naik 5,75% (Juni 2026): Dampak ke Cicilan KPR, KTA & Kredit + Cara Hitung Ulang"
+  description="BI Rate naik jadi 5,75% per Juni 2026. Apa dampaknya ke cicilan KPR floating, KTA, dan kredit? Simulasi kenaikan cicilan, siapa yang terdampak, dan 6 langkah cerdas menyikapinya."
+  keywords={['bi rate 2026', 'bi rate naik 5.75 persen', 'dampak bi rate ke kpr', 'cicilan kpr naik 2026', 'suku bunga acuan bi juni 2026']}
+  canonical="https://hitungcerdas.net/blog/bi-rate-naik-dampak-cicilan"
+  ogType="article"
+>
+  <ArticleSchema
+    headline="BI Rate Naik 5,75% (Juni 2026): Dampak ke Cicilan KPR, KTA & Kredit + Cara Hitung Ulang"
+    description="BI Rate naik jadi 5,75% per Juni 2026. Apa dampaknya ke cicilan KPR floating, KTA, dan kredit? Simulasi kenaikan cicilan, siapa yang terdampak, dan 6 langkah cerdas menyikapinya."
+    datePublished={datePublished}
+    dateModified={dateModified}
+    slug="bi-rate-naik-dampak-cicilan"
+    articleSection="Keuangan"
+    keywords={['bi rate 2026', 'bi rate naik 5.75 persen', 'dampak bi rate ke kpr', 'cicilan kpr naik 2026']}
+    wordCount={1700}
+  />
+
+  <section class="article-hero" style="--cat-color:#2563EB;--cat-color2:#1E40AF">
+    <div class="wrap">
+      <Breadcrumb items={bcItems} />
+      <div class="article-tag">ANALISIS KEUANGAN</div>
+      <h1>BI Rate Naik 5,75% (Juni 2026): Apa Dampaknya ke Cicilan KPR, KTA &amp; Kredit Kamu?</h1>
+      <div class="article-meta">
+        <span><i class="ti ti-calendar"></i> {today}</span>
+        <span><i class="ti ti-clock"></i> 9 menit baca</span>
+        <span><i class="ti ti-user"></i> Tim HitungCerdas</span>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+
+  <article class="content-section">
+    <div class="wrap-text">
+      <p class="lead">
+        Bank Indonesia menaikkan <strong>BI Rate ke 5,75%</strong> pada 18 Juni 2026 — kenaikan ketiga dalam
+        sekitar sebulan. Buat kamu yang punya <strong>KPR floating, KTA, atau kredit usaha</strong>, ini bisa berarti
+        cicilan naik. Sebagai gambaran, bunga KPR yang naik 1% saja bisa menambah cicilan ratusan ribu rupiah per bulan.
+        Artikel ini menjelaskan dampaknya, siapa yang terdampak, simulasinya, dan 6 langkah cerdas menyikapinya.
+      </p>
+
+      <h2>1. Apa yang Terjadi dengan BI Rate?</h2>
+      <p>
+        Dalam Rapat Dewan Gubernur (RDG) 17–18 Juni 2026, Bank Indonesia menaikkan suku bunga acuan
+        (<strong>BI Rate</strong>) sebesar 25 basis poin menjadi <strong>5,75%</strong>. Suku bunga
+        <em>Deposit Facility</em> naik ke 4,75% dan <em>Lending Facility</em> ke 6,50%.
+      </p>
+      <p>Ini bukan kenaikan pertama. Dalam sekitar sebulan, BI Rate naik bertahap:</p>
+      <div class="formula-box">
+        <ul>
+          <li>RDG 19–20 Mei 2026: 4,75% → <strong>5,25%</strong> (+50 bps)</li>
+          <li>9 Juni 2026 (RDG tambahan): 5,25% → <strong>5,50%</strong> (+25 bps)</li>
+          <li>RDG 17–18 Juni 2026: 5,50% → <strong>5,75%</strong> (+25 bps)</li>
+        </ul>
+      </div>
+      <p>
+        <strong>Kenapa dinaikkan?</strong> Menurut Gubernur BI Perry Warjiyo, langkah ini untuk memperkuat
+        stabilitas nilai tukar rupiah (yang sempat melemah hingga tembus Rp 18.000/dolar AS sebelum membaik ke
+        kisaran Rp 17.800) di tengah ketidakpastian global, sekaligus langkah pre-emptive menjaga inflasi
+        2026–2027 tetap di sasaran 2,5% ±1%.
+      </p>
+
+      <h2>2. Kenapa BI Rate Mempengaruhi Cicilan?</h2>
+      <p>
+        BI Rate adalah "harga dasar" uang di sistem keuangan. Saat naik, biaya dana bank ikut naik, dan bank
+        cenderung menyesuaikan <strong>suku bunga kredit</strong> mereka — meski biasanya dengan jeda beberapa bulan.
+        Dampaknya tidak merata: tergantung jenis pinjamanmu memakai <strong>bunga mengambang (floating)</strong> atau
+        <strong>bunga tetap (fixed/flat)</strong>.
+      </p>
+
+      <h2>3. Siapa yang Terdampak, Siapa yang (Sementara) Aman</h2>
+      <h3>⚠️ Berpotensi terdampak</h3>
+      <ul class="info-list">
+        <li><strong>KPR yang sudah masuk masa floating</strong> — bunga mengikuti acuan bank, bisa naik saat review berikutnya.</li>
+        <li><strong>Kredit dengan bunga mengambang</strong> (sebagian kredit usaha/investasi, KPR setelah masa fixed).</li>
+        <li><strong>Pengajuan pinjaman baru</strong> — KPR, KTA, atau kredit usaha baru kemungkinan dapat bunga lebih tinggi.</li>
+      </ul>
+      <h3>✅ Relatif aman (untuk sekarang)</h3>
+      <ul class="info-list">
+        <li><strong>KPR yang masih dalam masa fixed</strong> — cicilan terkunci sampai masa fixed berakhir.</li>
+        <li><strong>Kredit motor/mobil bunga flat</strong> — umumnya cicilan sudah dikunci sejak awal sampai lunas.</li>
+        <li><strong>Pinjaman lain berbunga tetap</strong> yang sudah berjalan.</li>
+      </ul>
+
+      <AdSlot format="horizontal" />
+
+      <h2>4. Simulasi: Berapa Cicilan KPR Bisa Naik?</h2>
+      <p>
+        Misalkan sisa pokok KPR <strong>Rp 500 juta</strong> dengan sisa tenor <strong>15 tahun</strong> (anuitas).
+        Kalau bunga banknya naik dari 10% ke 11% setelah BI Rate naik:
+      </p>
+      <div class="formula-box">
+        <ul>
+          <li>Bunga 10%/tahun → cicilan ± <strong>Rp 5,37 juta/bulan</strong></li>
+          <li>Bunga 11%/tahun → cicilan ± <strong>Rp 5,68 juta/bulan</strong></li>
+          <li>Selisih: ± <strong>Rp 310 ribu/bulan</strong> (± Rp 3,7 juta/tahun)</li>
+        </ul>
+      </div>
+      <p>
+        Angka di atas hanya ilustrasi (kenaikan bunga bank tidak selalu persis 1% dan bergantung kebijakan
+        masing-masing bank). Untuk hitung sesuai kondisi pinjamanmu, pakai kalkulator KPR — masukkan sisa pokok,
+        sisa tenor, dan bunga baru untuk lihat cicilan barunya.
+      </p>
+      <p>
+        Untuk <strong>KTA dan kredit baru</strong>, efeknya terasa di depan: bunga penawaran cenderung naik, jadi
+        total bunga yang dibayar selama tenor jadi lebih besar dibanding sebelum BI Rate naik.
+      </p>
+
+      <h2>5. 6 Langkah Cerdas Menyikapi BI Rate Naik</h2>
+      <ul class="info-list">
+        <li><strong>1. Hitung ulang cicilanmu</strong> dengan skenario bunga naik, supaya tidak kaget saat review bunga berikutnya.</li>
+        <li><strong>2. Cek status KPR-mu</strong> — masih masa fixed atau sudah floating? Tanyakan ke bank kapan review bunga berikutnya.</li>
+        <li><strong>3. Pertimbangkan pelunasan sebagian</strong> jika ada dana lebih — mengurangi pokok bisa menurunkan cicilan atau memperpendek tenor (cek dulu penalti).</li>
+        <li><strong>4. Pertimbangkan take-over/refinancing</strong> ke bank dengan bunga lebih kompetitif — tapi hitung dulu biaya provisi, penalti, dan administrasinya agar benar-benar hemat.</li>
+        <li><strong>5. Tahan dulu utang konsumtif baru</strong> (KTA, paylater) saat bunga sedang tinggi, kecuali benar-benar mendesak.</li>
+        <li><strong>6. Perkuat dana darurat</strong> — dan manfaatkan sisi positifnya: bunga deposito &amp; tabungan ikut naik, jadi simpananmu bisa dapat imbal hasil lebih baik.</li>
+      </ul>
+
+      <h2>6. Sisi Positifnya untuk Penabung</h2>
+      <p>
+        BI Rate naik bukan cuma soal cicilan. Buat kamu yang punya simpanan, bunga deposito dan tabungan cenderung
+        ikut naik. Jadi ini momen baik untuk mengalokasikan dana menganggur ke instrumen simpanan berbunga, sambil
+        menahan diri dari utang baru yang mahal.
+      </p>
+
+      <div class="cta-box">
+        <h3>🧮 Hitung Ulang Cicilanmu Sekarang</h3>
+        <p>Jangan menebak-nebak. Pakai kalkulator HitungCerdas untuk lihat dampak bunga baru ke cicilanmu:</p>
+        <ul>
+          <li>✅ <a href="/kalkulator/kpr">Kalkulator KPR</a> — simulasi cicilan dengan bunga baru &amp; combo fixed/floating</li>
+          <li>✅ <a href="/kalkulator/kta">Kalkulator KTA</a> — bandingkan bunga flat, efektif, anuitas</li>
+          <li>✅ <a href="/kalkulator/kredit-investasi">Kalkulator Kredit Investasi</a> — untuk kredit usaha produktif</li>
+        </ul>
+        <p style="margin-top:14px"><a href="/kalkulator/kpr" class="btn btn-pri"><i class="ti ti-calculator"></i> Buka Kalkulator KPR</a></p>
+      </div>
+
+      <h2>Kesimpulan</h2>
+      <p>
+        Kenaikan BI Rate ke 5,75% berpotensi menaikkan cicilan pinjaman berbunga mengambang dan membuat kredit
+        baru lebih mahal — tapi pinjaman berbunga tetap yang sudah berjalan umumnya aman untuk sementara. Yang
+        terpenting: <strong>hitung ulang</strong>, pahami status bunga pinjamanmu, dan ambil langkah lebih awal.
+        Buat penabung, ini justru peluang dapat imbal hasil simpanan yang lebih tinggi.
+      </p>
+
+      <h3>📋 Sumber (Bisa Dicek)</h3>
+      <ul class="info-list">
+        <li><a href="https://www.bi.go.id" target="_blank" rel="noopener nofollow">bi.go.id</a> — Bank Indonesia (hasil Rapat Dewan Gubernur resmi)</li>
+        <li><a href="https://www.antaranews.com" target="_blank" rel="noopener nofollow">ANTARA News</a> — "Suku bunga acuan BI-Rate naik lagi jadi 5,75 persen"</li>
+        <li><a href="https://www.cnnindonesia.com" target="_blank" rel="noopener nofollow">CNN Indonesia</a> — "BI Rate naik 25 bps lagi jadi 5,75% per 18 Juni"</li>
+        <li><a href="https://finance.detik.com" target="_blank" rel="noopener nofollow">detikFinance</a> — "BI Rate Naik Lagi Jadi 5,75%"</li>
+      </ul>
+
+      <h3>📚 Artikel Terkait</h3>
+      <ul class="info-list">
+        <li><a href="/blog/cara-menghitung-kpr">Cara Hitung Cicilan KPR 2026 + Tips Hemat</a></li>
+        <li><a href="/blog/cara-menghitung-kta">Cara Hitung Cicilan KTA: Flat vs Efektif vs Anuitas</a></li>
+        <li><a href="/blog/cara-hitung-dana-darurat">Cara Hitung Dana Darurat Ideal</a></li>
+        <li><a href="/kalkulator/kredit-investasi">Kalkulator Kredit Investasi</a></li>
+      </ul>
+
+      <p style="margin-top: 28px; padding: 16px; background: var(--bg-soft); border-radius: 10px; font-size: 13px; color: var(--text-soft); font-style: italic;">
+        <strong>Disclaimer:</strong> Artikel ini bersifat edukasi dan merangkum informasi per Juni 2026, bukan nasihat keuangan. Kebijakan bunga tiap bank berbeda dan dapat berubah. Untuk keputusan kredit, konsultasikan dengan bank atau perencana keuangan tepercaya.
+      </p>
+    </div>
+  </article>
+
+  <AdSlot format="horizontal" />
+</Layout>
+
+<style>
+  .article-hero { background: linear-gradient(135deg, var(--cat-color) 0%, var(--cat-color2) 100%); color: #fff; padding: 20px 0 48px; }
+  .article-hero :global(.breadcrumb-item), .article-hero :global(.breadcrumb-item a) { color: rgba(255, 255, 255, .7); }
+  .article-hero :global(.breadcrumb-item a:hover) { color: var(--gold-soft); }
+  .article-hero :global(.breadcrumb-item span) { color: #fff; }
+  .article-hero :global(.breadcrumb-item i) { color: rgba(255, 255, 255, .4); }
+  .article-tag { display: inline-block; font-size: 11px; font-weight: 700; color: var(--gold-soft); letter-spacing: .1em; text-transform: uppercase; margin: 16px 0 12px; }
+  .article-hero h1 { color: #fff; font-size: clamp(26px, 3.8vw, 42px); margin: 0 0 20px; max-width: 900px; line-height: 1.2; }
+  .article-meta { display: flex; gap: 20px; color: rgba(255, 255, 255, .75); font-size: 13px; flex-wrap: wrap; }
+  .article-meta span { display: inline-flex; align-items: center; gap: 6px; }
+  .lead { font-size: 17px !important; line-height: 1.7 !important; color: var(--text) !important; padding: 20px 24px; background: var(--bg-soft); border-radius: 12px; border-left: 4px solid var(--blue, #2563EB); margin-bottom: 24px !important; }
+</style>
