@@ -1,0 +1,244 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import ArticleSchema from '../../components/ArticleSchema.astro';
+
+const datePublished = '2026-06-23';
+const dateModified = '2026-06-23';
+const today = new Date(datePublished).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'UMP/UMR 2026 per Provinsi' }];
+
+const ump = [
+  ['Aceh', '3.685.616', 'Tetap*'],
+  ['Sumatera Utara', '3.228.949', '7,90%'],
+  ['Sumatera Barat', '3.182.955', '6,30%'],
+  ['Riau', '3.780.495', '7,74%'],
+  ['Jambi', '3.471.497', '7,33%'],
+  ['Sumatera Selatan', '3.942.963', '7,10%'],
+  ['Bengkulu', '2.827.250', '5,89%'],
+  ['Lampung', '3.047.734', '5,35%'],
+  ['Kep. Bangka Belitung', '4.035.000', '4,09%'],
+  ['Kepulauan Riau', '3.879.520', '7,06%'],
+  ['DKI Jakarta', '5.729.876', '6,17%'],
+  ['Jawa Barat', '2.317.601', '5,77%'],
+  ['Jawa Tengah', '2.327.386', '7,28%'],
+  ['DI Yogyakarta', '2.417.495', '6,78%'],
+  ['Jawa Timur', '2.446.880', '6,11%'],
+  ['Banten', '3.100.881', '6,74%'],
+  ['Bali', '3.207.459', '7,04%'],
+  ['Nusa Tenggara Barat', '2.673.861', '2,73%'],
+  ['Nusa Tenggara Timur', '2.455.898', '5,45%'],
+  ['Kalimantan Barat', '3.054.552', '6,12%'],
+  ['Kalimantan Tengah', '3.686.138', '6,12%'],
+  ['Kalimantan Selatan', '3.725.000', '6,54%'],
+  ['Kalimantan Timur', '3.762.431', '5,12%'],
+  ['Kalimantan Utara', '3.775.243', '5,45%'],
+  ['Sulawesi Utara', '4.002.630', '6,02%'],
+  ['Sulawesi Tengah', '3.179.565', '9,08%'],
+  ['Sulawesi Selatan', '3.921.088', '7,21%'],
+  ['Sulawesi Tenggara', '3.306.496', '7,58%'],
+  ['Gorontalo', '3.405.144', '5,69%'],
+  ['Sulawesi Barat', '3.315.934', '6,81%'],
+  ['Maluku', '3.334.490', '6,14%'],
+  ['Maluku Utara', '3.510.240', '3,00%'],
+  ['Papua Barat', '3.841.000', '6,25%'],
+  ['Papua', '4.436.283', '3,51%'],
+  ['Papua Tengah', '4.285.848', '0,00%'],
+  ['Papua Pegunungan', '4.508.714', '5,20%'],
+  ['Papua Selatan', '4.508.100', '5,19%'],
+  ['Papua Barat Daya', '3.766.000', '4,21%'],
+];
+---
+
+<Layout
+  title="UMP/UMR 2026 per Provinsi: Daftar Lengkap 38 Provinsi + Cara Hitung Gaji Bersih"
+  description="Daftar lengkap UMP 2026 di 38 provinsi sesuai PP 49/2025. DKI Jakarta tertinggi Rp 5,72 juta, Jawa Barat terendah Rp 2,31 juta. Plus beda UMP/UMK/UMR & cara hitung gaji bersih dari UMP."
+  keywords={['ump 2026', 'umr 2026 per provinsi', 'daftar ump 2026', 'ump 2026 terbaru', 'kenaikan ump 2026', 'umk 2026']}
+  canonical="https://hitungcerdas.net/blog/ump-umr-2026-per-provinsi"
+  ogType="article"
+>
+  <ArticleSchema
+    headline="UMP/UMR 2026 per Provinsi: Daftar Lengkap 38 Provinsi + Cara Hitung Gaji Bersih"
+    description="Daftar lengkap UMP 2026 di 38 provinsi sesuai PP 49/2025. DKI Jakarta tertinggi Rp 5,72 juta, Jawa Barat terendah Rp 2,31 juta. Plus beda UMP/UMK/UMR & cara hitung gaji bersih."
+    datePublished={datePublished}
+    dateModified={dateModified}
+    slug="ump-umr-2026-per-provinsi"
+    articleSection="Gaji"
+    keywords={['ump 2026', 'umr 2026 per provinsi', 'daftar ump 2026', 'kenaikan ump 2026']}
+    wordCount={1700}
+  />
+
+  <section class="article-hero" style="--cat-color:#047857;--cat-color2:#065F46">
+    <div class="wrap">
+      <Breadcrumb items={bcItems} />
+      <div class="article-tag">UPAH MINIMUM</div>
+      <h1>UMP/UMR 2026 per Provinsi: Daftar Lengkap 38 Provinsi + Cara Hitung Gaji Bersih</h1>
+      <div class="article-meta">
+        <span><i class="ti ti-calendar"></i> {today}</span>
+        <span><i class="ti ti-clock"></i> 10 menit baca</span>
+        <span><i class="ti ti-user"></i> Tim HitungCerdas</span>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+
+  <article class="content-section">
+    <div class="wrap-text">
+      <p class="lead">
+        UMP 2026 resmi naik di hampir seluruh provinsi dan berlaku sejak <strong>1 Januari 2026</strong>.
+        <strong>DKI Jakarta</strong> tetap tertinggi di <strong>Rp 5.729.876</strong>, sementara <strong>Jawa Barat</strong>
+        terendah di <strong>Rp 2.317.601</strong>. Artikel ini memuat daftar lengkap UMP <strong>38 provinsi</strong>,
+        beda UMP/UMK/UMR, formula baru PP 49/2025, dan cara menghitung gaji bersih (take-home pay) dari UMP.
+      </p>
+
+      <h2>1. Apa Itu UMP, UMK, dan UMR?</h2>
+      <ul class="info-list">
+        <li><strong>UMP (Upah Minimum Provinsi)</strong> — batas upah terendah satu provinsi, ditetapkan gubernur.</li>
+        <li><strong>UMK (Upah Minimum Kabupaten/Kota)</strong> — upah minimum tingkat kota/kabupaten, biasanya <strong>lebih tinggi</strong> dari UMP.</li>
+        <li><strong>UMR</strong> — istilah lama yang kini sudah digantikan UMP/UMK, tapi masih sering dipakai sehari-hari.</li>
+      </ul>
+      <p>
+        Penting: kalau kamu kerja di kota industri seperti Bekasi, Karawang, atau Surabaya, acuannya adalah
+        <strong>UMK</strong> (yang biasanya jauh di atas UMP provinsi). Jadi jangan kaget kalau UMP Jawa Barat
+        "hanya" Rp 2,31 juta — UMK Karawang/Bekasi bisa di atas Rp 5 juta.
+      </p>
+
+      <h2>2. Dasar Hukum &amp; Formula Baru UMP 2026</h2>
+      <p>
+        UMP 2026 ditetapkan berdasarkan <strong>Peraturan Pemerintah (PP) No. 49 Tahun 2025</strong> tentang
+        Pengupahan. Formula penyesuaiannya:
+      </p>
+      <div class="formula-box">
+        <p style="text-align:center;font-size:16px"><strong>Kenaikan UMP = Inflasi + (Pertumbuhan Ekonomi × Alfa)</strong></p>
+        <p>Nilai <strong>Alfa</strong> kini di rentang <strong>0,5–0,9</strong> — lebih besar dari aturan sebelumnya (PP 51/2023) yang hanya 0,1–0,3. Makin tinggi Alfa, makin besar porsi pertumbuhan ekonomi yang dikonversi jadi kenaikan upah.</p>
+      </div>
+      <p>Rata-rata kenaikan nasional berkisar 5–7%, dengan beberapa provinsi tembus di atas 9%.</p>
+
+      <AdSlot format="horizontal" />
+
+      <h2>3. Daftar Lengkap UMP 2026 (38 Provinsi)</h2>
+      <p>Berikut besaran UMP 2026 seluruh provinsi beserta persentase kenaikannya, diurutkan per wilayah:</p>
+      <div class="table-wrap">
+        <table class="ump-table">
+          <thead>
+            <tr><th>Provinsi</th><th>UMP 2026 (Rp)</th><th>Naik</th></tr>
+          </thead>
+          <tbody>
+            {ump.map((row) => (
+              <tr>
+                <td>{row[0]}</td>
+                <td style="text-align:right">{row[1]}</td>
+                <td style="text-align:center">{row[2]}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p style="font-size:13px;color:var(--text-soft)">
+        *Aceh berpotensi tetap memakai UMP 2025 (Rp 3.685.616) karena masih dalam pemulihan pascabencana.
+        Papua Tengah tercatat 0% (tidak naik). Besaran bisa berbeda pembulatan antar sumber sesuai SK Gubernur masing-masing.
+      </p>
+
+      <h2>4. Catatan Penting Sebelum Kamu Pakai Angka Ini</h2>
+      <ul class="info-list">
+        <li><strong>UMP itu batas bawah</strong>, bukan gaji pasti. Untuk masa kerja di atas 1 tahun, kenaikan idealnya lewat Struktur &amp; Skala Upah perusahaan.</li>
+        <li><strong>Cek UMK kotamu</strong> — kalau ada, UMK yang berlaku (umumnya lebih tinggi dari UMP).</li>
+        <li><strong>UMP = gaji kotor (bruto)</strong>. Yang kamu terima (take-home pay) lebih kecil setelah potongan BPJS dan pajak.</li>
+      </ul>
+
+      <h2>5. Cara Hitung Gaji Bersih dari UMP</h2>
+      <p>
+        UMP adalah gaji <strong>bruto</strong>. Untuk tahu uang yang benar-benar masuk rekening (take-home pay),
+        kurangi potongan rutin:
+      </p>
+      <ul class="info-list">
+        <li><strong>BPJS Kesehatan</strong>: 1% dari gaji (dipotong dari karyawan).</li>
+        <li><strong>BPJS Ketenagakerjaan</strong>: JHT 2% + JP 1% (porsi karyawan).</li>
+        <li><strong>PPh 21</strong>: untuk gaji setara UMP, umumnya masih di bawah PTKP sehingga pajaknya Rp 0.</li>
+      </ul>
+      <p>
+        Contoh kasar: UMP DKI Rp 5,73 juta dipotong BPJS sekitar 4% (± Rp 229 ribu) → take-home pay ± <strong>Rp 5,5 juta</strong>
+        (sebelum potongan lain seperti pinjaman/koperasi). Untuk hitungan presisi sesuai status pajakmu, pakai kalkulator Gaji Bersih.
+      </p>
+
+      <h2>6. Tips Kelola Kenaikan Gaji 2026</h2>
+      <ul class="info-list">
+        <li><strong>Hindari lifestyle creep</strong> — jangan langsung naikkan gaya hidup begitu gaji naik.</li>
+        <li><strong>Alokasikan selisih kenaikan</strong> ke tabungan/investasi sebelum terpakai.</li>
+        <li><strong>Prioritaskan dana darurat</strong> minimal 3–6× pengeluaran bulanan.</li>
+        <li><strong>Investasi "leher ke atas"</strong> — sebagian untuk kursus/sertifikasi agar nilai dirimu naik.</li>
+      </ul>
+
+      <h2>7. FAQ UMP 2026</h2>
+      <h3>UMP dan UMR itu sama?</h3>
+      <p>Secara praktis ya. UMR adalah istilah lama; sekarang resminya UMP (provinsi) dan UMK (kabupaten/kota).</p>
+      <h3>UMP 2026 tertinggi dan terendah di mana?</h3>
+      <p>Tertinggi DKI Jakarta (Rp 5.729.876), terendah Jawa Barat (Rp 2.317.601).</p>
+      <h3>Gaji saya sudah di atas UMP, apakah ikut naik?</h3>
+      <p>Tidak otomatis. Kenaikan untuk yang sudah di atas UMP umumnya lewat kebijakan perusahaan atau negosiasi.</p>
+      <h3>Kapan UMP 2026 mulai berlaku?</h3>
+      <p>Sejak 1 Januari 2026. Cek slip gaji Januari/Februari untuk memastikan sudah disesuaikan.</p>
+
+      <div class="cta-box">
+        <h3>🧮 Hitung Gaji Bersihmu dari UMP</h3>
+        <p>Tahu gaji bruto (UMP/UMK) saja belum cukup. Cek take-home pay-mu dengan <strong>Kalkulator Gaji Bersih HitungCerdas</strong>:</p>
+        <ul>
+          <li>✅ Potong BPJS Kesehatan + JHT + JP otomatis</li>
+          <li>✅ Hitung PPh 21 sesuai status (TK/0, K/2, dll)</li>
+          <li>✅ Tampilkan take-home pay bulanan</li>
+        </ul>
+        <p style="margin-top:14px"><a href="/kalkulator/gaji-bersih" class="btn btn-pri"><i class="ti ti-calculator"></i> Buka Kalkulator Gaji Bersih</a></p>
+      </div>
+
+      <h2>Kesimpulan</h2>
+      <p>
+        UMP 2026 naik di hampir semua provinsi (PP 49/2025), dengan DKI Jakarta tertinggi dan Jawa Barat terendah.
+        Tapi ingat: UMP itu batas bawah dan gaji bruto — cek UMK kotamu, dan hitung take-home pay setelah potongan
+        BPJS &amp; pajak. Manfaatkan kenaikan gaji untuk menabung, bukan menambah gaya hidup.
+      </p>
+
+      <h3>📋 Sumber (Bisa Dicek)</h3>
+      <ul class="info-list">
+        <li><a href="https://kemnaker.go.id" target="_blank" rel="noopener nofollow">kemnaker.go.id</a> — Kementerian Ketenagakerjaan</li>
+        <li>Dasar hukum: <strong>PP No. 49 Tahun 2025</strong> tentang Pengupahan</li>
+        <li><a href="https://indonesiabaik.id/infografis/besar-upah-minimum-provinsi-ump-2026" target="_blank" rel="noopener nofollow">Indonesiabaik.id</a> — infografis UMP 2026 (Kominfo)</li>
+        <li><a href="https://artikel.pajakku.com/daftar-ump-2026-terlengkap-di-38-provinsi-jakarta-sentuh-rp572-juta" target="_blank" rel="noopener nofollow">Pajakku</a> — daftar UMP 2026 38 provinsi</li>
+      </ul>
+
+      <h3>📚 Artikel Terkait</h3>
+      <ul class="info-list">
+        <li><a href="/blog/cara-menghitung-gaji-bersih">Cara Hitung Gaji Bersih (Take-Home Pay)</a></li>
+        <li><a href="/blog/cara-menghitung-pph-21">Cara Hitung PPh 21 Karyawan 2026</a></li>
+        <li><a href="/blog/cara-hitung-dana-darurat">Cara Hitung Dana Darurat Ideal</a></li>
+        <li><a href="/kalkulator/investasi">Kalkulator Investasi</a></li>
+      </ul>
+
+      <p style="margin-top: 28px; padding: 16px; background: var(--bg-soft); border-radius: 10px; font-size: 13px; color: var(--text-soft); font-style: italic;">
+        <strong>Disclaimer:</strong> Artikel ini bersifat edukasi dan merangkum data per Juni 2026. Besaran UMP/UMK final mengacu pada SK Gubernur masing-masing provinsi dan dapat berbeda pembulatan. Untuk angka resmi, rujuk publikasi pemerintah provinsi atau Kemnaker.
+      </p>
+    </div>
+  </article>
+
+  <AdSlot format="horizontal" />
+</Layout>
+
+<style>
+  .article-hero { background: linear-gradient(135deg, var(--cat-color) 0%, var(--cat-color2) 100%); color: #fff; padding: 20px 0 48px; }
+  .article-hero :global(.breadcrumb-item), .article-hero :global(.breadcrumb-item a) { color: rgba(255, 255, 255, .7); }
+  .article-hero :global(.breadcrumb-item a:hover) { color: var(--gold-soft); }
+  .article-hero :global(.breadcrumb-item span) { color: #fff; }
+  .article-hero :global(.breadcrumb-item i) { color: rgba(255, 255, 255, .4); }
+  .article-tag { display: inline-block; font-size: 11px; font-weight: 700; color: var(--gold-soft); letter-spacing: .1em; text-transform: uppercase; margin: 16px 0 12px; }
+  .article-hero h1 { color: #fff; font-size: clamp(26px, 3.8vw, 42px); margin: 0 0 20px; max-width: 900px; line-height: 1.2; }
+  .article-meta { display: flex; gap: 20px; color: rgba(255, 255, 255, .75); font-size: 13px; flex-wrap: wrap; }
+  .article-meta span { display: inline-flex; align-items: center; gap: 6px; }
+  .lead { font-size: 17px !important; line-height: 1.7 !important; color: var(--text) !important; padding: 20px 24px; background: var(--bg-soft); border-radius: 12px; border-left: 4px solid var(--green); margin-bottom: 24px !important; }
+  .table-wrap { overflow-x: auto; margin: 18px 0; border-radius: 12px; border: 1px solid var(--border, #E5E7EB); }
+  .ump-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .ump-table th, .ump-table td { padding: 10px 14px; border-bottom: 1px solid var(--border, #E5E7EB); white-space: nowrap; }
+  .ump-table thead th { background: var(--cat-color); color: #fff; text-align: left; position: sticky; top: 0; }
+  .ump-table tbody tr:nth-child(even) { background: var(--bg-soft); }
+  .ump-table tbody tr:hover { background: var(--gold-light, #FEF3C7); }
+</style>
