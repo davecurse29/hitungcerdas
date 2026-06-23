@@ -21,12 +21,14 @@ export interface CalculatorMeta {
   h1: string;
   introText: string;
   benefits: string[];
+  related?: string[]; // slug kalkulator terkait (kurasi relevan)
 }
 
 export const CALCULATORS: CalculatorMeta[] = [
   // ═══════════════ KEUANGAN ═══════════════
   {
     slug: 'kpr',
+    related: ['kpr-syariah', 'gaji-bersih', 'dana-darurat'],
     title: 'Kalkulator KPR 2026 — Hitung Cicilan, Total Bunga & Tenor Optimal',
     shortTitle: 'Kalkulator KPR',
     category: 'keuangan',
@@ -52,6 +54,7 @@ export const CALCULATORS: CalculatorMeta[] = [
   },
   {
     slug: 'pph-21',
+    related: ['gaji-bersih', 'zakat-penghasilan', 'pajak-umkm'],
     title: 'Kalkulator PPh 21 Karyawan 2026 — UU HPP, PTKP Terbaru',
     shortTitle: 'Kalkulator PPh 21',
     category: 'keuangan',
@@ -77,6 +80,7 @@ export const CALCULATORS: CalculatorMeta[] = [
   },
   {
     slug: 'gaji-bersih',
+    related: ['pph-21', 'dana-darurat', 'investasi'],
     title: 'Kalkulator Gaji Bersih (Take Home Pay) — Setelah BPJS & Pajak',
     shortTitle: 'Kalkulator Gaji Bersih',
     category: 'keuangan',
@@ -102,6 +106,7 @@ export const CALCULATORS: CalculatorMeta[] = [
   },
   {
     slug: 'kredit-motor',
+    related: ['kredit-mobil', 'kta', 'gaji-bersih'],
     title: 'Simulasi Kredit Motor 2026 — Cicilan, Bunga, Tenor 12-48 Bulan',
     shortTitle: 'Simulasi Kredit Motor',
     category: 'keuangan',
@@ -127,6 +132,7 @@ export const CALCULATORS: CalculatorMeta[] = [
   },
   {
     slug: 'kredit-mobil',
+    related: ['kredit-motor', 'kta', 'kpr'],
     title: 'Simulasi Kredit Mobil 2026 — Cicilan, DP, Asuransi & Biaya Awal',
     shortTitle: 'Simulasi Kredit Mobil',
     category: 'keuangan',
@@ -152,6 +158,7 @@ export const CALCULATORS: CalculatorMeta[] = [
   },
   {
     slug: 'investasi',
+    related: ['dana-darurat', 'gaji-bersih', 'bagi-hasil'],
     title: 'Kalkulator Investasi — Compound Interest, Reksadana, Saham',
     shortTitle: 'Kalkulator Investasi',
     category: 'keuangan',
@@ -177,6 +184,7 @@ export const CALCULATORS: CalculatorMeta[] = [
   },
   {
     slug: 'dana-darurat',
+    related: ['investasi', 'gaji-bersih', 'kpr'],
     title: 'Kalkulator Dana Darurat 2026 — Hitung Target Ideal & Timeline',
     shortTitle: 'Kalkulator Dana Darurat',
     category: 'keuangan',
@@ -202,6 +210,7 @@ export const CALCULATORS: CalculatorMeta[] = [
   },
   {
     slug: 'kta',
+    related: ['pinjol-legal', 'kredit-investasi', 'kredit-motor'],
     title: 'Kalkulator KTA 2026 — Simulasi Kredit Tanpa Agunan 6 Bank Terupdate',
     shortTitle: 'Kalkulator KTA',
     category: 'keuangan',
@@ -227,6 +236,7 @@ export const CALCULATORS: CalculatorMeta[] = [
   },
   {
     slug: 'pinjol-legal',
+    related: ['kta', 'dana-darurat', 'gaji-bersih'],
     title: 'Kalkulator Pinjol Legal 2026 — APR Sebenarnya + Aturan OJK',
     shortTitle: 'Kalkulator Pinjol Legal',
     category: 'keuangan',
@@ -253,6 +263,7 @@ export const CALCULATORS: CalculatorMeta[] = [
 
   {
     slug: 'kredit-investasi',
+    related: ['kta', 'roi-usaha', 'pajak-umkm'],
     title: 'Kalkulator Kredit Investasi 2026 — Simulasi Cicilan KI, Provisi & Pelunasan Sebagian',
     shortTitle: 'Kalkulator Kredit Investasi',
     category: 'keuangan',
@@ -280,6 +291,7 @@ export const CALCULATORS: CalculatorMeta[] = [
   // ═══════════════ BISNIS ═══════════════
   {
     slug: 'invoice-generator',
+    related: ['margin', 'harga-jual', 'pajak-umkm'],
     title: 'Invoice Generator Gratis — Bikin Invoice Profesional PDF',
     shortTitle: 'Invoice Generator',
     category: 'bisnis',
@@ -305,6 +317,7 @@ export const CALCULATORS: CalculatorMeta[] = [
   },
   {
     slug: 'harga-jual',
+    related: ['margin', 'hpp', 'bep'],
     title: 'Kalkulator Harga Jual Produk UMKM — Profit Optimal Marketplace',
     shortTitle: 'Kalkulator Harga Jual',
     category: 'bisnis',
@@ -330,6 +343,7 @@ export const CALCULATORS: CalculatorMeta[] = [
   },
   {
     slug: 'margin',
+    related: ['harga-jual', 'hpp', 'roi-usaha'],
     title: 'Kalkulator Margin Keuntungan — Profit Margin vs Markup Bisnis',
     shortTitle: 'Kalkulator Margin',
     category: 'bisnis',
@@ -355,6 +369,7 @@ export const CALCULATORS: CalculatorMeta[] = [
   },
   {
     slug: 'nama-bisnis-generator',
+    related: ['caption-jualan', 'invoice-generator', 'harga-jual'],
     title: 'Nama Bisnis Generator — 20 Ide Nama Brand Catchy & Unik',
     shortTitle: 'Nama Bisnis Generator',
     category: 'bisnis',
@@ -380,6 +395,7 @@ export const CALCULATORS: CalculatorMeta[] = [
   },
   {
     slug: 'caption-jualan',
+    related: ['nama-bisnis-generator', 'harga-jual', 'margin'],
     title: 'Caption Jualan Generator — 5 Variasi Viral Instagram, TikTok',
     shortTitle: 'Caption Jualan Generator',
     category: 'bisnis',
@@ -406,6 +422,7 @@ export const CALCULATORS: CalculatorMeta[] = [
 
   {
     slug: 'hpp',
+    related: ['harga-jual', 'margin', 'bep'],
     title: 'Kalkulator HPP 2026 — Harga Pokok Produksi per Unit untuk UMKM',
     shortTitle: 'Kalkulator HPP',
     category: 'bisnis',
@@ -432,6 +449,7 @@ export const CALCULATORS: CalculatorMeta[] = [
 
   {
     slug: 'bep',
+    related: ['hpp', 'margin', 'roi-usaha'],
     title: 'Kalkulator BEP 2026 — Titik Impas & Target Penjualan UMKM',
     shortTitle: 'Kalkulator BEP',
     category: 'bisnis',
@@ -458,6 +476,7 @@ export const CALCULATORS: CalculatorMeta[] = [
 
   {
     slug: 'pajak-umkm',
+    related: ['pph-21', 'invoice-generator', 'margin'],
     title: 'Kalkulator Pajak UMKM 2026 — PPh Final 0,5% (PP 20/2026)',
     shortTitle: 'Kalkulator Pajak UMKM',
     category: 'bisnis',
@@ -484,6 +503,7 @@ export const CALCULATORS: CalculatorMeta[] = [
 
   {
     slug: 'roi-usaha',
+    related: ['bep', 'margin', 'kredit-investasi'],
     title: 'Kalkulator ROI & Balik Modal Usaha 2026 — Payback Period UMKM',
     shortTitle: 'Kalkulator ROI Usaha',
     category: 'bisnis',
@@ -510,6 +530,7 @@ export const CALCULATORS: CalculatorMeta[] = [
 
   {
     slug: 'komisi-ojol',
+    related: ['gaji-bersih', 'margin', 'pajak-umkm'],
     title: 'Kalkulator Komisi GoFood, GrabFood, ShopeeFood 2026 — Potongan Merchant',
     shortTitle: 'Kalkulator Komisi Ojol',
     category: 'bisnis',
@@ -537,6 +558,7 @@ export const CALCULATORS: CalculatorMeta[] = [
   // ═══════════════ ISLAMI ═══════════════
   {
     slug: 'zakat-fitrah',
+    related: ['zakat-mal', 'zakat-penghasilan', 'fidyah'],
     title: 'Kalkulator Zakat Fitrah 2026 — Harga Beras Terbaru BAZNAS',
     shortTitle: 'Zakat Fitrah',
     category: 'islami',
@@ -562,6 +584,7 @@ export const CALCULATORS: CalculatorMeta[] = [
   },
   {
     slug: 'zakat-penghasilan',
+    related: ['pph-21', 'zakat-mal', 'gaji-bersih'],
     title: 'Kalkulator Zakat Penghasilan — 2,5% Profesi Gaji Bulanan',
     shortTitle: 'Zakat Penghasilan',
     category: 'islami',
@@ -587,6 +610,7 @@ export const CALCULATORS: CalculatorMeta[] = [
   },
   {
     slug: 'zakat-mal',
+    related: ['zakat-penghasilan', 'zakat-fitrah', 'warisan-faraidh'],
     title: 'Kalkulator Zakat Mal (Harta) — Tabungan, Emas, Investasi',
     shortTitle: 'Zakat Mal',
     category: 'islami',
@@ -612,6 +636,7 @@ export const CALCULATORS: CalculatorMeta[] = [
   },
   {
     slug: 'fidyah',
+    related: ['zakat-fitrah', 'zakat-penghasilan', 'dana-qurban'],
     title: 'Kalkulator Fidyah Puasa — Hamil, Menyusui, Lansia, Sakit Kronis',
     shortTitle: 'Kalkulator Fidyah',
     category: 'islami',
@@ -637,6 +662,7 @@ export const CALCULATORS: CalculatorMeta[] = [
   },
   {
     slug: 'warisan-faraidh',
+    related: ['zakat-mal', 'bagi-hasil', 'gadai-syariah'],
     title: 'Kalkulator Warisan Faraidh — Pembagian Harta Hukum Islam',
     shortTitle: 'Warisan Faraidh',
     category: 'islami',
@@ -662,6 +688,7 @@ export const CALCULATORS: CalculatorMeta[] = [
   },
   {
     slug: 'dana-qurban',
+    related: ['dana-haji-umrah', 'zakat-mal', 'fidyah'],
     title: 'Kalkulator Dana Qurban — Tabungan Kambing, Sapi Idul Adha',
     shortTitle: 'Dana Qurban',
     category: 'islami',
@@ -687,6 +714,7 @@ export const CALCULATORS: CalculatorMeta[] = [
   },
   {
     slug: 'dana-haji-umrah',
+    related: ['dana-qurban', 'investasi', 'bagi-hasil'],
     title: 'Kalkulator Dana Haji & Umrah — Tabungan Reguler, Plus, Furoda',
     shortTitle: 'Dana Haji & Umrah',
     category: 'islami',
@@ -713,6 +741,7 @@ export const CALCULATORS: CalculatorMeta[] = [
 
   {
     slug: 'kpr-syariah',
+    related: ['kpr', 'bagi-hasil', 'dana-haji-umrah'],
     title: 'Kalkulator KPR Syariah 2026 — Cicilan Tetap Akad Murabahah',
     shortTitle: 'KPR Syariah',
     category: 'islami',
@@ -739,6 +768,7 @@ export const CALCULATORS: CalculatorMeta[] = [
 
   {
     slug: 'bagi-hasil',
+    related: ['kpr-syariah', 'investasi', 'gadai-syariah'],
     title: 'Kalkulator Bagi Hasil Syariah 2026 — Mudharabah & Deposito Syariah',
     shortTitle: 'Kalkulator Bagi Hasil',
     category: 'islami',
@@ -765,6 +795,7 @@ export const CALCULATORS: CalculatorMeta[] = [
 
   {
     slug: 'gadai-syariah',
+    related: ['bagi-hasil', 'kpr-syariah', 'pinjol-legal'],
     title: 'Kalkulator Gadai Syariah (Rahn) 2026 — Pinjaman & Biaya Mu\'nah',
     shortTitle: 'Gadai Syariah (Rahn)',
     category: 'islami',
@@ -802,9 +833,21 @@ export function getCalculatorsByCategory(category: CalculatorCategory): Calculat
 export function getRelatedCalculators(currentSlug: string, limit = 3): CalculatorMeta[] {
   const current = getCalculatorBySlug(currentSlug);
   if (!current) return [];
-  return CALCULATORS
-    .filter(c => c.category === current.category && c.slug !== currentSlug)
-    .slice(0, limit);
+  // 1) Pakai relasi kurasi (relevan) lebih dulu; 2) lengkapi dgn sesama kategori bila kurang.
+  const out: CalculatorMeta[] = [];
+  const seen = new Set<string>([currentSlug]);
+  for (const slug of current.related ?? []) {
+    const c = getCalculatorBySlug(slug);
+    if (c && !seen.has(c.slug)) { out.push(c); seen.add(c.slug); }
+    if (out.length >= limit) return out;
+  }
+  for (const c of CALCULATORS) {
+    if (c.category === current.category && !seen.has(c.slug)) {
+      out.push(c); seen.add(c.slug);
+      if (out.length >= limit) break;
+    }
+  }
+  return out.slice(0, limit);
 }
 
 export const CATEGORIES = [
