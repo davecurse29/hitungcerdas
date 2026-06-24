@@ -116,6 +116,8 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
           </div>
 
           <div class="calc-output">
+            <div class="hist-section" id="histBox" style="display:none"></div>
+
             <div class="result-placeholder" id="placeholder">
               <i class="ti ti-wallet result-placeholder-icon"></i>
               <div class="result-placeholder-title">Take-Home Pay akan muncul di sini</div>
@@ -682,6 +684,8 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         $('proyeksiBody').innerHTML = html;
 
         lastCalc = { gaji, tunj, tunjVar, ptkpLabel: els.ptkp.options[els.ptkp.selectedIndex].text, useTer, terCat, terRt, pphBulanTahunan, pphBulanTER, ctc, empBpjs, potLain, dplkKaryawan, dplkPerusahaan, dplkKaryawanPct, dplkPerusahaanPct, thrBonus, thrPph, thrNet, thrRate, brutoBulan, bpjsTotal, pphBulan, thp, thpPct };
+        HC.history.push('gaji-bersih', { inputs: HC.history.capture(['gaji','tunj','tunjVar','ptkp','pphMethod','potLain','dplkKaryawan','dplkPerusahaan','thrBonus']), summary: 'Gaji ' + HC.fmt(lastCalc.gaji) + ' \u00b7 ' + lastCalc.ptkpLabel, metrics: [{ k: 'Take-home', v: HC.fmt(lastCalc.thp) }, { k: 'PPh/bln', v: HC.fmt(lastCalc.pphBulan) }] });
+        renderHist();
         $('placeholder').style.display = 'none';
         $('results').classList.add('show');
         $('nextSteps').style.display = '';
@@ -813,6 +817,10 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         box.innerHTML = `🎯 Untuk take-home <b>${HC.fmt(target)}</b>/bulan, gaji pokok kamu perlu sekitar <b style="color:var(--green-dark)">${HC.fmt(gajiNeeded)}</b>/bulan.<br><span style="color:var(--text-mute);font-size:12px">Bruto ${HC.fmt(r.brutoBulan)} · BPJS ${HC.fmt(r.bpjsTotal)} · PPh ${HC.fmt(r.pphBulan)}/bln. Pakai tunjangan/PTKP/metode yang sama dengan form di atas.</span>`;
       }
 
+            function renderHist() {
+        HC.history.render('gaji-bersih', $('histBox'), function () { hitung(); });
+      }
+      renderHist();
       $('btnHitung').addEventListener('click', hitung);
       var btnBalik = $('btnBalik'); if (btnBalik) btnBalik.addEventListener('click', hitungBalik);
       els.pphMethod.addEventListener('change', () => { if (lastCalc) hitung(); });
