@@ -290,6 +290,79 @@
     }, 2500);
   };
 
+  // ─── CALCULATION HISTORY (per-calculator, localStorage) ───
+  HC.history = {
+    _key: function (slug) { return 'hc-hist-' + slug; },
+    list: function (slug) {
+      try { return JSON.parse(localStorage.getItem(this._key(slug)) || '[]') || []; }
+      catch (e) { return []; }
+    },
+    capture: function (ids) {
+      var o = {};
+      ids.forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el) o[id] = (el.type === 'checkbox') ? el.checked : el.value;
+      });
+      return o;
+    },
+    push: function (slug, entry) {
+      try {
+        var arr = this.list(slug);
+        entry.t = Date.now();
+        if (arr.length && JSON.stringify(arr[0].inputs) === JSON.stringify(entry.inputs)) {
+          arr[0] = entry;
+        } else {
+          arr.unshift(entry);
+        }
+        arr = arr.slice(0, 5);
+        localStorage.setItem(this._key(slug), JSON.stringify(arr));
+      } catch (e) {}
+      return this.list(slug);
+    },
+    clear: function (slug) { try { localStorage.removeItem(this._key(slug)); } catch (e) {} },
+    _ago: function (ts) {
+      var s = Math.floor((Date.now() - ts) / 1000);
+      if (s < 60) return 'baru saja';
+      var m = Math.floor(s / 60); if (m < 60) return m + ' mnt lalu';
+      var h = Math.floor(m / 60); if (h < 24) return h + ' jam lalu';
+      var d = Math.floor(h / 24); if (d < 7) return d + ' hr lalu';
+      var dt = new Date(ts); return dt.getDate() + '/' + (dt.getMonth() + 1);
+    },
+    _esc: function (s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); },
+    render: function (slug, container, onRestore) {
+      if (!container) return;
+      var arr = this.list(slug), self = this;
+      if (!arr.length) { container.style.display = 'none'; container.innerHTML = ''; return; }
+      container.style.display = '';
+      var html = '<div class="hist-head"><i class="ti ti-history"></i> Riwayat Perhitungan</div>';
+      for (var i = 0; i < arr.length; i++) {
+        var e = arr[i];
+        var mtxt = (e.metrics || []).map(function (m) { return self._esc(m.k) + ': <b>' + self._esc(m.v) + '</b>'; }).join(' \u00b7 ');
+        html += '<div class="hist-item">'
+          + '<div class="hist-main"><div class="hist-sum">' + self._esc(e.summary) + '</div><div class="hist-met">' + mtxt + '</div></div>'
+          + '<div class="hist-side"><span class="hist-ago">' + self._ago(e.t) + '</span><button type="button" class="hist-load" data-i="' + i + '">Muat</button></div>'
+          + '</div>';
+      }
+      html += '<button type="button" class="hist-clear">Hapus semua riwayat</button>';
+      container.innerHTML = html;
+      container.querySelectorAll('.hist-load').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var e = arr[parseInt(btn.getAttribute('data-i'), 10)];
+          if (!e) return;
+          if (e.inputs) {
+            for (var k in e.inputs) {
+              var el = document.getElementById(k);
+              if (el) { if (el.type === 'checkbox') el.checked = !!e.inputs[k]; else el.value = e.inputs[k]; }
+            }
+          }
+          if (typeof onRestore === 'function') onRestore(e);
+        });
+      });
+      var cl = container.querySelector('.hist-clear');
+      if (cl) cl.addEventListener('click', function () { self.clear(slug); self.render(slug, container, onRestore); HC.toast('Riwayat dihapus', 'info'); });
+    }
+  };
+
   // ─── RESET FORM HELPER ───
   HC.resetForm = function(formIds, defaults) {
     formIds.forEach(id => {

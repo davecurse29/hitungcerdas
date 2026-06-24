@@ -116,6 +116,8 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
           </div>
 
           <div class="calc-output">
+            <div class="hist-section" id="histBox" style="display:none"></div>
+
             <div class="result-placeholder" id="placeholder">
               <i class="ti ti-chart-line result-placeholder-icon"></i>
               <div class="result-placeholder-title">Proyeksi investasi akan muncul di sini</div>
@@ -485,6 +487,8 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         }).join('');
 
         lastCalc = { modal, topup, ret, tahun, fv, totalSetor, untung, useInflasi, skenario, inflasi, realReturn, realFv };
+        HC.history.push('investasi', { inputs: HC.history.capture(['modal','topup','ret','tahun','inflasiToggle','inflasiSkenario']), summary: 'Modal ' + HC.fmt(modal) + ' \u00b7 ' + tahun + ' thn @ ' + ret + '%', metrics: [{ k: 'Hasil', v: HC.fmt(fv) }, { k: 'Untung', v: HC.fmt(untung) }] });
+        renderHist();
         renderPajak();
         $('placeholder').style.display = 'none';
         $('results').classList.add('show');
@@ -638,6 +642,13 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         }
       }
 
+            function renderHist() {
+        HC.history.render('investasi', $('histBox'), function () {
+          els.inflasiBox.classList.toggle('active', els.inflasiToggle.checked);
+          hitung();
+        });
+      }
+      renderHist();
       $('btnHitung').addEventListener('click', hitung);
       $('btnReset').addEventListener('click', reset);
       var btnGoal = $('btnGoal'); if (btnGoal) btnGoal.addEventListener('click', hitungGoal);
