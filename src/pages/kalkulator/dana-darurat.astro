@@ -98,6 +98,8 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
           </div>
 
           <div class="calc-output">
+            <div class="hist-section" id="histBox" style="display:none"></div>
+
             <div class="result-placeholder" id="placeholder">
               <i class="ti ti-shield-check result-placeholder-icon"></i>
               <div class="result-placeholder-title">Target Dana Darurat akan muncul di sini</div>
@@ -436,6 +438,8 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         $('roadmapBody').innerHTML = html;
 
         lastCalc = { statusLabel, pekerjaanLabel, pengeluaran, dananow, nabung, multiplier, target, kurang, progress, bulanTercapai };
+        HC.history.push('dana-darurat', { inputs: HC.history.capture(['status','pekerjaan','pengeluaran','dananow','nabung']), summary: 'Pengeluaran ' + HC.fmt(lastCalc.pengeluaran) + '/bln \u00b7 target ' + lastCalc.multiplier + '\u00d7', metrics: [{ k: 'Target', v: HC.fmt(lastCalc.target) }, { k: 'Kurang', v: HC.fmt(lastCalc.kurang) }] });
+        renderHist();
         $('placeholder').style.display = 'none';
         $('results').classList.add('show');
         $('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -487,6 +491,10 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         return `🛡️ *Dana Darurat - HitungCerdas*\n\nProfil: ${c.statusLabel}, ${c.pekerjaanLabel}\nPengeluaran: ${HC.fmt(c.pengeluaran)}/bln\nMultiplier: ${c.multiplier}× pengeluaran\n\n🎯 *Target: ${HC.fmt(c.target)}*\n💰 Sudah terkumpul: ${HC.fmt(c.dananow)}\n📊 Progress: ${c.progress.toFixed(1)}%\n⏱️ Estimasi: ${c.bulanTercapai} bulan dengan nabung ${HC.fmt(c.nabung)}/bln\n\nHitung di: https://hitungcerdas.net/kalkulator/dana-darurat`;
       }
 
+            function renderHist() {
+        HC.history.render('dana-darurat', $('histBox'), function () { hitung(); });
+      }
+      renderHist();
       $('btnHitung').addEventListener('click', hitung);
       $('btnReset').addEventListener('click', reset);
       $('exportImg').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToImage(c, 'dana-darurat-' + Date.now()); });

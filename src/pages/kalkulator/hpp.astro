@@ -95,6 +95,8 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
           </div>
 
           <div class="calc-output">
+            <div class="hist-section" id="histBox" style="display:none"></div>
+
             <div class="result-placeholder" id="placeholder">
               <i class="ti ti-box result-placeholder-icon"></i>
               <div class="result-placeholder-title">HPP akan muncul di sini</div>
@@ -260,6 +262,8 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         $('kompBody').innerHTML = bodyHtml;
 
         lastCalc = { bahan, tkl, overhead, unit, margin, totalBiaya, hppUnit, hargaJual, untungUnit, marginReal, markup };
+        HC.history.push('hpp', { inputs: HC.history.capture(['bahan','tkl','overhead','unit','margin']), summary: 'HPP ' + HC.fmt(lastCalc.hppUnit) + '/unit \u00b7 ' + lastCalc.unit + ' unit', metrics: [{ k: 'HPP/unit', v: HC.fmt(lastCalc.hppUnit) }, { k: 'Harga jual', v: HC.fmt(lastCalc.hargaJual) }] });
+        renderHist();
         $('placeholder').style.display = 'none';
         $('results').classList.add('show');
         $('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -305,6 +309,10 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         return `\ud83d\udce6 *Hitung HPP - HitungCerdas*\n\nBahan baku: ${HC.fmt(c.bahan)}\nTenaga kerja: ${HC.fmt(c.tkl)}\nOverhead: ${HC.fmt(c.overhead)}\nJumlah: ${c.unit} unit\n\n\ud83d\udce6 *HPP/unit: ${HC.fmt(c.hppUnit)}*\n\ud83d\udcb0 Harga jual (margin ${c.margin}%): ${HC.fmt(c.hargaJual)}\n\ud83d\udcc8 Untung/unit: ${HC.fmt(c.untungUnit)}\n\nHitung di: https://hitungcerdas.net/kalkulator/hpp`;
       }
 
+            function renderHist() {
+        HC.history.render('hpp', $('histBox'), function () { hitung(); });
+      }
+      renderHist();
       $('btnHitung').addEventListener('click', hitung);
       $('btnReset').addEventListener('click', reset);
       document.querySelectorAll('.adv-toggle').forEach(t => t.addEventListener('click', () => t.parentElement.classList.toggle('open')));

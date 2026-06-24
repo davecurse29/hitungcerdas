@@ -87,6 +87,8 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
           </div>
 
           <div class="calc-output">
+            <div class="hist-section" id="histBox" style="display:none"></div>
+
             <div class="result-placeholder" id="placeholder">
               <i class="ti ti-receipt-2 result-placeholder-icon"></i>
               <div class="result-placeholder-title">Pajak UMKM akan muncul di sini</div>
@@ -300,6 +302,8 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         $('monthNote').innerHTML = mNote;
 
         lastCalc = { jenis, isOP, periode, omzetInput, omzetThn, kenaPajak, pphTahun, pphBulan, tarifEf, overLimit: omzetThn > LIMIT, limitPct, firstTax };
+        HC.history.push('pajak-umkm', { inputs: HC.history.capture(['jenis','periode','omzet']), summary: 'Omzet ' + HC.fmt(lastCalc.omzetThn) + '/thn', metrics: [{ k: 'PPh/bln', v: HC.fmt(lastCalc.pphBulan) }, { k: 'PPh/thn', v: HC.fmt(lastCalc.pphTahun) }] });
+        renderHist();
         $('placeholder').style.display = 'none';
         $('results').classList.add('show');
         $('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -347,6 +351,10 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         return `\ud83e\uddfe *Pajak UMKM PPh Final 0,5% - HitungCerdas*\n(PP 20/2026)\n\nJenis WP: ${jenisLabel}\nOmzet setahun: ${HC.fmt(c.omzetThn)}\nOmzet kena pajak: ${HC.fmt(c.kenaPajak)}\n\n\ud83e\uddfe *PPh Final: ${HC.fmt(c.pphTahun)}/tahun*\n\ud83d\udcc5 \u2248 ${HC.fmt(c.pphBulan)}/bulan\n\nHitung di: https://hitungcerdas.net/kalkulator/pajak-umkm`;
       }
 
+            function renderHist() {
+        HC.history.render('pajak-umkm', $('histBox'), function () { hitung(); });
+      }
+      renderHist();
       $('btnHitung').addEventListener('click', hitung);
       $('btnReset').addEventListener('click', reset);
       document.querySelectorAll('.adv-toggle').forEach(t => t.addEventListener('click', () => t.parentElement.classList.toggle('open')));
