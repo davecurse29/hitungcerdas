@@ -16,15 +16,29 @@ const { items } = Astro.props;
 const siteUrl = 'https://hitungcerdas.net';
 
 // Generate Schema.org BreadcrumbList JSON-LD
+// Normalisasi ke URL absolut ber-trailing-slash (cocok dengan canonical)
+const _norm = (u) => {
+  try {
+    const x = new URL(u);
+    if (!/\.[a-z0-9]+$/i.test(x.pathname) && !x.pathname.endsWith('/')) x.pathname += '/';
+    return x.toString();
+  } catch (e) { return u; }
+};
+// Setiap ListItem WAJIB punya 'name' + 'item'. Halaman aktif (tanpa href) pakai URL-nya sendiri.
 const breadcrumbSchema = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
-  "itemListElement": items.map((item, idx) => ({
-    "@type": "ListItem",
-    "position": idx + 1,
-    "name": item.label,
-    ...(item.href && { "item": item.href.startsWith('http') ? item.href : `${siteUrl}${item.href}` }),
-  })),
+  "itemListElement": items.map((item, idx) => {
+    const raw = item.href
+      ? (item.href.startsWith('http') ? item.href : `${siteUrl}${item.href}`)
+      : `${siteUrl}${Astro.url.pathname}`;
+    return {
+      "@type": "ListItem",
+      "position": idx + 1,
+      "name": item.label,
+      "item": _norm(raw),
+    };
+  }),
 };
 ---
 
