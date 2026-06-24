@@ -75,6 +75,8 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
           </div>
 
           <div class="calc-output">
+            <div class="hist-section" id="histBox" style="display:none"></div>
+
             <div class="result-placeholder" id="placeholder">
               <i class="ti ti-percentage result-placeholder-icon"></i>
               <div class="result-placeholder-title">Analisa margin akan muncul di sini</div>
@@ -199,6 +201,8 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         }).join('');
 
         lastCalc = { hpp, harga, fixed, vol, profit, marginPct, markupPct, bep, profitBulan };
+        HC.history.push('margin', { inputs: HC.history.capture(['hpp','harga','fixedCost','volume']), summary: 'HPP ' + HC.fmt(lastCalc.hpp) + ' \u00b7 Harga ' + HC.fmt(lastCalc.harga), metrics: [{ k: 'Margin', v: lastCalc.marginPct.toFixed(1) + '%' }, { k: 'Profit/unit', v: HC.fmt(lastCalc.profit) }] });
+        renderHist();
         $('placeholder').style.display = 'none';
         $('results').classList.add('show');
         $('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -250,6 +254,10 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         return `📊 *Analisa Margin - HitungCerdas*\n\nHPP: ${HC.fmt(c.hpp)}\nHarga Jual: ${HC.fmt(c.harga)}\n\n📈 *Margin: ${c.marginPct.toFixed(1)}%*\n📊 Markup: ${c.markupPct.toFixed(1)}%\n💰 Profit/Unit: ${HC.fmt(c.profit)}\n⚖️ Break-Even: ${c.bep} unit/bln\n💵 Profit Bulanan: ${HC.fmt(c.profitBulan)}\n\nHitung: https://hitungcerdas.net/kalkulator/margin`;
       }
 
+            function renderHist() {
+        HC.history.render('margin', $('histBox'), function () { hitung(); });
+      }
+      renderHist();
       $('btnHitung').addEventListener('click', hitung);
       $('btnReset').addEventListener('click', reset);
       $('exportImg').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToImage(c, 'margin-' + Date.now()); });
