@@ -137,6 +137,8 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
           </div>
 
           <div class="calc-output">
+            <div class="hist-section" id="histBox" style="display:none"></div>
+
             <div class="result-placeholder" id="placeholder">
               <i class="ti ti-building-factory result-placeholder-icon"></i>
               <div class="result-placeholder-title">Simulasi KI akan muncul di sini</div>
@@ -622,6 +624,8 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         }
 
         lastCalc = { pokok, tenor, grace, amortTenor, metode, metodeLabel, bunga, provPct, provisi, adm, biayaMuka, danaCair, graceInterestBln, graceInterestTotal, cicilan: result.cicilan, totalBunga, totalBayar, totalBiayaKredit, pel };
+        HC.history.push('kredit-investasi', { inputs: HC.history.capture(['plafon','tenor','metode','bunga','provisi','admin','grace']), summary: 'Plafon ' + HC.fmt(lastCalc.pokok) + ' \u00b7 ' + lastCalc.tenor + ' bln @ ' + lastCalc.bunga + '%', metrics: [{ k: 'Cicilan/bln', v: HC.fmt(lastCalc.cicilan) }, { k: 'Total biaya', v: HC.fmt(lastCalc.totalBiayaKredit) }] });
+        renderHist();
         $('placeholder').style.display = 'none';
         $('results').classList.add('show');
         $('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -689,6 +693,10 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         return t;
       }
 
+            function renderHist() {
+        HC.history.render('kredit-investasi', $('histBox'), function () { hitung(); });
+      }
+      renderHist();
       $('btnHitung').addEventListener('click', hitung);
       els.metode.addEventListener('change', () => { if (lastCalc) hitung(); });
       $('btnReset').addEventListener('click', reset);

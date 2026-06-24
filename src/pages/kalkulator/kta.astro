@@ -108,6 +108,8 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
           </div>
 
           <div class="calc-output">
+            <div class="hist-section" id="histBox" style="display:none"></div>
+
             <div class="result-placeholder" id="placeholder">
               <i class="ti ti-credit-card result-placeholder-icon"></i>
               <div class="result-placeholder-title">Simulasi KTA akan muncul di sini</div>
@@ -510,6 +512,8 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         $('amortBody').innerHTML = amortHtml;
 
         lastCalc = { pokok, tenor, metode, metodeLabel, bunga, effApr, gaji, cicLain, cicilan: result.cicilan, totalBunga: result.totalBunga, totalBayar: result.totalBayar, dti, dtiStatus };
+        HC.history.push('kta', { inputs: HC.history.capture(['pinjaman','tenor','metode','bunga','gaji','cicLain']), summary: 'Pinjaman ' + HC.fmt(lastCalc.pokok) + ' \u00b7 ' + lastCalc.tenor + ' bln @ ' + lastCalc.bunga + '%', metrics: [{ k: 'Cicilan/bln', v: HC.fmt(lastCalc.cicilan) }, { k: 'Total bunga', v: HC.fmt(lastCalc.totalBunga) }] });
+        renderHist();
         $('placeholder').style.display = 'none';
         $('results').classList.add('show');
         $('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -562,6 +566,10 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         return `💳 *Simulasi KTA - HitungCerdas*\n\nPinjaman: ${HC.fmt(c.pokok)}\nTenor: ${c.tenor} bulan\nMetode: ${c.metodeLabel}\nBunga: ${c.bunga}%/thn\n\n💰 *Cicilan/bln: ${HC.fmt(c.cicilan)}*\n📊 Total Bunga: ${HC.fmt(c.totalBunga)}\n💵 Total Bayar: ${HC.fmt(c.totalBayar)}\n\nDTI: ${c.dti.toFixed(1)}% (${c.dtiStatus})\n\nHitung di: https://hitungcerdas.net/kalkulator/kta`;
       }
 
+            function renderHist() {
+        HC.history.render('kta', $('histBox'), function () { hitung(); });
+      }
+      renderHist();
       $('btnHitung').addEventListener('click', hitung);
       els.metode.addEventListener('change', () => { if (lastCalc) hitung(); });
       $('btnReset').addEventListener('click', reset);

@@ -149,6 +149,8 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
           </div>
 
           <div class="calc-output">
+            <div class="hist-section" id="histBox" style="display:none"></div>
+
             <div class="result-placeholder" id="placeholder">
               <i class="ti ti-car result-placeholder-icon"></i>
               <div class="result-placeholder-title">Cicilan + TCO Mobil akan muncul di sini</div>
@@ -730,6 +732,8 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
                      usageKey, usageLabel: USAGE_PROFILE[usageKey].label,
                      wilayahKey, wilayahLabel: WILAYAH[wilayahKey].label,
                      tco, useInflasi, skenario };
+        HC.history.push('kredit-mobil', { inputs: HC.history.capture(['harga','dp','bunga','tenor','mobilType','usageProfile','wilayah','inflasiToggle','inflasiSkenario']), summary: 'Harga ' + HC.fmt(lastCalc.harga) + ' \u00b7 DP ' + lastCalc.dpPct + '% \u00b7 ' + lastCalc.tenor + ' bln', metrics: [{ k: 'Cicilan/bln', v: HC.fmt(lastCalc.cicilan) }, { k: 'Total bayar', v: HC.fmt(lastCalc.totalBayar) }] });
+        renderHist();
         $('placeholder').style.display = 'none';
         $('results').classList.add('show');
         $('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -838,6 +842,10 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
                `Hitung: https://hitungcerdas.net/kalkulator/kredit-mobil`;
       }
 
+            function renderHist() {
+        HC.history.render('kredit-mobil', $('histBox'), function () { els.inflasiBox.classList.toggle('active', els.inflasiToggle.checked); hitung(); });
+      }
+      renderHist();
       $('btnHitung').addEventListener('click', hitung);
       $('btnReset').addEventListener('click', reset);
       $('exportImg').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToImage(c, 'kredit-mobil-tco-' + Date.now()); });
