@@ -82,6 +82,8 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
           </div>
 
           <div class="calc-output">
+            <div class="hist-section" id="histBox" style="display:none"></div>
+
             <div class="result-placeholder" id="placeholder">
               <i class="ti ti-trending-up result-placeholder-icon"></i>
               <div class="result-placeholder-title">ROI & balik modal akan muncul di sini</div>
@@ -282,6 +284,8 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         $('roiBars').innerHTML = barsHtml;
 
         lastCalc = { modal, laba, periode, payback, roiBulan, roiTahun, totalLaba, netGain, balikDalamPeriode };
+        HC.history.push('roi-usaha', { inputs: HC.history.capture(['modal','laba','periode']), summary: 'Modal ' + sRp(lastCalc.modal) + ' \u00b7 Laba ' + sRp(lastCalc.laba) + ' \u00b7 ' + lastCalc.periode + ' bln', metrics: [{ k: 'ROI/thn', v: lastCalc.roiTahun.toFixed(1) + '%' }, { k: 'Balik', v: (Math.round(lastCalc.payback * 10) / 10) + ' bln' }] });
+        renderHist();
         $('placeholder').style.display = 'none';
         $('results').classList.add('show');
         $('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -374,6 +378,10 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       var _bSB = $('btnScenB'); if (_bSB) _bSB.addEventListener('click', function () { snapScenario('B'); });
       var _bSR = $('btnScenReset'); if (_bSR) _bSR.addEventListener('click', function () { scenA = null; scenB = null; renderScenario(); HC.toast('Skenario direset', 'info'); });
 
+            function renderHist() {
+        HC.history.render('roi-usaha', $('histBox'), function () { hitung(); });
+      }
+      renderHist();
       $('btnHitung').addEventListener('click', hitung);
       $('btnReset').addEventListener('click', reset);
       $('exportImg').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToImage(c, 'roi-usaha-' + Date.now()); });

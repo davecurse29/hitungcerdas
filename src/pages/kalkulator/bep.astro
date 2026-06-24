@@ -95,6 +95,8 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
           </div>
 
           <div class="calc-output">
+            <div class="hist-section" id="histBox" style="display:none"></div>
+
             <div class="result-placeholder" id="placeholder">
               <i class="ti ti-target-arrow result-placeholder-icon"></i>
               <div class="result-placeholder-title">Titik impas akan muncul di sini</div>
@@ -298,6 +300,8 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         }
 
         lastCalc = { fixed, harga, variabel, mk, mkRatio, bepUnit: Math.ceil(bepUnit), bepRupiah, target: targetData, mos: mosData };
+        HC.history.push('bep', { inputs: HC.history.capture(['fixed','harga','variabel','target','proyeksi']), summary: 'Tetap ' + sRp(lastCalc.fixed) + ' \u00b7 Hrg ' + sRp(lastCalc.harga) + ' \u00b7 Var ' + sRp(lastCalc.variabel), metrics: [{ k: 'BEP', v: lastCalc.bepUnit.toLocaleString('id-ID') + ' unit' }, { k: 'Omzet', v: HC.fmt(lastCalc.bepRupiah) }] });
+        renderHist();
         $('placeholder').style.display = 'none';
         $('results').classList.add('show');
         $('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -399,6 +403,10 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       var _bSB = $('btnScenB'); if (_bSB) _bSB.addEventListener('click', function () { snapScenario('B'); });
       var _bSR = $('btnScenReset'); if (_bSR) _bSR.addEventListener('click', function () { scenA = null; scenB = null; renderScenario(); HC.toast('Skenario direset', 'info'); });
 
+            function renderHist() {
+        HC.history.render('bep', $('histBox'), function () { hitung(); });
+      }
+      renderHist();
       $('btnHitung').addEventListener('click', hitung);
       $('btnReset').addEventListener('click', reset);
       $('exportImg').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToImage(c, 'bep-' + Date.now()); });
