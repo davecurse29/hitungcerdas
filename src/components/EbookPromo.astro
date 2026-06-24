@@ -1,0 +1,80 @@
+---
+interface Props {
+  calc?: string;
+  headline?: string;
+}
+const { calc = 'kalkulator', headline = 'Saatnya raih cuan pertamamu.' } = Astro.props;
+const url = `https://cuanpertama.my.id/?utm_source=hitungcerdas&utm_medium=calc&utm_campaign=ebook&utm_content=${calc}`;
+---
+
+<section class="ebp-section">
+  <div class="wrap">
+    <div class="ebp-card">
+      <div class="ebp-eyebrow"><i class="ti ti-book-2" aria-hidden="true"></i> Rekomendasi untukmu</div>
+      <h3 class="ebp-title">{headline}</h3>
+      <p class="ebp-sub">
+        Ebook <strong>Cuan Pertama dari Rumah</strong> — panduan 145 halaman + peta aksi 30 hari untuk bikin &amp; jual produk digital pertamamu. Tanpa modal, cukup 1 jam sehari.
+      </p>
+      <ul class="ebp-benefits">
+        <li><i class="ti ti-circle-check" aria-hidden="true"></i> <span>Peta aksi 30 hari — tiap hari 1 langkah kecil sampai produkmu live</span></li>
+        <li><i class="ti ti-circle-check" aria-hidden="true"></i> <span>Modal Rp 0 — produk digital, tanpa stok &amp; ongkir</span></li>
+        <li><i class="ti ti-circle-check" aria-hidden="true"></i> <span>Ramah pemula — bahkan kalau belum pernah jualan</span></li>
+      </ul>
+      <div class="ebp-foot">
+        <div class="ebp-price">
+          <span class="ebp-now">Rp 97.000</span>
+          <span class="ebp-was">Rp 197.000</span>
+          <span class="ebp-bonus">+ 2 bonus gratis</span>
+        </div>
+        <a class="ebp-btn" href={url} target="_blank" rel="noopener">Ambil Ebooknya <i class="ti ti-arrow-right" aria-hidden="true"></i></a>
+      </div>
+      <div class="ebp-note"><i class="ti ti-shield-check" aria-hidden="true"></i> Garansi 7 hari uang kembali · akses selamanya · update gratis</div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .ebp-section { padding: 8px 0; }
+  .ebp-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-top: 4px solid var(--gold);
+    border-radius: 16px;
+    padding: 22px 24px;
+    max-width: 760px;
+    margin: 0 auto;
+  }
+  .ebp-eyebrow {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--gold-light); color: var(--gold-dark);
+    font-size: 12px; font-weight: 700; letter-spacing: .03em;
+    padding: 4px 10px; border-radius: 8px; margin-bottom: 12px;
+  }
+  .ebp-title { font-size: 1.2rem; line-height: 1.35; color: var(--text); margin: 0 0 8px; }
+  .ebp-sub { font-size: .95rem; line-height: 1.6; color: var(--text-soft); margin: 0 0 14px; }
+  .ebp-sub strong { color: var(--text); }
+  .ebp-benefits { list-style: none; padding: 0; margin: 0 0 18px; display: flex; flex-direction: column; gap: 9px; }
+  .ebp-benefits li { display: flex; align-items: flex-start; gap: 9px; font-size: .9rem; line-height: 1.5; color: var(--text); }
+  .ebp-benefits i { color: var(--green); font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+  .ebp-foot { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  .ebp-price { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .ebp-now { font-size: 1.5rem; font-weight: 800; color: var(--green-dark); }
+  .ebp-was { font-size: .95rem; color: var(--text-mute); text-decoration: line-through; }
+  .ebp-bonus { font-size: 12px; font-weight: 700; background: var(--green-light); color: var(--green-dark); padding: 3px 10px; border-radius: 8px; }
+  .ebp-btn {
+    display: inline-flex; align-items: center; gap: 7px;
+    background: var(--green); color: #fff;
+    font-size: .95rem; font-weight: 700;
+    padding: 11px 20px; border-radius: 12px; text-decoration: none;
+    transition: background .15s ease, transform .15s ease;
+    white-space: nowrap;
+  }
+  .ebp-btn:hover { background: var(--green-dark); transform: translateY(-1px); }
+  .ebp-note { margin-top: 14px; font-size: 12px; color: var(--text-mute); display: flex; align-items: center; gap: 6px; }
+  .ebp-note i { font-size: 15px; }
+  @media (max-width: 520px) {
+    .ebp-card { padding: 18px 16px; }
+    .ebp-foot { gap: 12px; }
+    .ebp-btn { width: 100%; justify-content: center; }
+  }
+</style>

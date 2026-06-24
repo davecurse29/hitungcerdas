@@ -4,6 +4,7 @@ import Breadcrumb from '../../components/Breadcrumb.astro';
 import FAQ from '../../components/FAQ.astro';
 import AdSlot from '../../components/AdSlot.astro';
 import CalculatorCard from '../../components/CalculatorCard.astro';
+import EbookPromo from '../../components/EbookPromo.astro';
 import { getCalculatorBySlug, getRelatedCalculators } from '../../data/calculators';
 
 const calc = getCalculatorBySlug('harga-jual')!;
@@ -149,6 +150,8 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       </div>
     </div>
   </section>
+
+    <EbookPromo calc="harga-jual" headline="Sudah dapat harga jual idealmu? Saatnya raih cuan pertamamu." />
 
   <section class="content-section">
     <div class="wrap-text">
