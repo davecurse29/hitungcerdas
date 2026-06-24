@@ -3,8 +3,10 @@
 // Auto-generate JSON-LD structured data
 
 interface BreadcrumbItem {
-  label: string;
+  label?: string;
   href?: string;
+  name?: string; // alias untuk label
+  url?: string;  // alias untuk href
 }
 
 interface Props {
@@ -15,7 +17,12 @@ const { items } = Astro.props;
 
 const siteUrl = 'https://hitungcerdas.net';
 
-// Generate Schema.org BreadcrumbList JSON-LD
+// Terima dua bentuk item: {label, href} ATAU {name, url}
+const crumbs = (items || []).map((it) => ({
+  label: it.label ?? it.name ?? '',
+  href: it.href ?? it.url,
+}));
+
 // Normalisasi ke URL absolut ber-trailing-slash (cocok dengan canonical)
 const _norm = (u) => {
   try {
@@ -24,11 +31,12 @@ const _norm = (u) => {
     return x.toString();
   } catch (e) { return u; }
 };
-// Setiap ListItem WAJIB punya 'name' + 'item'. Halaman aktif (tanpa href) pakai URL-nya sendiri.
+
+// Setiap ListItem WAJIB punya 'name' + 'item'. Halaman aktif (item terakhir) pakai URL-nya sendiri.
 const breadcrumbSchema = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
-  "itemListElement": items.map((item, idx) => {
+  "itemListElement": crumbs.map((item, idx) => {
     const raw = item.href
       ? (item.href.startsWith('http') ? item.href : `${siteUrl}${item.href}`)
       : `${siteUrl}${Astro.url.pathname}`;
@@ -46,14 +54,14 @@ const breadcrumbSchema = {
 
 <nav class="breadcrumb" aria-label="Breadcrumb">
   <ol class="breadcrumb-list">
-    {items.map((item, idx) => (
+    {crumbs.map((item, idx) => (
       <li class="breadcrumb-item">
-        {item.href ? (
+        {item.href && idx < crumbs.length - 1 ? (
           <a href={item.href}>{item.label}</a>
         ) : (
           <span aria-current="page">{item.label}</span>
         )}
-        {idx < items.length - 1 && (
+        {idx < crumbs.length - 1 && (
           <i class="ti ti-chevron-right" aria-hidden="true"></i>
         )}
       </li>
