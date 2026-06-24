@@ -121,6 +121,19 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
                 <p class="hint" style="margin-top:6px">Pembanding: deposito ~5%/thn, reksa dana ~9%/thn (estimasi umum). Usaha riil wajar lebih tinggi karena risikonya juga lebih besar.</p>
               </div>
 
+              <div class="adv-section" id="scenBlock">
+                <div class="adv-toggle"><span><i class="ti ti-columns"></i>&nbsp; Bandingkan Skenario A vs B</span><i class="ti ti-chevron-down chev"></i></div>
+                <div class="adv-content">
+                  <p style="font-size:12px;color:var(--text-mute);margin:0 0 8px;line-height:1.5">Atur input skenario pertama lalu klik <b>Simpan sbg A</b>. Ubah input, klik <b>Simpan sbg B</b>. Otomatis dihitung ulang — tabel perbandingan muncul sendiri.</p>
+                  <div style="display:flex;gap:8px">
+                    <button type="button" class="btn-reset" id="btnScenA" style="flex:1"><i class="ti ti-bookmark"></i> Simpan sbg A</button>
+                    <button type="button" class="btn-reset" id="btnScenB" style="flex:1"><i class="ti ti-bookmark"></i> Simpan sbg B</button>
+                  </div>
+                  <div id="scenResult" style="display:none;margin-top:10px"></div>
+                  <button type="button" id="btnScenReset" style="margin-top:8px;background:none;border:none;color:var(--text-mute);font-size:12px;cursor:pointer;text-decoration:underline">Reset skenario</button>
+                </div>
+              </div>
+
               <div class="export-row">
                 <button type="button" class="export-btn img" id="exportImg"><i class="ti ti-photo-down"></i><span>Save Image</span></button>
                 <button type="button" class="export-btn wa" id="exportWa"><i class="ti ti-brand-whatsapp"></i><span>Share WA</span></button>
@@ -278,7 +291,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       function reset() {
         els.modal.value = '50.000.000'; els.laba.value = '2.500.000'; els.periode.value = '24';
         $('placeholder').style.display = ''; $('results').classList.remove('show');
-        lastCalc = null; HC.toast('Form direset', 'info');
+        scenA = null; scenB = null; var _sr = $('scenResult'); if (_sr) { _sr.style.display = 'none'; _sr.innerHTML = ''; } lastCalc = null; HC.toast('Form direset', 'info');
       }
 
       function buildReport() {
@@ -311,6 +324,55 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         const c = lastCalc;
         return `\ud83d\udcc8 *ROI & Balik Modal Usaha - HitungCerdas*\n\nModal awal: ${HC.fmt(c.modal)}\nLaba bersih/bln: ${HC.fmt(c.laba)}\n\n\u23f1\ufe0f *Balik modal: ${bulanText(c.payback)}*\n\ud83d\udcca ROI: ${c.roiTahun.toFixed(1)}%/tahun (${c.roiBulan.toFixed(2)}%/bln)\n\ud83d\udcb0 Total laba ${c.periode} bln: ${HC.fmt(c.totalLaba)}\n\nHitung di: https://hitungcerdas.net/kalkulator/roi-usaha`;
       }
+
+      // ===== Skenario A vs B =====
+      var scenA = null, scenB = null;
+      function scenFmt(v, t) { if (t === 'pct') return v.toFixed(1) + '%'; if (t === 'bulan') return (Math.round(v * 10) / 10) + ' bln'; return HC.fmt(v); }
+      function sRp(v) { if (v >= 1e6) return (v / 1e6).toFixed(v % 1e6 ? 1 : 0).replace('.', ',') + 'jt'; if (v >= 1e3) return (v / 1e3).toFixed(v % 1e3 ? 1 : 0).replace('.', ',') + 'rb'; return String(v); }
+      function buildSnap() {
+        var c = lastCalc;
+        return { label: 'Modal ' + sRp(c.modal) + ' \u00b7 Laba ' + sRp(c.laba) + ' \u00b7 ' + c.periode + ' bln', rows: [ { k: 'ROI per Tahun', v: c.roiTahun, t: 'pct' }, { k: 'Balik Modal', v: c.payback, t: 'bulan' }, { k: 'Total Laba Periode', v: c.totalLaba, t: 'rp' } ] };
+      }
+      function snapScenario(slot) {
+        hitung();
+        if (!lastCalc) { HC.toast('Isi data dulu sebelum simpan skenario', 'error'); return; }
+        var snap = buildSnap();
+        if (slot === 'A') scenA = snap; else scenB = snap;
+        HC.toast('Tersimpan sebagai Skenario ' + slot);
+        renderScenario();
+      }
+      function renderScenario() {
+        var box = $('scenResult');
+        if (!box) return;
+        if (!scenA && !scenB) { box.style.display = 'none'; box.innerHTML = ''; return; }
+        box.style.display = '';
+        var ref = scenA || scenB, both = scenA && scenB;
+        var html = '<table class="compare-table"><thead><tr><th>Metrik</th>'
+          + '<th class="right">A' + (scenA ? '<br><span style="font-size:10px;color:var(--text-mute)">' + scenA.label + '</span>' : '') + '</th>'
+          + '<th class="right">B' + (scenB ? '<br><span style="font-size:10px;color:var(--text-mute)">' + scenB.label + '</span>' : '') + '</th>'
+          + (both ? '<th class="right">Selisih</th>' : '') + '</tr></thead><tbody>';
+        for (var i = 0; i < ref.rows.length; i++) {
+          var rk = ref.rows[i].k, t = ref.rows[i].t;
+          var av = scenA ? scenFmt(scenA.rows[i].v, t) : '\u2014';
+          var bv = scenB ? scenFmt(scenB.rows[i].v, t) : '\u2014';
+          var sel = '';
+          if (both) { var d = scenB.rows[i].v - scenA.rows[i].v, thr = (t === 'rp') ? 0.5 : 0.05; sel = '<td class="right">' + (Math.abs(d) < thr ? '\u2014' : (d > 0 ? '+' : '\u2212') + scenFmt(Math.abs(d), t)) + '</td>'; }
+          html += '<tr' + (i === 0 ? ' class="active"' : '') + '><td>' + rk + '</td><td class="right">' + av + '</td><td class="right">' + bv + '</td>' + sel + '</tr>';
+        }
+        html += '</tbody></table>';
+        if (both) {
+          var d0 = scenB.rows[0].v - scenA.rows[0].v, msg;
+          if (Math.abs(d0) < 0.05) msg = 'Kedua skenario setara di ROI tahunan.';
+          else { var bBetter = d0 > 0; msg = 'Skenario ' + (bBetter ? 'B' : 'A') + ' lebih unggul \u2014 ROI tahunan lebih tinggi, selisih ' + scenFmt(Math.abs(d0), 'pct') + '.'; }
+          html += '<p style="font-size:13px;margin-top:8px;font-weight:600;color:var(--green-dark,#047857)">' + msg + '</p>';
+        }
+        box.innerHTML = html;
+        box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+      document.querySelectorAll('.adv-toggle').forEach(function (t) { t.addEventListener('click', function () { t.parentElement.classList.toggle('open'); }); });
+      var _bSA = $('btnScenA'); if (_bSA) _bSA.addEventListener('click', function () { snapScenario('A'); });
+      var _bSB = $('btnScenB'); if (_bSB) _bSB.addEventListener('click', function () { snapScenario('B'); });
+      var _bSR = $('btnScenReset'); if (_bSR) _bSR.addEventListener('click', function () { scenA = null; scenB = null; renderScenario(); HC.toast('Skenario direset', 'info'); });
 
       $('btnHitung').addEventListener('click', hitung);
       $('btnReset').addEventListener('click', reset);
