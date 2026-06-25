@@ -1,0 +1,161 @@
+---
+// Halaman kategori: Kalkulator Keuangan
+// Dibangun otomatis dari master data CALCULATORS (filter by category)
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import CalculatorCard from '../../components/CalculatorCard.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import FAQ from '../../components/FAQ.astro';
+import { CALCULATORS, CATEGORIES } from '../../data/calculators';
+
+const CATEGORY = 'keuangan';
+const cat = CATEGORIES.find((c) => c.key === CATEGORY) || { key: CATEGORY, label: 'Kalkulator Keuangan', icon: '💰', color: '#2563EB' };
+const calcs = CALCULATORS.filter((c) => c.category === CATEGORY);
+const otherCats = CATEGORIES.filter((c) => c.key !== CATEGORY);
+
+const pageTitle = `Kalkulator Keuangan Online Gratis 2026 — KPR, Pajak, Gaji & Investasi | HitungCerdas`;
+const pageDesc = `Kumpulan ${calcs.length} kalkulator keuangan Indonesia gratis: simulasi KPR, PPh 21, gaji bersih, kredit kendaraan, investasi, dana darurat, KTA & pinjol legal. Akurat, tanpa login, mobile-friendly.`;
+const keywords = ['kalkulator keuangan', 'kalkulator keuangan online', 'kalkulator finansial', 'simulasi kpr', 'hitung pajak penghasilan', 'kalkulator gaji bersih', 'kalkulator investasi', 'kalkulator dana darurat', 'kalkulator kta', 'kalkulator pinjol legal'];
+const canonical = 'https://hitungcerdas.net/kalkulator/keuangan';
+
+const bcItems = [
+  { label: 'Beranda', href: '/' },
+  { label: 'Kalkulator Keuangan' },
+];
+
+const faqs = [
+  {
+    question: 'Apa saja kalkulator keuangan yang tersedia?',
+    answer: `Tersedia ${calcs.length} kalkulator keuangan — mulai dari <strong>simulasi KPR</strong>, <strong>PPh 21</strong>, <strong>gaji bersih</strong>, kredit motor & mobil, <strong>investasi</strong>, dana darurat, KTA, kredit investasi, hingga kalkulator pinjol legal. Semuanya gratis dan tanpa login.`,
+  },
+  {
+    question: 'Apakah hasil kalkulator keuangan ini akurat?',
+    answer: 'Semua perhitungan memakai rumus standar industri — formula anuitas untuk kredit, UU HPP untuk PPh 21, dan bunga majemuk untuk investasi. Hasilnya bersifat <strong>estimasi edukatif</strong>; angka final dari bank atau kantor pajak bisa berbeda sesuai kebijakan masing-masing institusi.',
+  },
+  {
+    question: 'Apakah perlu membayar atau mendaftar?',
+    answer: 'Tidak. Semua kalkulator keuangan di HitungCerdas <strong>100% gratis</strong> dan tanpa registrasi. Perhitungan berjalan langsung di browser kamu, sehingga data yang kamu masukkan tidak dikirim atau disimpan di server mana pun.',
+  },
+];
+---
+
+<Layout title={pageTitle} description={pageDesc} keywords={keywords} canonical={canonical}>
+  <section class="section">
+    <div class="wrap">
+      <Breadcrumb items={bcItems} />
+
+      <div class="section-hdr">
+        <div class="section-eyebrow">{cat.icon} {calcs.length} Kalkulator Gratis</div>
+        <h1 class="section-title">Kalkulator Keuangan Online Gratis</h1>
+        <p class="section-desc">
+          Kumpulan kalkulator finansial untuk membantu keputusan keuanganmu sehari-hari — dari
+          simulasi <a href="/kalkulator/kpr/">KPR</a>, hitung <a href="/kalkulator/pph-21/">PPh 21</a> dan
+          <a href="/kalkulator/gaji-bersih/">gaji bersih</a>, kredit kendaraan, sampai
+          <a href="/kalkulator/investasi/">investasi</a> dan <a href="/kalkulator/dana-darurat/">dana darurat</a>.
+          Semua gratis, tanpa login, dan nyaman dipakai di HP.
+        </p>
+      </div>
+
+      <nav class="cat-nav" aria-label="Kategori kalkulator">
+        <span class="cat-nav-cur">{cat.icon} {cat.label}</span>
+        {otherCats.map((o) => <a class="cat-nav-link" href={`/kalkulator/${o.key}/`}>{o.icon} {o.label}</a>)}
+      </nav>
+
+      <div class="tool-grid">
+        {calcs.map((calc) => <CalculatorCard calc={calc} />)}
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="rectangle" />
+
+  <section class="section">
+    <div class="wrap about-block">
+      <h2 class="about-title">Untuk apa kalkulator keuangan?</h2>
+      <p>
+        Mengelola uang jadi lebih tenang kalau kamu tahu angkanya lebih dulu. Kalkulator keuangan di
+        HitungCerdas membantu memperkirakan cicilan, pajak, dan potensi imbal hasil sebelum kamu mengambil
+        keputusan — entah saat hendak mengajukan KPR, menghitung take-home pay bulanan, atau merencanakan
+        investasi jangka panjang.
+      </p>
+      <p>
+        Semua tool dirancang untuk kebutuhan nyata orang Indonesia: simulasi KPR dengan bunga fixed &
+        floating, perhitungan <a href="/kalkulator/pph-21/">PPh 21</a> sesuai UU HPP, estimasi
+        <a href="/kalkulator/gaji-bersih/"> gaji bersih</a> setelah BPJS, sampai cek APR
+        <a href="/kalkulator/pinjol-legal/"> pinjol legal</a> sesuai aturan OJK 2026. Mulai dari yang paling
+        kamu butuhkan, lalu lanjutkan ke kalkulator lain yang relevan.
+      </p>
+      <p>
+        Butuh hitung untuk usaha atau kewajiban ibadah? Lihat juga koleksi
+        <a href="/kalkulator/bisnis/"> Kalkulator Bisnis</a> dan
+        <a href="/kalkulator/islami/"> Kalkulator Islami</a> kami.
+      </p>
+    </div>
+  </section>
+
+  <FAQ title="Pertanyaan Seputar Kalkulator Keuangan" items={faqs} />
+</Layout>
+
+<style>
+  .cat-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 4px 0 26px;
+  }
+  .cat-nav-cur,
+  .cat-nav-link {
+    font-size: 13.5px;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 99px;
+    border: 1px solid var(--border);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .cat-nav-cur {
+    background: var(--navy);
+    color: #fff;
+    border-color: var(--navy);
+  }
+  .cat-nav-link {
+    background: #fff;
+    color: var(--text-soft);
+    transition: var(--tx);
+  }
+  .cat-nav-link:hover {
+    border-color: var(--blue);
+    color: var(--blue);
+    transform: translateY(-1px);
+  }
+  .about-block {
+    max-width: 760px;
+  }
+  .about-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--navy);
+    font-family: var(--ff-display);
+    margin: 0 0 14px;
+  }
+  .about-block p {
+    color: var(--text-soft);
+    line-height: 1.75;
+    margin: 0 0 14px;
+    font-size: 15px;
+  }
+  .about-block a {
+    color: var(--blue);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .about-block a:hover {
+    text-decoration: underline;
+  }
+  :global([data-theme="dark"]) .cat-nav-link {
+    background: var(--bg-card);
+  }
+  :global([data-theme="dark"]) .about-title {
+    color: var(--text);
+  }
+</style>
