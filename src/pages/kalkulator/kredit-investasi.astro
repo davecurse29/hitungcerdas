@@ -624,7 +624,18 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
           $('pelSection').style.display = 'none';
         }
 
-        lastCalc = { pokok, tenor, grace, amortTenor, metode, metodeLabel, bunga, provPct, provisi, adm, biayaMuka, danaCair, graceInterestBln, graceInterestTotal, cicilan: result.cicilan, totalBunga, totalBayar, totalBiayaKredit, pel };
+        // Jadwal lengkap (grace bunga-saja + amortisasi) untuk export Excel
+        const amortRows = [];
+        for (let _g = 1; _g <= grace; _g++) { amortRows.push({ bln: _g, pokok: 0, bunga: graceInterestBln, sisa: pokok }); }
+        if (result.rows) {
+          result.rows.forEach(function (r) { amortRows.push({ bln: grace + r.bln, pokok: r.pokok, bunga: r.bunga, sisa: r.sisa }); });
+        } else {
+          const _cP = pokok / amortTenor, _cB = pokok * i;
+          let _s = pokok;
+          for (let _k = 1; _k <= amortTenor; _k++) { _s -= _cP; amortRows.push({ bln: grace + _k, pokok: _cP, bunga: _cB, sisa: Math.max(0, _s) }); }
+        }
+
+        lastCalc = { pokok, tenor, grace, amortTenor, metode, metodeLabel, bunga, provPct, provisi, adm, biayaMuka, danaCair, graceInterestBln, graceInterestTotal, cicilan: result.cicilan, totalBunga, totalBayar, totalBiayaKredit, pel, amortRows };
         HC.history.push('kredit-investasi', { inputs: HC.history.capture(['plafon','tenor','metode','bunga','provisi','admin','grace']), summary: 'Plafon ' + HC.fmt(lastCalc.pokok) + ' \u00b7 ' + lastCalc.tenor + ' bln @ ' + lastCalc.bunga + '%', metrics: [{ k: 'Cicilan/bln', v: HC.fmt(lastCalc.cicilan) }, { k: 'Total biaya', v: HC.fmt(lastCalc.totalBiayaKredit) }] });
         renderHist();
         $('placeholder').style.display = 'none';
@@ -678,6 +689,11 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
             { label: '\ud83d\udcb0 Provisi+Admin', value: HC.fmt(c.biayaMuka) },
           ],
           results,
+          schedule: c.amortRows ? {
+            name: 'Jadwal Cicilan',
+            header: ['Bulan', 'Total Cicilan', 'Angsuran Pokok', 'Angsuran Bunga', 'Sisa Pokok'],
+            rows: c.amortRows.map(function (r) { return [r.bln, Math.round(r.pokok + r.bunga), Math.round(r.pokok), Math.round(r.bunga), Math.round(Math.max(0, r.sisa))]; }),
+          } : null,
           insight, slug: 'kredit-investasi',
         });
       }
