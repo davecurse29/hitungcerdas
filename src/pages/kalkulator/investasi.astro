@@ -606,13 +606,15 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
           results.push({ label: 'Selisih Inflasi', value: HC.fmt(c.fv - c.realFv) });
         }
 
+        const schedule = { name: 'Per Tahun', header: ['Tahun', 'Total Setor', 'Nilai Investasi', 'Keuntungan'], rows: [] };
+        for (var _y = 1; _y <= c.tahun; _y++) { var _v = compound(c.modal, c.topup, c.ret, _y), _s = c.modal + c.topup * _y * 12; schedule.rows.push([_y, Math.round(_s), Math.round(_v), Math.round(_v - _s)]); }
         return HC.buildReportCard({
           title: '📈 Proyeksi Investasi Compound',
           color: '#10B981', color2: '#065F46',
           heroLabel: 'Nilai Akhir Investasi',
           heroValue: HC.fmt(c.fv),
           heroSubtext: `${c.tahun} tahun · Return ${c.ret}%/thn${c.useInflasi ? ` · Real ${c.realReturn.toFixed(1)}%` : ''}`,
-          inputs, results, insight, slug: 'investasi',
+          inputs, results, insight, slug: 'investasi', schedule,
         });
       }
 

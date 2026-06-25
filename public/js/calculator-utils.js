@@ -63,6 +63,7 @@
 
   // ─── CARD REPORT GENERATOR ───
   HC.buildReportCard = function(config) {
+    HC._lastReport = config;
     const {
       title,           // e.g. "Simulasi KPR Anuitas"
       icon,            // e.g. "ti-home-dollar"
@@ -365,7 +366,8 @@
 
   // ─── EXPORT TO EXCEL (.xlsx via SheetJS, lazy-loaded) ───
   HC.exportToExcel = function (config, filename) {
-    if (!config) { HC.toast('Hitung dulu', 'error'); return; }
+    if (!config || typeof config === 'string' || !config.inputs) { config = HC._lastReport; }
+    if (!config || !config.inputs) { HC.toast('Hitung dulu', 'error'); return; }
     function clean(s) { return String(s == null ? '' : s).replace(/<[^>]*>/g, '').replace(/^[^\w\u00C0-\u024F]+/, '').trim(); }
     function build(XLSX) {
       try {
