@@ -1,0 +1,293 @@
+---
+// Halaman Metodologi & Sumber Data — transparansi metode perhitungan & rujukan resmi (E-E-A-T)
+import Layout from '../layouts/Layout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import AdSlot from '../components/AdSlot.astro';
+
+const pageTitle = 'Metodologi & Sumber Data — Bagaimana HitungCerdas Menghitung | HitungCerdas';
+const pageDesc = 'Transparansi metodologi & sumber data HitungCerdas: rumus standar industri, referensi resmi (DJP, Bank Indonesia, OJK, BAZNAS), dan kebijakan pembaruan. Semua hasil bersifat estimasi edukatif.';
+const keywords = ['metodologi kalkulator', 'sumber data hitungcerdas', 'akurasi kalkulator keuangan', 'rumus kalkulator pajak', 'rujukan resmi kalkulator', 'cara hitungcerdas menghitung'];
+const canonical = 'https://hitungcerdas.net/metodologi';
+
+const bcItems = [
+  { label: 'Beranda', href: '/' },
+  { label: 'Metodologi & Sumber' },
+];
+
+const principles = [
+  { icon: 'ti-ruler-2', title: 'Rumus standar industri', desc: 'Setiap perhitungan memakai formula baku yang sama dengan yang dipakai bank, kantor pajak, dan lembaga resmi — bukan angka karangan.' },
+  { icon: 'ti-building-bank', title: 'Sumber resmi', desc: 'Angka acuan (tarif pajak, suku bunga, nisab, harga emas) merujuk pada instansi pemerintah dan lembaga resmi Indonesia.' },
+  { icon: 'ti-refresh', title: 'Diperbarui berkala', desc: 'Tarif dan angka acuan ditinjau setiap ada perubahan regulasi atau pembaruan data dari sumber resmi.' },
+  { icon: 'ti-shield-check', title: 'Estimasi edukatif', desc: 'Hasil bersifat alat bantu dan edukasi — bukan nasihat keuangan, pajak, hukum, atau agama profesional.' },
+];
+
+const sources = [
+  { name: 'Direktorat Jenderal Pajak (DJP)', url: 'https://www.pajak.go.id', use: 'PPh 21 (UU HPP), PPN, dan PPh Final UMKM.' },
+  { name: 'Bank Indonesia', url: 'https://www.bi.go.id', use: 'BI Rate sebagai acuan simulasi kredit (KPR, KTA, kredit investasi).' },
+  { name: 'Otoritas Jasa Keuangan (OJK)', url: 'https://www.ojk.go.id', use: 'Aturan pinjaman online (pinjol) legal & konteks produk kredit.' },
+  { name: 'Kementerian Ketenagakerjaan', url: 'https://www.kemnaker.go.id', use: 'UMP/UMR serta ketentuan THR dan pesangon.' },
+  { name: 'BAZNAS', url: 'https://baznas.go.id', use: 'Nisab dan kadar zakat (mal, penghasilan, fitrah).' },
+  { name: 'Badan Pangan Nasional (Bapanas)', url: 'https://badanpangan.go.id', use: 'Harga beras sebagai acuan zakat fitrah.' },
+  { name: 'ANTAM Logam Mulia', url: 'https://www.logammulia.com', use: 'Harga emas acuan zakat mal, dana qurban, dan gadai syariah.' },
+  { name: 'Badan Pusat Statistik (BPS)', url: 'https://www.bps.go.id', use: 'Data inflasi untuk mode real return pada kalkulator investasi.' },
+];
+---
+
+<Layout title={pageTitle} description={pageDesc} keywords={keywords} canonical={canonical}>
+  <section class="section">
+    <div class="wrap">
+      <Breadcrumb items={bcItems} />
+
+      <div class="section-hdr">
+        <div class="section-eyebrow">Transparansi & Akurasi</div>
+        <h1 class="section-title">Metodologi &amp; Sumber Data</h1>
+        <p class="section-desc">
+          Kalkulator keuangan menyangkut keputusan penting, jadi kami terbuka soal cara kami menghitung dan
+          dari mana angkanya berasal. Halaman ini menjelaskan prinsip, rumus, dan sumber resmi yang menjadi
+          rujukan seluruh kalkulator di HitungCerdas.
+        </p>
+      </div>
+
+      <div class="prin-grid">
+        {principles.map((p) => (
+          <div class="prin-card">
+            <div class="prin-ic"><i class={`ti ${p.icon}`}></i></div>
+            <h3>{p.title}</h3>
+            <p>{p.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="rectangle" />
+
+  <section class="section">
+    <div class="wrap doc">
+      <h2 class="doc-h2">Sumber data resmi yang kami rujuk</h2>
+      <p class="doc-p">
+        Angka acuan yang dipakai kalkulator tidak kami tentukan sendiri. Berikut lembaga dan data resmi yang
+        menjadi rujukan utama:
+      </p>
+      <ul class="src-list">
+        {sources.map((s) => (
+          <li class="src-item">
+            <a class="src-name" href={s.url} target="_blank" rel="noopener">{s.name} <i class="ti ti-external-link"></i></a>
+            <span class="src-use">{s.use}</span>
+          </li>
+        ))}
+      </ul>
+      <p class="doc-note">
+        Tautan di atas mengarah ke situs resmi masing-masing lembaga. HitungCerdas tidak berafiliasi dengan
+        instansi tersebut; kami hanya merujuk pada data publik yang mereka terbitkan.
+      </p>
+    </div>
+  </section>
+
+  <section class="section section-soft">
+    <div class="wrap doc">
+      <h2 class="doc-h2">Bagaimana kami menghitung</h2>
+
+      <h3 class="doc-h3">💰 Kalkulator Keuangan</h3>
+      <p class="doc-p">
+        Simulasi <a href="/kalkulator/kpr/">KPR</a> dan kredit (<a href="/kalkulator/kredit-motor/">motor</a>,
+        <a href="/kalkulator/kredit-mobil/">mobil</a>, <a href="/kalkulator/kredit-investasi/">kredit investasi</a>)
+        memakai rumus angsuran baku perbankan — anuitas, efektif, atau flat — dengan bunga acuan yang mengikuti
+        BI Rate ditambah margin bank. <a href="/kalkulator/pph-21/">PPh 21</a> dihitung sesuai UU HPP dengan
+        metode Tarif Efektif Rata-rata (TER) yang berlaku sejak 2024 beserta PTKP. <a href="/kalkulator/gaji-bersih/">Gaji
+        bersih</a> memperhitungkan potongan BPJS Kesehatan, BPJS Ketenagakerjaan (JHT &amp; JP), dan PPh 21.
+        <a href="/kalkulator/investasi/">Investasi</a> memakai bunga majemuk (compound) dengan top-up bulanan
+        (DCA); mode real return menerapkan Fisher Equation terhadap inflasi. <a href="/kalkulator/pinjol-legal/">Pinjol
+        legal</a> menampilkan APR sebenarnya sesuai ketentuan OJK (bunga konsumtif maksimal 0,1%/hari, Lock Cap 100%, admin maksimal 4%).
+      </p>
+
+      <h3 class="doc-h3">💼 Kalkulator Bisnis</h3>
+      <p class="doc-p">
+        <a href="/kalkulator/hpp/">HPP</a> menjumlahkan biaya bahan baku, tenaga kerja, dan overhead per unit.
+        <a href="/kalkulator/margin/">Margin</a> dan <a href="/kalkulator/harga-jual/">harga jual</a> dihitung
+        dari markup atau margin atas biaya. <a href="/kalkulator/bep/">BEP</a> memakai rumus biaya tetap dibagi
+        selisih harga jual dengan biaya variabel per unit. <a href="/kalkulator/pajak-umkm/">Pajak UMKM</a>
+        memakai tarif PPh Final 0,5% atas omzet, dengan fasilitas omzet tidak kena pajak hingga Rp500 juta per
+        tahun. <a href="/kalkulator/roi-usaha/">ROI usaha</a> membagi laba bersih dengan modal, dilengkapi
+        estimasi lama balik modal (payback period).
+      </p>
+
+      <h3 class="doc-h3">🕌 Kalkulator Islami</h3>
+      <p class="doc-p">
+        <a href="/kalkulator/zakat-mal/">Zakat mal</a> dan <a href="/kalkulator/zakat-penghasilan/">zakat
+        penghasilan</a> dihitung 2,5% atas harta yang telah mencapai nisab (setara 85 gram emas) dan haul.
+        <a href="/kalkulator/zakat-fitrah/">Zakat fitrah</a> setara 2,5 kg (±3,5 liter) beras per jiwa.
+        <a href="/kalkulator/fidyah/">Fidyah</a> diestimasi dari nilai satu mud makanan pokok per hari puasa
+        yang ditinggalkan. <a href="/kalkulator/warisan-faraidh/">Warisan faraidh</a> membagi harta sesuai
+        ketentuan fiqh (furudhul muqaddarah). <a href="/kalkulator/dana-qurban/">Dana qurban</a> serta dana haji
+        &amp; umrah membantu merencanakan tabungan terhadap target biaya. Perhitungan zakat dan faraidh bersifat
+        estimasi edukatif — untuk kasus kompleks, sebaiknya dirujuk ke ustaz atau lembaga resmi.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap doc">
+      <h2 class="doc-h2">Pembaruan &amp; koreksi</h2>
+      <p class="doc-p">
+        Regulasi dan angka acuan di Indonesia bisa berubah. Kami meninjau tarif pajak, suku bunga acuan, nisab,
+        dan harga komoditas setiap ada pembaruan resmi, lalu menyesuaikan kalkulator terkait. Setiap kalkulator
+        juga mencantumkan catatan kapan metodenya terakhir diperbarui.
+      </p>
+      <p class="doc-p">
+        Menemukan angka atau rumus yang menurutmu keliru? Bantu kami memperbaikinya lewat
+        <a href="/kontak/">halaman Kontak</a>. Masukanmu kami hargai.
+      </p>
+
+      <h2 class="doc-h2" style="margin-top:32px">Disclaimer</h2>
+      <p class="doc-p">
+        Seluruh hasil di HitungCerdas bersifat <strong>estimasi dan edukasi</strong>, bukan nasihat keuangan,
+        pajak, hukum, atau agama profesional. Perhitungan berjalan langsung di browser kamu (client-side) sehingga
+        data yang dimasukkan tidak dikirim atau disimpan di server kami. Angka final dari bank, kantor pajak,
+        lembaga zakat, atau institusi terkait dapat berbeda sesuai kebijakan masing-masing. Untuk keputusan
+        penting, selalu konsultasikan dengan profesional atau lembaga resmi yang berwenang.
+      </p>
+      <p class="doc-p">
+        Selengkapnya tentang siapa kami: <a href="/tentang/">Tentang HitungCerdas</a>.
+      </p>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .prin-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 16px;
+    margin-top: 8px;
+  }
+  .prin-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    padding: 22px;
+  }
+  .prin-ic {
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    background: var(--blue-light, #DBEAFE);
+    color: var(--blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    margin-bottom: 14px;
+  }
+  .prin-card h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--navy);
+    font-family: var(--ff-display);
+    margin: 0 0 8px;
+  }
+  .prin-card p {
+    font-size: 13.5px;
+    color: var(--text-soft);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .doc {
+    max-width: 800px;
+  }
+  .doc-h2 {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--navy);
+    font-family: var(--ff-display);
+    margin: 0 0 14px;
+    letter-spacing: -.01em;
+  }
+  .doc-h3 {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--navy);
+    font-family: var(--ff-display);
+    margin: 26px 0 10px;
+  }
+  .doc-p {
+    font-size: 15px;
+    color: var(--text-soft);
+    line-height: 1.8;
+    margin: 0 0 14px;
+  }
+  .doc-p a,
+  .doc-note a {
+    color: var(--blue);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .doc-p a:hover,
+  .doc-note a:hover {
+    text-decoration: underline;
+  }
+  .doc-note {
+    font-size: 13px;
+    color: var(--text-mute);
+    line-height: 1.7;
+    margin: 16px 0 0;
+  }
+
+  .src-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .src-item {
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    padding: 16px 18px;
+    background: #fff;
+  }
+  .src-name {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--navy);
+    text-decoration: none;
+  }
+  .src-name i {
+    font-size: 14px;
+    color: var(--text-mute);
+  }
+  .src-name:hover {
+    color: var(--blue);
+  }
+  .src-use {
+    display: block;
+    font-size: 13.5px;
+    color: var(--text-soft);
+    line-height: 1.55;
+    margin-top: 4px;
+  }
+
+  .section-soft {
+    background: var(--bg-soft, #F8FAFC);
+  }
+
+  /* ── Dark mode ── */
+  :global([data-theme="dark"]) .prin-card,
+  :global([data-theme="dark"]) .src-item {
+    background: var(--bg-card);
+  }
+  :global([data-theme="dark"]) .prin-card h3,
+  :global([data-theme="dark"]) .doc-h2,
+  :global([data-theme="dark"]) .doc-h3,
+  :global([data-theme="dark"]) .src-name {
+    color: var(--text);
+  }
+  :global([data-theme="dark"]) .section-soft {
+    background: var(--bg-soft);
+  }
+</style>
