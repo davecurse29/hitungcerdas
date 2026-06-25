@@ -30,7 +30,7 @@ const year = new Date().getFullYear();
     </div>
 
     <div class="footer-col">
-      <h4>Kalkulator Keuangan</h4>
+      <h4><a href="/kalkulator/keuangan/">Kalkulator Keuangan</a></h4>
       <ul>
         {keuanganLinks.map(c => (
           <li><a href={`/kalkulator/${c.slug}/`}>{c.shortTitle}</a></li>
@@ -39,7 +39,7 @@ const year = new Date().getFullYear();
     </div>
 
     <div class="footer-col">
-      <h4>Kalkulator Bisnis</h4>
+      <h4><a href="/kalkulator/bisnis/">Kalkulator Bisnis</a></h4>
       <ul>
         {bisnisLinks.map(c => (
           <li><a href={`/kalkulator/${c.slug}/`}>{c.shortTitle}</a></li>
@@ -48,7 +48,7 @@ const year = new Date().getFullYear();
     </div>
 
     <div class="footer-col">
-      <h4>Kalkulator Islami</h4>
+      <h4><a href="/kalkulator/islami/">Kalkulator Islami</a></h4>
       <ul>
         {islamiLinks.map(c => (
           <li><a href={`/kalkulator/${c.slug}/`}>{c.shortTitle}</a></li>
@@ -180,6 +180,20 @@ const year = new Date().getFullYear();
     text-transform: uppercase;
     margin-bottom: 14px;
     font-family: var(--ff-display);
+  }
+
+  .footer-col h4 a {
+    color: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    letter-spacing: inherit;
+    text-transform: inherit;
+    text-decoration: none;
+    transition: color .15s;
+  }
+
+  .footer-col h4 a:hover {
+    color: var(--gold);
   }
 
   .footer-col li {
