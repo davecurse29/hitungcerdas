@@ -1,0 +1,162 @@
+---
+// Halaman kategori: Kalkulator Islami
+// Dibangun otomatis dari master data CALCULATORS (filter by category)
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import CalculatorCard from '../../components/CalculatorCard.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import FAQ from '../../components/FAQ.astro';
+import { CALCULATORS, CATEGORIES } from '../../data/calculators';
+
+const CATEGORY = 'islami';
+const cat = CATEGORIES.find((c) => c.key === CATEGORY) || { key: CATEGORY, label: 'Kalkulator Islami', icon: '🕌', color: '#059669' };
+const calcs = CALCULATORS.filter((c) => c.category === CATEGORY);
+const otherCats = CATEGORIES.filter((c) => c.key !== CATEGORY);
+
+const pageTitle = `Kalkulator Islami Online Gratis 2026 — Zakat, Fidyah, Warisan Faraidh & Dana Qurban | HitungCerdas`;
+const pageDesc = `Kumpulan ${calcs.length} kalkulator islami Indonesia gratis: zakat mal, zakat penghasilan, zakat fitrah, fidyah, warisan faraidh, dana qurban, haji & umrah, KPR syariah & bagi hasil. Sesuai nisab & haul.`;
+const keywords = ['kalkulator islami', 'kalkulator zakat', 'zakat mal', 'zakat penghasilan', 'zakat fitrah', 'kalkulator fidyah', 'warisan faraidh', 'kalkulator dana qurban', 'dana haji umrah', 'kpr syariah'];
+const canonical = 'https://hitungcerdas.net/kalkulator/islami';
+
+const bcItems = [
+  { label: 'Beranda', href: '/' },
+  { label: 'Kalkulator Islami' },
+];
+
+const faqs = [
+  {
+    question: 'Kalkulator islami apa saja yang tersedia?',
+    answer: `Tersedia ${calcs.length} kalkulator islami — mulai dari <strong>zakat mal</strong>, <strong>zakat penghasilan</strong>, <strong>zakat fitrah</strong>, <strong>fidyah</strong>, <strong>warisan faraidh</strong>, dana qurban, dana haji & umrah, KPR syariah, hingga bagi hasil dan gadai syariah. Semuanya gratis dan tanpa login.`,
+  },
+  {
+    question: 'Apakah perhitungan zakatnya sesuai syariat?',
+    answer: 'Perhitungan zakat mengacu pada ketentuan umum yang dipakai lembaga seperti BAZNAS — nisab setara 85 gram emas dan kadar 2,5% untuk zakat mal & penghasilan, dengan memperhitungkan haul. Hasil bersifat <strong>estimasi edukatif</strong>; untuk kasus khusus atau kompleks, sebaiknya dikonsultasikan dengan ustaz atau lembaga zakat resmi.',
+  },
+  {
+    question: 'Apakah perlu membayar atau mendaftar?',
+    answer: 'Tidak. Semua kalkulator islami di HitungCerdas <strong>100% gratis</strong> dan tanpa registrasi. Perhitungan berjalan langsung di browser kamu, sehingga data yang kamu masukkan tidak dikirim atau disimpan di server mana pun.',
+  },
+];
+---
+
+<Layout title={pageTitle} description={pageDesc} keywords={keywords} canonical={canonical}>
+  <section class="section">
+    <div class="wrap">
+      <Breadcrumb items={bcItems} />
+
+      <div class="section-hdr">
+        <div class="section-eyebrow">{cat.icon} {calcs.length} Kalkulator Gratis</div>
+        <h1 class="section-title">Kalkulator Islami Online Gratis</h1>
+        <p class="section-desc">
+          Kumpulan kalkulator untuk menunaikan kewajiban dan perencanaan finansial sesuai syariat — dari
+          <a href="/kalkulator/zakat-mal/">zakat mal</a>,
+          <a href="/kalkulator/zakat-penghasilan/">zakat penghasilan</a> &
+          <a href="/kalkulator/zakat-fitrah/">zakat fitrah</a>,
+          <a href="/kalkulator/fidyah/">fidyah</a>, <a href="/kalkulator/warisan-faraidh/">warisan faraidh</a>,
+          sampai <a href="/kalkulator/dana-qurban/">dana qurban</a> dan haji & umrah. Semua gratis dan tanpa login.
+        </p>
+      </div>
+
+      <nav class="cat-nav" aria-label="Kategori kalkulator">
+        <span class="cat-nav-cur">{cat.icon} {cat.label}</span>
+        {otherCats.map((o) => <a class="cat-nav-link" href={`/kalkulator/${o.key}/`}>{o.icon} {o.label}</a>)}
+      </nav>
+
+      <div class="tool-grid">
+        {calcs.map((calc) => <CalculatorCard calc={calc} />)}
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="rectangle" />
+
+  <section class="section">
+    <div class="wrap about-block">
+      <h2 class="about-title">Untuk apa kalkulator islami?</h2>
+      <p>
+        Menunaikan kewajiban jadi lebih tenang saat perhitungannya jelas. Kalkulator islami HitungCerdas
+        membantu menghitung zakat sesuai nisab & haul, memperkirakan fidyah, membagi warisan sesuai faraidh,
+        hingga merencanakan dana qurban, haji, dan umrah.
+      </p>
+      <p>
+        Perhitungan <a href="/kalkulator/zakat-mal/">zakat mal</a> dan
+        <a href="/kalkulator/zakat-penghasilan/">zakat penghasilan</a> mengacu pada ketentuan umum yang
+        dipakai lembaga seperti BAZNAS (nisab setara 85 gram emas, kadar 2,5%, dengan haul). Untuk
+        <a href="/kalkulator/warisan-faraidh/">warisan faraidh</a>, pembagian mengikuti ketentuan fiqh.
+        Hasil bersifat estimasi edukatif — untuk kasus kompleks, sebaiknya konsultasikan dengan ustaz atau
+        lembaga zakat resmi.
+      </p>
+      <p>
+        Butuh hitung untuk keuangan pribadi atau usaha? Lihat juga koleksi
+        <a href="/kalkulator/keuangan/">Kalkulator Keuangan</a> dan
+        <a href="/kalkulator/bisnis/">Kalkulator Bisnis</a> kami.
+      </p>
+    </div>
+  </section>
+
+  <FAQ title="Pertanyaan Seputar Kalkulator Islami" items={faqs} />
+</Layout>
+
+<style>
+  .cat-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 4px 0 26px;
+  }
+  .cat-nav-cur,
+  .cat-nav-link {
+    font-size: 13.5px;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 99px;
+    border: 1px solid var(--border);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .cat-nav-cur {
+    background: var(--navy);
+    color: #fff;
+    border-color: var(--navy);
+  }
+  .cat-nav-link {
+    background: #fff;
+    color: var(--text-soft);
+    transition: var(--tx);
+  }
+  .cat-nav-link:hover {
+    border-color: var(--blue);
+    color: var(--blue);
+    transform: translateY(-1px);
+  }
+  .about-block {
+    max-width: 760px;
+  }
+  .about-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--navy);
+    font-family: var(--ff-display);
+    margin: 0 0 14px;
+  }
+  .about-block p {
+    color: var(--text-soft);
+    line-height: 1.75;
+    margin: 0 0 14px;
+    font-size: 15px;
+  }
+  .about-block a {
+    color: var(--blue);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .about-block a:hover {
+    text-decoration: underline;
+  }
+  :global([data-theme="dark"]) .cat-nav-link {
+    background: var(--bg-card);
+  }
+  :global([data-theme="dark"]) .about-title {
+    color: var(--text);
+  }
+</style>

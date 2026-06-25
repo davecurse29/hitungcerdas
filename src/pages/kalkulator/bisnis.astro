@@ -1,0 +1,161 @@
+---
+// Halaman kategori: Kalkulator Bisnis
+// Dibangun otomatis dari master data CALCULATORS (filter by category)
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import CalculatorCard from '../../components/CalculatorCard.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import FAQ from '../../components/FAQ.astro';
+import { CALCULATORS, CATEGORIES } from '../../data/calculators';
+
+const CATEGORY = 'bisnis';
+const cat = CATEGORIES.find((c) => c.key === CATEGORY) || { key: CATEGORY, label: 'Kalkulator Bisnis', icon: '💼', color: '#EC4899' };
+const calcs = CALCULATORS.filter((c) => c.category === CATEGORY);
+const otherCats = CATEGORIES.filter((c) => c.key !== CATEGORY);
+
+const pageTitle = `Kalkulator Bisnis Online Gratis 2026 — HPP, Margin, BEP, Harga Jual & Pajak UMKM | HitungCerdas`;
+const pageDesc = `Kumpulan ${calcs.length} kalkulator bisnis Indonesia gratis: hitung HPP, margin, harga jual, BEP, pajak UMKM, ROI usaha, komisi ojol, plus invoice & caption generator. Cocok untuk UMKM & online seller.`;
+const keywords = ['kalkulator bisnis', 'kalkulator hpp', 'kalkulator margin', 'kalkulator bep', 'hitung harga jual', 'kalkulator pajak umkm', 'kalkulator roi usaha', 'invoice generator', 'kalkulator komisi ojol', 'tools umkm'];
+const canonical = 'https://hitungcerdas.net/kalkulator/bisnis';
+
+const bcItems = [
+  { label: 'Beranda', href: '/' },
+  { label: 'Kalkulator Bisnis' },
+];
+
+const faqs = [
+  {
+    question: 'Kalkulator bisnis apa saja yang tersedia?',
+    answer: `Tersedia ${calcs.length} kalkulator bisnis — mulai dari <strong>HPP</strong>, <strong>margin</strong>, <strong>harga jual</strong>, <strong>BEP</strong> (titik impas), <strong>pajak UMKM</strong>, ROI usaha, komisi ojol, hingga tools praktis seperti invoice generator dan caption jualan. Semuanya gratis dan tanpa login.`,
+  },
+  {
+    question: 'Apakah cocok untuk UMKM dan online seller?',
+    answer: 'Sangat cocok. Semua tool dirancang untuk pelaku usaha kecil, online seller, freelancer, dan content creator Indonesia — membantu menentukan harga yang menguntungkan, mengukur titik impas, dan memperkirakan kewajiban pajak dengan cepat.',
+  },
+  {
+    question: 'Apakah perlu membayar atau mendaftar?',
+    answer: 'Tidak. Semua kalkulator bisnis di HitungCerdas <strong>100% gratis</strong> dan tanpa registrasi. Perhitungan berjalan langsung di browser kamu, sehingga data usahamu tidak dikirim atau disimpan di server mana pun.',
+  },
+];
+---
+
+<Layout title={pageTitle} description={pageDesc} keywords={keywords} canonical={canonical}>
+  <section class="section">
+    <div class="wrap">
+      <Breadcrumb items={bcItems} />
+
+      <div class="section-hdr">
+        <div class="section-eyebrow">{cat.icon} {calcs.length} Kalkulator Gratis</div>
+        <h1 class="section-title">Kalkulator Bisnis Online Gratis</h1>
+        <p class="section-desc">
+          Kumpulan kalkulator untuk menjalankan usaha lebih cerdas — dari hitung
+          <a href="/kalkulator/hpp/">HPP</a>, <a href="/kalkulator/margin/">margin</a> dan
+          <a href="/kalkulator/harga-jual/">harga jual</a>, ukur <a href="/kalkulator/bep/">BEP</a>,
+          sampai <a href="/kalkulator/pajak-umkm/">pajak UMKM</a> dan
+          <a href="/kalkulator/roi-usaha/">ROI usaha</a>. Cocok untuk UMKM, online seller, dan freelancer.
+        </p>
+      </div>
+
+      <nav class="cat-nav" aria-label="Kategori kalkulator">
+        <span class="cat-nav-cur">{cat.icon} {cat.label}</span>
+        {otherCats.map((o) => <a class="cat-nav-link" href={`/kalkulator/${o.key}/`}>{o.icon} {o.label}</a>)}
+      </nav>
+
+      <div class="tool-grid">
+        {calcs.map((calc) => <CalculatorCard calc={calc} />)}
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="rectangle" />
+
+  <section class="section">
+    <div class="wrap about-block">
+      <h2 class="about-title">Untuk apa kalkulator bisnis?</h2>
+      <p>
+        Bisnis yang sehat dimulai dari angka yang jelas. Kalkulator bisnis HitungCerdas membantu kamu
+        menentukan harga jual yang menguntungkan, menghitung HPP, mengukur titik impas (BEP), dan
+        memperkirakan kewajiban pajak — sebelum keputusan penting diambil.
+      </p>
+      <p>
+        Dirancang untuk pelaku UMKM dan online seller Indonesia: hitung
+        <a href="/kalkulator/hpp/">HPP</a> & <a href="/kalkulator/margin/">margin</a> produk, tentukan
+        <a href="/kalkulator/harga-jual/">harga jual</a> ideal, ukur <a href="/kalkulator/bep/">BEP</a>,
+        estimasi <a href="/kalkulator/pajak-umkm/">pajak UMKM</a> final 0,5%, sampai
+        <a href="/kalkulator/roi-usaha/">ROI usaha</a> dan komisi ojol — plus tools praktis seperti
+        <a href="/kalkulator/invoice-generator/">invoice generator</a>.
+      </p>
+      <p>
+        Butuh hitung untuk keuangan pribadi atau kewajiban ibadah? Lihat juga koleksi
+        <a href="/kalkulator/keuangan/">Kalkulator Keuangan</a> dan
+        <a href="/kalkulator/islami/">Kalkulator Islami</a> kami.
+      </p>
+    </div>
+  </section>
+
+  <FAQ title="Pertanyaan Seputar Kalkulator Bisnis" items={faqs} />
+</Layout>
+
+<style>
+  .cat-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 4px 0 26px;
+  }
+  .cat-nav-cur,
+  .cat-nav-link {
+    font-size: 13.5px;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 99px;
+    border: 1px solid var(--border);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .cat-nav-cur {
+    background: var(--navy);
+    color: #fff;
+    border-color: var(--navy);
+  }
+  .cat-nav-link {
+    background: #fff;
+    color: var(--text-soft);
+    transition: var(--tx);
+  }
+  .cat-nav-link:hover {
+    border-color: var(--blue);
+    color: var(--blue);
+    transform: translateY(-1px);
+  }
+  .about-block {
+    max-width: 760px;
+  }
+  .about-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--navy);
+    font-family: var(--ff-display);
+    margin: 0 0 14px;
+  }
+  .about-block p {
+    color: var(--text-soft);
+    line-height: 1.75;
+    margin: 0 0 14px;
+    font-size: 15px;
+  }
+  .about-block a {
+    color: var(--blue);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .about-block a:hover {
+    text-decoration: underline;
+  }
+  :global([data-theme="dark"]) .cat-nav-link {
+    background: var(--bg-card);
+  }
+  :global([data-theme="dark"]) .about-title {
+    color: var(--text);
+  }
+</style>
