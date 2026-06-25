@@ -363,6 +363,48 @@
     }
   };
 
+  // ─── EXPORT TO EXCEL (.xlsx via SheetJS, lazy-loaded) ───
+  HC.exportToExcel = function (config, filename) {
+    if (!config) { HC.toast('Hitung dulu', 'error'); return; }
+    function clean(s) { return String(s == null ? '' : s).replace(/<[^>]*>/g, '').replace(/^[^\w\u00C0-\u024F]+/, '').trim(); }
+    function build(XLSX) {
+      try {
+        var aoa = [[clean(config.title) || 'Hasil Perhitungan'], []];
+        if (config.inputs && config.inputs.length) {
+          aoa.push(['INPUT', '']);
+          config.inputs.forEach(function (i) { aoa.push([clean(i.label), clean(i.value)]); });
+          aoa.push([]);
+        }
+        if (config.results && config.results.length) {
+          aoa.push(['HASIL', '']);
+          config.results.forEach(function (r) { aoa.push([clean(r.label), clean(r.value)]); });
+          aoa.push([]);
+        }
+        aoa.push(['Sumber: HitungCerdas.net \u00b7 ' + new Date().toLocaleDateString('id-ID')]);
+        var ws = XLSX.utils.aoa_to_sheet(aoa);
+        ws['!cols'] = [{ wch: 34 }, { wch: 24 }];
+        var wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, 'Ringkasan');
+        // Optional second sheet (e.g. amortization schedule): config.schedule = { name, header:[...], rows:[[...]] }
+        if (config.schedule && config.schedule.header && config.schedule.rows && config.schedule.rows.length) {
+          var s2 = [config.schedule.header].concat(config.schedule.rows);
+          var ws2 = XLSX.utils.aoa_to_sheet(s2);
+          ws2['!cols'] = config.schedule.header.map(function () { return { wch: 16 }; });
+          XLSX.utils.book_append_sheet(wb, ws2, (config.schedule.name || 'Detail').slice(0, 31));
+        }
+        XLSX.writeFile(wb, (filename || 'hitungcerdas') + '.xlsx');
+        HC.toast('Excel diunduh', 'success');
+      } catch (e) { HC.toast('Gagal membuat Excel', 'error'); }
+    }
+    if (typeof XLSX !== 'undefined') { build(XLSX); return; }
+    HC.toast('Menyiapkan Excel\u2026', 'info');
+    var sc = document.createElement('script');
+    sc.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+    sc.onload = function () { build(window.XLSX); };
+    sc.onerror = function () { HC.toast('Gagal memuat modul Excel', 'error'); };
+    document.head.appendChild(sc);
+  };
+
   // ─── RESET FORM HELPER ───
   HC.resetForm = function(formIds, defaults) {
     formIds.forEach(id => {
