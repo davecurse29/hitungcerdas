@@ -512,7 +512,18 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         }
         $('amortBody').innerHTML = amortHtml;
 
-        lastCalc = { pokok, tenor, metode, metodeLabel, bunga, effApr, gaji, cicLain, cicilan: result.cicilan, totalBunga: result.totalBunga, totalBayar: result.totalBayar, dti, dtiStatus };
+        // Jadwal amortisasi lengkap (semua bulan) untuk export Excel
+        let amortRows;
+        if (result.rows) {
+          amortRows = result.rows;
+        } else {
+          amortRows = [];
+          const _cP = pokok / tenor, _cB = pokok * (bunga / 12 / 100);
+          let _s = pokok;
+          for (let _i = 1; _i <= tenor; _i++) { _s -= _cP; amortRows.push({ bln: _i, pokok: _cP, bunga: _cB, sisa: Math.max(0, _s) }); }
+        }
+
+        lastCalc = { pokok, tenor, metode, metodeLabel, bunga, effApr, gaji, cicLain, cicilan: result.cicilan, totalBunga: result.totalBunga, totalBayar: result.totalBayar, dti, dtiStatus, amortRows };
         HC.history.push('kta', { inputs: HC.history.capture(['pinjaman','tenor','metode','bunga','gaji','cicLain']), summary: 'Pinjaman ' + HC.fmt(lastCalc.pokok) + ' \u00b7 ' + lastCalc.tenor + ' bln @ ' + lastCalc.bunga + '%', metrics: [{ k: 'Cicilan/bln', v: HC.fmt(lastCalc.cicilan) }, { k: 'Total bunga', v: HC.fmt(lastCalc.totalBunga) }] });
         renderHist();
         $('placeholder').style.display = 'none';
@@ -557,6 +568,11 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
             { label: 'DTI Ratio', value: c.dti.toFixed(1) + '%' },
             { label: 'Status DTI', value: c.dtiStatus, highlight: true },
           ],
+          schedule: c.amortRows ? {
+            name: 'Jadwal Cicilan',
+            header: ['Bulan', 'Total Cicilan', 'Angsuran Pokok', 'Angsuran Bunga', 'Sisa Pokok'],
+            rows: c.amortRows.map(function (r) { return [r.bln, Math.round(r.pokok + r.bunga), Math.round(r.pokok), Math.round(r.bunga), Math.round(Math.max(0, r.sisa))]; }),
+          } : null,
           insight, slug: 'kta',
         });
       }
