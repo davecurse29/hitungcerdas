@@ -1,0 +1,289 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import ArticleSchema from '../../components/ArticleSchema.astro';
+
+const datePublished = '2026-06-27';
+const dateModified = '2026-06-27';
+const today = new Date(datePublished).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'Cara Hitung Pesangon PHK 2026' }];
+
+const upTable = [
+  ['Kurang dari 1 tahun', '1 bulan upah'],
+  ['1 – kurang dari 2 tahun', '2 bulan upah'],
+  ['2 – kurang dari 3 tahun', '3 bulan upah'],
+  ['3 – kurang dari 4 tahun', '4 bulan upah'],
+  ['4 – kurang dari 5 tahun', '5 bulan upah'],
+  ['5 – kurang dari 6 tahun', '6 bulan upah'],
+  ['6 – kurang dari 7 tahun', '7 bulan upah'],
+  ['7 – kurang dari 8 tahun', '8 bulan upah'],
+  ['8 tahun atau lebih', '9 bulan upah'],
+];
+
+const upmkTable = [
+  ['3 – kurang dari 6 tahun', '2 bulan upah'],
+  ['6 – kurang dari 9 tahun', '3 bulan upah'],
+  ['9 – kurang dari 12 tahun', '4 bulan upah'],
+  ['12 – kurang dari 15 tahun', '5 bulan upah'],
+  ['15 – kurang dari 18 tahun', '6 bulan upah'],
+  ['18 – kurang dari 21 tahun', '7 bulan upah'],
+  ['21 – kurang dari 24 tahun', '8 bulan upah'],
+  ['24 tahun atau lebih', '10 bulan upah'],
+];
+
+const pengaliTable = [
+  ['0,5×', 'Efisiensi karena rugi, perusahaan tutup karena rugi, pailit, PKPU karena rugi, atau pelanggaran setelah SP 1-2-3', 'Pasal 43(1), 44(1), 46(1), 47, 52(1)'],
+  ['0,75×', 'Keadaan memaksa (force majeure) yang TIDAK sampai menutup perusahaan', 'Pasal 45(2)'],
+  ['1×', 'Efisiensi mencegah rugi, merger/peleburan, pengambilalihan, tutup bukan karena rugi, atau pengusaha melanggar kewajiban', 'Pasal 41, 42(1), 43(2), 44(2), 46(2), 48'],
+  ['1,75×', 'Pekerja memasuki usia pensiun', 'Pasal 56'],
+  ['2×', 'Pekerja meninggal dunia, atau sakit/cacat akibat kecelakaan kerja & tidak bisa bekerja setelah 12 bulan', 'Pasal 55, 57'],
+  ['Tanpa pesangon', 'Mengundurkan diri (resign) atau mangkir — hanya dapat UPH + uang pisah', 'Resign/mangkir'],
+];
+
+const pajakTable = [
+  ['0 – Rp 50.000.000', '0% (bebas pajak)'],
+  ['Di atas Rp 50 juta – Rp 100 juta', '5%'],
+  ['Di atas Rp 100 juta – Rp 500 juta', '15%'],
+  ['Di atas Rp 500 juta', '25%'],
+];
+---
+
+<Layout
+  title="Cara Hitung Pesangon PHK 2026 (PP 35/2021): Rumus, Tabel & Contoh Lengkap"
+  description="Panduan lengkap cara hitung pesangon PHK 2026 sesuai PP 35/2021 (UU Cipta Kerja): tabel uang pesangon & UPMK, faktor pengali per alasan PHK (0,5x–2x), UPH, pajak PPh 21 final, plus 3 contoh kasus."
+  keywords={['cara hitung pesangon', 'pesangon phk 2026', 'pp 35 2021', 'rumus pesangon', 'uang pesangon uu cipta kerja', 'upmk uph', 'pesangon resign', 'pajak pesangon']}
+  canonical="https://hitungcerdas.net/blog/cara-hitung-pesangon-phk"
+  ogType="article"
+>
+  <ArticleSchema
+    headline="Cara Hitung Pesangon PHK 2026 (PP 35/2021): Rumus, Tabel & Contoh Lengkap"
+    description="Panduan lengkap cara hitung pesangon PHK 2026 sesuai PP 35/2021: tabel uang pesangon & UPMK, faktor pengali per alasan PHK, UPH, pajak PPh 21 final, plus contoh kasus."
+    datePublished={datePublished}
+    dateModified={dateModified}
+    slug="cara-hitung-pesangon-phk"
+    articleSection="Ketenagakerjaan"
+    keywords={['cara hitung pesangon', 'pesangon phk 2026', 'pp 35 2021', 'rumus pesangon', 'upmk uph']}
+    wordCount={1950}
+  />
+
+  <section class="article-hero" style="--cat-color:#0D9488;--cat-color2:#0F766E">
+    <div class="wrap">
+      <Breadcrumb items={bcItems} />
+      <div class="article-tag">KETENAGAKERJAAN</div>
+      <h1>Cara Hitung Pesangon PHK 2026 (PP 35/2021): Rumus, Tabel &amp; Contoh Lengkap</h1>
+      <div class="article-meta">
+        <span><i class="ti ti-calendar"></i> {today}</span>
+        <span><i class="ti ti-clock"></i> 10 menit baca</span>
+        <span><i class="ti ti-user"></i> Tim HitungCerdas</span>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+
+  <article class="content-section">
+    <div class="wrap-text">
+      <p class="lead">
+        Gelombang PHK masih berlangsung di 2026, dan banyak pekerja tidak tahu persis berapa <strong>hak pesangon</strong> mereka —
+        sehingga rawan menerima tawaran HR yang lebih kecil dari seharusnya. Padahal rumusnya sudah baku di
+        <strong>PP No. 35 Tahun 2021</strong> (aturan pelaksana UU Cipta Kerja). Artikel ini membedah cara menghitung pesangon
+        lengkap: tabel uang pesangon &amp; UPMK, faktor pengali sesuai alasan PHK, UPH, pajak, plus contoh kasus nyata —
+        dan kamu bisa langsung mencobanya di <a href="/kalkulator/pesangon">Kalkulator Pesangon</a>.
+      </p>
+
+      <h2>1. Tiga Komponen Hak PHK: UP, UPMK, dan UPH</h2>
+      <p>Saat terjadi Pemutusan Hubungan Kerja (PHK), pengusaha wajib membayar tiga komponen (Pasal 40 PP 35/2021):</p>
+      <ul class="info-list">
+        <li><strong>Uang Pesangon (UP)</strong> — kompensasi utama, dihitung dari masa kerja lalu dikalikan faktor sesuai alasan PHK.</li>
+        <li><strong>Uang Penghargaan Masa Kerja (UPMK)</strong> — penghargaan atas loyalitas, <strong>hanya untuk masa kerja minimal 3 tahun</strong>.</li>
+        <li><strong>Uang Penggantian Hak (UPH)</strong> — hak yang belum diambil: sisa cuti tahunan, ongkos pulang pekerja &amp; keluarga, dan hal lain sesuai perjanjian. Komponen perumahan/pengobatan 15% sudah dihapus di aturan baru.</li>
+      </ul>
+
+      <h2>2. Dasar Upah yang Dipakai</h2>
+      <p>
+        Yang dipakai sebagai dasar adalah <strong>upah pokok + tunjangan tetap</strong> yang terakhir diterima. Tunjangan
+        <em>tidak</em> tetap (uang transport/makan harian, lembur) tidak dihitung. Aturan penting: jika upah dasarmu
+        <strong>lebih rendah dari upah minimum</strong> (UMP/UMK) wilayah perusahaan, maka yang dipakai adalah upah minimum tersebut.
+        Cek dulu besaran <a href="/blog/ump-umr-2026-per-provinsi">UMP 2026 di provinsimu</a>.
+      </p>
+
+      <h2>3. Tabel Uang Pesangon (Pasal 40 Ayat 2)</h2>
+      <p>Besaran dasar uang pesangon ditentukan murni dari masa kerja:</p>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead><tr><th>Masa Kerja</th><th>Uang Pesangon</th></tr></thead>
+          <tbody>{upTable.map((r) => (<tr><td>{r[0]}</td><td>{r[1]}</td></tr>))}</tbody>
+        </table>
+      </div>
+
+      <h2>4. Tabel UPMK (Pasal 40 Ayat 3)</h2>
+      <p>UPMK hanya berlaku jika masa kerja <strong>minimal 3 tahun</strong> secara terus-menerus:</p>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead><tr><th>Masa Kerja</th><th>UPMK</th></tr></thead>
+          <tbody>{upmkTable.map((r) => (<tr><td>{r[0]}</td><td>{r[1]}</td></tr>))}</tbody>
+        </table>
+      </div>
+
+      <AdSlot format="horizontal" />
+
+      <h2>5. Faktor Pengali Berdasarkan Alasan PHK (Kuncinya!)</h2>
+      <p>
+        Inilah bagian yang sering bikin selisih besar. Besaran uang pesangon <strong>dikalikan faktor</strong> sesuai alasan PHK.
+        UPMK dan UPH umumnya tetap 1× pada semua skenario yang berhak pesangon. Faktornya berkisar 0,5× sampai 2×:
+      </p>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead><tr><th>Faktor UP</th><th>Alasan PHK</th><th>Dasar Hukum</th></tr></thead>
+          <tbody>{pengaliTable.map((r) => (<tr><td style="text-align:center;font-weight:700">{r[0]}</td><td>{r[1]}</td><td style="font-size:12.5px">{r[2]}</td></tr>))}</tbody>
+        </table>
+      </div>
+      <p>
+        Rumus akhirnya: <strong>UP = faktor × (tabel masa kerja) × upah</strong>, lalu ditambah <strong>UPMK + UPH</strong>.
+        Karena selisih klasifikasi alasan PHK bisa menggandakan atau memotong setengah hakmu, ini sering jadi titik
+        sengketa antara pekerja dan perusahaan.
+      </p>
+
+      <h2>6. Pekerja Kontrak (PKWT): Bukan Pesangon, tapi Uang Kompensasi</h2>
+      <p>
+        Kalau statusmu <strong>kontrak (PKWT)</strong>, yang berlaku bukan pesangon melainkan <strong>uang kompensasi</strong>.
+        Rumusnya jauh lebih sederhana:
+      </p>
+      <div class="formula-box">
+        <p style="text-align:center;font-size:16px"><strong>Uang Kompensasi PKWT = (masa kerja ÷ 12) × upah sebulan</strong></p>
+        <p>Diberikan saat kontrak berakhir untuk pekerja yang sudah bekerja minimal 1 bulan. Jika kontrak diputus sebelum waktunya, kompensasi dihitung dari masa kerja yang sudah dijalani.</p>
+      </div>
+
+      <h2>7. Pajak Pesangon: PPh 21 Final</h2>
+      <p>
+        Pesangon yang dibayar <strong>sekaligus</strong> dikenakan PPh 21 yang bersifat <strong>final</strong> dengan tarif progresif —
+        beda dari pajak gaji bulanan dan tidak dikurangi PTKP. Pemotongan dilakukan perusahaan sebelum pesangon dibayarkan:
+      </p>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead><tr><th>Penghasilan Bruto Pesangon</th><th>Tarif</th></tr></thead>
+          <tbody>{pajakTable.map((r) => (<tr><td>{r[0]}</td><td style="text-align:center;font-weight:700">{r[1]}</td></tr>))}</tbody>
+        </table>
+      </div>
+      <p style="font-size:13px;color:var(--text-soft)">
+        Catatan: tarif final ini berlaku untuk pesangon yang dibayar sekaligus (dalam jangka maksimal 2 tahun). Jika ada bagian yang dibayar pada tahun ketiga dan seterusnya, perlakuan pajaknya berbeda — konsultasikan dengan bagian pajak perusahaan.
+      </p>
+
+      <AdSlot format="horizontal" />
+
+      <h2>8. Tiga Contoh Kasus Lengkap</h2>
+
+      <h3>Contoh 1 — Perusahaan Pailit (0,5×)</h3>
+      <p>Tono di-PHK karena perusahaan <strong>pailit</strong>. Masa kerja <strong>10 tahun</strong>, upah dasar <strong>Rp 12.000.000</strong>.</p>
+      <ul class="info-list">
+        <li>UP: masa kerja 10 th = 9 bulan upah. Faktor pailit 0,5× → 0,5 × 9 × Rp 12 jt = <strong>Rp 54.000.000</strong></li>
+        <li>UPMK: masa kerja 10 th = 4 bulan upah → 4 × Rp 12 jt = <strong>Rp 48.000.000</strong></li>
+        <li>UPH: anggap Rp 0 (tidak ada sisa cuti/ongkos)</li>
+        <li><strong>Total bruto = Rp 102.000.000</strong></li>
+        <li>PPh 21 final: 0–50 jt = Rp 0; 50–100 jt (5%) = Rp 2,5 jt; 100–102 jt (15%) = Rp 300 rb → pajak <strong>Rp 2.800.000</strong></li>
+        <li><strong>Estimasi diterima ≈ Rp 99.200.000</strong></li>
+      </ul>
+
+      <h3>Contoh 2 — Pensiun (1,75×)</h3>
+      <p>Budi memasuki <strong>usia pensiun</strong>. Masa kerja <strong>12 tahun</strong>, upah dasar <strong>Rp 10.000.000</strong>.</p>
+      <ul class="info-list">
+        <li>UP: masa kerja 12 th = 9 bulan upah. Faktor pensiun 1,75× → 1,75 × 9 × Rp 10 jt = <strong>Rp 157.500.000</strong></li>
+        <li>UPMK: masa kerja 12 th = 5 bulan upah → 5 × Rp 10 jt = <strong>Rp 50.000.000</strong></li>
+        <li><strong>Total bruto = Rp 207.500.000</strong> (sebelum UPH &amp; pajak)</li>
+      </ul>
+
+      <h3>Contoh 3 — Mengundurkan Diri / Resign</h3>
+      <p>Sinta <strong>resign</strong> atas kemauan sendiri setelah 5 tahun bekerja.</p>
+      <ul class="info-list">
+        <li>UP: <strong>Rp 0</strong> — pekerja resign tidak berhak pesangon.</li>
+        <li>UPMK: <strong>Rp 0</strong>.</li>
+        <li>Yang didapat: <strong>UPH</strong> (mis. sisa cuti) + <strong>uang pisah</strong> yang besarannya diatur dalam Perjanjian Kerja, Peraturan Perusahaan, atau PKB.</li>
+      </ul>
+
+      <h2>9. Bagaimana Jika Pesangon Tidak Dibayar atau Di Bawah Hak?</h2>
+      <p>Kalau perusahaan menolak membayar atau menawarkan di bawah hitungan normatif, langkahnya bertahap:</p>
+      <ul class="info-list">
+        <li><strong>Perundingan bipartit</strong> — musyawarah langsung dengan perusahaan, didokumentasikan tertulis (maksimal 30 hari).</li>
+        <li><strong>Mediasi di Disnaker</strong> — jika bipartit gagal, ajukan pencatatan perselisihan ke Dinas Ketenagakerjaan setempat; akan ditunjuk mediator.</li>
+        <li><strong>Pengadilan Hubungan Industrial (PHI)</strong> — jika mediasi buntu, perselisihan dibawa ke PHI.</li>
+      </ul>
+      <p>Siapkan dokumen: surat PHK, perjanjian kerja, slip gaji terakhir, dan bukti sisa cuti. Selama proses, pastikan punya <a href="/kalkulator/dana-darurat">dana darurat</a> sebagai bantalan.</p>
+
+      <h2>10. FAQ Pesangon PHK 2026</h2>
+      <h3>Saya resign, apakah dapat pesangon?</h3>
+      <p>Tidak. Pekerja yang mengundurkan diri atau mangkir tidak berhak atas pesangon maupun UPMK — hanya UPH dan uang pisah.</p>
+      <h3>Tunjangan transport &amp; makan dihitung dalam pesangon?</h3>
+      <p>Tidak, kalau sifatnya tidak tetap. Dasar pesangon hanya upah pokok + tunjangan tetap.</p>
+      <h3>Karyawan kontrak (PKWT) dapat pesangon?</h3>
+      <p>Tidak dalam bentuk pesangon, melainkan uang kompensasi = (masa kerja ÷ 12) × upah sebulan.</p>
+      <h3>Apakah perusahaan kecil wajib bayar penuh?</h3>
+      <p>Untuk usaha mikro/kecil, besarannya dapat ditentukan berdasarkan kesepakatan antara pengusaha dan pekerja (Pasal 59 PP 35/2021).</p>
+      <h3>Pesangon kena pajak berapa?</h3>
+      <p>PPh 21 final progresif: 0% s.d. Rp 50 juta, lalu 5%, 15%, dan 25% untuk lapisan di atasnya.</p>
+
+      <div class="cta-box">
+        <h3>🧮 Hitung Hak Pesangonmu Sekarang</h3>
+        <p>Daripada menebak, hitung estimasi hakmu dalam hitungan detik dengan <strong>Kalkulator Pesangon HitungCerdas</strong>:</p>
+        <ul>
+          <li>✅ Pilih alasan PHK (0,5× s.d. 2×) — otomatis sesuai PP 35/2021</li>
+          <li>✅ Hitung UP + UPMK + UPH + estimasi pajak PPh 21</li>
+          <li>✅ PKWTT (pesangon) &amp; PKWT (uang kompensasi)</li>
+          <li>✅ Ada AI Coach untuk bantu pahami hasilnya</li>
+        </ul>
+        <p style="margin-top:14px"><a href="/kalkulator/pesangon" class="btn btn-pri"><i class="ti ti-calculator"></i> Buka Kalkulator Pesangon</a></p>
+      </div>
+
+      <h2>Kesimpulan</h2>
+      <p>
+        Pesangon PHK dihitung dari dua hal: <strong>masa kerja</strong> (menentukan dasar UP &amp; UPMK) dan <strong>alasan PHK</strong>
+        (menentukan faktor 0,5×–2×), ditambah UPH dan dikurangi PPh 21 final. Pahami hakmu sebelum menandatangani apa pun —
+        dan jika tawaran terasa janggal, kamu berhak menempuh bipartit hingga PHI. Gunakan kalkulator untuk estimasi cepat,
+        lalu konfirmasi ke Disnaker untuk kepastian.
+      </p>
+
+      <h3>📋 Sumber Resmi (Bisa Dicek)</h3>
+      <ul class="info-list">
+        <li><a href="https://jdih.kemnaker.go.id/asset/data_puu/PP352021.pdf" target="_blank" rel="noopener nofollow">JDIH Kemnaker</a> — naskah lengkap PP No. 35 Tahun 2021 (PDF resmi)</li>
+        <li><a href="https://peraturan.bpk.go.id/Details/161904/pp-no-35-tahun-2021" target="_blank" rel="noopener nofollow">Peraturan BPK</a> — database peraturan PP 35/2021</li>
+        <li><a href="https://literasihukum.bphn.go.id" target="_blank" rel="noopener nofollow">BPHN Kemenkumham</a> — literasi hukum perhitungan pesangon</li>
+        <li><a href="https://kemnaker.go.id" target="_blank" rel="noopener nofollow">Kemnaker</a> — informasi resmi ketenagakerjaan</li>
+        <li>Dasar pajak: PPh 21 final pesangon — <a href="https://pajak.go.id" target="_blank" rel="noopener nofollow">pajak.go.id (DJP)</a></li>
+      </ul>
+
+      <h3>📚 Artikel Terkait</h3>
+      <ul class="info-list">
+        <li><a href="/kalkulator/pesangon">Kalkulator Pesangon PHK 2026</a></li>
+        <li><a href="/blog/cara-menghitung-gaji-bersih">Cara Hitung Gaji Bersih (Take-Home Pay)</a></li>
+        <li><a href="/blog/cara-menghitung-pph-21">Cara Hitung PPh 21 Karyawan 2026</a></li>
+        <li><a href="/blog/cara-hitung-dana-darurat">Cara Hitung Dana Darurat Ideal</a></li>
+        <li><a href="/blog/ump-umr-2026-per-provinsi">UMP/UMR 2026 per Provinsi</a></li>
+      </ul>
+
+      <p style="margin-top: 28px; padding: 16px; background: var(--bg-soft); border-radius: 10px; font-size: 13px; color: var(--text-soft); font-style: italic;">
+        <strong>Disclaimer:</strong> Artikel ini bersifat edukasi dan merangkum ketentuan PP 35/2021 per Juni 2026. Hasil hitung bersifat estimasi; angka final dapat berbeda tergantung isi Perjanjian Kerja, Peraturan Perusahaan, PKB, perundingan bipartit, atau putusan Pengadilan Hubungan Industrial. Ini bukan nasihat hukum. Untuk kepastian, konsultasikan ke Disnaker setempat atau mediator hubungan industrial.
+      </p>
+    </div>
+  </article>
+
+  <AdSlot format="horizontal" />
+</Layout>
+
+<style>
+  .article-hero { background: linear-gradient(135deg, var(--cat-color) 0%, var(--cat-color2) 100%); color: #fff; padding: 20px 0 48px; }
+  .article-hero :global(.breadcrumb-item), .article-hero :global(.breadcrumb-item a) { color: rgba(255, 255, 255, .7); }
+  .article-hero :global(.breadcrumb-item a:hover) { color: var(--gold-soft); }
+  .article-hero :global(.breadcrumb-item span) { color: #fff; }
+  .article-hero :global(.breadcrumb-item i) { color: rgba(255, 255, 255, .4); }
+  .article-tag { display: inline-block; font-size: 11px; font-weight: 700; color: var(--gold-soft); letter-spacing: .1em; text-transform: uppercase; margin: 16px 0 12px; }
+  .article-hero h1 { color: #fff; font-size: clamp(26px, 3.8vw, 42px); margin: 0 0 20px; max-width: 900px; line-height: 1.2; }
+  .article-meta { display: flex; gap: 20px; color: rgba(255, 255, 255, .75); font-size: 13px; flex-wrap: wrap; }
+  .article-meta span { display: inline-flex; align-items: center; gap: 6px; }
+  .lead { font-size: 17px !important; line-height: 1.7 !important; color: var(--text) !important; padding: 20px 24px; background: var(--bg-soft); border-radius: 12px; border-left: 4px solid var(--cat-color, #0D9488); margin-bottom: 24px !important; }
+  .table-wrap { overflow-x: auto; margin: 18px 0; border-radius: 12px; border: 1px solid var(--border, #E5E7EB); }
+  .data-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .data-table th, .data-table td { padding: 10px 14px; border-bottom: 1px solid var(--border, #E5E7EB); text-align: left; vertical-align: top; }
+  .data-table thead th { background: var(--cat-color); color: #fff; }
+  .data-table tbody tr:nth-child(even) { background: var(--bg-soft); }
+  .data-table tbody tr:hover { background: var(--gold-light, #FEF3C7); }
+</style>
