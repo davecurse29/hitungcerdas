@@ -11,13 +11,13 @@ const calc = getCalculatorBySlug('invoice-generator')!;
 const related = getRelatedCalculators('invoice-generator', 3);
 
 const faqs = [
-  { question: 'Komponen wajib invoice profesional?', answer: '1) Nomor invoice unik, 2) Tanggal & jatuh tempo, 3) Nama & alamat pihak (penjual+pembeli), 4) Detail item (nama, qty, harga), 5) Subtotal, PPN 11%, total, 6) Cara pembayaran (no rekening/QRIS), 7) Tanda tangan/cap.' },
-  { question: 'Bisa tambah logo & QRIS di invoice?', answer: 'Bisa. Upload logo bisnis dan gambar QRIS-mu — keduanya otomatis tampil di invoice. Cocok untuk pembayaran cashless yang makin umum di Indonesia. Semua diproses di browser, tidak ada data yang dikirim ke server.' },
-  { question: 'Apa itu "terbilang" pada invoice?', answer: 'Terbilang adalah nominal total yang ditulis dalam huruf (mis. "satu juta lima ratus ribu rupiah"). Ini standar pada invoice & kwitansi di Indonesia, dan otomatis dibuat oleh tools ini.' },
-  { question: 'Invoice di atas Rp 5 juta wajib meterai?', answer: 'Ya. Berdasarkan UU No. 10 Tahun 2020, invoice/kwitansi yang menyatakan nilai transaksi lebih dari Rp 5.000.000 wajib dibubuhi meterai Rp 10.000 (fisik atau e-meterai) agar sah sebagai alat bukti. Di bawah/sama dengan Rp 5 juta tidak wajib.' },
-  { question: 'PPN UMKM kapan?', answer: 'PKP wajib PPN 11% jika omzet > Rp 4,8 miliar/tahun. UMKM < 4,8M boleh tidak PPN. Khusus pelaku UMKM tertentu bisa pakai PPh Final 0,5% omzet.' },
+  { question: 'Komponen wajib invoice profesional?', answer: '1) Nomor invoice unik, 2) Tanggal & jatuh tempo, 3) Nama & alamat pihak (penjual+pembeli), 4) Detail item (nama, qty, harga), 5) Subtotal, PPN, total, 6) Cara pembayaran (no rekening/QRIS), 7) Tanda tangan/cap.' },
+  { question: 'Bisa buat kwitansi & surat penawaran juga?', answer: 'Bisa. Pilih jenis dokumen di atas: <strong>Invoice</strong> (tagihan), <strong>Kwitansi</strong> (bukti penerimaan uang), atau <strong>Penawaran</strong> (quotation harga). Satu alat, tiga output — semua otomatis menyesuaikan format & istilahnya.' },
+  { question: 'Bisa tambah logo & QRIS di invoice?', answer: 'Bisa. Upload logo bisnis dan gambar QRIS-mu — keduanya otomatis tampil di dokumen. Diproses di browser, tidak dikirim ke server. Bisa juga disimpan sebagai profil agar terisi otomatis lain kali.' },
+  { question: 'Apa itu "terbilang" pada invoice?', answer: 'Terbilang adalah nominal total yang ditulis dalam huruf (mis. "satu juta lima ratus ribu rupiah"). Standar pada invoice & kwitansi Indonesia, dan otomatis dibuat oleh tools ini.' },
+  { question: 'PPN 11% atau 12%?', answer: 'Tarif umum PPN saat ini 11%. PPN 12% berlaku khusus untuk barang/jasa mewah; untuk non-mewah, tarif efektifnya tetap setara 11% (mekanisme DPP nilai lain). Pilih tarif sesuai jenis transaksimu.' },
+  { question: 'Invoice di atas Rp 5 juta wajib meterai?', answer: 'Ya. Berdasarkan UU No. 10 Tahun 2020, invoice/kwitansi yang menyatakan nilai transaksi lebih dari Rp 5.000.000 wajib dibubuhi meterai Rp 10.000 (fisik atau e-meterai) agar sah sebagai alat bukti.' },
   { question: 'Penomoran invoice ideal?', answer: 'Format: <strong>INV/YYYY/MM/NNN</strong> (contoh: INV/2026/06/001). Urut, mudah dicari. Hindari nomor random. Pastikan tidak ada duplikat.' },
-  { question: 'Tempo pembayaran umum?', answer: 'Standar: NET 30 (30 hari). Bisa NET 7/14/30/60. Cantumkan tanggal jatuh tempo eksplisit. Untuk client baru/risk tinggi: <strong>50% DP, 50% sebelum kirim</strong>.' },
 ];
 
 const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '/#tools' }, { label: calc.shortTitle }];
@@ -61,11 +61,19 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       <div class="calc-card">
         <div class="calc-card-hdr">
           <div class="calc-card-hdr-ic" style="background:linear-gradient(135deg,#0EA5E9 0%,#0369A1 100%)"><i class="ti ti-file-invoice"></i></div>
-          <div><h2 class="calc-card-title">Invoice Generator UMKM</h2><p class="calc-card-sub">Logo, QRIS, diskon, terbilang otomatis — export PNG &amp; PDF profesional</p></div>
+          <div><h2 class="calc-card-title">Invoice, Kwitansi &amp; Penawaran</h2><p class="calc-card-sub">Logo, QRIS, NPWP, PPN 11/12%, terbilang, stempel LUNAS — export PNG &amp; PDF</p></div>
         </div>
 
         <div class="calc-grid">
           <div class="calc-input">
+            <div class="field"><label>Jenis Dokumen</label>
+              <div class="ig-doctype" id="docTypeWrap">
+                <button type="button" class="ig-dt active" data-dt="invoice">Invoice</button>
+                <button type="button" class="ig-dt" data-dt="kwitansi">Kwitansi</button>
+                <button type="button" class="ig-dt" data-dt="penawaran">Penawaran</button>
+              </div>
+            </div>
+
             <div class="field"><label>Logo Bisnis <span class="hint">(opsional)</span></label>
               <div class="ig-upload">
                 <label class="ig-upload-btn" for="logoInput"><i class="ti ti-photo"></i> Pilih Logo</label>
@@ -73,7 +81,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
                 <img id="logoThumb" class="ig-thumb" alt="logo" style="display:none" />
                 <button type="button" class="ig-clear" id="logoClear" style="display:none">hapus</button>
               </div>
-              <div class="ig-hint">PNG/JPG. Tampil di kiri atas invoice.</div>
+              <div class="ig-hint">PNG/JPG. Tampil di kiri atas dokumen.</div>
             </div>
 
             <div class="field"><label>Nama Bisnis / Penjual</label>
@@ -82,18 +90,22 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
               <input type="text" id="penjualAlamat" placeholder="Alamat / kota" /></div>
             <div class="field"><label>Telp / Email Penjual <span class="hint">(opsional)</span></label>
               <input type="text" id="penjualTelp" placeholder="08xx atau email" /></div>
+            <div class="field"><label>NPWP / NIK Penjual <span class="hint">(opsional)</span></label>
+              <input type="text" id="penjualNpwp" placeholder="16 digit" inputmode="numeric" /></div>
 
             <div class="field"><label>Nama Client / Pembeli</label>
               <input type="text" id="pembeli" value="PT. Klien Contoh" placeholder="PT. Nama Client" /></div>
             <div class="field"><label>Alamat Client <span class="hint">(opsional)</span></label>
               <input type="text" id="pembeliAlamat" placeholder="Alamat client" /></div>
+            <div class="field"><label>NPWP / NIK Client <span class="hint">(opsional)</span></label>
+              <input type="text" id="pembeliNpwp" placeholder="16 digit" inputmode="numeric" /></div>
 
-            <div class="field"><label>Nomor Invoice</label>
+            <div class="field"><label>Nomor Dokumen</label>
               <input type="text" id="noInv" value="INV/2026/06/001" /></div>
 
             <div class="ig-twocol">
-              <div class="field"><label>Tanggal Invoice</label><input type="date" id="tgl" /></div>
-              <div class="field"><label>Jatuh Tempo</label><input type="date" id="tempo" /></div>
+              <div class="field"><label>Tanggal</label><input type="date" id="tgl" /></div>
+              <div class="field"><label id="lblTempo">Jatuh Tempo</label><input type="date" id="tempo" /></div>
             </div>
             <div class="ig-net-btns">
               <span class="ig-net-lbl">Tempo cepat:</span>
@@ -121,11 +133,23 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
             </div>
 
             <div class="field">
-              <label class="check-row"><input type="checkbox" id="usePpn" /> <span>Kena PPN 11% (PKP)</span></label>
+              <div class="check-row" style="justify-content:space-between">
+                <label style="display:flex;align-items:center;gap:9px;cursor:pointer;font-weight:500;margin:0"><input type="checkbox" id="usePpn" /> <span>Kena PPN (PKP)</span></label>
+                <select id="ppnRate" class="ig-select" style="min-width:74px"><option value="11">11%</option><option value="12">12%</option></select>
+              </div>
+              <div class="ig-hint">PPN 12% umumnya hanya untuk barang mewah; non-mewah efektif 11%.</div>
               <label class="check-row"><input type="checkbox" id="useDp" /> <span>Pakai DP / Down Payment</span></label>
               <div id="dpField" style="display:none;margin-top:6px">
                 <div class="input-wrap"><input type="number" id="dpPct" class="has-suffix" value="50" min="0" max="100" /><span class="input-suffix">%</span></div>
               </div>
+            </div>
+
+            <div class="field"><label>Status Pembayaran <span class="hint">(stempel, opsional)</span></label>
+              <select id="status" class="ig-select" style="width:100%">
+                <option value="none">— Tanpa stempel —</option>
+                <option value="lunas">LUNAS</option>
+                <option value="belum">BELUM LUNAS</option>
+              </select>
             </div>
 
             <div class="field" style="margin-top:8px"><label>Info Pembayaran <span class="hint">(opsional)</span></label>
@@ -144,11 +168,17 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
               </div>
             </div>
 
-            <div class="field"><label>Catatan / Syarat <span class="hint">(opsional)</span></label>
+            <div class="ig-profile-bar">
+              <button type="button" class="ig-prof-save" id="btnSaveProfile"><i class="ti ti-device-floppy"></i> Simpan Profil Bisnis</button>
+              <button type="button" class="ig-prof-clear" id="btnClearProfile" style="display:none">Hapus profil</button>
+            </div>
+            <div class="ig-hint" id="profHint" style="display:none">Profil (logo, alamat, NPWP, rekening, QRIS) tersimpan di browser ini &amp; terisi otomatis lain kali.</div>
+
+            <div class="field" style="margin-top:10px"><label>Catatan / Syarat <span class="hint">(opsional)</span></label>
               <textarea id="notes" class="ig-ta" placeholder="mis. Pembayaran paling lambat saat jatuh tempo. Terima kasih atas kerja samanya."></textarea></div>
 
             <div class="calc-action-bar">
-              <button type="button" class="btn-hitung" id="btnHitung"><i class="ti ti-file-invoice"></i> Buat Invoice</button>
+              <button type="button" class="btn-hitung" id="btnHitung"><i class="ti ti-file-invoice"></i> <span id="btnDocLbl">Buat Invoice</span></button>
               <button type="button" class="btn-reset" id="btnReset"><i class="ti ti-refresh"></i> Reset</button>
             </div>
           </div>
@@ -156,13 +186,13 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
           <div class="calc-output">
             <div class="result-placeholder" id="placeholder">
               <i class="ti ti-file-invoice result-placeholder-icon"></i>
-              <div class="result-placeholder-title">Invoice akan muncul di sini</div>
-              <div class="result-placeholder-desc">Isi data penjual, client &amp; minimal 1 item, lalu klik <strong>"Buat Invoice"</strong>.</div>
+              <div class="result-placeholder-title">Dokumen akan muncul di sini</div>
+              <div class="result-placeholder-desc">Pilih jenis dokumen, isi data &amp; minimal 1 item, lalu klik tombol <strong>buat</strong>.</div>
             </div>
 
             <div class="result-wrapper" id="results">
               <div class="result-main">
-                <div class="result-label">Total Invoice</div>
+                <div class="result-label">Total</div>
                 <div class="result-value" id="totalInv">Rp 0</div>
                 <div class="result-meta"><i class="ti ti-info-circle"></i> <span id="invMeta">0 item</span></div>
               </div>
@@ -170,7 +200,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
               <div class="result-grid">
                 <div class="result-item"><div class="result-item-label">Subtotal</div><div class="result-item-value" id="subtotal">Rp 0</div></div>
                 <div class="result-item" id="diskonRow" style="display:none"><div class="result-item-label">Diskon</div><div class="result-item-value result-good" id="diskonAmtEl">Rp 0</div></div>
-                <div class="result-item"><div class="result-item-label">PPN 11%</div><div class="result-item-value" id="ppn">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label" id="ppnLabel">PPN 11%</div><div class="result-item-value" id="ppn">Rp 0</div></div>
                 <div class="result-item" id="ongkirRow" style="display:none"><div class="result-item-label">Ongkir</div><div class="result-item-value" id="ongkirEl">Rp 0</div></div>
                 <div class="result-item" id="dpRow" style="display:none"><div class="result-item-label">DP</div><div class="result-item-value result-good" id="dpAmt">Rp 0</div></div>
                 <div class="result-item" id="sisaRow" style="display:none"><div class="result-item-label">Sisa Bayar</div><div class="result-item-value result-warn" id="sisa">Rp 0</div></div>
@@ -178,7 +208,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
 
               <div id="meteraiNote" class="ig-meterai" style="display:none"><i class="ti ti-stamp"></i> <span>Nilai transaksi &gt; Rp 5 juta — sesuai UU 10/2020, bubuhkan <strong>e-meterai Rp 10.000</strong> agar sah sebagai alat bukti.</span></div>
 
-              <div class="ig-preview-hdr"><i class="ti ti-eye"></i> Preview Invoice</div>
+              <div class="ig-preview-hdr"><i class="ti ti-eye"></i> <span id="previewLbl">Preview Invoice</span></div>
               <div id="invoiceDoc"></div>
 
               <div class="export-row">
@@ -199,10 +229,10 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
 
   <section class="content-section">
     <div class="wrap-text">
-      <h2>Cara Buat Invoice Profesional untuk UMKM</h2>
-      <p>Invoice yang rapi = pembayaran tepat waktu. Tools ini membuat dokumen invoice lengkap: <strong>logo bisnis</strong>, data penjual &amp; client, tanggal &amp; jatuh tempo, item dinamis (tambah sebanyak yang kamu butuh), diskon, ongkir, PPN, DP/sisa, hingga <strong>terbilang otomatis</strong> dan info pembayaran termasuk <strong>QRIS</strong>. Hasilnya bisa disimpan sebagai gambar atau dicetak/PDF untuk dikirim ke client via WhatsApp atau email. Gunakan format penomoran <strong>INV/YYYY/MM/NNN</strong> agar urut &amp; mudah dilacak. Belum yakin harga produkmu? Hitung dulu di <a href="/kalkulator/harga-jual">kalkulator harga jual</a> dan cek <a href="/kalkulator/margin">margin</a>-nya.</p>
-      <p><strong>Catatan:</strong> tools ini membuat invoice komersial untuk penagihan, bukan Faktur Pajak elektronik (e-Faktur/Coretax) resmi DJP. Untuk invoice bernilai lebih dari Rp 5 juta, lengkapi dengan e-meterai Rp 10.000 sesuai UU No. 10/2020.</p>
-      <div class="cta-box"><h3>Generate Invoice Sekarang</h3><p>Isi data, klik "Buat Invoice", lalu Save Image atau Print/PDF untuk dikirim ke client.</p></div>
+      <h2>Cara Buat Invoice, Kwitansi &amp; Penawaran untuk UMKM</h2>
+      <p>Satu alat untuk tiga dokumen bisnis: <strong>Invoice</strong> (tagihan), <strong>Kwitansi</strong> (bukti terima uang), dan <strong>Penawaran</strong> (quotation). Lengkap dengan logo bisnis, NPWP/NIK, item dinamis, diskon, ongkir, PPN 11% atau 12%, DP/sisa, <strong>terbilang otomatis</strong>, info pembayaran termasuk <strong>QRIS</strong>, hingga stempel <strong>LUNAS</strong>. Simpan profil bisnismu sekali, lalu terisi otomatis lain kali. Hasilnya bisa di-Save Image atau Print/PDF untuk dikirim via WhatsApp/email. Gunakan format penomoran <strong>INV/YYYY/MM/NNN</strong> agar urut. Belum yakin harga produkmu? Hitung dulu di <a href="/kalkulator/harga-jual">kalkulator harga jual</a> dan cek <a href="/kalkulator/margin">margin</a>-nya.</p>
+      <p><strong>Catatan:</strong> tools ini membuat dokumen komersial, bukan Faktur Pajak elektronik (e-Faktur/Coretax) resmi DJP. Untuk dokumen bernilai lebih dari Rp 5 juta, lengkapi dengan e-meterai Rp 10.000 sesuai UU No. 10/2020.</p>
+      <div class="cta-box"><h3>Generate Dokumen Sekarang</h3><p>Pilih jenis, isi data, klik buat, lalu Save Image atau Print/PDF.</p></div>
     </div>
   </section>
 
@@ -220,6 +250,9 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
   .check-row input { width: 17px; height: 17px; cursor: pointer; accent-color: var(--blue); }
   .ig-twocol { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
   .ig-select { padding: 0 8px; border: 1px solid var(--border, #e2e8f0); border-radius: 10px; background: #fff; font-size: 13px; min-width: 64px; }
+  .ig-doctype { display: flex; gap: 6px; }
+  .ig-dt { flex: 1; padding: 9px 6px; border: 1px solid var(--border, #e2e8f0); border-radius: 9px; background: #fff; font-weight: 600; font-size: 13px; cursor: pointer; color: #334155; }
+  .ig-dt.active { background: #0EA5E9; color: #fff; border-color: #0EA5E9; }
   .ig-item-row { border: 1px solid var(--border, #e2e8f0); border-radius: 10px; padding: 10px; margin-bottom: 8px; background: #fff; }
   .ig-item-row input { margin: 0; }
   .ig-item-grid { display: grid; grid-template-columns: 84px 1fr 38px; gap: 8px; margin-top: 6px; align-items: center; }
@@ -237,6 +270,10 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
   .ig-thumb { height: 38px; max-width: 90px; object-fit: contain; border: 1px solid var(--border, #e2e8f0); border-radius: 6px; padding: 2px; background: #fff; }
   .ig-clear { background: none; border: none; color: #DC2626; font-size: 12px; cursor: pointer; text-decoration: underline; }
   .ig-hint { font-size: 11.5px; color: #94a3b8; margin-top: 4px; }
+  .ig-profile-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; align-items: center; }
+  .ig-prof-save { background: #ECFDF5; color: #047857; border: 1px solid #6EE7B7; border-radius: 9px; padding: 9px 12px; font-weight: 600; font-size: 13px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+  .ig-prof-save:hover { background: #D1FAE5; }
+  .ig-prof-clear { background: none; border: none; color: #DC2626; font-size: 12px; cursor: pointer; text-decoration: underline; }
   textarea.ig-ta { width: 100%; min-height: 60px; padding: 10px; border: 1px solid var(--border, #e2e8f0); border-radius: 10px; font-family: inherit; font-size: 13px; resize: vertical; }
   .ig-preview-hdr { display: flex; align-items: center; gap: 8px; font-weight: 700; color: #0369A1; font-size: 14px; margin: 18px 0 2px; }
   .ig-meterai { display: flex; align-items: flex-start; gap: 8px; background: #FEF3C7; border: 1px solid #FCD34D; color: #92400E; border-radius: 10px; padding: 10px 12px; font-size: 12.5px; margin-top: 12px; line-height: 1.45; }
@@ -245,7 +282,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
 
 <script is:inline>
   (function() {
-    var INV_CSS = '.inv-doc{background:#fff;color:#1e293b;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;max-width:760px;margin:8px auto 0;padding:30px;border:1px solid #e2e8f0;border-radius:12px;box-shadow:0 4px 24px rgba(2,30,64,.08);font-size:13px;line-height:1.5}'
+    var INV_CSS = '.inv-doc{position:relative;background:#fff;color:#1e293b;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;max-width:760px;margin:8px auto 0;padding:30px;border:1px solid #e2e8f0;border-radius:12px;box-shadow:0 4px 24px rgba(2,30,64,.08);font-size:13px;line-height:1.5}'
       + '.inv-head{display:flex;justify-content:space-between;gap:20px;border-bottom:3px solid #0EA5E9;padding-bottom:16px;margin-bottom:16px;flex-wrap:wrap}'
       + '.inv-logo{max-height:58px;max-width:180px;margin-bottom:8px;display:block;object-fit:contain}'
       + '.inv-biz{font-size:18px;font-weight:800;color:#0f172a}'
@@ -278,14 +315,23 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       + '.inv-sign-name{margin-top:46px;font-weight:700;color:#0f172a;border-top:1px solid #cbd5e1;padding-top:4px;display:inline-block;min-width:140px}'
       + '.inv-notes{margin-top:16px;font-size:11.5px;color:#64748b;white-space:pre-line;border-top:1px dashed #e2e8f0;padding-top:10px}'
       + '.inv-foot{margin-top:14px;text-align:center;font-size:10.5px;color:#94a3b8}'
-      + '@media(max-width:560px){.inv-doc{padding:18px}.inv-title{font-size:24px}.inv-totals{width:100%}}';
+      + '.inv-stamp{position:absolute;top:120px;right:34px;transform:rotate(-13deg);border:3px solid;border-radius:8px;padding:5px 14px;font-weight:800;font-size:20px;letter-spacing:2px;opacity:.82;pointer-events:none}'
+      + '.inv-stamp.lunas{color:#059669;border-color:#059669}'
+      + '.inv-stamp.belum{color:#DC2626;border-color:#DC2626}'
+      + '.inv-kw-body{margin:6px 0 8px}'
+      + '.inv-kw-row{display:flex;gap:8px;margin:9px 0;font-size:13px;align-items:flex-start}'
+      + '.inv-kw-label{min-width:140px;color:#64748b;font-weight:600;flex-shrink:0}'
+      + '.inv-kw-words{flex:1;background:#f1f5f9;border-left:3px solid #0EA5E9;padding:8px 12px;border-radius:6px;font-style:italic;color:#0f172a;text-transform:capitalize}'
+      + '.inv-kw-amt{display:inline-block;background:#0EA5E9;color:#fff;padding:9px 18px;border-radius:8px;font-weight:800;font-size:18px}'
+      + '.inv-kw-foot{display:flex;justify-content:space-between;align-items:flex-end;margin-top:20px;gap:20px;flex-wrap:wrap}'
+      + '@media(max-width:560px){.inv-doc{padding:18px}.inv-title{font-size:24px}.inv-totals{width:100%}.inv-stamp{top:96px;right:18px;font-size:16px}}';
 
     function ready(fn) { if (window.HC && window.html2canvas) fn(); else setTimeout(function(){ ready(fn); }, 100); }
     ready(function() {
       var $ = function(id){ return document.getElementById(id); };
-      var logoData = '', qrisData = '', lastCalc = null, lastInvoiceHTML = '';
+      var logoData = '', qrisData = '', lastCalc = null, lastInvoiceHTML = '', docType = 'invoice';
+      var PKEY = 'hc-invoice-profile';
 
-      // inject invoice document css (once) so dynamically-rendered doc is styled
       if (!document.getElementById('ig-invcss')) {
         document.head.insertAdjacentHTML('beforeend', '<style id="ig-invcss">' + INV_CSS + '</style>');
       }
@@ -296,6 +342,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       function addDaysISO(iso,n){ var d=new Date((iso||todayISO())+'T00:00:00'); d.setDate(d.getDate()+n); return d.getFullYear()+'-'+z(d.getMonth()+1)+'-'+z(d.getDate()); }
       function fmtDate(iso){ if(!iso) return '-'; var d=new Date(iso+'T00:00:00'); if(isNaN(d.getTime())) return iso; return d.getDate()+' '+MON[d.getMonth()]+' '+d.getFullYear(); }
       function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+      function docLabel(t){ return t==='kwitansi'?'Kwitansi':(t==='penawaran'?'Penawaran':'Invoice'); }
 
       var ones = ['','satu','dua','tiga','empat','lima','enam','tujuh','delapan','sembilan','sepuluh','sebelas'];
       function toWords(x){
@@ -358,28 +405,18 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       wireUpload('logoInput','logoThumb','logoClear', function(v){ logoData = v; });
       wireUpload('qrisInput','qrisThumb','qrisClear', function(v){ qrisData = v; });
 
-      // ---- render the invoice document ----
-      function renderInvoice(c){
-        var logoHtml = logoData ? '<img class="inv-logo" src="'+logoData+'" alt="logo"/>' : '';
-        var rows = c.items.map(function(i, idx){
-          return '<tr><td>'+(idx+1)+'</td><td>'+esc(i.nama)+'</td><td class="r">'+i.qty+'</td><td class="r">'+HC.fmt(i.harga)+'</td><td class="r">'+HC.fmt(i.sub)+'</td></tr>';
-        }).join('');
+      // ---- doc type ----
+      function setDocType(t){
+        docType = t;
+        document.querySelectorAll('.ig-dt').forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-dt')===t); });
+        $('lblTempo').textContent = (t==='penawaran') ? 'Berlaku s/d' : (t==='kwitansi' ? 'Tanggal (ops.)' : 'Jatuh Tempo');
+        $('btnDocLbl').textContent = 'Buat ' + docLabel(t);
+        $('previewLbl').textContent = 'Preview ' + docLabel(t);
+        if (lastCalc) { lastCalc.docType = t; renderDoc(lastCalc); }
+      }
 
-        var headLeft = '<div class="inv-head-left">'+logoHtml+'<div class="inv-biz">'+esc(c.penjual||'')+'</div>'+(c.penjualMeta?'<div class="inv-biz-meta">'+esc(c.penjualMeta)+'</div>':'')+'</div>';
-        var headRight = '<div class="inv-head-right"><div class="inv-title">INVOICE</div><div class="inv-meta-table"><div>No: <b>'+esc(c.noInv||'-')+'</b></div><div>Tanggal: <b>'+fmtDate(c.tgl)+'</b></div><div>Jatuh Tempo: <b>'+fmtDate(c.tempo)+'</b></div></div></div>';
-        var toHtml = '<div class="inv-to"><div class="inv-to-label">Ditagihkan kepada</div><div class="inv-to-name">'+esc(c.pembeli)+'</div>'+(c.pembeliMeta?'<div class="inv-to-meta">'+esc(c.pembeliMeta)+'</div>':'')+'</div>';
-        var itemsHtml = '<table class="inv-items"><thead><tr><th style="width:30px">#</th><th>Deskripsi</th><th class="r" style="width:46px">Qty</th><th class="r" style="width:108px">Harga</th><th class="r" style="width:118px">Jumlah</th></tr></thead><tbody>'+rows+'</tbody></table>';
-
-        var trows = '<div class="inv-totals-row"><span>Subtotal</span><span>'+HC.fmt(c.subtotal)+'</span></div>';
-        if (c.diskonAmt > 0) trows += '<div class="inv-totals-row muted"><span>Diskon'+(c.diskonLabel?' ('+c.diskonLabel+')':'')+'</span><span>- '+HC.fmt(c.diskonAmt)+'</span></div>';
-        if (c.usePpn) trows += '<div class="inv-totals-row muted"><span>PPN 11%</span><span>'+HC.fmt(c.ppnAmt)+'</span></div>';
-        if (c.ongkir > 0) trows += '<div class="inv-totals-row muted"><span>Ongkir</span><span>'+HC.fmt(c.ongkir)+'</span></div>';
-        var grand = '<div class="inv-grand"><span>TOTAL</span><span>'+HC.fmt(c.total)+'</span></div>';
-        var dpRows = '';
-        if (c.useDp) dpRows = '<div class="inv-totals-row"><span>DP ('+c.dpPct+'%)</span><span>'+HC.fmt(c.dpAmt)+'</span></div><div class="inv-totals-row" style="font-weight:700;color:#0369A1"><span>Sisa Bayar</span><span>'+HC.fmt(c.sisa)+'</span></div>';
-        var totalsHtml = '<div class="inv-totals">'+trows+grand+dpRows+'</div>';
-        var tbHtml = '<div class="inv-terbilang">Terbilang: <b>'+terbilang(c.total)+' rupiah</b></div>';
-
+      // ---- render ----
+      function payBlock(c){
         var payInner = '';
         if (c.bank || c.rek || c.an) {
           payInner += '<div class="inv-pay-label">Pembayaran</div>'
@@ -388,15 +425,60 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
             + (c.an ? '<div>a.n. '+esc(c.an)+'</div>' : '');
         }
         if (qrisData) payInner += '<div style="margin-top:6px">Scan QRIS:</div><img class="inv-qris" src="'+qrisData+'" alt="QRIS"/>';
-        var payHtml = '<div class="inv-pay">'+payInner+'</div>';
+        return '<div class="inv-pay">'+payInner+'</div>';
+      }
+
+      function renderDoc(c){
+        var doc = $('invoiceDoc');
+        doc.className = 'inv-doc';
+        var logoHtml = logoData ? '<img class="inv-logo" src="'+logoData+'" alt="logo"/>' : '';
+        var headLeft = '<div class="inv-head-left">'+logoHtml+'<div class="inv-biz">'+esc(c.penjual||'')+'</div>'+(c.penjualMeta?'<div class="inv-biz-meta">'+esc(c.penjualMeta)+'</div>':'')+'</div>';
+        var stamp = (c.status!=='none' && c.docType!=='penawaran') ? '<div class="inv-stamp '+c.status+'">'+(c.status==='lunas'?'LUNAS':'BELUM LUNAS')+'</div>' : '';
         var signHtml = '<div class="inv-sign">Hormat kami,<div class="inv-sign-name">'+esc(c.penjual||'')+'</div></div>';
-        var bottomHtml = '<div class="inv-bottom">'+payHtml+signHtml+'</div>';
         var notesHtml = c.notes ? '<div class="inv-notes">'+esc(c.notes)+'</div>' : '';
         var footHtml = '<div class="inv-foot">Dibuat dengan HitungCerdas.net &middot; hitungcerdas.net/kalkulator/invoice-generator</div>';
 
-        var inner = '<div class="inv-head">'+headLeft+headRight+'</div>'+toHtml+itemsHtml+totalsHtml+tbHtml+bottomHtml+notesHtml+footHtml;
-        var doc = $('invoiceDoc');
-        doc.className = 'inv-doc';
+        if (c.docType === 'kwitansi') {
+          var hrK = '<div class="inv-head-right"><div class="inv-title">KWITANSI</div><div class="inv-meta-table"><div>No: <b>'+esc(c.noInv||'-')+'</b></div><div>Tanggal: <b>'+fmtDate(c.tgl)+'</b></div></div></div>';
+          var ket = c.notes ? c.notes : c.items.map(function(i){ return i.nama+' ('+i.qty+')'; }).join(', ');
+          var bodyK = '<div class="inv-kw-body">'
+            + '<div class="inv-kw-row"><div class="inv-kw-label">Sudah terima dari</div><div>: <b>'+esc(c.pembeli)+'</b></div></div>'
+            + '<div class="inv-kw-row"><div class="inv-kw-label">Uang sejumlah</div><div class="inv-kw-words">'+terbilang(c.total)+' rupiah</div></div>'
+            + '<div class="inv-kw-row"><div class="inv-kw-label">Untuk pembayaran</div><div>: '+esc(ket)+'</div></div>'
+            + '</div>';
+          var footK = '<div class="inv-kw-foot"><div class="inv-kw-amt">'+HC.fmt(c.total)+'</div>'+signHtml+'</div>';
+          var innerK = '<div class="inv-head">'+headLeft+hrK+'</div>'+stamp+bodyK+footK+notesHtml+footHtml;
+          doc.innerHTML = innerK;
+          lastInvoiceHTML = innerK;
+          return;
+        }
+
+        var isQuote = (c.docType === 'penawaran');
+        var title = isQuote ? 'PENAWARAN' : 'INVOICE';
+        var date2Label = isQuote ? 'Berlaku s/d' : 'Jatuh Tempo';
+        var toLabel = isQuote ? 'Kepada Yth.' : 'Ditagihkan kepada';
+
+        var headRight = '<div class="inv-head-right"><div class="inv-title">'+title+'</div><div class="inv-meta-table"><div>No: <b>'+esc(c.noInv||'-')+'</b></div><div>Tanggal: <b>'+fmtDate(c.tgl)+'</b></div><div>'+date2Label+': <b>'+fmtDate(c.tempo)+'</b></div></div></div>';
+        var toHtml = '<div class="inv-to"><div class="inv-to-label">'+toLabel+'</div><div class="inv-to-name">'+esc(c.pembeli)+'</div>'+(c.pembeliMeta?'<div class="inv-to-meta">'+esc(c.pembeliMeta)+'</div>':'')+'</div>';
+
+        var rows = c.items.map(function(i, idx){
+          return '<tr><td>'+(idx+1)+'</td><td>'+esc(i.nama)+'</td><td class="r">'+i.qty+'</td><td class="r">'+HC.fmt(i.harga)+'</td><td class="r">'+HC.fmt(i.sub)+'</td></tr>';
+        }).join('');
+        var itemsHtml = '<table class="inv-items"><thead><tr><th style="width:30px">#</th><th>Deskripsi</th><th class="r" style="width:46px">Qty</th><th class="r" style="width:108px">Harga</th><th class="r" style="width:118px">Jumlah</th></tr></thead><tbody>'+rows+'</tbody></table>';
+
+        var trows = '<div class="inv-totals-row"><span>Subtotal</span><span>'+HC.fmt(c.subtotal)+'</span></div>';
+        if (c.diskonAmt > 0) trows += '<div class="inv-totals-row muted"><span>Diskon'+(c.diskonLabel?' ('+c.diskonLabel+')':'')+'</span><span>- '+HC.fmt(c.diskonAmt)+'</span></div>';
+        if (c.usePpn) trows += '<div class="inv-totals-row muted"><span>PPN '+c.ppnRate+'%</span><span>'+HC.fmt(c.ppnAmt)+'</span></div>';
+        if (c.ongkir > 0) trows += '<div class="inv-totals-row muted"><span>Ongkir</span><span>'+HC.fmt(c.ongkir)+'</span></div>';
+        var grand = '<div class="inv-grand"><span>TOTAL</span><span>'+HC.fmt(c.total)+'</span></div>';
+        var dpRows = '';
+        if (c.useDp) dpRows = '<div class="inv-totals-row"><span>DP ('+c.dpPct+'%)</span><span>'+HC.fmt(c.dpAmt)+'</span></div><div class="inv-totals-row" style="font-weight:700;color:#0369A1"><span>Sisa Bayar</span><span>'+HC.fmt(c.sisa)+'</span></div>';
+        var totalsHtml = '<div class="inv-totals">'+trows+grand+dpRows+'</div>';
+        var tbHtml = '<div class="inv-terbilang">Terbilang: <b>'+terbilang(c.total)+' rupiah</b></div>';
+        var bottomHtml = '<div class="inv-bottom">'+payBlock(c)+signHtml+'</div>';
+        var validityHtml = isQuote ? '<div class="inv-notes">Penawaran ini berlaku sampai '+fmtDate(c.tempo)+'. Harga dapat berubah setelah tanggal tersebut.</div>' : '';
+
+        var inner = '<div class="inv-head">'+headLeft+headRight+'</div>'+stamp+toHtml+itemsHtml+totalsHtml+tbHtml+bottomHtml+notesHtml+validityHtml+footHtml;
         doc.innerHTML = inner;
         lastInvoiceHTML = inner;
       }
@@ -408,8 +490,10 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         var penjual = $('penjual').value.trim();
         var palamat = $('penjualAlamat').value.trim();
         var ptelp = $('penjualTelp').value.trim();
+        var pnpwp = $('penjualNpwp').value.trim();
         var pembeli = $('pembeli').value.trim();
         var balamat = $('pembeliAlamat').value.trim();
+        var bnpwp = $('pembeliNpwp').value.trim();
         var noInv = $('noInv').value.trim();
         var tgl = $('tgl').value || todayISO();
         var tempo = $('tempo').value || '';
@@ -428,42 +512,49 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
 
         var dpp = subtotal - diskonAmt;
         var usePpn = $('usePpn').checked;
-        var ppnAmt = usePpn ? dpp*0.11 : 0;
+        var ppnRate = parseInt($('ppnRate').value) || 11;
+        var ppnAmt = usePpn ? dpp*ppnRate/100 : 0;
         var ongkir = HC.parseRp($('ongkir').value);
         var total = dpp + ppnAmt + ongkir;
         var useDp = $('useDp').checked;
         var dpPct = parseFloat($('dpPct').value) || 0;
         var dpAmt = useDp ? total*dpPct/100 : 0;
         var sisa = total - dpAmt;
+        var status = $('status').value;
 
-        var penjualMeta = [palamat, ptelp ? ('Telp/Email: '+ptelp) : ''].filter(Boolean).join('\n');
+        var pm = []; if (palamat) pm.push(palamat); if (ptelp) pm.push('Telp/Email: '+ptelp); if (pnpwp) pm.push('NPWP: '+pnpwp);
+        var penjualMeta = pm.join('\n');
+        var bm = []; if (balamat) bm.push(balamat); if (bnpwp) bm.push('NPWP: '+bnpwp);
+        var pembeliMeta = bm.join('\n');
         var bank = $('bank').value.trim(), rek = $('rek').value.trim(), an = $('an').value.trim(), notes = $('notes').value.trim();
 
         $('totalInv').textContent = HC.fmt(total);
-        $('invMeta').textContent = items.length+' item · '+pembeli;
+        $('invMeta').textContent = docLabel(docType)+' · '+items.length+' item · '+pembeli;
         $('subtotal').textContent = HC.fmt(subtotal);
         setRow('diskonRow','diskonAmtEl', diskonAmt>0, '- '+HC.fmt(diskonAmt));
+        $('ppnLabel').textContent = 'PPN '+ppnRate+'%';
         $('ppn').textContent = usePpn ? HC.fmt(ppnAmt) : 'Tidak kena';
         setRow('ongkirRow','ongkirEl', ongkir>0, HC.fmt(ongkir));
         if (useDp) { $('dpRow').style.display=''; $('sisaRow').style.display=''; $('dpAmt').textContent=HC.fmt(dpAmt); $('sisa').textContent=HC.fmt(sisa); }
         else { $('dpRow').style.display='none'; $('sisaRow').style.display='none'; }
-        $('meteraiNote').style.display = (total > 5000000) ? 'flex' : 'none';
+        $('meteraiNote').style.display = (total > 5000000 && docType !== 'penawaran') ? 'flex' : 'none';
 
-        lastCalc = { penjual:penjual, penjualMeta:penjualMeta, pembeli:pembeli, pembeliMeta:balamat, noInv:noInv, tgl:tgl, tempo:tempo, items:items, subtotal:subtotal, diskonAmt:diskonAmt, diskonLabel:diskonLabel, usePpn:usePpn, ppnAmt:ppnAmt, ongkir:ongkir, total:total, useDp:useDp, dpPct:dpPct, dpAmt:dpAmt, sisa:sisa, bank:bank, rek:rek, an:an, notes:notes };
-        renderInvoice(lastCalc);
+        lastCalc = { docType:docType, penjual:penjual, penjualMeta:penjualMeta, pembeli:pembeli, pembeliMeta:pembeliMeta, noInv:noInv, tgl:tgl, tempo:tempo, items:items, subtotal:subtotal, diskonAmt:diskonAmt, diskonLabel:diskonLabel, usePpn:usePpn, ppnRate:ppnRate, ppnAmt:ppnAmt, ongkir:ongkir, total:total, useDp:useDp, dpPct:dpPct, dpAmt:dpAmt, sisa:sisa, status:status, bank:bank, rek:rek, an:an, notes:notes };
+        renderDoc(lastCalc);
         $('placeholder').style.display = 'none';
         $('results').classList.add('show');
         $('results').scrollIntoView({ behavior:'smooth', block:'nearest' });
-        HC.toast('Invoice dibuat!');
+        HC.toast(docLabel(docType)+' dibuat!');
       }
 
       function reset(){
-        $('penjual').value='Toko Cuan Pertama'; $('penjualAlamat').value=''; $('penjualTelp').value='';
-        $('pembeli').value='PT. Klien Contoh'; $('pembeliAlamat').value='';
+        $('penjual').value='Toko Cuan Pertama'; $('penjualAlamat').value=''; $('penjualTelp').value=''; $('penjualNpwp').value='';
+        $('pembeli').value='PT. Klien Contoh'; $('pembeliAlamat').value=''; $('pembeliNpwp').value='';
         $('noInv').value='INV/2026/06/001';
         $('tgl').value=todayISO(); $('tempo').value=addDaysISO(todayISO(),14);
         $('diskonUnit').value='Rp'; $('diskonVal').value=''; $('ongkir').value='';
-        $('usePpn').checked=false; $('useDp').checked=false; $('dpField').style.display='none';
+        $('usePpn').checked=false; $('ppnRate').value='11'; $('useDp').checked=false; $('dpField').style.display='none';
+        $('status').value='none';
         $('bank').value=''; $('rek').value=''; $('an').value=''; $('notes').value='';
         logoData=''; qrisData='';
         $('logoThumb').style.display='none'; $('logoClear').style.display='none'; $('logoInput').value='';
@@ -478,15 +569,18 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       function summaryText(){
         if (!lastCalc) return '';
         var c = lastCalc;
-        var s = '📄 *INVOICE '+c.noInv+'*\n'+c.penjual+'\n\nKepada: '+c.pembeli+'\nTanggal: '+fmtDate(c.tgl)+' · Jatuh tempo: '+fmtDate(c.tempo)+'\n\n*Item:*\n';
+        var s = '📄 *'+docLabel(c.docType).toUpperCase()+' '+c.noInv+'*\n'+c.penjual+'\n\n'+(c.docType==='kwitansi'?'Diterima dari':'Kepada')+': '+c.pembeli+'\nTanggal: '+fmtDate(c.tgl);
+        if (c.docType !== 'kwitansi') s += ' · '+(c.docType==='penawaran'?'Berlaku s/d':'Jatuh tempo')+': '+fmtDate(c.tempo);
+        s += '\n\n*Item:*\n';
         c.items.forEach(function(i){ s += '• '+i.nama+' '+i.qty+'× = '+HC.fmt(i.sub)+'\n'; });
         s += '\nSubtotal: '+HC.fmt(c.subtotal)+'\n';
         if (c.diskonAmt>0) s += 'Diskon: -'+HC.fmt(c.diskonAmt)+'\n';
-        if (c.usePpn) s += 'PPN 11%: '+HC.fmt(c.ppnAmt)+'\n';
+        if (c.usePpn) s += 'PPN '+c.ppnRate+'%: '+HC.fmt(c.ppnAmt)+'\n';
         if (c.ongkir>0) s += 'Ongkir: '+HC.fmt(c.ongkir)+'\n';
         s += '*TOTAL: '+HC.fmt(c.total)+'*';
         if (c.useDp) s += '\nDP '+c.dpPct+'%: '+HC.fmt(c.dpAmt)+'\nSisa: '+HC.fmt(c.sisa);
         s += '\nTerbilang: '+terbilang(c.total)+' rupiah';
+        if (c.status==='lunas') s += '\nStatus: LUNAS';
         if (c.bank || c.rek) s += '\n\nBayar ke: '+[c.bank, c.rek, c.an?('a.n. '+c.an):''].filter(Boolean).join(' ');
         s += '\n\nvia HitungCerdas.net';
         return s;
@@ -496,33 +590,33 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         if (!lastCalc) return null;
         var c = lastCalc;
         var inputs = [
-          { label:'📄 No. Invoice', value: c.noInv||'-' },
+          { label:'📄 No.', value: c.noInv||'-' },
           { label:'🏢 Penjual', value: c.penjual||'-' },
           { label:'👤 Client', value: c.pembeli },
           { label:'📅 Tanggal', value: fmtDate(c.tgl) },
-          { label:'⏰ Jatuh Tempo', value: fmtDate(c.tempo) },
           { label:'📦 Item', value: c.items.length+' item' },
         ];
+        if (c.docType !== 'kwitansi') inputs.push({ label: c.docType==='penawaran'?'⏰ Berlaku s/d':'⏰ Jatuh Tempo', value: fmtDate(c.tempo) });
         var results = [{ label:'Subtotal', value: HC.fmt(c.subtotal) }];
         if (c.diskonAmt>0) results.push({ label:'Diskon', value:'- '+HC.fmt(c.diskonAmt) });
-        if (c.usePpn) results.push({ label:'PPN 11%', value: HC.fmt(c.ppnAmt) });
+        if (c.usePpn) results.push({ label:'PPN '+c.ppnRate+'%', value: HC.fmt(c.ppnAmt) });
         if (c.ongkir>0) results.push({ label:'Ongkir', value: HC.fmt(c.ongkir) });
         results.push({ label:'TOTAL', value: HC.fmt(c.total), highlight:true });
         if (c.useDp) { results.push({ label:'DP '+c.dpPct+'%', value: HC.fmt(c.dpAmt) }); results.push({ label:'Sisa Bayar', value: HC.fmt(c.sisa), highlight:true }); }
         return HC.buildReportCard({
-          title:'📄 Invoice '+(c.noInv||''), color:'#0EA5E9', color2:'#0369A1',
-          heroLabel:'Total Invoice', heroValue: HC.fmt(c.total),
-          heroSubtext:'Untuk: '+c.pembeli+' · '+c.items.length+' item'+(c.usePpn?' · incl PPN 11%':''),
+          title:'📄 '+docLabel(c.docType)+' '+(c.noInv||''), color:'#0EA5E9', color2:'#0369A1',
+          heroLabel:'Total', heroValue: HC.fmt(c.total),
+          heroSubtext:'Untuk: '+c.pembeli+' · '+c.items.length+' item'+(c.usePpn?(' · incl PPN '+c.ppnRate+'%'):'')+(c.status==='lunas'?' · LUNAS':''),
           inputs: inputs, results: results,
           insight: c.useDp ? ('DP '+c.dpPct+'% = '+HC.fmt(c.dpAmt)+'. Sisa '+HC.fmt(c.sisa)+'.') : ('Pembayaran penuh '+HC.fmt(c.total)+'. Terbilang: '+terbilang(c.total)+' rupiah.'),
           slug:'invoice-generator',
         });
       }
 
-      function safeName(){ return 'invoice-'+String((lastCalc && lastCalc.noInv) || Date.now()).replace(/[\/\\\s]+/g,'-'); }
+      function safeName(){ return docLabel(docType).toLowerCase()+'-'+String((lastCalc && lastCalc.noInv) || Date.now()).replace(/[\/\\\s]+/g,'-'); }
 
       function saveImage(){
-        if (!lastCalc) { HC.toast('Buat invoice dulu','error'); return; }
+        if (!lastCalc) { HC.toast('Buat dokumen dulu','error'); return; }
         HC.toast('Menyiapkan gambar...','info');
         html2canvas($('invoiceDoc'), { scale:2, backgroundColor:'#ffffff', useCORS:true }).then(function(canvas){
           var a = document.createElement('a');
@@ -534,35 +628,64 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       }
 
       function printInvoice(){
-        if (!lastCalc || !lastInvoiceHTML) { HC.toast('Buat invoice dulu','error'); return; }
+        if (!lastCalc || !lastInvoiceHTML) { HC.toast('Buat dokumen dulu','error'); return; }
         var w = window.open('', '_blank', 'width=820,height=900');
         if (!w) { HC.toast('Popup diblokir browser. Izinkan popup untuk Print/PDF.','error'); return; }
-        w.document.write('<!doctype html><html><head><meta charset="utf-8"><title>Invoice '+esc((lastCalc.noInv||''))+'</title><style>body{margin:0;background:#fff;padding:12px}'+INV_CSS+'@media print{body{padding:0}.inv-doc{border:none;box-shadow:none;margin:0;max-width:100%}}</style></head><body><div class="inv-doc">'+lastInvoiceHTML+'</div></body></html>');
+        w.document.write('<!doctype html><html><head><meta charset="utf-8"><title>'+esc(docLabel(lastCalc.docType)+' '+(lastCalc.noInv||''))+'</title><style>body{margin:0;background:#fff;padding:12px}'+INV_CSS+'@media print{body{padding:0}.inv-doc{border:none;box-shadow:none;margin:0;max-width:100%}}</style></head><body><div class="inv-doc">'+lastInvoiceHTML+'</div></body></html>');
         w.document.close(); w.focus();
         setTimeout(function(){ try { w.print(); } catch(e){} }, 450);
       }
+
+      // ---- profile (localStorage) ----
+      function saveProfile(){
+        try {
+          var p = { penjual:$('penjual').value, penjualAlamat:$('penjualAlamat').value, penjualTelp:$('penjualTelp').value, penjualNpwp:$('penjualNpwp').value, bank:$('bank').value, rek:$('rek').value, an:$('an').value, logo:logoData, qris:qrisData };
+          localStorage.setItem(PKEY, JSON.stringify(p));
+          $('btnClearProfile').style.display=''; $('profHint').style.display='';
+          HC.toast('Profil bisnis tersimpan!');
+        } catch(e){ HC.toast('Browser tidak mengizinkan penyimpanan','error'); }
+      }
+      function loadProfile(){
+        try {
+          var raw = localStorage.getItem(PKEY); if (!raw) return;
+          var p = JSON.parse(raw);
+          if (p.penjual) $('penjual').value = p.penjual;
+          $('penjualAlamat').value = p.penjualAlamat||''; $('penjualTelp').value = p.penjualTelp||''; $('penjualNpwp').value = p.penjualNpwp||'';
+          $('bank').value = p.bank||''; $('rek').value = p.rek||''; $('an').value = p.an||'';
+          if (p.logo) { logoData = p.logo; $('logoThumb').src = p.logo; $('logoThumb').style.display=''; $('logoClear').style.display=''; }
+          if (p.qris) { qrisData = p.qris; $('qrisThumb').src = p.qris; $('qrisThumb').style.display=''; $('qrisClear').style.display=''; }
+          $('btnClearProfile').style.display=''; $('profHint').style.display='';
+        } catch(e){}
+      }
+      function clearProfile(){ try { localStorage.removeItem(PKEY); } catch(e){} $('btnClearProfile').style.display='none'; $('profHint').style.display='none'; HC.toast('Profil tersimpan dihapus','info'); }
 
       // ---- init ----
       $('tgl').value = todayISO();
       $('tempo').value = addDaysISO(todayISO(), 14);
       addItem({ nama:'Jasa Konsultasi', qty:2, harga:'500.000' });
+      loadProfile();
 
       $('ongkir').addEventListener('input', HC.fmtInput);
       $('diskonVal').addEventListener('input', function(){ if ($('diskonUnit').value === 'Rp') HC.fmtInput({ target: $('diskonVal') }); });
       $('diskonUnit').addEventListener('change', function(){ $('diskonVal').value = ''; });
       $('useDp').addEventListener('change', function(){ $('dpField').style.display = $('useDp').checked ? '' : 'none'; });
       document.querySelectorAll('.ig-net-btn').forEach(function(b){
-        b.addEventListener('click', function(){ var n = parseInt(b.getAttribute('data-net')); $('tempo').value = addDaysISO($('tgl').value || todayISO(), n); });
+        b.addEventListener('click', function(){ $('tempo').value = addDaysISO($('tgl').value || todayISO(), parseInt(b.getAttribute('data-net'))); });
+      });
+      document.querySelectorAll('.ig-dt').forEach(function(b){
+        b.addEventListener('click', function(){ setDocType(b.getAttribute('data-dt')); });
       });
 
       $('btnAddItem').addEventListener('click', function(){ addItem(); });
       $('btnHitung').addEventListener('click', compute);
       $('btnReset').addEventListener('click', reset);
+      $('btnSaveProfile').addEventListener('click', saveProfile);
+      $('btnClearProfile').addEventListener('click', clearProfile);
       $('exportImg').addEventListener('click', saveImage);
       $('exportPdf').addEventListener('click', printInvoice);
-      $('exportWa').addEventListener('click', function(){ var r=buildReport(); if (r) HC.shareWhatsApp(r, summaryText(), 'invoice-generator'); else HC.toast('Buat invoice dulu','error'); });
-      $('exportCopy').addEventListener('click', function(){ if (lastCalc) HC.copyText(summaryText(), 'Teks invoice tersalin!'); else HC.toast('Buat invoice dulu','error'); });
-      $('exportExcel').addEventListener('click', function(){ var r=buildReport(); if (!r) { HC.toast('Buat invoice dulu','error'); return; } HC.exportToExcel(r, safeName()); });
+      $('exportWa').addEventListener('click', function(){ var r=buildReport(); if (r) HC.shareWhatsApp(r, summaryText(), 'invoice-generator'); else HC.toast('Buat dokumen dulu','error'); });
+      $('exportCopy').addEventListener('click', function(){ if (lastCalc) HC.copyText(summaryText(), 'Teks tersalin!'); else HC.toast('Buat dokumen dulu','error'); });
+      $('exportExcel').addEventListener('click', function(){ var r=buildReport(); if (!r) { HC.toast('Buat dokumen dulu','error'); return; } HC.exportToExcel(r, safeName()); });
     });
   })();
 </script>
