@@ -329,7 +329,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
     function ready(fn) { if (window.HC && window.html2canvas) fn(); else setTimeout(function(){ ready(fn); }, 100); }
     ready(function() {
       var $ = function(id){ return document.getElementById(id); };
-      var logoData = '', qrisData = '', lastCalc = null, lastInvoiceHTML = '', docType = 'invoice';
+      var logoData = '', qrisData = '', lastCalc = null, lastInvoiceHTML = '', docType = 'invoice', numberTouched = false;
       var PKEY = 'hc-invoice-profile';
 
       if (!document.getElementById('ig-invcss')) {
@@ -343,6 +343,9 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       function fmtDate(iso){ if(!iso) return '-'; var d=new Date(iso+'T00:00:00'); if(isNaN(d.getTime())) return iso; return d.getDate()+' '+MON[d.getMonth()]+' '+d.getFullYear(); }
       function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
       function docLabel(t){ return t==='kwitansi'?'Kwitansi':(t==='penawaran'?'Penawaran':'Invoice'); }
+      var NUM_PREFIX = { invoice:'INV/', kwitansi:'KW/', penawaran:'PNW/' };
+      function numSuffix(){ var d=new Date(); return d.getFullYear()+'/'+z(d.getMonth()+1)+'/001'; }
+      function applyNumberPrefix(t){ if (numberTouched) return; $('noInv').value = NUM_PREFIX[t] + numSuffix(); }
 
       var ones = ['','satu','dua','tiga','empat','lima','enam','tujuh','delapan','sembilan','sepuluh','sebelas'];
       function toWords(x){
@@ -408,6 +411,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       // ---- doc type ----
       function setDocType(t){
         docType = t;
+        applyNumberPrefix(t);
         document.querySelectorAll('.ig-dt').forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-dt')===t); });
         $('lblTempo').textContent = (t==='penawaran') ? 'Berlaku s/d' : (t==='kwitansi' ? 'Tanggal (ops.)' : 'Jatuh Tempo');
         $('btnDocLbl').textContent = 'Buat ' + docLabel(t);
@@ -550,7 +554,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       function reset(){
         $('penjual').value='Toko Cuan Pertama'; $('penjualAlamat').value=''; $('penjualTelp').value=''; $('penjualNpwp').value='';
         $('pembeli').value='PT. Klien Contoh'; $('pembeliAlamat').value=''; $('pembeliNpwp').value='';
-        $('noInv').value='INV/2026/06/001';
+        numberTouched=false; applyNumberPrefix(docType);
         $('tgl').value=todayISO(); $('tempo').value=addDaysISO(todayISO(),14);
         $('diskonUnit').value='Rp'; $('diskonVal').value=''; $('ongkir').value='';
         $('usePpn').checked=false; $('ppnRate').value='11'; $('useDp').checked=false; $('dpField').style.display='none';
@@ -664,6 +668,8 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       $('tempo').value = addDaysISO(todayISO(), 14);
       addItem({ nama:'Jasa Konsultasi', qty:2, harga:'500.000' });
       loadProfile();
+      applyNumberPrefix('invoice');
+      $('noInv').addEventListener('input', function(){ numberTouched = true; });
 
       $('ongkir').addEventListener('input', HC.fmtInput);
       $('diskonVal').addEventListener('input', function(){ if ($('diskonUnit').value === 'Rp') HC.fmtInput({ target: $('diskonVal') }); });
