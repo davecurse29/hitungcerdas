@@ -1,0 +1,135 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import ArticleSchema from '../../components/ArticleSchema.astro';
+const datePublished = '2026-06-27';
+const dateModified = '2026-06-27';
+const today = new Date(datePublished).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'Potongan GoFood, GrabFood & ShopeeFood' }];
+const kw = ['potongan gofood berapa persen', 'komisi grabfood 2026', 'potongan shopeefood merchant', 'komisi gofood merchant', 'biaya admin grabfood', 'potongan gofood untuk penjual'];
+---
+<Layout title="Potongan GoFood, GrabFood & ShopeeFood untuk Merchant 2026 — Berapa Persen?" description="Berapa persen potongan GoFood, GrabFood, ShopeeFood untuk penjual di 2026? GoFood 20% + Rp 1.000, GrabFood ~30%, ShopeeFood ~20%, plus PPN atas komisi & cara hitung harga jual agar tetap untung." keywords={kw} canonical="https://hitungcerdas.net/blog/potongan-gofood-grabfood-shopeefood" ogType="article">
+  <ArticleSchema
+    headline="Potongan GoFood, GrabFood & ShopeeFood untuk Merchant 2026 — Berapa Persen?"
+    description="Berapa persen potongan GoFood, GrabFood, ShopeeFood untuk penjual di 2026, plus PPN atas komisi dan cara hitung harga jual agar tetap untung."
+    datePublished={datePublished}
+    dateModified={dateModified}
+    slug="potongan-gofood-grabfood-shopeefood"
+    articleSection="UMKM"
+    keywords={kw}
+    wordCount={1400}
+  />
+
+  <section class="article-hero" style="--cat-color:#D97706;--cat-color2:#B45309">
+    <div class="wrap"><Breadcrumb items={bcItems} /><div class="article-tag">UMKM</div>
+      <h1>Potongan GoFood, GrabFood &amp; ShopeeFood untuk Merchant 2026</h1>
+      <div class="article-meta"><span><i class="ti ti-calendar"></i> {today}</span><span><i class="ti ti-clock"></i> 8 menit baca</span><span><i class="ti ti-user"></i> Tim HitungCerdas</span></div>
+    </div>
+  </section>
+  <AdSlot format="horizontal" />
+  <article class="content-section"><div class="wrap-text">
+    <p class="lead">Jualan ramai tapi uang yang masuk ke rekening lebih kecil dari dugaan? Penyebabnya hampir selalu sama: <strong>potongan platform</strong>. Singkatnya untuk merchant di 2026 — <strong>GoFood 20% + Rp 1.000/transaksi</strong>, <strong>GrabFood ~25–30%</strong>, <strong>ShopeeFood ~20%</strong>, dan ketiganya masih ditambah <strong>PPN atas komisi</strong>. Mari bedah angka aslinya, plus cara menetapkan harga jual supaya margin tetap aman.</p>
+
+    <h2>Ringkasan: berapa persen potongan tiap platform (2026)</h2>
+    <div style="overflow-x:auto;margin:18px 0">
+      <table style="width:100%;border-collapse:collapse;font-size:14px;min-width:480px">
+        <thead>
+          <tr style="background:var(--bg-soft);text-align:left">
+            <th style="padding:10px;border-bottom:2px solid var(--border)">Platform</th>
+            <th style="padding:10px;border-bottom:2px solid var(--border)">Komisi pokok</th>
+            <th style="padding:10px;border-bottom:2px solid var(--border)">Biaya lain</th>
+            <th style="padding:10px;border-bottom:2px solid var(--border)">Potongan efektif*</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding:10px;border-bottom:1px solid var(--border)"><strong>GoFood</strong></td>
+            <td style="padding:10px;border-bottom:1px solid var(--border)">20%</td>
+            <td style="padding:10px;border-bottom:1px solid var(--border)">+ Rp 1.000/transaksi + PPN atas komisi</td>
+            <td style="padding:10px;border-bottom:1px solid var(--border)">~22–27%</td>
+          </tr>
+          <tr>
+            <td style="padding:10px;border-bottom:1px solid var(--border)"><strong>GrabFood</strong></td>
+            <td style="padding:10px;border-bottom:1px solid var(--border)">~25–30%</td>
+            <td style="padding:10px;border-bottom:1px solid var(--border)">PPN biasanya sudah termasuk (cek kontrak)</td>
+            <td style="padding:10px;border-bottom:1px solid var(--border)">~25–30%</td>
+          </tr>
+          <tr>
+            <td style="padding:10px;border-bottom:1px solid var(--border)"><strong>ShopeeFood</strong></td>
+            <td style="padding:10px;border-bottom:1px solid var(--border)">~20%</td>
+            <td style="padding:10px;border-bottom:1px solid var(--border)">Kadang ada service fee tambahan</td>
+            <td style="padding:10px;border-bottom:1px solid var(--border)">~20%+</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:13px;color:var(--text-soft)">*Potongan efektif = total potongan dibagi harga jual. Terasa lebih besar pada pesanan kecil karena ada biaya tetap. Angka di atas adalah skema umum mitra reguler dan <strong>bisa berbeda</strong> tergantung jenis kemitraan, promo, dan kesepakatan akunmu.</p>
+
+    <h2>1. Potongan GoFood: 20% + Rp 1.000 + PPN</h2>
+    <p>Untuk mitra usaha reguler (UMKM) di 2026, GoFood memotong <strong>20% dari harga item</strong> ditambah <strong>biaya layanan transaksi Rp 1.000 per pesanan</strong>. Di atas itu masih ada PPN yang dihitung dari nilai komisi (bukan dari harga makanan). Tidak ada biaya langganan bulanan — potongan hanya muncul saat ada penjualan.</p>
+    <p>Karena ada komponen tetap Rp 1.000, potongan efektif terasa lebih berat di pesanan kecil. Contoh pesanan <strong>Rp 50.000</strong>:</p>
+    <ul class="info-list">
+      <li>Komisi 20% × Rp 50.000 = <strong>Rp 10.000</strong></li>
+      <li>Biaya transaksi = <strong>Rp 1.000</strong></li>
+      <li>PPN atas komisi (≈11% × Rp 10.000) = <strong>Rp 1.100</strong></li>
+      <li>Total potongan = <strong>Rp 12.100</strong> → uang bersih <strong>Rp 37.900</strong> (efektif ~24,2%)</li>
+    </ul>
+    <p>Pada pesanan <strong>Rp 20.000</strong>, total potongan jadi Rp 5.440 (komisi Rp 4.000 + Rp 1.000 + PPN Rp 440), sehingga potongan efektif melonjak ke <strong>~27%</strong>. Inilah "jebakan transaksi mikro" — makin kecil nominal pesanan, makin besar persentase yang tergerus. Rincian resmi bisa kamu cek di <a href="https://bantuan.gobiz.co.id/s/article/Seputar-pemotongan-komisi" target="_blank" rel="noopener">Pusat Bantuan GoFood Merchant</a>.</p>
+
+    <h2>2. Potongan GrabFood: kisaran 25–30%</h2>
+    <p>GrabFood umumnya memakai skema <strong>komisi sekitar 25–30% dari nilai transaksi</strong>, dengan 30% sebagai angka yang paling sering ditawarkan ke merchant reguler yang memakai layanan pengantaran penuh. Skema ini biasanya bersifat "all-in" — PPN atas biaya jasa umumnya sudah termasuk di dalam persentase tersebut, tapi ada juga kontrak yang menagihkannya terpisah. Karena itu, <strong>baca kontrak di aplikasi GrabMerchant</strong> agar tidak kaget.</p>
+    <p>Contoh pesanan <strong>Rp 50.000</strong> dengan komisi 30% (all-in): potongan <strong>Rp 15.000</strong>, uang bersih <strong>Rp 35.000</strong>. Persentasenya memang paling tinggi di antara ketiganya, tapi sering kali sebanding dengan armada pengantaran yang lebih agresif. Jika omzetmu sudah besar atau punya banyak cabang, posisi tawarmu lebih kuat — kamu bisa menghubungi Account Manager untuk menegosiasikan skema. Detail resmi ada di <a href="https://help.grab.com/merchant/id-id" target="_blank" rel="noopener">Pusat Bantuan GrabMerchant</a>.</p>
+
+    <h2>3. Potongan ShopeeFood: sekitar 20%</h2>
+    <p>ShopeeFood mengenakan komisi <strong>sekitar 20% dari nilai pesanan</strong> untuk merchant. Pada beberapa kondisi bisa muncul service fee tambahan, sehingga total potongan dapat sedikit melewati 20%. Kabar baik untuk merchant baru: ShopeeFood kerap menawarkan <strong>promo komisi 0% di beberapa bulan pertama</strong> sebagai daya tarik — manfaatkan masa ini untuk membangun rating dan basis pelanggan.</p>
+    <p>Contoh pesanan <strong>Rp 50.000</strong> dengan komisi 20%: potongan <strong>Rp 10.000</strong>, uang bersih <strong>Rp 40.000</strong>. Pencairan dana umumnya masuk ke dompet mitra pada H+1, lalu kamu transfer ke rekening. Selalu cocokkan dengan laporan di aplikasi Shopee Partner karena ketentuannya bisa berubah.</p>
+
+    <AdSlot format="horizontal" />
+
+    <h2>Kenapa potongan terasa lebih dari 20%?</h2>
+    <p>Tiga hal yang sering luput dihitung merchant:</p>
+    <ul class="info-list">
+      <li><strong>Biaya tetap per transaksi</strong> — misalnya Rp 1.000 di GoFood. Nominalnya kecil, tapi pada pesanan murah, persentasenya besar.</li>
+      <li><strong>PPN atas komisi</strong> — pajak ini dihitung dari <strong>nilai komisi</strong>, bukan dari harga makananmu. Untuk jasa platform, tarif efektifnya sekitar 11% (lihat <a href="/blog/ppn-12-persen-2026">penjelasan PPN 12% vs 11%</a>). Jadi PPN menambah sedikit di atas komisi pokok.</li>
+      <li><strong>Biaya promo &amp; iklan</strong> — jika kamu mengaktifkan diskon "ditanggung mitra" atau iklan berbayar, itu memotong lagi pendapatan bersihmu, di luar komisi. Hati-hati sebelum klik "Ikut Promo".</li>
+    </ul>
+    <p>Catatan: <strong>PB1 / pajak restoran</strong> (jika usahamu kena) adalah kewajibanmu ke pemerintah daerah, bukan potongan platform. Begitu pula <strong>ongkos kirim</strong> — itu urusan antara konsumen dan driver, tidak memotong pendapatan resto.</p>
+
+    <h2>Cara menetapkan harga jual agar tetap untung</h2>
+    <p>Karena ada potongan ~20–30%, banyak merchant menetapkan harga di aplikasi lebih tinggi daripada harga makan di tempat (dual pricing). Cara paling rapi adalah <strong>hitung mundur</strong>: tentukan dulu berapa yang ingin kamu terima bersih (sudah termasuk HPP + margin), lalu naikkan harga jual supaya setelah dipotong platform, hasilnya tetap sesuai target.</p>
+    <p>Rumus sederhananya: <strong>Harga aplikasi = Target bersih ÷ (1 − persentase potongan)</strong>. Misal ingin bersih Rp 40.000 di GrabFood (potongan 30%): Rp 40.000 ÷ 0,7 = <strong>Rp 57.000-an</strong> (bulatkan ke Rp 58.000–60.000).</p>
+    <p>Daripada menghitung manual untuk tiap platform, kamu bisa pakai alat gratis ini supaya angkanya pas:</p>
+
+    <div class="cta-box"><h3>🧮 Kalkulator Komisi GoFood, GrabFood &amp; ShopeeFood</h3><p>Masukkan harga jual, pilih platform — langsung tahu total potongan, uang bersih, dan harga jual yang disarankan agar untung tetap aman:</p><ul><li>✅ Komisi + biaya transaksi + PPN otomatis</li><li>✅ Bandingkan GoFood vs GrabFood vs ShopeeFood</li><li>✅ Fitur "hitung mundur" dari target bersih</li><li>✅ Gratis, tanpa daftar</li></ul><p style="margin-top:14px"><a href="/kalkulator/komisi-ojol" class="btn btn-pri"><i class="ti ti-calculator"></i> Buka Kalkulator Komisi</a></p></div>
+
+    <h2>Penting: angka ini bukan harga mati</h2>
+    <p>Skema komisi tiap platform berbeda dan sering diperbarui. Persentase di artikel ini adalah gambaran umum mitra reguler 2026 — angka pastimu bergantung pada jenis kemitraan, promo yang kamu ikuti, dan kesepakatan akunmu. <strong>Selalu cocokkan dengan laporan riil</strong> di dashboard merchant masing-masing (GoBiz, GrabMerchant, Shopee Partner), lalu sesuaikan angka di kalkulator agar hasilnya pas dengan kondisimu.</p>
+
+    <h2>Kesimpulan</h2>
+    <p>Potongan platform bukan musuh — anggap sebagai biaya pemasaran dan logistik untuk mengakses jutaan pelanggan. Kuncinya: ketahui angkanya (GoFood 20% + Rp 1.000, GrabFood ~30%, ShopeeFood ~20%, plus PPN atas komisi), masukkan ke perhitungan harga sejak awal, dan jangan samakan harga aplikasi dengan harga dine-in. Dengan strategi harga yang benar, ramai order berarti benar-benar untung — bukan sekadar "numpang lewat".</p>
+
+    <h3>📚 Artikel &amp; Alat Terkait</h3>
+    <ul class="info-list">
+      <li><a href="/kalkulator/komisi-ojol">Kalkulator Komisi GoFood, GrabFood &amp; ShopeeFood</a></li>
+      <li><a href="/blog/cara-menghitung-hpp">Cara Hitung HPP (Harga Pokok Produksi)</a></li>
+      <li><a href="/blog/cara-menentukan-harga-jual">Cara Menentukan Harga Jual Produk UMKM</a></li>
+      <li><a href="/blog/cara-menghitung-margin">Cara Hitung Margin Profit &amp; Markup</a></li>
+    </ul>
+
+    <p style="font-size:13px;color:var(--text-mute);margin-top:24px;border-top:1px solid var(--border);padding-top:16px"><em>Disclaimer: Angka potongan bersifat estimasi berdasarkan informasi publik 2026 dan dapat berubah sewaktu-waktu. Bukan nasihat keuangan atau pajak profesional. Untuk angka pasti, rujuk laporan dan ketentuan resmi di aplikasi merchant masing-masing platform.</em></p>
+  </div></article>
+  <AdSlot format="horizontal" />
+</Layout>
+<style>
+  .article-hero { background: linear-gradient(135deg, var(--cat-color) 0%, var(--cat-color2) 100%); color: #fff; padding: 20px 0 48px; }
+  .article-hero :global(.breadcrumb-item), .article-hero :global(.breadcrumb-item a) { color: rgba(255, 255, 255, .7); }
+  .article-hero :global(.breadcrumb-item a:hover) { color: var(--gold-soft); }
+  .article-hero :global(.breadcrumb-item span) { color: #fff; }
+  .article-hero :global(.breadcrumb-item i) { color: rgba(255, 255, 255, .4); }
+  .article-tag { display: inline-block; font-size: 11px; font-weight: 700; color: var(--gold-soft); letter-spacing: .1em; text-transform: uppercase; margin: 16px 0 12px; }
+  .article-hero h1 { color: #fff; font-size: clamp(26px, 3.8vw, 42px); margin: 0 0 20px; max-width: 900px; line-height: 1.2; }
+  .article-meta { display: flex; gap: 20px; color: rgba(255, 255, 255, .75); font-size: 13px; flex-wrap: wrap; }
+  .article-meta span { display: inline-flex; align-items: center; gap: 6px; }
+  .lead { font-size: 17px !important; line-height: 1.7 !important; color: var(--text) !important; padding: 20px 24px; background: var(--bg-soft); border-radius: 12px; border-left: 4px solid var(--cat-color); margin-bottom: 24px !important; }
+</style>
