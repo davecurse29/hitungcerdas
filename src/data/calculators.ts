@@ -288,6 +288,32 @@ export const CALCULATORS: CalculatorMeta[] = [
     ],
   },
 
+  {
+    slug: 'pesangon',
+    related: ['gaji-bersih', 'pph-21', 'dana-darurat'],
+    title: 'Kalkulator Pesangon PHK 2026 — Hitung Uang Pesangon, UPMK & UPH (PP 35/2021)',
+    shortTitle: 'Kalkulator Pesangon',
+    category: 'keuangan',
+    categoryLabel: 'Kalkulator Keuangan',
+    tag: 'Ketenagakerjaan',
+    tagColor: '#0F766E',
+    tagBg: '#CCFBF1',
+    iconColor: '#0D9488',
+    iconBg: '#CCFBF1',
+    iconSvg: 'gaji',
+    description: 'Hitung estimasi uang pesangon, UPMK & UPH saat PHK sesuai PP 35/2021. Lengkap alasan PHK, PKWTT/PKWT, dan estimasi pajak.',
+    metaDescription: 'Kalkulator pesangon PHK 2026 gratis sesuai PP 35/2021 (UU Cipta Kerja). Hitung uang pesangon, UPMK, UPH & uang pisah berdasarkan masa kerja dan alasan PHK, plus estimasi PPh 21 final. Untuk PKWTT & PKWT.',
+    keywords: ['kalkulator pesangon', 'hitung pesangon phk', 'pesangon pp 35 2021', 'uang pesangon uu cipta kerja', 'upmk uph', 'pesangon phk 2026', 'simulasi pesangon'],
+    h1: 'Kalkulator Pesangon PHK 2026 (PP 35/2021)',
+    introText: 'Kena PHK atau ingin cek hakmu? Hitung estimasi uang pesangon, uang penghargaan masa kerja (UPMK), dan uang penggantian hak (UPH) sesuai PP 35/2021 berdasarkan masa kerja dan alasan PHK, lengkap dengan estimasi PPh 21 final. Tersedia untuk pekerja tetap (PKWTT) maupun kontrak (PKWT).',
+    benefits: [
+      'Sesuai PP 35/2021 (UU Cipta Kerja) terbaru',
+      '7 skenario alasan PHK (0,5x s.d. 2x)',
+      'PKWTT (pesangon) & PKWT (uang kompensasi)',
+      'Estimasi PPh 21 final pesangon',
+      'AI Coach + link sumber resmi Kemnaker',
+    ],
+  },
   // ═══════════════ BISNIS ═══════════════
   {
     slug: 'invoice-generator',

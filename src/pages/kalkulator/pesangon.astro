@@ -1,0 +1,698 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import FAQ from '../../components/FAQ.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import CalculatorCard from '../../components/CalculatorCard.astro';
+import { getCalculatorBySlug, getRelatedCalculators } from '../../data/calculators';
+
+const calc = getCalculatorBySlug('pesangon')!;
+const related = getRelatedCalculators('pesangon', 3);
+
+const faqs = [
+  { question: 'Saya resign (mengundurkan diri), apakah dapat pesangon?', answer: '<strong>Tidak.</strong> Berdasarkan PP 35/2021, pekerja yang mengundurkan diri atau mangkir tidak berhak atas uang pesangon maupun UPMK. Yang didapat hanya <strong>Uang Penggantian Hak (UPH)</strong> — seperti sisa cuti — dan <strong>uang pisah</strong> yang besarannya diatur dalam Perjanjian Kerja, Peraturan Perusahaan, atau PKB.' },
+  { question: 'Apa itu "upah dasar" untuk menghitung pesangon?', answer: 'Upah dasar = <strong>upah pokok + tunjangan tetap</strong> yang terakhir diterima. Tunjangan tidak tetap (mis. transport/makan harian) tidak dihitung. Jika upah dasarmu lebih rendah dari upah minimum wilayah (UMP/UMK), maka yang dipakai adalah upah minimum tersebut.' },
+  { question: 'Apakah pesangon dikenakan pajak?', answer: 'Ya. Pesangon yang dibayar sekaligus kena <strong>PPh 21 final</strong> dengan tarif progresif: <strong>0% s.d. Rp 50 juta</strong>, 5% di atas Rp 50–100 juta, 15% di atas Rp 100–500 juta, dan 25% di atas Rp 500 juta. Pemotongan dilakukan perusahaan sebelum pesangon dibayarkan.' },
+  { question: 'Apakah hasil kalkulator ini pasti benar?', answer: 'Ini <strong>estimasi</strong> berdasarkan PP 35/2021. Angka final bisa berbeda tergantung isi Perjanjian Kerja, Peraturan Perusahaan, PKB, kesepakatan bipartit, atau putusan pengadilan hubungan industrial. Untuk kepastian, konsultasikan ke <strong>Disnaker</strong> setempat atau mediator hubungan industrial.' },
+];
+
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '/#tools' }, { label: calc.shortTitle }];
+---
+
+<Layout title={calc.title} description={calc.metaDescription} keywords={calc.keywords} canonical={`https://hitungcerdas.net/kalkulator/${calc.slug}`}>
+  <section class="calc-hero" style="--cat-color:#0D9488;--cat-color2:#0F766E">
+    <div class="wrap">
+      <Breadcrumb items={bcItems} />
+      <div class="calc-hero-grid">
+        <div class="calc-hero-text">
+          <div class="calc-hero-tag" style="background:#CCFBF1;color:#0F766E"><i class="ti ti-briefcase"></i> {calc.categoryLabel}</div>
+          <h1 class="calc-hero-title">{calc.h1}</h1>
+          <p class="calc-hero-sub">{calc.introText}</p>
+          <ul class="calc-hero-benefits">{calc.benefits.map(b => <li><i class="ti ti-check"></i> {b}</li>)}</ul>
+        </div>
+        <div class="calc-hero-illust">
+          <svg viewBox="0 0 200 200" fill="none">
+            <circle cx="100" cy="100" r="85" fill="rgba(255,255,255,.08)"/>
+            <rect x="55" y="48" width="90" height="110" rx="8" fill="#FFF" stroke="#0F766E" stroke-width="2"/>
+            <rect x="70" y="68" width="60" height="6" rx="3" fill="#0D9488" opacity=".7"/>
+            <rect x="70" y="84" width="44" height="5" rx="2.5" fill="#0D9488" opacity=".45"/>
+            <rect x="70" y="98" width="52" height="5" rx="2.5" fill="#0D9488" opacity=".45"/>
+            <circle cx="118" cy="128" r="16" fill="#FBBF24"/>
+            <text x="118" y="134" font-size="16" font-weight="700" fill="#92400E" text-anchor="middle">Rp</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+
+  <section class="calc-section">
+    <div class="wrap">
+      <div class="calc-card">
+        <div class="calc-card-hdr">
+          <div class="calc-card-hdr-ic" style="background:linear-gradient(135deg,#0D9488 0%,#0F766E 100%)"><i class="ti ti-briefcase"></i></div>
+          <div><h2 class="calc-card-title">Kalkulator Pesangon PHK 2026</h2><p class="calc-card-sub">Sesuai PP 35/2021 (UU Cipta Kerja) — uang pesangon, UPMK & UPH</p></div>
+        </div>
+
+        <div class="calc-grid">
+          <div class="calc-input">
+            <div class="field">
+              <label>Status Hubungan Kerja</label>
+              <select id="status">
+                <option value="pkwtt" selected>Pekerja Tetap (PKWTT)</option>
+                <option value="pkwt">Pekerja Kontrak (PKWT)</option>
+              </select>
+              <p class="hint" id="statusHint" style="margin-top:6px">PKWTT memakai rumus pesangon. PKWT memakai uang kompensasi (masa kerja ÷ 12 × upah).</p>
+            </div>
+
+            <div class="field"><label>Upah Pokok per Bulan</label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span>
+                <input type="text" id="upahPokok" class="has-prefix" value="5.000.000" inputmode="numeric" /></div>
+            </div>
+
+            <div class="field"><label>Tunjangan Tetap per Bulan <span class="hint">(opsional)</span></label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span>
+                <input type="text" id="tunjTetap" class="has-prefix" value="0" inputmode="numeric" /></div>
+              <p class="hint" style="margin-top:6px">Tunjangan tetap saja (mis. tunjangan jabatan). Tunjangan tidak tetap (transport/makan harian) tidak dihitung.</p>
+            </div>
+
+            <div class="field"><label>Upah Minimum Wilayah (UMP/UMK) <span class="hint">(opsional)</span></label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span>
+                <input type="text" id="umr" class="has-prefix" value="0" inputmode="numeric" /></div>
+              <p class="hint" style="margin-top:6px">Jika upah dasarmu di bawah angka ini, sistem otomatis memakai upah minimum (simulasi konservatif).</p>
+            </div>
+
+            <div class="field">
+              <label>Cara Input Masa Kerja</label>
+              <select id="modeKerja">
+                <option value="cepat" selected>Cepat — tahun & bulan</option>
+                <option value="akurat">Akurat — tanggal mulai & PHK</option>
+              </select>
+            </div>
+
+            <div id="mkCepat">
+              <div class="field-row" style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+                <div class="field"><label>Masa Kerja (Tahun)</label>
+                  <input type="number" id="mkTahun" value="7" min="0" max="50" step="1" /></div>
+                <div class="field"><label>Bulan</label>
+                  <input type="number" id="mkBulan" value="0" min="0" max="11" step="1" /></div>
+              </div>
+            </div>
+
+            <div id="mkAkurat" style="display:none">
+              <div class="field-row" style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+                <div class="field"><label>Tanggal Mulai Kerja</label>
+                  <input type="date" id="tglMulai" /></div>
+                <div class="field"><label>Tanggal PHK</label>
+                  <input type="date" id="tglPhk" /></div>
+              </div>
+            </div>
+
+            <div class="field pkwtt-only">
+              <label>Alasan PHK</label>
+              <select id="alasan">
+                <option value="phk1">Efisiensi cegah rugi / merger / tutup bukan rugi / pengusaha langgar (1× pesangon)</option>
+                <option value="phk05" selected>Efisiensi karena rugi / tutup karena rugi / pailit / PKPU rugi (0,5×)</option>
+                <option value="phk075">Force majeure tapi perusahaan TIDAK tutup (0,75×)</option>
+                <option value="pensiun">Pensiun — usia pensiun (1,75×)</option>
+                <option value="meninggal">Meninggal dunia / sakit-cacat kerja &gt;12 bln (2×)</option>
+                <option value="pelanggaran">Pelanggaran berat saya, sudah SP 1-2-3 (0,5×)</option>
+                <option value="resign">Mengundurkan diri / mangkir (tanpa pesangon)</option>
+              </select>
+              <p class="hint" style="margin-top:6px">Besaran pesangon sangat tergantung alasan PHK (PP 35/2021 Pasal 41–57).</p>
+            </div>
+
+            <div class="adv-section pkwtt-only" id="uphSection" style="margin-top:4px">
+              <div class="adv-toggle"><span><i class="ti ti-receipt"></i>&nbsp; Uang Penggantian Hak (UPH) — opsional</span><i class="ti ti-chevron-down chev"></i></div>
+              <div class="adv-content">
+                <div class="field-row" style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+                  <div class="field"><label>Sisa Cuti (hari)</label>
+                    <input type="number" id="sisaCuti" value="0" min="0" max="60" step="1" /></div>
+                  <div class="field"><label>Pola Kerja</label>
+                    <select id="polaKerja"><option value="5" selected>5 hari/minggu</option><option value="6">6 hari/minggu</option></select></div>
+                </div>
+                <div class="field"><label>Ongkos Pulang (pekerja + keluarga)</label>
+                  <div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="ongkosPulang" class="has-prefix" value="0" inputmode="numeric" /></div></div>
+                <div class="field"><label>Komponen Lain sesuai PK/PP/PKB</label>
+                  <div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="uphLain" class="has-prefix" value="0" inputmode="numeric" /></div></div>
+              </div>
+            </div>
+
+            <div class="field resign-only" id="uangPisahWrap" style="display:none">
+              <label>Uang Pisah (untuk resign/mangkir)</label>
+              <select id="pisahMode">
+                <option value="none" selected>Tidak ada / belum tahu</option>
+                <option value="bulan">Sejumlah bulan upah</option>
+                <option value="nominal">Nominal (Rp)</option>
+              </select>
+              <div class="input-wrap" id="pisahValWrap" style="margin-top:8px;display:none"><span class="input-prefix" id="pisahPrefix">Rp</span>
+                <input type="text" id="pisahVal" class="has-prefix" value="0" inputmode="numeric" /></div>
+              <p class="hint" style="margin-top:6px">Besaran uang pisah tidak baku di PP — diatur dalam PK/PP/PKB perusahaanmu.</p>
+            </div>
+
+            <div class="field">
+              <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+                <input type="checkbox" id="pphToggle" checked style="width:auto;margin:0" />
+                <span>Hitung estimasi PPh 21 final (pajak pesangon)</span>
+              </label>
+            </div>
+
+            <div class="field">
+              <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+                <input type="checkbox" id="mikroToggle" style="width:auto;margin:0" />
+                <span>Perusahaan saya termasuk usaha mikro/kecil</span>
+              </label>
+            </div>
+
+            <div class="calc-action-bar">
+              <button type="button" class="btn-hitung" id="btnHitung"><i class="ti ti-calculator"></i> Hitung Pesangon</button>
+              <button type="button" class="btn-reset" id="btnReset"><i class="ti ti-refresh"></i> Reset</button>
+            </div>
+          </div>
+
+          <div class="calc-output">
+            <div class="hist-section" id="histBox" style="display:none"></div>
+
+            <div class="result-placeholder" id="placeholder">
+              <i class="ti ti-briefcase result-placeholder-icon"></i>
+              <div class="result-placeholder-title">Estimasi pesangon akan muncul di sini</div>
+              <div class="result-placeholder-desc">Isi status, upah, masa kerja, alasan PHK, lalu klik <strong>"Hitung Pesangon"</strong>.</div>
+            </div>
+
+            <div class="result-wrapper" id="results">
+              <div class="result-main">
+                <div class="result-label" id="heroLabel">Total Hak Pesangon (Bruto)</div>
+                <div class="result-value" id="pesHero">Rp 0</div>
+                <div class="result-meta"><i class="ti ti-info-circle"></i> <span id="pesMeta">Masa kerja 7 tahun · 0,5× pesangon</span></div>
+              </div>
+
+              <div class="result-grid" id="resGridPesangon">
+                <div class="result-item"><div class="result-item-label">Uang Pesangon (UP)</div><div class="result-item-value" id="pesUP">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">UPMK</div><div class="result-item-value" id="pesUPMK">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">UPH</div><div class="result-item-value" id="pesUPH">Rp 0</div></div>
+                <div class="result-item" id="pisahItem" style="display:none"><div class="result-item-label">Uang Pisah</div><div class="result-item-value" id="pesPisah">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">Estimasi PPh 21</div><div class="result-item-value result-warn" id="pesPajak">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">Estimasi Diterima (Bersih)</div><div class="result-item-value" id="pesBersih" style="color:var(--green,#059669);font-weight:700">Rp 0</div></div>
+              </div>
+
+              <div id="pesWhy" style="margin-top:12px;padding:12px 14px;border-radius:12px;background:#F0FDFA;border:1px solid #99F6E4;font-size:12.5px;line-height:1.6;color:#115E59"></div>
+
+              <div id="pesWarn" style="display:none;margin-top:10px;padding:11px 13px;border-radius:12px;background:#FEF3C7;border:1px solid #FDE68A;font-size:12.5px;line-height:1.55;color:#92400E"></div>
+
+              <div class="adv-section">
+                <div class="adv-toggle"><span><i class="ti ti-list-details"></i>&nbsp; Rincian Perhitungan</span><i class="ti ti-chevron-down chev"></i></div>
+                <div class="adv-content">
+                  <table class="compare-table">
+                    <thead><tr><th>Komponen</th><th class="right">Dasar</th><th class="right">Nilai</th></tr></thead>
+                    <tbody id="rincianBody"></tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div class="adv-section">
+                <div class="adv-toggle"><span><i class="ti ti-checklist"></i>&nbsp; Dokumen yang Perlu Kamu Cek</span><i class="ti ti-chevron-down chev"></i></div>
+                <div class="adv-content">
+                  <ul style="margin:0;padding-left:18px;font-size:13px;line-height:1.9;color:var(--text)">
+                    <li>Surat PHK & alasan resmi PHK</li>
+                    <li>Slip gaji 3 bulan terakhir (cek upah pokok + tunjangan tetap)</li>
+                    <li>Perjanjian Kerja / Peraturan Perusahaan / PKB</li>
+                    <li>Surat Peringatan (SP 1, 2, 3) — jika alasan pelanggaran</li>
+                    <li>Bukti sisa cuti tahunan yang belum diambil</li>
+                    <li>Bukti hak lain (THR pro-rata, bonus, ongkos pulang)</li>
+                    <li>Bukti potong PPh 21 atas pesangon</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="export-row">
+                <button type="button" class="export-btn img" id="exportImg"><i class="ti ti-photo-down"></i><span>Save Image</span></button>
+                <button type="button" class="export-btn wa" id="exportWa"><i class="ti ti-brand-whatsapp"></i><span>Share WA</span></button>
+                <button type="button" class="export-btn pdf" id="exportPdf"><i class="ti ti-printer"></i><span>Print/PDF</span></button>
+                <button type="button" class="export-btn copy" id="exportCopy"><i class="ti ti-copy"></i><span>Copy Teks</span></button>
+                <button type="button" class="export-btn" id="exportExcel"><i class="ti ti-file-spreadsheet" style="color:#1D6F42"></i><span style="color:#1D6F42">Excel</span></button>
+                <button type="button" class="export-btn link" id="exportLink"><i class="ti ti-link" style="color:#0891B2"></i><span style="color:#0891B2">Salin Link</span></button>
+              </div>
+
+              <!-- ===== AI COACH KEPUTUSAN ===== -->
+              <div class="aic-wrap" id="aicWrap">
+                <button type="button" class="aic-trigger" id="aicTrigger">
+                  <span class="aic-trigger-ic"><i class="ti ti-sparkles"></i></span>
+                  <span class="aic-trigger-txt">
+                    <strong>Tanya AI Coach</strong>
+                    <small>Bingung soal hakmu? Tanya di sini</small>
+                  </span>
+                  <i class="ti ti-chevron-down aic-trigger-arr"></i>
+                </button>
+                <div class="aic-panel" id="aicPanel" hidden>
+                  <div class="aic-head">
+                    <span class="aic-head-ic"><i class="ti ti-sparkles"></i></span>
+                    <div class="aic-head-tt">
+                      <strong>AI Coach Keputusan</strong>
+                      <small>Bantu pahami hak pesangonmu</small>
+                    </div>
+                    <span class="aic-badge">BETA</span>
+                  </div>
+                  <div class="aic-ground" id="aicGround"></div>
+                  <div class="aic-msgs" id="aicMsgs"></div>
+                  <div class="aic-chips" id="aicChips"></div>
+                  <div class="aic-input">
+                    <input type="text" id="aicText" placeholder="Tanya soal pesangonmu..." maxlength="600" autocomplete="off" />
+                    <button type="button" id="aicSend" aria-label="Kirim"><i class="ti ti-arrow-up"></i></button>
+                  </div>
+                  <div class="aic-disc">
+                    <i class="ti ti-info-circle"></i>
+                    <span>Estimasi edukatif berbasis PP 35/2021, bukan nasihat hukum berlisensi.</span>
+                  </div>
+                  <div class="aic-limit" id="aicLimit"></div>
+                </div>
+              </div>
+              <!-- ===== /AI COACH ===== -->
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="content-section">
+    <div class="wrap-text">
+      <h2>Cara Menghitung Pesangon PHK Sesuai PP 35/2021</h2>
+      <p>Saat terjadi Pemutusan Hubungan Kerja (PHK), pengusaha wajib membayar <strong>uang pesangon (UP)</strong>, <strong>uang penghargaan masa kerja (UPMK)</strong>, dan <strong>uang penggantian hak (UPH)</strong> sesuai PP Nomor 35 Tahun 2021 (aturan pelaksana UU Cipta Kerja). Besarannya ditentukan dua hal: <strong>masa kerja</strong> dan <strong>alasan PHK</strong>. Dasar perhitungannya adalah upah pokok + tunjangan tetap. Sebelum menerima tawaran HR, pahami dulu <a href="/kalkulator/gaji-bersih">gaji bersih</a> dan kewajiban <a href="/kalkulator/pph-21">PPh 21</a>-mu, dan pastikan punya <a href="/kalkulator/dana-darurat">dana darurat</a> sebagai bantalan transisi.</p>
+
+      <h3>Tabel Uang Pesangon (Pasal 40 ayat 2)</h3>
+      <ul>
+        <li>Masa kerja &lt; 1 tahun = 1× upah · 1–&lt;2 th = 2× · 2–&lt;3 = 3× · 3–&lt;4 = 4×</li>
+        <li>4–&lt;5 = 5× · 5–&lt;6 = 6× · 6–&lt;7 = 7× · 7–&lt;8 = 8× · <strong>≥ 8 tahun = 9× upah</strong></li>
+      </ul>
+
+      <h3>Tabel UPMK (Pasal 40 ayat 3) — hanya jika masa kerja ≥ 3 tahun</h3>
+      <ul>
+        <li>3–&lt;6 th = 2× · 6–&lt;9 = 3× · 9–&lt;12 = 4× · 12–&lt;15 = 5×</li>
+        <li>15–&lt;18 = 6× · 18–&lt;21 = 7× · 21–&lt;24 = 8× · <strong>≥ 24 tahun = 10× upah</strong></li>
+      </ul>
+
+      <h3>Faktor Pengali Berdasarkan Alasan PHK</h3>
+      <ul>
+        <li><strong>0,5×</strong> pesangon: efisiensi karena rugi, perusahaan tutup karena rugi, pailit, PKPU karena rugi, atau pelanggaran setelah SP 1-2-3</li>
+        <li><strong>0,75×</strong> pesangon: keadaan memaksa (force majeure) yang tidak sampai menutup perusahaan</li>
+        <li><strong>1×</strong> pesangon: efisiensi mencegah rugi, merger/peleburan, pengambilalihan, tutup bukan karena rugi, atau pengusaha melanggar kewajiban</li>
+        <li><strong>1,75×</strong> pesangon: pekerja memasuki usia pensiun</li>
+        <li><strong>2×</strong> pesangon: pekerja meninggal dunia atau sakit/cacat akibat kecelakaan kerja &gt;12 bulan</li>
+        <li><strong>Tanpa pesangon</strong> (hanya UPH + uang pisah): mengundurkan diri (resign) atau mangkir</li>
+      </ul>
+      <p>Untuk pekerja kontrak (PKWT), yang berlaku bukan pesangon melainkan <strong>uang kompensasi</strong> = (masa kerja ÷ 12) × upah sebulan, sesuai PP 35/2021.</p>
+
+      <h3>Sumber Resmi & Verifikasi</h3>
+      <ul>
+        <li>Naskah PP 35/2021 — <a href="https://jdih.kemnaker.go.id/asset/data_puu/PP352021.pdf" target="_blank" rel="noopener nofollow">JDIH Kemnaker</a></li>
+        <li>Database peraturan — <a href="https://peraturan.bpk.go.id/Details/161904/pp-no-35-tahun-2021" target="_blank" rel="noopener nofollow">Peraturan BPK</a></li>
+        <li>Literasi hukum — <a href="https://literasihukum.bphn.go.id" target="_blank" rel="noopener nofollow">BPHN Kemenkumham</a></li>
+        <li>Informasi ketenagakerjaan — <a href="https://kemnaker.go.id" target="_blank" rel="noopener nofollow">Kemnaker</a></li>
+      </ul>
+
+      <div class="cta-box">
+        <h3>Disclaimer Penting</h3>
+        <p>Kalkulator ini memberikan <strong>estimasi</strong> berdasarkan PP 35/2021. Angka final dapat berbeda tergantung isi Perjanjian Kerja, Peraturan Perusahaan, PKB, hasil perundingan bipartit, atau putusan Pengadilan Hubungan Industrial. Untuk usaha mikro/kecil, besaran dapat ditentukan berdasarkan kesepakatan (Pasal 59). Bukan nasihat hukum. Untuk kepastian, konsultasikan ke <strong>Disnaker</strong> setempat atau mediator hubungan industrial.</p>
+      </div>
+    </div>
+  </section>
+
+  <FAQ items={faqs} />
+
+  {related.length > 0 && (
+    <section class="related-section">
+      <div class="wrap">
+        <h2 class="related-title">Kalkulator Terkait</h2>
+        <div class="related-grid">{related.map(r => <CalculatorCard calc={r} />)}</div>
+      </div>
+    </section>
+  )}
+
+  <AdSlot format="horizontal" />
+</Layout>
+
+<script is:inline>
+  (function () {
+    function ready(fn) { if (window.HC && window.html2canvas) fn(); else setTimeout(() => ready(fn), 100); }
+    function $(id) { return document.getElementById(id); }
+    ready(function () {
+      var els = {
+        status: $('status'), upahPokok: $('upahPokok'), tunjTetap: $('tunjTetap'), umr: $('umr'),
+        modeKerja: $('modeKerja'), mkTahun: $('mkTahun'), mkBulan: $('mkBulan'), tglMulai: $('tglMulai'), tglPhk: $('tglPhk'),
+        alasan: $('alasan'), sisaCuti: $('sisaCuti'), polaKerja: $('polaKerja'), ongkosPulang: $('ongkosPulang'), uphLain: $('uphLain'),
+        pisahMode: $('pisahMode'), pisahVal: $('pisahVal'), pphToggle: $('pphToggle'), mikroToggle: $('mikroToggle'),
+      };
+      ['upahPokok', 'tunjTetap', 'umr', 'ongkosPulang', 'uphLain', 'pisahVal'].forEach(function (k) { if (els[k]) els[k].addEventListener('input', HC.fmtInput); });
+      document.querySelectorAll('.adv-toggle').forEach(function (t) { t.addEventListener('click', function () { t.parentElement.classList.toggle('open'); }); });
+
+      var lastCalc = null;
+
+      // ── Definisi alasan PHK (PP 35/2021) ──
+      var ALASAN = {
+        phk1:        { up: 1,    upmk: 1, resign: false, label: '1× pesangon',    why: 'PHK karena efisiensi untuk mencegah kerugian, merger/peleburan/pemisahan, pengambilalihan, perusahaan tutup bukan karena rugi, atau pengusaha melanggar kewajiban. Pekerja berhak pesangon penuh (1×), UPMK 1×, dan UPH (PP 35/2021 Pasal 41–48).' },
+        phk05:       { up: 0.5,  upmk: 1, resign: false, label: '0,5× pesangon',  why: 'PHK karena perusahaan efisiensi akibat rugi, tutup karena rugi, pailit, atau PKPU karena rugi. Uang pesangon dihitung 0,5× dari tabel, UPMK tetap 1×, UPH tetap ditambahkan (PP 35/2021 Pasal 43, 44, 46, 47).' },
+        phk075:      { up: 0.75, upmk: 1, resign: false, label: '0,75× pesangon', why: 'PHK karena keadaan memaksa (force majeure) yang TIDAK sampai menutup perusahaan. Pesangon 0,75×, UPMK 1×, UPH (PP 35/2021 Pasal 45 ayat 2).' },
+        pensiun:     { up: 1.75, upmk: 1, resign: false, label: '1,75× pesangon', why: 'PHK karena memasuki usia pensiun. Pesangon 1,75×, UPMK 1×, UPH (PP 35/2021 Pasal 56). Jika ada program pensiun, manfaatnya bisa diperhitungkan.' },
+        meninggal:   { up: 2,    upmk: 1, resign: false, label: '2× pesangon',    why: 'Pekerja meninggal dunia (dibayarkan ke ahli waris) atau sakit/cacat akibat kecelakaan kerja dan tidak bisa bekerja setelah 12 bulan. Pesangon 2×, UPMK 1×, UPH (PP 35/2021 Pasal 55, 57).' },
+        pelanggaran: { up: 0.5,  upmk: 1, resign: false, label: '0,5× pesangon',  why: 'PHK karena pekerja melanggar PK/PP/PKB dan sudah diberi SP 1, 2, dan 3 berturut-turut. Pesangon 0,5×, UPMK 1×, UPH (PP 35/2021 Pasal 52 ayat 1).' },
+        resign:      { up: 0,    upmk: 0, resign: true,  label: 'tanpa pesangon',  why: 'Mengundurkan diri (resign) atau mangkir 5 hari kerja berturut-turut: TIDAK berhak pesangon maupun UPMK. Hanya UPH (mis. sisa cuti) + uang pisah yang besarannya diatur dalam PK/PP/PKB (PP 35/2021).' },
+      };
+
+      function upMonths(y) { return Math.min(y + 1, 9); }
+      function upmkMonths(y) {
+        if (y < 3) return 0; if (y < 6) return 2; if (y < 9) return 3; if (y < 12) return 4;
+        if (y < 15) return 5; if (y < 18) return 6; if (y < 21) return 7; if (y < 24) return 8; return 10;
+      }
+      function pphPesangon(b) {
+        var t = 0;
+        if (b > 500e6) { t += (b - 500e6) * 0.25; b = 500e6; }
+        if (b > 100e6) { t += (b - 100e6) * 0.15; b = 100e6; }
+        if (b > 50e6) { t += (b - 50e6) * 0.05; b = 50e6; }
+        return Math.round(t);
+      }
+      function masaKerja() {
+        if (els.modeKerja.value === 'akurat' && els.tglMulai.value && els.tglPhk.value) {
+          var s = new Date(els.tglMulai.value), e = new Date(els.tglPhk.value);
+          var m = (e.getFullYear() - s.getFullYear()) * 12 + (e.getMonth() - s.getMonth());
+          if (e.getDate() < s.getDate()) m -= 1;
+          if (m < 0) m = 0;
+          return m;
+        }
+        var th = parseInt(els.mkTahun.value || '0', 10) || 0;
+        var bl = parseInt(els.mkBulan.value || '0', 10) || 0;
+        return th * 12 + bl;
+      }
+
+      function updateUI() {
+        var isPkwt = els.status.value === 'pkwt';
+        var isResign = els.alasan.value === 'resign';
+        document.querySelectorAll('.pkwtt-only').forEach(function (el) { el.style.display = isPkwt ? 'none' : ''; });
+        document.querySelectorAll('.resign-only').forEach(function (el) { el.style.display = (!isPkwt && isResign) ? '' : 'none'; });
+        $('mkCepat').style.display = els.modeKerja.value === 'akurat' ? 'none' : '';
+        $('mkAkurat').style.display = els.modeKerja.value === 'akurat' ? '' : 'none';
+        var pm = els.pisahMode.value;
+        $('pisahValWrap').style.display = pm === 'none' ? 'none' : '';
+        $('pisahPrefix').textContent = pm === 'bulan' ? '×bln' : 'Rp';
+      }
+      ['status', 'modeKerja', 'alasan', 'pisahMode'].forEach(function (k) { if (els[k]) els[k].addEventListener('change', updateUI); });
+      updateUI();
+
+      function hitung() {
+        var pokok = HC.parseRp(els.upahPokok.value);
+        var tunj = HC.parseRp(els.tunjTetap.value);
+        var umr = HC.parseRp(els.umr.value);
+        var upah = pokok + tunj;
+        var floorApplied = false;
+        if (umr > 0 && upah < umr) { upah = umr; floorApplied = true; }
+        if (upah <= 0) { HC.toast('Masukkan upah pokok dulu', 'error'); return; }
+
+        var totalMonths = masaKerja();
+        var years = Math.floor(totalMonths / 12);
+        var sisaBln = totalMonths % 12;
+        var isPkwt = els.status.value === 'pkwt';
+        var pola = parseInt(els.polaKerja.value, 10) || 5;
+        var hariBasis = pola === 6 ? 25 : 21;
+        var cutiHari = parseInt(els.sisaCuti.value || '0', 10) || 0;
+        var cutiVal = Math.round(cutiHari * (upah / hariBasis));
+        var ongkos = HC.parseRp(els.ongkosPulang.value);
+        var lain = HC.parseRp(els.uphLain.value);
+        var uph = cutiVal + ongkos + lain;
+        var mikro = els.mikroToggle.checked;
+
+        var c = { upah: upah, totalMonths: totalMonths, years: years, sisaBln: sisaBln, isPkwt: isPkwt, mikro: mikro, floorApplied: floorApplied, cutiVal: cutiVal, ongkos: ongkos, lain: lain, uph: uph, cutiHari: cutiHari };
+
+        if (isPkwt) {
+          var komp = Math.round((totalMonths / 12) * upah);
+          c.komp = komp;
+          c.upRp = 0; c.upmkRp = 0; c.pisah = 0;
+          c.bruto = komp + uph;
+          c.pajak = 0;
+          c.bersih = c.bruto;
+          c.alasanKey = 'pkwt';
+          c.factorLabel = 'uang kompensasi';
+          c.metaTxt = 'PKWT · masa kerja ' + years + ' th ' + sisaBln + ' bln';
+          c.whyTxt = 'Sebagai pekerja kontrak (PKWT), yang berlaku bukan pesangon melainkan UANG KOMPENSASI = (masa kerja ÷ 12) × upah sebulan = (' + (totalMonths) + '/12) × ' + HC.fmt(upah) + ' = ' + HC.fmt(komp) + ' (PP 35/2021).';
+        } else {
+          var a = ALASAN[els.alasan.value] || ALASAN.phk05;
+          var upBase = upMonths(years);
+          var upmkBase = upmkMonths(years);
+          var upRp = Math.round(a.up * upBase * upah);
+          var upmkRp = Math.round(a.upmk * upmkBase * upah);
+          var pisah = 0;
+          if (a.resign && els.pisahMode.value !== 'none') {
+            var pv = HC.parseRp(els.pisahVal.value);
+            pisah = els.pisahMode.value === 'bulan' ? Math.round(pv * upah) : pv;
+          }
+          c.upBase = upBase; c.upmkBase = upmkBase; c.upRp = upRp; c.upmkRp = upmkRp; c.pisah = pisah;
+          c.bruto = a.resign ? (uph + pisah) : (upRp + upmkRp + uph);
+          c.pajak = els.pphToggle.checked ? pphPesangon(c.bruto) : 0;
+          c.bersih = c.bruto - c.pajak;
+          c.alasanKey = els.alasan.value;
+          c.factorLabel = a.label;
+          c.metaTxt = 'Masa kerja ' + years + ' th ' + sisaBln + ' bln · ' + a.label;
+          c.whyTxt = a.why + (a.resign ? '' : (' Dasar UP: ' + upBase + ' bulan upah; UPMK: ' + upmkBase + ' bulan upah.'));
+        }
+
+        lastCalc = c;
+        render(c);
+        HC.history.push('pesangon', {
+          inputs: HC.history.capture(['status', 'upahPokok', 'tunjTetap', 'umr', 'mkTahun', 'mkBulan', 'alasan', 'sisaCuti', 'pphToggle']),
+          summary: (isPkwt ? 'PKWT ' : '') + years + ' th · ' + (isPkwt ? 'kompensasi' : (ALASAN[c.alasanKey] ? ALASAN[c.alasanKey].label : '')),
+          metrics: [{ k: 'Bruto', v: HC.fmt(c.bruto) }, { k: 'Bersih', v: HC.fmt(c.bersih) }],
+        });
+
+        $('placeholder').style.display = 'none';
+        $('results').classList.add('show');
+        $('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        HC.toast('Estimasi pesangon berhasil dihitung!');
+      }
+
+      function render(c) {
+        $('heroLabel').textContent = c.mikro ? 'Estimasi Pembanding (Bruto)' : 'Total Hak Pesangon (Bruto)';
+        $('pesHero').textContent = HC.fmt(c.bruto);
+        $('pesMeta').textContent = c.metaTxt;
+
+        if (c.isPkwt) {
+          $('pesUP').parentElement.querySelector('.result-item-label').textContent = 'Uang Kompensasi';
+          $('pesUP').textContent = HC.fmt(c.komp);
+          $('pesUPMK').parentElement.style.display = 'none';
+        } else {
+          $('pesUP').parentElement.querySelector('.result-item-label').textContent = 'Uang Pesangon (UP)';
+          $('pesUP').textContent = HC.fmt(c.upRp);
+          $('pesUPMK').parentElement.style.display = '';
+          $('pesUPMK').textContent = HC.fmt(c.upmkRp);
+        }
+        $('pesUPH').textContent = HC.fmt(c.uph);
+        $('pisahItem').style.display = c.pisah > 0 ? '' : 'none';
+        $('pesPisah').textContent = HC.fmt(c.pisah);
+        $('pesPajak').textContent = HC.fmt(c.pajak);
+        $('pesBersih').textContent = HC.fmt(c.bersih);
+
+        $('pesWhy').innerHTML = '<strong>Kenapa angka ini?</strong> ' + c.whyTxt;
+
+        var warn = '';
+        if (c.floorApplied) warn += 'Upah dasar yang kamu input lebih rendah dari upah minimum wilayah — sistem memakai upah minimum (' + HC.fmt(c.upah) + ') untuk simulasi konservatif. ';
+        if (c.mikro) warn += 'Perusahaan mikro/kecil: besaran sebenarnya dapat ditentukan berdasarkan KESEPAKATAN (Pasal 59). Angka di atas hanya pembanding berdasarkan formula umum PP 35/2021. ';
+        if (warn) { $('pesWarn').innerHTML = '⚠️ ' + warn; $('pesWarn').style.display = ''; } else { $('pesWarn').style.display = 'none'; }
+
+        var rows = '';
+        function row(label, base, val) { rows += '<tr><td>' + label + '</td><td class="right">' + base + '</td><td class="right" style="font-weight:700">' + HC.fmt(val) + '</td></tr>'; }
+        row('Upah dasar (pokok + tunjangan tetap)', '/bulan', c.upah);
+        if (c.isPkwt) {
+          row('Uang Kompensasi PKWT', (c.totalMonths) + '/12 × upah', c.komp);
+        } else {
+          row('Uang Pesangon (UP)', (ALASAN[c.alasanKey] ? ALASAN[c.alasanKey].up : 1) + '× ' + c.upBase + ' bln', c.upRp);
+          row('UPMK', c.upmkBase + ' bln', c.upmkRp);
+        }
+        if (c.cutiVal > 0) row('UPH — sisa cuti (' + c.cutiHari + ' hari)', '÷' + (parseInt(els.polaKerja.value, 10) === 6 ? 25 : 21), c.cutiVal);
+        if (c.ongkos > 0) row('UPH — ongkos pulang', '-', c.ongkos);
+        if (c.lain > 0) row('UPH — lain-lain', '-', c.lain);
+        if (c.pisah > 0) row('Uang Pisah', '-', c.pisah);
+        row('TOTAL BRUTO', '-', c.bruto);
+        if (c.pajak > 0) row('Estimasi PPh 21 final', '-', -c.pajak);
+        row('ESTIMASI DITERIMA (BERSIH)', '-', c.bersih);
+        $('rincianBody').innerHTML = rows;
+      }
+
+      function reset() {
+        els.upahPokok.value = '5.000.000'; els.tunjTetap.value = '0'; els.umr.value = '0';
+        els.mkTahun.value = '7'; els.mkBulan.value = '0'; els.sisaCuti.value = '0';
+        els.ongkosPulang.value = '0'; els.uphLain.value = '0'; els.pisahVal.value = '0';
+        $('placeholder').style.display = ''; $('results').classList.remove('show');
+        lastCalc = null; HC.toast('Form direset', 'info');
+      }
+
+      function buildReport() {
+        if (!lastCalc) return null;
+        var c = lastCalc;
+        var inputs = [
+          { label: '🧾 Upah dasar', value: HC.fmt(c.upah) },
+          { label: '📅 Masa kerja', value: c.years + ' th ' + c.sisaBln + ' bln' },
+          { label: '📌 Status', value: c.isPkwt ? 'PKWT (kontrak)' : 'PKWTT (tetap)' },
+          { label: '⚖️ Faktor', value: c.factorLabel },
+        ];
+        var results = c.isPkwt
+          ? [{ label: 'Uang Kompensasi', value: HC.fmt(c.komp) }, { label: 'UPH', value: HC.fmt(c.uph) }, { label: 'Total Bruto', value: HC.fmt(c.bruto), highlight: true }, { label: 'Diterima (Bersih)', value: HC.fmt(c.bersih), highlight: true }]
+          : [{ label: 'Uang Pesangon', value: HC.fmt(c.upRp) }, { label: 'UPMK', value: HC.fmt(c.upmkRp) }, { label: 'UPH', value: HC.fmt(c.uph) }].concat(
+              c.pisah > 0 ? [{ label: 'Uang Pisah', value: HC.fmt(c.pisah) }] : [],
+              [{ label: 'Total Bruto', value: HC.fmt(c.bruto), highlight: true }, { label: 'PPh 21', value: HC.fmt(c.pajak) }, { label: 'Diterima (Bersih)', value: HC.fmt(c.bersih), highlight: true }]
+            );
+        return HC.buildReportCard({
+          title: '💼 Estimasi Pesangon PHK',
+          color: '#0D9488', color2: '#0F766E',
+          heroLabel: c.mikro ? 'Estimasi Pembanding (Bruto)' : 'Total Hak Pesangon (Bruto)',
+          heroValue: HC.fmt(c.bruto),
+          heroSubtext: c.metaTxt,
+          inputs: inputs,
+          results: results,
+          insight: 'Estimasi berdasarkan PP 35/2021. Angka final tergantung PK/PP/PKB & putusan. Konsultasikan ke Disnaker setempat.',
+          slug: 'pesangon',
+        });
+      }
+
+      function summaryText() {
+        if (!lastCalc) return '';
+        var c = lastCalc;
+        return '💼 *Estimasi Pesangon PHK - HitungCerdas*\n\n' +
+          'Status: ' + (c.isPkwt ? 'PKWT (kontrak)' : 'PKWTT (tetap)') + '\n' +
+          'Upah dasar: ' + HC.fmt(c.upah) + '\n' +
+          'Masa kerja: ' + c.years + ' th ' + c.sisaBln + ' bln\n' +
+          'Faktor: ' + c.factorLabel + '\n\n' +
+          (c.isPkwt ? ('Uang Kompensasi: ' + HC.fmt(c.komp) + '\n') : ('Uang Pesangon: ' + HC.fmt(c.upRp) + '\nUPMK: ' + HC.fmt(c.upmkRp) + '\n')) +
+          'UPH: ' + HC.fmt(c.uph) + '\n' +
+          (c.pisah > 0 ? ('Uang Pisah: ' + HC.fmt(c.pisah) + '\n') : '') +
+          '\n💰 *Total Bruto: ' + HC.fmt(c.bruto) + '*\n' +
+          'PPh 21: ' + HC.fmt(c.pajak) + '\n' +
+          '✅ *Estimasi Diterima: ' + HC.fmt(c.bersih) + '*\n\n' +
+          '_Estimasi PP 35/2021, bukan nasihat hukum._\nHitung di: https://hitungcerdas.net/kalkulator/pesangon';
+      }
+
+      HC.history.render('pesangon', $('histBox'), function () { hitung(); });
+      $('btnHitung').addEventListener('click', hitung);
+      $('btnReset').addEventListener('click', reset);
+      $('exportImg').addEventListener('click', function () { var c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToImage(c, 'pesangon-' + Date.now()); });
+      $('exportWa').addEventListener('click', function () { var c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.shareWhatsApp(c, summaryText(), 'pesangon'); });
+      $('exportPdf').addEventListener('click', function () { if (!lastCalc) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToPDF(); });
+      $('exportCopy').addEventListener('click', function () { if (!lastCalc) { HC.toast('Hitung dulu', 'error'); return; } HC.copyText(summaryText(), 'Tersalin!'); });
+      $('exportExcel').addEventListener('click', function () { var c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToExcel(c, 'pesangon-' + Date.now()); });
+
+      function buildShareUrl() {
+        var p = new URLSearchParams();
+        p.set('st', els.status.value);
+        p.set('up', String(HC.parseRp(els.upahPokok.value) || 0));
+        p.set('tj', String(HC.parseRp(els.tunjTetap.value) || 0));
+        p.set('th', els.mkTahun.value || '0');
+        p.set('bl', els.mkBulan.value || '0');
+        p.set('al', els.alasan.value);
+        return location.origin + location.pathname + '?' + p.toString();
+      }
+      function setNum(el, val) { el.value = val; el.dispatchEvent(new Event('input', { bubbles: true })); }
+      function loadFromUrl() {
+        var q = new URLSearchParams(location.search);
+        if (!q.has('up')) return false;
+        if (q.has('st')) els.status.value = q.get('st');
+        setNum(els.upahPokok, q.get('up'));
+        if (q.has('tj')) setNum(els.tunjTetap, q.get('tj'));
+        if (q.has('th')) els.mkTahun.value = q.get('th');
+        if (q.has('bl')) els.mkBulan.value = q.get('bl');
+        if (q.has('al')) els.alasan.value = q.get('al');
+        updateUI();
+        return true;
+      }
+      $('exportLink').addEventListener('click', function () { HC.copyText(buildShareUrl(), 'Link tersalin!'); });
+      if (loadFromUrl()) { hitung(); }
+    });
+  })();
+</script>
+
+<script is:inline>
+  (function () {
+    var LIMIT = 10;
+    function ready(fn) { if (window.HC) { fn(); } else { setTimeout(function () { ready(fn); }, 120); } }
+    function $(id) { return document.getElementById(id); }
+    ready(function () {
+      var wrap = $('aicWrap'); if (!wrap) return;
+      var trigger = $('aicTrigger'), panel = $('aicPanel'), ground = $('aicGround'), msgs = $('aicMsgs'), chips = $('aicChips');
+      var input = $('aicText'), send = $('aicSend'), limitEl = $('aicLimit'); var history = [];
+      function isDark() { var de = document.documentElement; return de.classList.contains('dark') || de.getAttribute('data-theme') === 'dark' || (function () { try { return localStorage.getItem('hc-theme') === 'dark'; } catch (e) { return false; } })(); }
+      function applyTheme() { wrap.classList.toggle('aic-dark', isDark()); }
+      applyTheme();
+      try { new MutationObserver(applyTheme).observe(document.documentElement, { attributes: true, attributeFilter: ['class', 'data-theme'] }); } catch (e) {}
+      window.addEventListener('storage', function (e) { if (e.key === 'hc-theme') applyTheme(); });
+      function txt(id) { var x = $(id); return x ? (x.textContent || '') : ''; }
+      function val(id) { var x = $(id); return x ? (x.value || '') : ''; }
+      function selText(id) { var x = $(id); return (x && x.options && x.selectedIndex >= 0) ? x.options[x.selectedIndex].text : ''; }
+      function esc(t) { return String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
+      function readData() {
+        return {
+          status: selText('status'), bruto: txt('pesHero'), bersih: txt('pesBersih'),
+          up: txt('pesUP'), upmk: txt('pesUPMK'), uph: txt('pesUPH'), pajak: txt('pesPajak'),
+          alasan: selText('alasan'), meta: txt('pesMeta'),
+          upahPokok: val('upahPokok'), tunj: val('tunjTetap'), mkTahun: val('mkTahun'), mkBulan: val('mkBulan'),
+        };
+      }
+
+      function renderGround() {
+        var d = readData();
+        var hasResult = d.bruto && d.bruto !== 'Rp 0';
+        var ctx = '<div class="aic-ctx"><i class="ti ti-briefcase"></i> ' + esc(d.status) + (hasResult ? ' · Bruto <b>' + esc(d.bruto) + '</b> · Diterima <b>' + esc(d.bersih) + '</b>' : '') + '</div>';
+        if (!hasResult) { ground.innerHTML = ctx + '<div class="aic-nogauge">Hitung dulu untuk melihat ringkasan hakmu di sini.</div>'; return; }
+        ground.innerHTML = ctx + '<div class="aic-verdict good"><i class="ti ti-scale"></i> ' + esc(d.meta) + '</div>';
+      }
+
+      function buildContext() {
+        var d = readData();
+        var p = [
+          'Kalkulator: Pesangon PHK (dasar hukum PP 35/2021 / UU Cipta Kerja).',
+          'Status hubungan kerja: ' + d.status + '.',
+          'Alasan PHK yang dipilih: ' + d.alasan + '.',
+          d.meta ? ('Ringkasan: ' + d.meta + '.') : '',
+          'Upah pokok: Rp ' + d.upahPokok + '. Tunjangan tetap: Rp ' + d.tunj + '. Masa kerja: ' + d.mkTahun + ' tahun ' + d.mkBulan + ' bulan.',
+          'Hasil hitung — Uang Pesangon: ' + d.up + '. UPMK: ' + d.upmk + '. UPH: ' + d.uph + '. Estimasi PPh 21: ' + d.pajak + '. Total bruto: ' + d.bruto + '. Estimasi diterima bersih: ' + d.bersih + '.',
+          'Acuan PP 35/2021: pesangon = faktor (0,5/0,75/1/1,75/2 tergantung alasan PHK) × tabel masa kerja × upah (pokok+tunjangan tetap); UPMK hanya jika masa kerja >= 3 tahun; resign/mangkir tidak dapat pesangon, hanya UPH + uang pisah. Ini estimasi, bukan nasihat hukum; angka final tergantung PK/PP/PKB & putusan. Jangan mengarang angka di luar konteks ini; jika kurang data, sarankan konsultasi ke Disnaker.'
+        ];
+        return p.filter(Boolean).join('\n');
+      }
+
+      function mdInline(t) { t = t.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>'); t = t.replace(/__([^_]+)__/g, '<strong>$1</strong>'); t = t.replace(/(^|[\s(])\*([^*\n]+)\*(?=[\s).,!?:;]|$)/g, '$1<em>$2</em>'); t = t.replace(/`([^`]+)`/g, '<code>$1</code>'); return t; }
+      function mdToHtml(raw) { var lines = String(raw).replace(/\r/g, '').split('\n'); var out = []; for (var i = 0; i < lines.length; i++) { var t = lines[i].trim(); if (t === '') continue; if (/^([-*_]\s*){3,}$/.test(t)) continue; var h = t.match(/^#{1,6}\s+(.*)$/); if (h) { out.push('<p class="aic-h">' + mdInline(esc(h[1])) + '</p>'); continue; } var b = t.match(/^[-*\u2022]\s+(.*)$/); if (b) { out.push('<div class="aic-li"><span class="aic-mk">\u2022</span><span>' + mdInline(esc(b[1])) + '</span></div>'); continue; } var n = t.match(/^(\d+)[.)]\s+(.*)$/); if (n) { out.push('<div class="aic-li"><span class="aic-mk">' + n[1] + '.</span><span>' + mdInline(esc(n[2])) + '</span></div>'); continue; } out.push('<p>' + mdInline(esc(t)) + '</p>'); } return out.join('') || ('<p>' + mdInline(esc(String(raw))) + '</p>'); }
+      function typeInto(bubble, text, done) {
+        var n = 0, len = text.length, step = Math.max(2, Math.round(len / 90));
+        var t = setInterval(function () { n = Math.min(len, n + step); bubble.innerHTML = mdToHtml(text.slice(0, n)); msgs.scrollTop = msgs.scrollHeight; if (n >= len) { clearInterval(t); done && done(); } }, 18);
+      }
+      function mkCopyBtn(text) { var b = document.createElement('button'); b.type = 'button'; b.className = 'aic-copy'; b.innerHTML = '<i class="ti ti-copy"></i><span>Salin</span>'; b.addEventListener('click', function () { HC.copyText(text, 'Jawaban tersalin!'); }); return b; }
+      function addMsgTyped(text) { var row = document.createElement('div'); row.className = 'aic-row ai'; row.innerHTML = '<div class="aic-av"><i class="ti ti-sparkles"></i></div><div class="aic-bub aic-rich"></div>'; var bub = row.querySelector('.aic-bub'); msgs.appendChild(row); msgs.scrollTop = msgs.scrollHeight; typeInto(bub, text, function () { bub.appendChild(mkCopyBtn(text)); renderFollowups(); }); return row; }
+      var FOLLOWUPS = ['Hak pesangon saya sudah benar belum?', 'Tawaran HR di bawah ini, wajar gak?', 'Apa beda UP, UPMK, dan UPH?', 'Langkah kalau pesangon tidak dibayar?', 'Pesangon saya kena pajak berapa?', 'Bedanya resign vs di-PHK soal hak?'];
+      function renderFollowups() { chips.innerHTML = ''; var asked = history.filter(function (m) { return m.role === 'user'; }).map(function (m) { return m.content; }); var pool = FOLLOWUPS.filter(function (q) { return asked.indexOf(q) < 0; }); pool.slice(0, 3).forEach(function (q) { var b = document.createElement('button'); b.type = 'button'; b.className = 'aic-chip'; b.textContent = q; b.addEventListener('click', function () { ask(q); }); chips.appendChild(b); }); }
+      function addMsg(role, text) { var row = document.createElement('div'); row.className = 'aic-row ' + role; if (role === 'ai') { row.innerHTML = '<div class="aic-av"><i class="ti ti-sparkles"></i></div><div class="aic-bub aic-rich"></div>'; row.querySelector('.aic-bub').innerHTML = mdToHtml(text); } else { row.innerHTML = '<div class="aic-bub"></div>'; row.querySelector('.aic-bub').textContent = text; } msgs.appendChild(row); msgs.scrollTop = msgs.scrollHeight; return row; }
+      function addTyping() { var row = document.createElement('div'); row.className = 'aic-row ai'; row.innerHTML = '<div class="aic-av"><i class="ti ti-sparkles"></i></div><div class="aic-bub aic-typing"><span></span><span></span><span></span></div>'; msgs.appendChild(row); msgs.scrollTop = msgs.scrollHeight; return row; }
+      function todayKey() { var d = new Date(); return 'hc-coach-' + d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate(); }
+      function getCount() { try { return parseInt(localStorage.getItem(todayKey()) || '0', 10) || 0; } catch (e) { return 0; } }
+      function incCount() { try { localStorage.setItem(todayKey(), getCount() + 1); } catch (e) {} }
+      function refreshLimit() { var left = Math.max(0, LIMIT - getCount()); limitEl.textContent = 'Sisa ' + left + ' pertanyaan gratis hari ini.'; var done = left <= 0; input.disabled = done; send.disabled = done; if (done) { input.placeholder = 'Batas harian tercapai, balik lagi besok ya.'; } }
+      var busy = false;
+      async function ask(text) {
+        text = (text || '').trim(); if (!text || busy) return; if (getCount() >= LIMIT) { refreshLimit(); return; }
+        busy = true; send.disabled = true; addMsg('user', text); history.push({ role: 'user', content: text }); input.value = ''; chips.innerHTML = ''; var typing = addTyping(); incCount();
+        try {
+          var res = await fetch('/api/coach', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ calcContext: buildContext(), messages: history }) });
+          var data = await res.json().catch(function () { return { error: 'Respon tidak valid.' }; });
+          typing.parentNode && typing.remove();
+          if (data && data.reply) { addMsgTyped(data.reply); history.push({ role: 'assistant', content: data.reply }); }
+          else { addMsg('ai', '\u26a0\ufe0f ' + ((data && data.error) || 'Coach lagi sibuk, coba lagi sebentar ya.')); }
+        } catch (e) { typing.parentNode && typing.remove(); addMsg('ai', '\u26a0\ufe0f Gagal terhubung ke Coach. Coba lagi ya.'); }
+        busy = false; refreshLimit(); if (!input.disabled) input.focus();
+      }
+      var PRESETS = ['Hak pesangon saya sudah benar belum?', 'Apa beda UP, UPMK, dan UPH?', 'Langkah kalau pesangon tidak dibayar?'];
+      function renderChips() { chips.innerHTML = ''; PRESETS.forEach(function (q) { var b = document.createElement('button'); b.type = 'button'; b.className = 'aic-chip'; b.textContent = q; b.addEventListener('click', function () { ask(q); }); chips.appendChild(b); }); }
+      var opened = false;
+      trigger.addEventListener('click', function () { if (panel.hasAttribute('hidden')) { panel.removeAttribute('hidden'); wrap.classList.add('open'); applyTheme(); renderGround(); refreshLimit(); if (!opened) { renderChips(); opened = true; } } else { panel.setAttribute('hidden', ''); wrap.classList.remove('open'); } });
+      send.addEventListener('click', function () { ask(input.value); });
+      input.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); ask(input.value); } });
+      var bh = $('btnHitung'); if (bh) { bh.addEventListener('click', function () { setTimeout(function () { if (!panel.hasAttribute('hidden')) renderGround(); }, 60); }); }
+    });
+  })();
+</script>
