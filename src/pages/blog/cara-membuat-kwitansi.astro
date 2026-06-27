@@ -1,0 +1,264 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import ArticleSchema from '../../components/ArticleSchema.astro';
+
+const datePublished = '2026-06-27';
+const dateModified = '2026-06-27';
+const today = new Date(datePublished).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'Cara Membuat Kwitansi yang Sah' }];
+
+const bandingTable = [
+  ['Kwitansi', 'Bukti bahwa uang SUDAH diterima', 'Setelah pembayaran (lunas/sebagian)'],
+  ['Invoice', 'TAGIHAN yang harus dibayar pembeli', 'Sebelum pembayaran (saat menagih)'],
+  ['Nota / Struk', 'Rincian barang/jasa yang dibeli', 'Saat transaksi langsung di toko'],
+];
+
+const meteraiTable = [
+  ['Rp 5.000.000 atau kurang', 'Tidak wajib meterai', 'Kwitansi tetap sah tanpa meterai'],
+  ['Lebih dari Rp 5.000.000', 'Wajib meterai Rp 10.000', 'UU 10/2020 Pasal 3 ayat (2) huruf g'],
+];
+
+const komponenTable = [
+  ['Nomor kwitansi', 'Penanda unik & urut, mis. KW/2026/06/001'],
+  ['Sudah terima dari', 'Nama pihak yang membayar (pembeli)'],
+  ['Uang sejumlah', 'Nominal angka + ditulis huruf (terbilang)'],
+  ['Untuk pembayaran', 'Keterangan transaksi (barang/jasa)'],
+  ['Tempat & tanggal', 'Lokasi dan tanggal uang diterima'],
+  ['Nama & tanda tangan', 'Penerima uang (penjual), plus cap bila ada'],
+  ['Meterai', 'Rp 10.000 bila nilai di atas Rp 5 juta'],
+];
+---
+
+<Layout
+  title="Cara Membuat Kwitansi yang Sah 2026: Syarat, Meterai & Contoh"
+  description="Panduan cara membuat kwitansi pembayaran yang sah sesuai UU 10/2020: komponen wajib, aturan meterai Rp 10.000 untuk transaksi di atas Rp 5 juta, terbilang, plus contoh & cara bikin kwitansi online gratis."
+  keywords={['cara membuat kwitansi', 'kwitansi yang sah', 'contoh kwitansi', 'kwitansi pembayaran', 'meterai kwitansi', 'kwitansi tanpa meterai', 'format kwitansi', 'buat kwitansi online']}
+  canonical="https://hitungcerdas.net/blog/cara-membuat-kwitansi"
+  ogType="article"
+>
+  <ArticleSchema
+    headline="Cara Membuat Kwitansi yang Sah 2026: Syarat, Meterai & Contoh"
+    description="Panduan cara membuat kwitansi pembayaran yang sah sesuai UU 10/2020: komponen wajib, aturan meterai Rp 10.000 untuk transaksi di atas Rp 5 juta, terbilang, plus contoh dan template gratis."
+    datePublished={datePublished}
+    dateModified={dateModified}
+    slug="cara-membuat-kwitansi"
+    articleSection="Bisnis"
+    keywords={['cara membuat kwitansi', 'kwitansi yang sah', 'contoh kwitansi', 'meterai kwitansi', 'format kwitansi']}
+    wordCount={1650}
+  />
+
+  <section class="article-hero" style="--cat-color:#0EA5E9;--cat-color2:#0369A1">
+    <div class="wrap">
+      <Breadcrumb items={bcItems} />
+      <div class="article-tag">PANDUAN UMKM</div>
+      <h1>Cara Membuat Kwitansi yang Sah 2026: Syarat, Meterai &amp; Contoh</h1>
+      <div class="article-meta">
+        <span><i class="ti ti-calendar"></i> {today}</span>
+        <span><i class="ti ti-clock"></i> 8 menit baca</span>
+        <span><i class="ti ti-user"></i> Tim HitungCerdas</span>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+
+  <article class="content-section">
+    <div class="wrap-text">
+      <p class="lead">
+        Kwitansi adalah bukti hitam di atas putih bahwa pembayaran benar-benar diterima — penting untuk pembukuan,
+        klaim, sampai bukti di pengadilan bila terjadi sengketa. Tapi banyak pelaku usaha bingung: apa saja yang
+        <strong>wajib ada</strong> agar kwitansi sah, dan kapan harus pakai <strong>meterai</strong>? Artikel ini menjawab
+        tuntas sesuai <strong>UU No. 10 Tahun 2020 tentang Bea Meterai</strong>, lengkap dengan contoh — dan kamu bisa
+        langsung membuatnya gratis di <a href="/kalkulator/invoice-generator">generator Invoice, Kwitansi &amp; Penawaran</a>.
+      </p>
+
+      <h2>1. Apa Itu Kwitansi? (Beda dengan Invoice &amp; Nota)</h2>
+      <p>
+        Kwitansi adalah tanda terima yang menyatakan bahwa sejumlah uang <strong>sudah diterima</strong> oleh penjual dari
+        pembeli. Banyak orang menyamakannya dengan invoice atau nota, padahal fungsinya berbeda:
+      </p>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead><tr><th>Dokumen</th><th>Fungsi</th><th>Kapan Dipakai</th></tr></thead>
+          <tbody>{bandingTable.map((r) => (<tr><td><strong>{r[0]}</strong></td><td>{r[1]}</td><td>{r[2]}</td></tr>))}</tbody>
+        </table>
+      </div>
+      <p>
+        Singkatnya: <strong>invoice menagih, kwitansi membuktikan sudah dibayar.</strong> Banyak transaksi memakai keduanya —
+        invoice dikirim dulu untuk menagih, lalu kwitansi diberikan setelah uang masuk. Mau paham invoice lebih jauh?
+        Baca <a href="/kalkulator/invoice-generator">cara membuat invoice profesional</a>.
+      </p>
+
+      <h2>2. Komponen Wajib Kwitansi yang Sah</h2>
+      <p>Agar sah dan tidak mudah dipersoalkan, sebuah kwitansi sebaiknya memuat unsur-unsur berikut:</p>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead><tr><th>Komponen</th><th>Keterangan</th></tr></thead>
+          <tbody>{komponenTable.map((r) => (<tr><td><strong>{r[0]}</strong></td><td>{r[1]}</td></tr>))}</tbody>
+        </table>
+      </div>
+      <p>
+        Unsur paling sering terlupa adalah <strong>terbilang</strong> (nominal yang ditulis dalam huruf) dan
+        <strong>tanda tangan penerima</strong>. Terbilang berfungsi mencegah pemalsuan angka — jika nominal angka diubah,
+        tulisan hurufnya tidak cocok. Karena itu kwitansi resmi selalu mencantumkan keduanya.
+      </p>
+
+      <h2>3. Aturan Meterai: Kapan Kwitansi Wajib Bermeterai?</h2>
+      <p>
+        Inilah bagian yang paling sering salah kaprah. Berdasarkan <strong>UU No. 10 Tahun 2020</strong>, kwitansi termasuk
+        <em>"dokumen yang menyatakan jumlah uang"</em> yang dikenai bea meterai jika menyebutkan penerimaan uang
+        <strong>di atas Rp 5.000.000</strong> (Pasal 3 ayat 2 huruf g). Tarifnya kini tunggal: <strong>Rp 10.000</strong>.
+      </p>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead><tr><th>Nilai pada Kwitansi</th><th>Meterai</th><th>Dasar / Catatan</th></tr></thead>
+          <tbody>{meteraiTable.map((r) => (<tr><td>{r[0]}</td><td><strong>{r[1]}</strong></td><td>{r[2]}</td></tr>))}</tbody>
+        </table>
+      </div>
+      <p style="font-size:13px;color:var(--text-soft)">
+        Catatan: batasnya adalah <strong>lebih dari</strong> Rp 5 juta. Kwitansi senilai tepat Rp 5.000.000 atau kurang
+        <em>tidak</em> wajib meterai. Meterai lama Rp 3.000 &amp; Rp 6.000 sudah tidak berlaku sejak 2022 — yang sah hanya
+        meterai Rp 10.000 (tempel atau elektronik).
+      </p>
+
+      <AdSlot format="horizontal" />
+
+      <h2>4. Kwitansi Tanpa Meterai, Apakah Tetap Sah?</h2>
+      <p>
+        Ini pertanyaan klasik. Jawabannya: <strong>kwitansi tanpa meterai tetap sah sebagai bukti transaksi</strong> dalam
+        urusan sehari-hari. Bea meterai adalah <em>pajak atas dokumen</em>, bukan syarat keabsahan transaksinya. Namun ada
+        konsekuensi penting: dokumen yang seharusnya bermeterai tetapi tidak dibubuhi meterai <strong>tidak memiliki kekuatan
+        pembuktian yang sempurna jika dijadikan alat bukti di pengadilan</strong> perdata.
+      </p>
+      <p>
+        Kalau suatu saat kwitansi perlu dipakai di pengadilan tetapi belum bermeterai, dokumen itu masih bisa
+        <strong>"pemeteraian kemudian"</strong> melalui Kantor Pos — dengan membayar meterai yang terutang plus
+        <strong>denda administrasi 100%</strong>. Jadi untuk transaksi bernilai besar, jauh lebih murah membubuhkan meterai
+        Rp 10.000 sejak awal.
+      </p>
+
+      <h2>5. Cara Membuat Kwitansi (Langkah demi Langkah)</h2>
+      <ul class="info-list">
+        <li><strong>Beri nomor</strong> — gunakan format urut seperti KW/2026/06/001 agar mudah dilacak.</li>
+        <li><strong>Tulis "Sudah terima dari"</strong> — nama lengkap pihak yang membayar.</li>
+        <li><strong>Tulis nominal + terbilang</strong> — angka (Rp ...) dan hurufnya, harus cocok.</li>
+        <li><strong>Isi "Untuk pembayaran"</strong> — keterangan singkat: barang/jasa apa.</li>
+        <li><strong>Cantumkan tempat &amp; tanggal</strong> uang diterima.</li>
+        <li><strong>Bubuhkan meterai Rp 10.000</strong> bila nilai di atas Rp 5 juta, lalu tanda tangani penerima di atasnya.</li>
+        <li><strong>Tambahkan cap/stempel usaha</strong> bila ada, untuk kesan resmi.</li>
+      </ul>
+
+      <h3>Contoh Kwitansi (Tanpa Meterai, ≤ Rp 5 Juta)</h3>
+      <ul class="info-list">
+        <li>No: <strong>KW/2026/06/014</strong></li>
+        <li>Sudah terima dari: <strong>Ibu Rina</strong></li>
+        <li>Uang sejumlah: <strong>Rp 750.000</strong> — <em>terbilang: tujuh ratus lima puluh ribu rupiah</em></li>
+        <li>Untuk pembayaran: <strong>jasa desain logo</strong></li>
+        <li>Depok, 27 Juni 2026 — <strong>Penerima: Toko Cuan Pertama</strong> (tanpa meterai, sah)</li>
+      </ul>
+
+      <h3>Contoh Kwitansi (Wajib Meterai, &gt; Rp 5 Juta)</h3>
+      <ul class="info-list">
+        <li>No: <strong>KW/2026/06/021</strong></li>
+        <li>Sudah terima dari: <strong>PT Maju Jaya</strong></li>
+        <li>Uang sejumlah: <strong>Rp 15.000.000</strong> — <em>terbilang: lima belas juta rupiah</em></li>
+        <li>Untuk pembayaran: <strong>DP proyek interior 50%</strong></li>
+        <li>Depok, 27 Juni 2026 — <strong>meterai Rp 10.000</strong> + tanda tangan penerima di atas meterai</li>
+      </ul>
+
+      <h2>6. e-Meterai untuk Kwitansi Digital</h2>
+      <p>
+        Kalau kwitansimu berbentuk PDF (dikirim via email/WhatsApp), kamu bisa memakai <strong>meterai elektronik
+        (e-meterai)</strong> yang nilainya juga Rp 10.000. e-Meterai dibeli lewat distributor resmi (mis. portal
+        e-meterai.co.id atau Kantor Pos), lalu dibubuhkan ke dokumen PDF secara digital. Secara hukum, dokumen elektronik
+        bermeterai elektronik <strong>setara</strong> dengan dokumen kertas bermeterai tempel — ini ditegaskan dalam UU 10/2020
+        yang menyamakan dokumen kertas dan elektronik.
+      </p>
+
+      <h2>7. Kesalahan Umum yang Bikin Kwitansi Lemah</h2>
+      <ul class="info-list">
+        <li><strong>Lupa terbilang</strong> — nominal hanya angka, rawan diubah.</li>
+        <li><strong>Tidak ada tanda tangan penerima</strong> — inti kwitansi justru di sini.</li>
+        <li><strong>Meterai ditempel tapi tidak ditandatangani menyentuh meterai</strong> — tanda tangan sebaiknya mengenai meterai.</li>
+        <li><strong>Keterangan "untuk pembayaran" kosong</strong> — menyulitkan saat rekonsiliasi.</li>
+        <li><strong>Nomor acak/duplikat</strong> — gunakan penomoran urut agar tidak bentrok.</li>
+      </ul>
+
+      <div class="cta-box">
+        <h3>🧾 Buat Kwitansi Sah dalam 1 Menit — Gratis</h3>
+        <p>Tidak perlu desain manual. Pakai <strong>generator Invoice, Kwitansi &amp; Penawaran HitungCerdas</strong>:</p>
+        <ul>
+          <li>✅ Pilih jenis "Kwitansi" — format otomatis ("sudah terima dari", "uang sejumlah", "untuk pembayaran")</li>
+          <li>✅ <strong>Terbilang otomatis</strong> — anti salah tulis huruf</li>
+          <li>✅ Tambah logo, NPWP, stempel LUNAS, dan info pembayaran</li>
+          <li>✅ Reminder e-meterai otomatis bila nilai di atas Rp 5 juta</li>
+          <li>✅ Download PDF/PNG — tanpa login, tanpa watermark</li>
+        </ul>
+        <p style="margin-top:14px"><a href="/kalkulator/invoice-generator" class="btn btn-pri"><i class="ti ti-file-invoice"></i> Buat Kwitansi Sekarang</a></p>
+      </div>
+
+      <h2>8. FAQ Kwitansi</h2>
+      <h3>Apakah kwitansi tanpa meterai sah?</h3>
+      <p>Sah sebagai bukti transaksi sehari-hari. Tetapi jika nilainya di atas Rp 5 juta dan dipakai sebagai alat bukti di pengadilan, tanpa meterai kekuatan pembuktiannya tidak sempurna — bisa diatasi dengan pemeteraian kemudian (kena denda 100%).</p>
+      <h3>Berapa nilai transaksi yang wajib meterai?</h3>
+      <p>Di atas Rp 5.000.000. Tepat Rp 5 juta atau kurang tidak wajib meterai (UU 10/2020).</p>
+      <h3>Apakah harus pakai meterai Rp 10.000?</h3>
+      <p>Ya. Sejak 1 Januari 2022 hanya meterai Rp 10.000 yang berlaku, baik tempel maupun elektronik. Meterai Rp 3.000 &amp; Rp 6.000 sudah tidak sah.</p>
+      <h3>Bolehkah satu meterai untuk dua kwitansi?</h3>
+      <p>Tidak. Bea meterai dikenakan satu kali untuk setiap dokumen (Pasal 4 UU 10/2020).</p>
+      <h3>Kwitansi digital (PDF) bisa bermeterai?</h3>
+      <p>Bisa, pakai e-meterai Rp 10.000 dari distributor resmi. Dokumen elektronik bermeterai elektronik setara dengan kertas bermeterai tempel.</p>
+
+      <h2>Kesimpulan</h2>
+      <p>
+        Kwitansi yang sah cukup sederhana: muat <strong>komponen lengkap</strong> (nomor, "sudah terima dari", nominal +
+        terbilang, keterangan, tanggal, tanda tangan), dan bubuhkan <strong>meterai Rp 10.000 bila nilainya di atas Rp 5 juta</strong>.
+        Tanpa meterai tetap sah untuk keperluan umum, tetapi untuk transaksi besar, meterai melindungimu saat dijadikan alat
+        bukti. Daripada repot menulis manual, buat kwitansi rapi dan otomatis lewat
+        <a href="/kalkulator/invoice-generator">generator HitungCerdas</a>.
+      </p>
+
+      <h3>📋 Sumber Resmi (Bisa Dicek)</h3>
+      <ul class="info-list">
+        <li><a href="https://www.pajak.go.id/sites/default/files/2020-11/UU%20Nomor%2010%20Tahun%202020%20tentang%20Bea%20Materai.pdf" target="_blank" rel="noopener nofollow">pajak.go.id (DJP)</a> — naskah lengkap UU No. 10 Tahun 2020 tentang Bea Meterai (PDF resmi)</li>
+        <li><a href="https://www.pajak.go.id/en/node/42262" target="_blank" rel="noopener nofollow">pajak.go.id (DJP)</a> — penjelasan tarif tunggal bea meterai Rp 10.000</li>
+        <li><a href="https://indonesiabaik.id/infografis/8-dokumen-kena-bea-meterai-10000" target="_blank" rel="noopener nofollow">Indonesiabaik.id</a> — daftar 8 dokumen yang kena bea meterai</li>
+      </ul>
+
+      <h3>📚 Artikel &amp; Tools Terkait</h3>
+      <ul class="info-list">
+        <li><a href="/kalkulator/invoice-generator">Generator Invoice, Kwitansi &amp; Penawaran</a></li>
+        <li><a href="/kalkulator/pajak-umkm">Kalkulator Pajak UMKM (PPh Final 0,5%)</a></li>
+        <li><a href="/blog/ppn-12-persen-2026">PPN 12% 2026: Untuk Siapa Sebenarnya?</a></li>
+        <li><a href="/kalkulator/harga-jual">Kalkulator Harga Jual Produk</a></li>
+      </ul>
+
+      <p style="margin-top: 28px; padding: 16px; background: var(--bg-soft); border-radius: 10px; font-size: 13px; color: var(--text-soft); font-style: italic;">
+        <strong>Disclaimer:</strong> Artikel ini bersifat edukasi dan merangkum ketentuan UU No. 10 Tahun 2020 tentang Bea Meterai per Juni 2026. Ini bukan nasihat hukum atau pajak. Ketentuan dan tata cara dapat berubah; untuk kepastian, rujuk ke pajak.go.id (DJP) atau konsultan pajak/hukum tepercaya.
+      </p>
+    </div>
+  </article>
+
+  <AdSlot format="horizontal" />
+</Layout>
+
+<style>
+  .article-hero { background: linear-gradient(135deg, var(--cat-color) 0%, var(--cat-color2) 100%); color: #fff; padding: 20px 0 48px; }
+  .article-hero :global(.breadcrumb-item), .article-hero :global(.breadcrumb-item a) { color: rgba(255, 255, 255, .7); }
+  .article-hero :global(.breadcrumb-item a:hover) { color: var(--gold-soft); }
+  .article-hero :global(.breadcrumb-item span) { color: #fff; }
+  .article-hero :global(.breadcrumb-item i) { color: rgba(255, 255, 255, .4); }
+  .article-tag { display: inline-block; font-size: 11px; font-weight: 700; color: var(--gold-soft); letter-spacing: .1em; text-transform: uppercase; margin: 16px 0 12px; }
+  .article-hero h1 { color: #fff; font-size: clamp(26px, 3.8vw, 42px); margin: 0 0 20px; max-width: 900px; line-height: 1.2; }
+  .article-meta { display: flex; gap: 20px; color: rgba(255, 255, 255, .75); font-size: 13px; flex-wrap: wrap; }
+  .article-meta span { display: inline-flex; align-items: center; gap: 6px; }
+  .lead { font-size: 17px !important; line-height: 1.7 !important; color: var(--text) !important; padding: 20px 24px; background: var(--bg-soft); border-radius: 12px; border-left: 4px solid var(--cat-color, #0EA5E9); margin-bottom: 24px !important; }
+  .table-wrap { overflow-x: auto; margin: 18px 0; border-radius: 12px; border: 1px solid var(--border, #E5E7EB); }
+  .data-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .data-table th, .data-table td { padding: 10px 14px; border-bottom: 1px solid var(--border, #E5E7EB); text-align: left; vertical-align: top; }
+  .data-table thead th { background: var(--cat-color); color: #fff; }
+  .data-table tbody tr:nth-child(even) { background: var(--bg-soft); }
+  .data-table tbody tr:hover { background: var(--gold-light, #FEF3C7); }
+</style>
