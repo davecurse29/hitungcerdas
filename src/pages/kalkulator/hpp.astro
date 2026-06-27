@@ -12,10 +12,10 @@ const related = getRelatedCalculators('hpp', 3);
 
 const faqs = [
   { question: 'Apa itu HPP (Harga Pokok Produksi)?', answer: 'HPP adalah <strong>total biaya untuk memproduksi satu unit produk</strong> — mencakup bahan baku, tenaga kerja langsung, dan overhead produksi (kemasan, gas, listrik, penyusutan alat). HPP per unit dihitung dengan membagi total biaya produksi dengan jumlah unit yang dihasilkan. HPP adalah fondasi penentuan harga jual: kalau HPP salah, harga jual ikut salah dan bisnis bisa rugi tanpa sadar.' },
-  { question: 'Bedanya HPP dengan harga jual apa?', answer: '<strong>HPP adalah modal/biaya produksi</strong>, sedangkan <strong>harga jual adalah HPP + margin keuntungan</strong>. Contoh: HPP Rp 7.500/unit, kamu mau margin 40%, maka harga jual = Rp 7.500 ÷ (1 − 0,40) = Rp 12.500. Selisihnya (Rp 5.000) adalah untung kotor per unit. Pakai <a href="/kalkulator/harga-jual">kalkulator harga jual</a> untuk hitung lengkap dengan biaya marketplace.' },
+  { question: 'Bedanya HPP dengan harga jual apa?', answer: '<strong>HPP adalah modal/biaya produksi</strong>, sedangkan <strong>harga jual adalah HPP + margin keuntungan</strong>. Contoh: HPP Rp 7.500/unit, kamu mau margin 40%, maka harga jual = Rp 7.500 / (1 - 0,40) = Rp 12.500. Selisihnya (Rp 5.000) adalah untung kotor per unit. Pakai <a href="/kalkulator/harga-jual">kalkulator harga jual</a> untuk hitung lengkap dengan biaya marketplace.' },
   { question: 'Biaya apa saja yang masuk overhead produksi?', answer: 'Overhead produksi adalah biaya produksi <strong>selain bahan baku & tenaga kerja langsung</strong>: kemasan, gas/listrik produksi, sewa dapur/workshop (porsi produksi), penyusutan peralatan, dan bahan penolong. Jangan masukkan biaya pemasaran, gaji admin, atau ongkir penjualan ke HPP — itu masuk biaya operasional, dihitung terpisah saat menentukan harga jual akhir.' },
   { question: 'Kenapa HPP perlu dihitung ulang berkala?', answer: 'Karena harga bahan baku terus bergerak. Di tengah <strong>kondisi 2026 dengan harga pangan & energi yang fluktuatif</strong>, HPP bulan lalu bisa sudah tidak akurat. Idealnya hitung ulang HPP setiap kali harga bahan baku utama berubah signifikan (di atas 10%), agar harga jual tetap menutup biaya dan margin tetap sehat.' },
-  { question: 'HPP untuk usaha dagang (bukan produksi) gimana?', answer: 'Untuk usaha dagang/reseller yang tidak memproduksi sendiri, "HPP" lebih tepat disebut <strong>Harga Pokok Penjualan</strong>: harga beli barang + ongkir masuk + biaya kemasan ulang, dibagi jumlah unit. Kalkulator ini bisa dipakai dengan memasukkan harga beli barang sebagai "bahan baku", lalu ongkir/kemasan sebagai overhead.' },
+  { question: 'HPP untuk usaha dagang (bukan produksi) gimana?', answer: 'Untuk usaha dagang/reseller yang tidak memproduksi sendiri, "HPP" lebih tepat disebut <strong>Harga Pokok Penjualan</strong>: harga beli barang + ongkir masuk + biaya kemasan ulang, dibagi jumlah unit. Kalkulator ini bisa dipakai dengan memasukkan harga beli barang sebagai bahan baku, lalu ongkir/kemasan sebagai overhead.' },
 ];
 
 const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '/#tools' }, { label: calc.shortTitle }];
@@ -54,34 +54,39 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       <div class="calc-card">
         <div class="calc-card-hdr">
           <div class="calc-card-hdr-ic" style="background:linear-gradient(135deg,#EA580C 0%,#C2410C 100%)"><i class="ti ti-box"></i></div>
-          <div><h2 class="calc-card-title">Kalkulator HPP per Unit</h2><p class="calc-card-sub">Hitung biaya produksi per unit + rekomendasi harga jual</p></div>
+          <div><h2 class="calc-card-title">Kalkulator HPP per Unit</h2><p class="calc-card-sub">Rincian resep bahan baku + rekomendasi harga jual</p></div>
         </div>
 
         <div class="calc-grid">
           <div class="calc-input">
-            <div class="field"><label>Biaya Bahan Baku <span class="hint">(total 1 batch)</span></label>
-              <div class="input-wrap"><span class="input-prefix">Rp</span>
-                <input type="text" id="bahan" class="has-prefix" value="500.000" inputmode="numeric" /></div>
-              <p class="hint" style="margin-top:6px">Total bahan baku untuk sekali produksi (mis. tepung, gula, telur).</p>
+            <div class="ig-grp">Bahan Baku <span class="ig-grp-hint">(rincian per bahan)</span></div>
+            <div class="ig-scroll">
+              <table class="ig-table">
+                <thead><tr><th>Bahan</th><th>Jumlah</th><th>Satuan</th><th>Harga/satuan</th><th class="r">Subtotal</th><th></th></tr></thead>
+                <tbody id="bahanRows"></tbody>
+              </table>
             </div>
+            <button type="button" class="ig-addbtn" id="addBahan"><i class="ti ti-plus"></i> Tambah Bahan</button>
+            <div class="ig-subtotal"><span><i class="ti ti-shopping-cart"></i> Subtotal Bahan Baku</span><b id="bahanTotal">Rp 0</b></div>
 
+            <div class="ig-grp">Biaya Lain</div>
             <div class="field"><label>Biaya Tenaga Kerja Langsung <span class="hint">(opsional)</span></label>
               <div class="input-wrap"><span class="input-prefix">Rp</span>
                 <input type="text" id="tkl" class="has-prefix" value="150.000" inputmode="numeric" /></div>
               <p class="hint" style="margin-top:6px">Upah orang yang langsung memproduksi (bukan admin/marketing).</p>
             </div>
-
             <div class="field"><label>Biaya Overhead Produksi <span class="hint">(opsional)</span></label>
               <div class="input-wrap"><span class="input-prefix">Rp</span>
                 <input type="text" id="overhead" class="has-prefix" value="100.000" inputmode="numeric" /></div>
               <p class="hint" style="margin-top:6px">Kemasan, gas/listrik, penyusutan alat, bahan penolong.</p>
             </div>
 
+            <div class="ig-grp">Hasil &amp; Target</div>
             <div class="field"><label>Jumlah Produk Dihasilkan</label>
               <div class="input-wrap"><span class="input-suffix">unit</span>
                 <input type="number" id="unit" class="has-suffix" value="100" min="1" step="1" /></div>
+              <p class="hint" style="margin-top:6px">Berapa unit/porsi yang dihasilkan dari satu kali produksi di atas.</p>
             </div>
-
             <div class="field"><label>Target Margin Keuntungan</label>
               <div class="input-wrap"><span class="input-suffix">% dari harga jual</span>
                 <input type="number" id="margin" class="has-suffix" value="40" min="0" max="90" step="1" /></div>
@@ -100,7 +105,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
             <div class="result-placeholder" id="placeholder">
               <i class="ti ti-box result-placeholder-icon"></i>
               <div class="result-placeholder-title">HPP akan muncul di sini</div>
-              <div class="result-placeholder-desc">Isi biaya produksi & jumlah unit, klik <strong>"Hitung Sekarang"</strong>.</div>
+              <div class="result-placeholder-desc">Isi rincian bahan baku & jumlah unit, klik <strong>"Hitung Sekarang"</strong>.</div>
             </div>
 
             <div class="result-wrapper" id="results">
@@ -133,11 +138,13 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
               <div class="adv-section">
                 <div class="adv-toggle"><span><i class="ti ti-chart-pie"></i>&nbsp; Komposisi Biaya Produksi</span><i class="ti ti-chevron-down chev"></i></div>
                 <div class="adv-content">
-                  <div id="kompBar" style="display:flex;height:14px;border-radius:7px;overflow:hidden;margin-bottom:12px"></div>
-                  <table class="compare-table">
-                    <thead><tr><th>Komponen</th><th class="right">Biaya</th><th class="right">Porsi</th></tr></thead>
-                    <tbody id="kompBody"></tbody>
-                  </table>
+                  <div class="hpp-komp-grid">
+                    <div id="kompDonut" class="hpp-donut-wrap"></div>
+                    <table class="compare-table" style="flex:1;min-width:200px">
+                      <thead><tr><th>Komponen</th><th class="right">Biaya</th><th class="right">Porsi</th></tr></thead>
+                      <tbody id="kompBody"></tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
 
@@ -147,6 +154,40 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
                 <button type="button" class="export-btn pdf" id="exportPdf"><i class="ti ti-printer"></i><span>Print/PDF</span></button>
                 <button type="button" class="export-btn copy" id="exportCopy"><i class="ti ti-copy"></i><span>Copy Teks</span></button>
                 <button type="button" class="export-btn" id="exportExcel"><i class="ti ti-file-spreadsheet" style="color:#1D6F42"></i><span style="color:#1D6F42">Excel</span></button>
+              </div>
+
+              <!-- ===== AI COACH HPP ===== -->
+              <div class="aic-wrap" id="aicWrap">
+                <button type="button" class="aic-trigger" id="aicTrigger">
+                  <span class="aic-trigger-ic"><i class="ti ti-sparkles"></i></span>
+                  <span class="aic-trigger-txt">
+                    <strong>Tanya AI Coach</strong>
+                    <small>Margin sehat? HPP bisa ditekan? Tanya di sini</small>
+                  </span>
+                  <i class="ti ti-chevron-down aic-trigger-arr"></i>
+                </button>
+                <div class="aic-panel" id="aicPanel" hidden>
+                  <div class="aic-head">
+                    <span class="aic-head-ic"><i class="ti ti-sparkles"></i></span>
+                    <div class="aic-head-tt">
+                      <strong>AI Coach HPP</strong>
+                      <small>Bantu pahami biaya & harga jualmu</small>
+                    </div>
+                    <span class="aic-badge">BETA</span>
+                  </div>
+                  <div class="aic-ground" id="aicGround"></div>
+                  <div class="aic-msgs" id="aicMsgs"></div>
+                  <div class="aic-chips" id="aicChips"></div>
+                  <div class="aic-input">
+                    <input type="text" id="aicText" placeholder="Tanya soal HPP & harga jual..." maxlength="600" autocomplete="off" />
+                    <button type="button" id="aicSend" aria-label="Kirim"><i class="ti ti-arrow-up"></i></button>
+                  </div>
+                  <div class="aic-disc">
+                    <i class="ti ti-info-circle"></i>
+                    <span>Estimasi edukatif berbasis hitunganmu, bukan nasihat akuntansi resmi.</span>
+                  </div>
+                  <div class="aic-limit" id="aicLimit"></div>
+                </div>
               </div>
 
             </div>
@@ -165,7 +206,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
 
       <h3>3 Komponen Biaya dalam HPP</h3>
       <ul>
-        <li><strong>Bahan baku</strong> — bahan utama yang jadi produk (tepung, kain, komponen). Biasanya komponen terbesar.</li>
+        <li><strong>Bahan baku</strong> — bahan utama yang jadi produk (tepung, kain, komponen). Biasanya komponen terbesar. Rinci per bahan agar akurat.</li>
         <li><strong>Tenaga kerja langsung</strong> — upah orang yang langsung memproduksi. Untuk usaha mikro yang dikerjakan sendiri, bisa diisi nilai jasa wajar agar harga tidak "memakan" gaji sendiri.</li>
         <li><strong>Overhead produksi</strong> — biaya produksi lain: kemasan, gas/listrik, penyusutan alat, bahan penolong.</li>
       </ul>
@@ -192,79 +233,328 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
   </div></section>
 
   <p style="text-align:center;font-size:.85rem;color:#64748b;margin:1.2rem auto;max-width:600px;">
-    📅 Diperbarui <strong>Juni 2026</strong> · Kalkulator edukatif untuk UMKM Indonesia
+    Diperbarui <strong>Juni 2026</strong> &middot; Kalkulator edukatif untuk UMKM Indonesia
   </p>
+</Layout>
+
+<style>
+  .ig-grp{font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#EA580C;margin:16px 0 8px;display:flex;align-items:center;gap:7px}
+  .ig-grp:first-child{margin-top:0}
+  .ig-grp::before{content:'';width:14px;height:2px;border-radius:2px;background:currentColor;opacity:.55}
+  .ig-grp-hint{font-weight:500;text-transform:none;letter-spacing:0;color:var(--text-mute,#94A3B8)}
+  .ig-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .ig-table{width:100%;border-collapse:collapse;font-size:13px;min-width:340px}
+  .ig-table thead th{font-size:10px;text-transform:uppercase;letter-spacing:.02em;color:var(--text-mute,#94A3B8);text-align:left;padding:2px 5px 6px;font-weight:600;white-space:nowrap}
+  .ig-table thead th.r{text-align:right}
+  .ig-row td{padding:3px 4px;vertical-align:middle}
+  .ig-row input{width:100%;border:1px solid var(--border,#E2E8F0);border-radius:8px;padding:7px 8px;font-size:13px;font-family:inherit;background:var(--bg,#fff);color:var(--text,#0F172A);outline:none}
+  .ig-row input:focus{border-color:#EA580C}
+  .ig-row input.ig-qty{width:54px;text-align:center;padding:7px 4px}
+  .ig-row input.ig-sat{width:54px}
+  .ig-harga-wrap{display:flex;align-items:center;gap:3px;border:1px solid var(--border,#E2E8F0);border-radius:8px;padding:0 8px;background:var(--bg,#fff)}
+  .ig-harga-wrap:focus-within{border-color:#EA580C}
+  .ig-harga-wrap .ig-rp{font-size:11px;color:var(--text-mute,#94A3B8)}
+  .ig-harga-wrap input{border:0;padding:7px 0;width:84px}
+  td.ig-sub{font-size:12.5px;font-weight:700;color:var(--text,#0F172A);white-space:nowrap;text-align:right}
+  .ig-del{border:0;background:#FEE2E2;color:#DC2626;width:28px;height:28px;border-radius:7px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px}
+  .ig-del:hover{background:#FCA5A5}
+  .ig-addbtn{margin-top:9px;border:1px dashed #FB923C;background:#FFF7ED;color:#C2410C;border-radius:9px;padding:8px 13px;font-size:12.5px;font-weight:600;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:6px}
+  .ig-addbtn:hover{background:#FFEDD5}
+  .ig-subtotal{margin-top:11px;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 13px;background:#FFF7ED;border:1px solid #FED7AA;border-radius:11px;font-size:13px;color:#9A3412;font-weight:600}
+  .ig-subtotal b{font-size:15.5px;color:#C2410C;white-space:nowrap}
+  .hpp-komp-grid{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+  .hpp-donut-wrap{flex-shrink:0;display:flex;justify-content:center;align-items:center}
+  .hpp-donut{width:132px;height:132px}
+</style>
+
+<style is:global>
+  .aic-wrap{margin-top:18px}
+  .aic-trigger{width:100%;display:flex;align-items:center;gap:12px;background:#EFF4FF;border:1px solid #C7DBFF;border-radius:14px;padding:13px 15px;cursor:pointer;text-align:left;transition:background .15s;font-family:inherit}
+  .aic-trigger:hover{background:#E4EDFF}
+  .aic-trigger-ic{width:36px;height:36px;flex-shrink:0;border-radius:50%;background:#2563EB;color:#fff;display:flex;align-items:center;justify-content:center;font-size:19px}
+  .aic-trigger-txt{flex:1;display:flex;flex-direction:column;line-height:1.25}
+  .aic-trigger-txt strong{font-size:14px;color:#0A2540}
+  .aic-trigger-txt small{font-size:12px;color:#64748B}
+  .aic-trigger-arr{font-size:18px;color:#64748B;transition:transform .2s}
+  .aic-wrap.open .aic-trigger-arr{transform:rotate(180deg)}
+
+  .aic-panel{margin-top:10px;background:#fff;border:1px solid #E5EAF1;border-radius:16px;overflow:hidden;animation:aicIn .2s ease}
+  @keyframes aicIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+  .aic-head{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid #E5EAF1}
+  .aic-head-ic{width:30px;height:30px;border-radius:50%;background:#EFF4FF;color:#2563EB;display:flex;align-items:center;justify-content:center;font-size:16px}
+  .aic-head-tt{flex:1;display:flex;flex-direction:column;line-height:1.2}
+  .aic-head-tt strong{font-size:14px;color:#0A2540}
+  .aic-head-tt small{font-size:11px;color:#64748B}
+  .aic-badge{font-size:10px;font-weight:700;background:#EFF4FF;color:#2563EB;padding:2px 8px;border-radius:8px}
+
+  .aic-ground{padding:12px 14px;border-bottom:1px solid #E5EAF1;background:#F8FAFC}
+  .aic-ctx{font-size:12px;color:#475569;margin-bottom:10px}
+  .aic-ctx b{color:#0A2540;font-weight:700}
+  .aic-gauge{position:relative;padding-top:19px}
+  .aic-gauge-mark{position:absolute;top:0;z-index:3}
+  .aic-gauge-mark span{display:block;font-size:10px;font-weight:700;background:#0A2540;color:#fff;padding:1px 7px;border-radius:9px;white-space:nowrap;transform:translateX(-50%)}
+  .aic-gauge-mark::after{content:"";position:absolute;left:0;top:15px;width:2px;height:15px;background:#0A2540}
+  .aic-gauge-bar{display:flex;height:10px;border-radius:5px;overflow:hidden}
+  .aic-gauge-bar .z-green{flex:0 0 60%;background:#D1FAE5}
+  .aic-gauge-bar .z-amber{flex:0 0 20%;background:#FEF3C7}
+  .aic-gauge-bar .z-red{flex:0 0 20%;background:#FEE2E2}
+  .aic-gauge-lbl{display:flex;font-size:10px;margin-top:5px}
+  .aic-gauge-lbl .g{flex:0 0 60%;color:#059669}
+  .aic-gauge-lbl .a{flex:0 0 20%;text-align:center;color:#D97706;font-weight:600}
+  .aic-gauge-lbl .r{flex:0 0 20%;text-align:right;color:#DC2626}
+  .aic-verdict{font-size:12.5px;font-weight:600;margin-top:11px;display:flex;align-items:center;gap:6px}
+  .aic-verdict.good{color:#059669}
+  .aic-verdict.warn{color:#D97706}
+  .aic-verdict.bad{color:#DC2626}
+  .aic-nogauge{font-size:11px;color:#94A3B8;padding:4px 0}
+
+  .aic-msgs{padding:12px 14px;display:flex;flex-direction:column;gap:10px;max-height:320px;overflow-y:auto}
+  .aic-msgs:empty{display:none}
+  .aic-row{display:flex;gap:8px;align-items:flex-start}
+  .aic-row.user{justify-content:flex-end}
+  .aic-av{width:24px;height:24px;flex-shrink:0;border-radius:50%;background:#EFF4FF;color:#2563EB;display:flex;align-items:center;justify-content:center;font-size:13px}
+  .aic-bub{max-width:82%;font-size:13px;line-height:1.55;border-radius:13px;padding:9px 12px;white-space:pre-wrap;word-wrap:break-word;overflow-wrap:anywhere}
+  .aic-row.ai .aic-bub{background:#F1F5F9;color:#0A2540}
+  .aic-row.user .aic-bub{background:#2563EB;color:#fff}
+  .aic-bub.aic-rich{white-space:normal}
+  .aic-bub.aic-rich p{margin:0 0 7px}
+  .aic-bub.aic-rich p:last-child{margin-bottom:0}
+  .aic-bub.aic-rich p.aic-h{font-weight:700;margin:10px 0 5px}
+  .aic-bub.aic-rich p.aic-h:first-child{margin-top:0}
+  .aic-bub.aic-rich strong{font-weight:700}
+  .aic-bub.aic-rich em{font-style:italic}
+  .aic-bub.aic-rich code{background:rgba(0,0,0,.06);padding:1px 5px;border-radius:4px;font-size:12px}
+  .aic-bub.aic-rich .aic-li{display:flex;gap:7px;margin:4px 0;align-items:flex-start}
+  .aic-bub.aic-rich .aic-li:first-child{margin-top:0}
+  .aic-bub.aic-rich .aic-mk{flex-shrink:0;color:#2563EB;font-weight:700;min-width:15px}
+  .aic-typing span{display:inline-block;width:6px;height:6px;border-radius:50%;background:#94A3B8;margin:0 1px;animation:aicblink 1.2s infinite}
+  .aic-typing span:nth-child(2){animation-delay:.2s}
+  .aic-typing span:nth-child(3){animation-delay:.4s}
+  @keyframes aicblink{0%,60%,100%{opacity:.3}30%{opacity:1}}
+  @keyframes aicIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .aic-row{animation:aicIn .25s ease both}
+  .aic-copy{margin-top:8px;display:inline-flex;align-items:center;gap:5px;font-size:11px;color:#64748B;background:#fff;border:1px solid #E2E8F0;border-radius:7px;padding:3px 9px;cursor:pointer;transition:all .15s}
+  .aic-copy:hover{color:#0891B2;border-color:#0891B2;background:#ECFEFF}
+  .aic-copy i{font-size:13px}
+
+  .aic-chips{display:flex;flex-wrap:wrap;gap:6px;padding:0 14px 12px}
+  .aic-chips:empty{display:none}
+  .aic-chip{font-size:11px;background:#EFF4FF;color:#2563EB;border:1px solid #D6E4FF;border-radius:14px;padding:6px 11px;cursor:pointer;font-family:inherit}
+  .aic-chip:hover{background:#E0EBFF}
+
+  .aic-input{display:flex;align-items:center;gap:8px;padding:10px 12px;border-top:1px solid #E5EAF1}
+  .aic-input input{flex:1;border:1px solid #E5EAF1;border-radius:18px;padding:9px 14px;font-size:13px;background:#F8FAFC;color:#0A2540;outline:none;font-family:inherit}
+  .aic-input input:focus{border-color:#2563EB}
+  .aic-input button{width:34px;height:34px;flex-shrink:0;border:0;border-radius:50%;background:#2563EB;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:17px}
+  .aic-input button:disabled{background:#CBD5E1;cursor:not-allowed}
+
+  .aic-disc{display:flex;gap:6px;align-items:flex-start;padding:8px 14px;font-size:10.5px;color:#94A3B8;line-height:1.45;border-top:1px solid #F1F5F9}
+  .aic-disc i{margin-top:1px}
+  .aic-limit{padding:0 14px 10px;font-size:11px;color:#64748B}
+
+  /* ===== DARK MODE (mandiri, via .aic-dark) ===== */
+  .aic-dark .aic-trigger{background:#16263B;border-color:#2A445F}
+  .aic-dark .aic-trigger:hover{background:#1B2E47}
+  .aic-dark .aic-trigger-txt strong{color:#E8EEF6}
+  .aic-dark .aic-trigger-txt small{color:#93A4B8}
+  .aic-dark .aic-trigger-arr{color:#93A4B8}
+  .aic-dark .aic-panel{background:#0E1A2B;border-color:#243A56}
+  .aic-dark .aic-head{border-color:#243A56}
+  .aic-dark .aic-head-ic{background:#172A44;color:#8FB4FF}
+  .aic-dark .aic-head-tt strong{color:#E8EEF6}
+  .aic-dark .aic-head-tt small{color:#93A4B8}
+  .aic-dark .aic-badge{background:#172A44;color:#8FB4FF}
+  .aic-dark .aic-ground{background:#122036;border-color:#243A56}
+  .aic-dark .aic-ctx{color:#A9B7C9}
+  .aic-dark .aic-ctx b{color:#E8EEF6}
+  .aic-dark .aic-gauge-mark span{background:#E8EEF6;color:#0E1A2B}
+  .aic-dark .aic-gauge-mark::after{background:#E8EEF6}
+  .aic-dark .aic-gauge-bar .z-green{background:rgba(16,185,129,.24)}
+  .aic-dark .aic-gauge-bar .z-amber{background:rgba(245,158,11,.24)}
+  .aic-dark .aic-gauge-bar .z-red{background:rgba(239,68,68,.24)}
+  .aic-dark .aic-gauge-lbl .g{color:#34D399}
+  .aic-dark .aic-gauge-lbl .a{color:#FBBF24}
+  .aic-dark .aic-gauge-lbl .r{color:#F87171}
+  .aic-dark .aic-verdict.good{color:#34D399}
+  .aic-dark .aic-verdict.warn{color:#FBBF24}
+  .aic-dark .aic-verdict.bad{color:#F87171}
+  .aic-dark .aic-av{background:#172A44;color:#8FB4FF}
+  .aic-dark .aic-row.ai .aic-bub{background:#1B2C44;color:#E8EEF6}
+  .aic-dark .aic-bub.aic-rich .aic-mk{color:#8FB4FF}
+  .aic-dark .aic-bub.aic-rich code{background:rgba(255,255,255,.1)}
+  .aic-dark .aic-chip{background:rgba(37,99,235,.16);color:#8FB4FF;border-color:#2A445F}
+  .aic-dark .aic-chip:hover{background:rgba(37,99,235,.26)}
+  .aic-dark .aic-input{border-color:#243A56}
+  .aic-dark .aic-input input{background:#16263B;border-color:#2A445F;color:#E8EEF6}
+  .aic-dark .aic-input input:focus{border-color:#3B82F6}
+  .aic-dark .aic-disc{color:#7E8DA1;border-color:#1B2C44}
+  .aic-dark .aic-limit{color:#93A4B8}
+
+  /* ==== investasi: stacked composition bar ==== */
+  .aic-stack{display:flex;height:24px;border-radius:6px;overflow:hidden;margin-top:2px}
+  .aic-stack .seg{display:flex;align-items:center;justify-content:center;min-width:0}
+  .aic-stack .seg-modal{background:#DBEAFE}
+  .aic-stack .seg-cuan{background:#10B981}
+  .aic-stack .seg-lbl{font-size:10px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 5px}
+  .seg-modal .seg-lbl{color:#1E40AF}
+  .seg-cuan .seg-lbl{color:#fff}
+  .aic-legend{display:flex;gap:16px;margin-top:9px;font-size:11px;color:#475569}
+  .aic-legend .dot{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:6px}
+  .aic-legend .modal .dot{background:#93C5FD}
+  .aic-legend .cuan .dot{background:#10B981}
+  .aic-legend b{color:#0A2540}
+  .aic-verdict.info{color:#2563EB}
+  .aic-verdict b{font-weight:700}
+  .aic-dark .aic-stack .seg-modal{background:#24406B}
+  .aic-dark .seg-modal .seg-lbl{color:#BFD4FF}
+  .aic-dark .aic-legend{color:#A9B7C9}
+  .aic-dark .aic-legend b{color:#E8EEF6}
+  .aic-dark .aic-legend .modal .dot{background:#3B82F6}
+  .aic-dark .aic-verdict.info{color:#8FB4FF}
+</style>
 
 <script is:inline>
   (function() {
-    function ready(fn) { if (window.HC && window.html2canvas) fn(); else setTimeout(() => ready(fn), 100); }
-    ready(() => {
-      const $ = id => document.getElementById(id);
-      const els = { bahan: $('bahan'), tkl: $('tkl'), overhead: $('overhead'), unit: $('unit'), margin: $('margin') };
-      [els.bahan, els.tkl, els.overhead].forEach(el => el.addEventListener('input', HC.fmtInput));
+    function ready(fn) { if (window.HC && window.html2canvas) fn(); else setTimeout(function(){ ready(fn); }, 100); }
+    ready(function() {
+      var $ = function(id){ return document.getElementById(id); };
+      var els = { tkl: $('tkl'), overhead: $('overhead'), unit: $('unit'), margin: $('margin') };
+      [els.tkl, els.overhead].forEach(function(el){ el.addEventListener('input', HC.fmtInput); });
+      var lastCalc = null;
 
-      let lastCalc = null;
+      function fmtThou(n){ return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, '.'); }
+
+      // ===== Ingredient builder =====
+      function addRow(d){
+        d = d || {};
+        var tr = document.createElement('tr'); tr.className = 'ig-row';
+        tr.innerHTML = '<td><input class="ig-nama" type="text" placeholder="mis. Tepung"></td>'
+          + '<td><input class="ig-qty" type="number" min="0" step="any" inputmode="decimal"></td>'
+          + '<td><input class="ig-sat" type="text" placeholder="kg"></td>'
+          + '<td><div class="ig-harga-wrap"><span class="ig-rp">Rp</span><input class="ig-harga" type="text" inputmode="numeric"></div></td>'
+          + '<td class="ig-sub">Rp 0</td>'
+          + '<td><button type="button" class="ig-del" aria-label="Hapus"><i class="ti ti-x"></i></button></td>';
+        $('bahanRows').appendChild(tr);
+        tr.querySelector('.ig-nama').value = d.nama || '';
+        tr.querySelector('.ig-qty').value = (d.qty != null ? d.qty : 1);
+        tr.querySelector('.ig-sat').value = d.sat || '';
+        var h = tr.querySelector('.ig-harga'); h.value = (d.harga != null && d.harga !== '') ? (typeof d.harga === 'number' ? fmtThou(d.harga) : d.harga) : '';
+        h.addEventListener('input', HC.fmtInput);
+        recalcRow(tr); recalcBahan();
+      }
+      function recalcRow(tr){
+        var q = parseFloat(tr.querySelector('.ig-qty').value) || 0;
+        var h = HC.parseRp(tr.querySelector('.ig-harga').value);
+        tr.querySelector('.ig-sub').textContent = HC.fmt(q * h);
+      }
+      function recalcBahan(){
+        var total = 0, rows = $('bahanRows').querySelectorAll('.ig-row');
+        for (var i = 0; i < rows.length; i++){ var q = parseFloat(rows[i].querySelector('.ig-qty').value) || 0; var h = HC.parseRp(rows[i].querySelector('.ig-harga').value); total += q * h; }
+        $('bahanTotal').textContent = HC.fmt(total);
+        return total;
+      }
+      function readRows(){
+        var out = [], rows = $('bahanRows').querySelectorAll('.ig-row');
+        for (var i = 0; i < rows.length; i++){
+          var nama = rows[i].querySelector('.ig-nama').value.trim();
+          var q = parseFloat(rows[i].querySelector('.ig-qty').value) || 0;
+          var sat = rows[i].querySelector('.ig-sat').value.trim();
+          var h = HC.parseRp(rows[i].querySelector('.ig-harga').value);
+          if (q * h > 0 || nama) out.push({ nama: nama, qty: q, sat: sat, harga: h, sub: q * h });
+        }
+        return out;
+      }
+      // delegated events
+      $('bahanRows').addEventListener('input', function(ev){
+        var tr = ev.target.closest('.ig-row'); if (tr) recalcRow(tr); recalcBahan();
+      });
+      $('bahanRows').addEventListener('click', function(ev){
+        var del = ev.target.closest('.ig-del'); if (!del) return;
+        var rows = $('bahanRows').querySelectorAll('.ig-row');
+        if (rows.length <= 1) { var tr = del.closest('.ig-row'); tr.querySelector('.ig-nama').value=''; tr.querySelector('.ig-qty').value='1'; tr.querySelector('.ig-sat').value=''; tr.querySelector('.ig-harga').value=''; recalcRow(tr); recalcBahan(); return; }
+        del.closest('.ig-row').remove(); recalcBahan();
+      });
+      $('addBahan').addEventListener('click', function(){ addRow({ qty: 1 }); });
+
+      function seed(){
+        $('bahanRows').innerHTML = '';
+        addRow({ nama: 'Tepung Terigu', qty: 5, sat: 'kg', harga: 13000 });
+        addRow({ nama: 'Gula Pasir', qty: 3, sat: 'kg', harga: 16000 });
+        addRow({ nama: 'Telur', qty: 2, sat: 'kg', harga: 29000 });
+      }
+
+      // ===== Donut =====
+      function donut(segs){
+        var total = 0; segs.forEach(function(s){ total += s.val; });
+        if (total <= 0) return '';
+        var off = 0, c = '';
+        segs.forEach(function(s){ if (s.val <= 0) return; var pct = s.val / total * 100; c += '<circle cx="60" cy="60" r="42" fill="none" stroke="' + s.color + '" stroke-width="16" pathLength="100" stroke-dasharray="' + pct.toFixed(2) + ' ' + (100 - pct).toFixed(2) + '" stroke-dashoffset="' + (-off).toFixed(2) + '" transform="rotate(-90 60 60)"></circle>'; off += pct; });
+        return '<svg viewBox="0 0 120 120" class="hpp-donut" role="img" aria-label="Komposisi biaya">' + c + '<text x="60" y="56" text-anchor="middle" font-size="8.5" fill="#94A3B8">Total Biaya</text><text x="60" y="70" text-anchor="middle" font-size="10" font-weight="700" fill="#0F172A">' + HC.fmt(total) + '</text></svg>';
+      }
 
       function hitung() {
-        const bahan = HC.parseRp(els.bahan.value);
-        const tkl = HC.parseRp(els.tkl.value);
-        const overhead = HC.parseRp(els.overhead.value);
-        const unit = parseInt(els.unit.value) || 0;
-        let margin = parseFloat(els.margin.value) || 0;
+        var bahan = recalcBahan();
+        var tkl = HC.parseRp(els.tkl.value);
+        var overhead = HC.parseRp(els.overhead.value);
+        var unit = parseInt(els.unit.value) || 0;
+        var margin = parseFloat(els.margin.value) || 0;
 
-        const totalBiaya = bahan + tkl + overhead;
+        var totalBiaya = bahan + tkl + overhead;
         if (totalBiaya === 0) { HC.toast('Masukkan biaya produksi dulu', 'error'); return; }
         if (unit < 1) { HC.toast('Jumlah unit minimal 1', 'error'); return; }
         if (margin >= 90) { margin = 89; els.margin.value = 89; HC.toast('Margin dibatasi maksimal 89%', 'info'); }
 
-        const hppUnit = totalBiaya / unit;
-        const hargaJual = margin > 0 ? hppUnit / (1 - margin / 100) : hppUnit;
-        const untungUnit = hargaJual - hppUnit;
-        const marginReal = hargaJual > 0 ? (untungUnit / hargaJual) * 100 : 0;
+        var hppUnit = totalBiaya / unit;
+        var hargaJual = margin > 0 ? hppUnit / (1 - margin / 100) : hppUnit;
+        var untungUnit = hargaJual - hppUnit;
+        var marginReal = hargaJual > 0 ? (untungUnit / hargaJual) * 100 : 0;
 
         $('hppUnit').textContent = HC.fmt(hppUnit);
-        $('hppMeta').textContent = `${unit} unit \u00b7 total biaya ${HC.fmt(totalBiaya)}`;
+        $('hppMeta').textContent = unit + ' unit \u00b7 total biaya ' + HC.fmt(totalBiaya);
         $('totalBiaya').textContent = HC.fmt(totalBiaya);
         $('hargaJual').textContent = HC.fmt(hargaJual);
         $('untungUnit').textContent = HC.fmt(untungUnit);
         $('marginOut').textContent = marginReal.toFixed(1) + '%';
 
-        const markup = hppUnit > 0 ? (untungUnit / hppUnit) * 100 : 0;
-        $('hppInfo').innerHTML = `\ud83d\udca1 Modal tiap produk <b>${HC.fmt(hppUnit)}</b>. Dengan margin ${margin}%, jual di <b>${HC.fmt(hargaJual)}/unit</b> \u2192 untung <b>${HC.fmt(untungUnit)}/unit</b> (markup ${markup.toFixed(0)}% dari modal). Harga ini belum dikurangi biaya marketplace/ongkir & operasional (sewa, marketing, admin).`;
+        var markup = hppUnit > 0 ? (untungUnit / hppUnit) * 100 : 0;
+        $('hppInfo').innerHTML = '\ud83d\udca1 Modal tiap produk <b>' + HC.fmt(hppUnit) + '</b>. Dengan margin ' + margin + '%, jual di <b>' + HC.fmt(hargaJual) + '/unit</b> \u2192 untung <b>' + HC.fmt(untungUnit) + '/unit</b> (markup ' + markup.toFixed(0) + '% dari modal). Harga ini belum dikurangi biaya marketplace/ongkir & operasional (sewa, marketing, admin).';
 
-        // Simulasi harga jual per margin
+        // Simulasi
         var presets = [15, 20, 25, 30, 40, 50];
         if (margin > 0 && presets.indexOf(margin) === -1) presets.push(margin);
-        presets.sort(function(a, b) { return a - b; });
+        presets.sort(function(a, b){ return a - b; });
         var simHtml = '';
-        presets.forEach(function(m) {
+        presets.forEach(function(m){
           var hj = m > 0 ? hppUnit / (1 - m / 100) : hppUnit;
-          var uu = hj - hppUnit;
-          var ut = uu * unit;
-          var mk = hppUnit > 0 ? uu / hppUnit * 100 : 0;
+          var uu = hj - hppUnit, ut = uu * unit, mk = hppUnit > 0 ? uu / hppUnit * 100 : 0;
           var isT = Math.abs(m - margin) < 0.01;
           simHtml += '<tr' + (isT ? ' style="background:#FFF7ED;font-weight:700"' : '') + '><td>' + (isT ? '\u2605 ' : '') + m + '% <span style="color:#9A3412;font-weight:400;font-size:11px">(markup ' + mk.toFixed(0) + '%)</span></td><td class="right">' + HC.fmt(hj) + '</td><td class="right" style="color:var(--green-dark)">' + HC.fmt(uu) + '</td><td class="right">' + HC.fmt(ut) + '</td></tr>';
         });
         $('simBody').innerHTML = simHtml;
 
-        // Komposisi
-        const comps = [
+        // Komposisi: donut + table
+        var comps = [
           { label: 'Bahan Baku', val: bahan, color: '#EA580C' },
           { label: 'Tenaga Kerja Langsung', val: tkl, color: '#F59E0B' },
-          { label: 'Overhead Produksi', val: overhead, color: '#FBBF24' },
+          { label: 'Overhead Produksi', val: overhead, color: '#FBBF24' }
         ];
-        let barHtml = '', bodyHtml = '';
-        comps.forEach(c => {
-          const pct = totalBiaya > 0 ? (c.val / totalBiaya) * 100 : 0;
-          if (pct > 0) barHtml += `<div style="width:${pct}%;background:${c.color}" title="${c.label}"></div>`;
-          bodyHtml += `<tr><td><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:${c.color};margin-right:6px"></span>${c.label}</td><td class="right">${HC.fmt(c.val)}</td><td class="right" style="font-weight:700">${pct.toFixed(1)}%</td></tr>`;
+        $('kompDonut').innerHTML = donut(comps);
+        var bodyHtml = '';
+        comps.forEach(function(c){
+          var pct = totalBiaya > 0 ? (c.val / totalBiaya) * 100 : 0;
+          bodyHtml += '<tr><td><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:' + c.color + ';margin-right:6px"></span>' + c.label + '</td><td class="right">' + HC.fmt(c.val) + '</td><td class="right" style="font-weight:700">' + pct.toFixed(1) + '%</td></tr>';
         });
-        $('kompBar').innerHTML = barHtml;
         $('kompBody').innerHTML = bodyHtml;
 
-        lastCalc = { bahan, tkl, overhead, unit, margin, totalBiaya, hppUnit, hargaJual, untungUnit, marginReal, markup };
-        HC.history.push('hpp', { inputs: HC.history.capture(['bahan','tkl','overhead','unit','margin']), summary: 'HPP ' + HC.fmt(lastCalc.hppUnit) + '/unit \u00b7 ' + lastCalc.unit + ' unit', metrics: [{ k: 'HPP/unit', v: HC.fmt(lastCalc.hppUnit) }, { k: 'Harga jual', v: HC.fmt(lastCalc.hargaJual) }] });
+        var rowsData = readRows();
+        var rincian = rowsData.filter(function(r){ return r.sub > 0; }).map(function(r){ return r.nama || 'bahan'; }).slice(0, 8).join(', ');
+        lastCalc = { bahan: bahan, tkl: tkl, overhead: overhead, unit: unit, margin: margin, totalBiaya: totalBiaya, hppUnit: hppUnit, hargaJual: hargaJual, untungUnit: untungUnit, marginReal: marginReal, markup: markup, rows: rowsData };
+        window.HCHpp = { hppTxt: HC.fmt(hppUnit), totalTxt: HC.fmt(totalBiaya), bahanTxt: HC.fmt(bahan), tklTxt: HC.fmt(tkl), overheadTxt: HC.fmt(overhead), hargaTxt: HC.fmt(hargaJual), untungTxt: HC.fmt(untungUnit), bahan: bahan, tkl: tkl, overhead: overhead, unit: unit, margin: margin, rincian: rincian };
+
+        var inputs = { tkl: els.tkl.value, overhead: els.overhead.value, unit: els.unit.value, margin: els.margin.value, _rows: JSON.stringify(rowsData) };
+        HC.history.push('hpp', { inputs: inputs, summary: 'HPP ' + HC.fmt(hppUnit) + '/unit \u00b7 ' + unit + ' unit', metrics: [{ k: 'HPP/unit', v: HC.fmt(hppUnit) }, { k: 'Harga jual', v: HC.fmt(hargaJual) }] });
         renderHist();
+
         $('placeholder').style.display = 'none';
         $('results').classList.add('show');
         $('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -272,57 +562,158 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       }
 
       function reset() {
-        els.bahan.value = '500.000'; els.tkl.value = '150.000'; els.overhead.value = '100.000';
-        els.unit.value = '100'; els.margin.value = '40';
+        seed();
+        els.tkl.value = '150.000'; els.overhead.value = '100.000'; els.unit.value = '100'; els.margin.value = '40';
         $('placeholder').style.display = ''; $('results').classList.remove('show');
-        lastCalc = null; HC.toast('Form direset', 'info');
+        lastCalc = null; window.HCHpp = null; HC.toast('Form direset', 'info');
       }
 
       function buildReport() {
         if (!lastCalc) return null;
-        const c = lastCalc;
-        const insight = `HPP per unit ${HC.fmt(c.hppUnit)} dari total biaya ${HC.fmt(c.totalBiaya)} untuk ${c.unit} unit. Dengan margin ${c.margin}%, harga jual disarankan ${HC.fmt(c.hargaJual)}/unit (untung ${HC.fmt(c.untungUnit)}/unit). Belum termasuk biaya marketplace & operasional. Estimasi edukatif.`;
+        var c = lastCalc;
+        var insight = 'HPP per unit ' + HC.fmt(c.hppUnit) + ' dari total biaya ' + HC.fmt(c.totalBiaya) + ' untuk ' + c.unit + ' unit. Dengan margin ' + c.margin + '%, harga jual disarankan ' + HC.fmt(c.hargaJual) + '/unit (untung ' + HC.fmt(c.untungUnit) + '/unit). Belum termasuk biaya marketplace & operasional. Estimasi edukatif.';
+        var bahanInputs = c.rows.filter(function(r){ return r.sub > 0; }).slice(0, 6).map(function(r){ return { label: '\ud83e\uddfa ' + (r.nama || 'Bahan'), value: HC.fmt(r.sub) }; });
+        var inputs = bahanInputs.concat([
+          { label: '\ud83d\udc77 Tenaga Kerja', value: HC.fmt(c.tkl) },
+          { label: '\u2699\ufe0f Overhead', value: HC.fmt(c.overhead) },
+          { label: '\ud83d\udce6 Jumlah Unit', value: c.unit + ' unit' }
+        ]);
         return HC.buildReportCard({
-          title: '\ud83d\udce6 Hitung HPP',
-          color: '#EA580C', color2: '#C2410C',
-          heroLabel: 'HPP per Unit',
-          heroValue: HC.fmt(c.hppUnit),
-          heroSubtext: `${c.unit} unit \u00b7 total biaya ${HC.fmt(c.totalBiaya)}`,
-          inputs: [
-            { label: '\ud83e\uddfa Bahan Baku', value: HC.fmt(c.bahan) },
-            { label: '\ud83d\udc77 Tenaga Kerja', value: HC.fmt(c.tkl) },
-            { label: '\u2699\ufe0f Overhead', value: HC.fmt(c.overhead) },
-            { label: '\ud83d\udce6 Jumlah Unit', value: c.unit + ' unit' },
-          ],
+          title: '\ud83d\udce6 Hitung HPP', color: '#EA580C', color2: '#C2410C',
+          heroLabel: 'HPP per Unit', heroValue: HC.fmt(c.hppUnit),
+          heroSubtext: c.unit + ' unit \u00b7 total biaya ' + HC.fmt(c.totalBiaya),
+          inputs: inputs,
           results: [
             { label: 'HPP/unit', value: HC.fmt(c.hppUnit), highlight: true },
             { label: 'Total Biaya', value: HC.fmt(c.totalBiaya) },
             { label: 'Harga Jual (margin ' + c.margin + '%)', value: HC.fmt(c.hargaJual), highlight: true },
-            { label: 'Untung/unit', value: HC.fmt(c.untungUnit) },
+            { label: 'Untung/unit', value: HC.fmt(c.untungUnit) }
           ],
-          insight, slug: 'hpp',
+          insight: insight, slug: 'hpp'
         });
       }
 
       function summaryText() {
         if (!lastCalc) return '';
-        const c = lastCalc;
-        return `\ud83d\udce6 *Hitung HPP - HitungCerdas*\n\nBahan baku: ${HC.fmt(c.bahan)}\nTenaga kerja: ${HC.fmt(c.tkl)}\nOverhead: ${HC.fmt(c.overhead)}\nJumlah: ${c.unit} unit\n\n\ud83d\udce6 *HPP/unit: ${HC.fmt(c.hppUnit)}*\n\ud83d\udcb0 Harga jual (margin ${c.margin}%): ${HC.fmt(c.hargaJual)}\n\ud83d\udcc8 Untung/unit: ${HC.fmt(c.untungUnit)}\n\nHitung di: https://hitungcerdas.net/kalkulator/hpp`;
+        var c = lastCalc;
+        var rin = c.rows.filter(function(r){ return r.sub > 0; }).map(function(r){ return '  - ' + (r.nama || 'bahan') + ': ' + HC.fmt(r.sub); }).join('\n');
+        return '\ud83d\udce6 *Hitung HPP - HitungCerdas*\n\n*Bahan baku:*\n' + (rin || '  - ' + HC.fmt(c.bahan)) + '\nTotal bahan: ' + HC.fmt(c.bahan) + '\nTenaga kerja: ' + HC.fmt(c.tkl) + '\nOverhead: ' + HC.fmt(c.overhead) + '\nJumlah: ' + c.unit + ' unit\n\n\ud83d\udce6 *HPP/unit: ' + HC.fmt(c.hppUnit) + '*\n\ud83d\udcb0 Harga jual (margin ' + c.margin + '%): ' + HC.fmt(c.hargaJual) + '\n\ud83d\udcc8 Untung/unit: ' + HC.fmt(c.untungUnit) + '\n\nHitung di: https://hitungcerdas.net/kalkulator/hpp';
       }
 
-            function renderHist() {
-        HC.history.render('hpp', $('histBox'), function () { hitung(); });
+      function renderHist() {
+        HC.history.render('hpp', $('histBox'), function (e) {
+          try { var rows = JSON.parse((e.inputs && e.inputs._rows) || '[]'); if (rows.length) { $('bahanRows').innerHTML = ''; rows.forEach(function(r){ addRow({ nama: r.nama, qty: r.qty, sat: r.sat, harga: r.harga }); }); recalcBahan(); } } catch (err) {}
+          hitung();
+        });
       }
+
+      seed();
       renderHist();
       $('btnHitung').addEventListener('click', hitung);
       $('btnReset').addEventListener('click', reset);
-      document.querySelectorAll('.adv-toggle').forEach(t => t.addEventListener('click', () => t.parentElement.classList.toggle('open')));
-      $('exportImg').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToImage(c, 'hpp-' + Date.now()); });
-      $('exportWa').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.shareWhatsApp(c, summaryText(), 'hpp'); });
-      $('exportPdf').addEventListener('click', () => { if (!lastCalc) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToPDF(); });
-      $('exportCopy').addEventListener('click', () => { if (!lastCalc) { HC.toast('Hitung dulu', 'error'); return; } HC.copyText(summaryText(), 'Tersalin!'); });
-      $('exportExcel').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToExcel(c, 'hpp-' + Date.now()); });
+      document.querySelectorAll('.adv-toggle').forEach(function(t){ t.addEventListener('click', function(){ t.parentElement.classList.toggle('open'); }); });
+      $('exportImg').addEventListener('click', function(){ var c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToImage(c, 'hpp-' + Date.now()); });
+      $('exportWa').addEventListener('click', function(){ var c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.shareWhatsApp(c, summaryText(), 'hpp'); });
+      $('exportPdf').addEventListener('click', function(){ if (!lastCalc) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToPDF(); });
+      $('exportCopy').addEventListener('click', function(){ if (!lastCalc) { HC.toast('Hitung dulu', 'error'); return; } HC.copyText(summaryText(), 'Tersalin!'); });
+      $('exportExcel').addEventListener('click', function(){ var c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToExcel(c, 'hpp-' + Date.now()); });
     });
   })();
 </script>
-</Layout>
+
+<script is:inline>
+  (function(){
+    var LIMIT = 10;
+    function ready(fn){ if(window.HC){ fn(); } else { setTimeout(function(){ready(fn);},120); } }
+    function $(id){ return document.getElementById(id); }
+    ready(function(){
+      var wrap=$('aicWrap'); if(!wrap) return;
+      var trigger=$('aicTrigger'), panel=$('aicPanel'), ground=$('aicGround'), msgs=$('aicMsgs'), chips=$('aicChips');
+      var input=$('aicText'), send=$('aicSend'), limitEl=$('aicLimit'); var history=[];
+      function isDark(){ var de=document.documentElement; return de.classList.contains('dark')||de.getAttribute('data-theme')==='dark'||(function(){try{return localStorage.getItem('hc-theme')==='dark';}catch(e){return false;}})(); }
+      function applyTheme(){ wrap.classList.toggle('aic-dark', isDark()); }
+      applyTheme();
+      try{ new MutationObserver(applyTheme).observe(document.documentElement,{attributes:true,attributeFilter:['class','data-theme']}); }catch(e){}
+      window.addEventListener('storage', function(e){ if(e.key==='hc-theme') applyTheme(); });
+      function num(v){ try{ return HC.parseRp(String(v||'')); }catch(e){ return 0; } }
+      function selText(id){ var x=$(id); return (x&&x.options&&x.selectedIndex>=0)?x.options[x.selectedIndex].text:''; }
+      function esc(t){ return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+
+      function renderGround(){
+        var d=window.HCHpp;
+        var ctx='<div class="aic-ctx"><i class="ti ti-box"></i> HPP per unit: <b>'+(d?esc(d.hppTxt):'-')+'</b></div>';
+        if(!d){ ground.innerHTML=ctx+'<div class="aic-nogauge">Hitung dulu untuk lihat komposisi biaya & saran harga jual.</div>'; return; }
+        var segs=[['Bahan Baku',d.bahan,'#EA580C'],['Tenaga Kerja',d.tkl,'#F59E0B'],['Overhead',d.overhead,'#FBBF24']];
+        var tot=d.bahan+d.tkl+d.overhead, bars='';
+        segs.forEach(function(s){ var pct=tot>0?s[1]/tot*100:0; bars+='<div style="margin:4px 0"><div style="display:flex;justify-content:space-between;font-size:11.5px;margin-bottom:2px"><span>'+s[0]+'</span><b>'+pct.toFixed(0)+'%</b></div><div style="height:7px;border-radius:4px;background:#E5EAF1;overflow:hidden"><div style="height:100%;width:'+pct.toFixed(1)+'%;background:'+s[2]+'"></div></div></div>'; });
+        ground.innerHTML=ctx+'<div style="margin:8px 0">'+bars+'</div><div class="aic-verdict info"><i class="ti ti-tag"></i> Saran harga jual <b>'+esc(d.hargaTxt)+'</b>/unit (margin '+d.margin+'%, untung '+esc(d.untungTxt)+'/unit).</div>';
+      }
+      function buildContext(){
+        var d=window.HCHpp;
+        if(!d) return 'Pengguna belum menghitung HPP. Minta mereka mengisi biaya bahan baku, tenaga kerja, overhead, dan jumlah unit lalu klik Hitung Sekarang.';
+        var lines=['Kalkulator: HPP (Harga Pokok Produksi) per unit untuk UMKM Indonesia.',
+          'Total biaya produksi: '+d.totalTxt+' untuk '+d.unit+' unit.',
+          'Komponen biaya: bahan baku '+d.bahanTxt+', tenaga kerja langsung '+d.tklTxt+', overhead '+d.overheadTxt+'.',
+          'HPP per unit (modal per produk): '+d.hppTxt+'.',
+          'Target margin: '+d.margin+'%. Saran harga jual: '+d.hargaTxt+' per unit. Untung per unit: '+d.untungTxt+'.'];
+        if(d.rincian) lines.push('Rincian bahan baku: '+d.rincian+'.');
+        lines.push('ATURAN UNTUKMU (AI): Gunakan HANYA angka di atas, jangan mengarang. Bantu UMKM memahami HPP, kesehatan margin, dan cara menekan biaya, dengan bahasa sederhana dan suportif. PENTING: harga jual ini BELUM dipotong biaya marketplace/ojol (GoFood, GrabFood, ShopeeFood biasanya potong sekitar 20-30%), ongkir, dan biaya operasional (sewa, marketing, admin). Ingatkan bila relevan. Untuk hitung harga jual lengkap di marketplace, arahkan ke kalkulator harga jual. Jangan menjawab di luar topik biaya/harga produk.');
+        return lines.join('\n');
+      }
+      function mdInline(t){ t=t.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>'); t=t.replace(/__([^_]+)__/g,'<strong>$1</strong>'); t=t.replace(/(^|[\s(])\*([^*\n]+)\*(?=[\s).,!?:;]|$)/g,'$1<em>$2</em>'); t=t.replace(/`([^`]+)`/g,'<code>$1</code>'); return t; }
+      function mdToHtml(raw){ var lines=String(raw).replace(/\r/g,'').split('\n'); var out=[]; for(var i=0;i<lines.length;i++){ var t=lines[i].trim(); if(t==='')continue; if(/^([-*_]\s*){3,}$/.test(t))continue; var h=t.match(/^#{1,6}\s+(.*)$/); if(h){out.push('<p class="aic-h">'+mdInline(esc(h[1]))+'</p>');continue;} var b=t.match(/^[-*\u2022]\s+(.*)$/); if(b){out.push('<div class="aic-li"><span class="aic-mk">\u2022</span><span>'+mdInline(esc(b[1]))+'</span></div>');continue;} var n=t.match(/^(\d+)[.)]\s+(.*)$/); if(n){out.push('<div class="aic-li"><span class="aic-mk">'+n[1]+'.</span><span>'+mdInline(esc(n[2]))+'</span></div>');continue;} out.push('<p>'+mdInline(esc(t))+'</p>'); } return out.join('')||('<p>'+mdInline(esc(String(raw)))+'</p>'); }
+      // ── UI canggih: typewriter (live-format) + copy + chip lanjutan ──
+      function typeInto(bubble, text, done){
+        var n=0, len=text.length, step=Math.max(2, Math.round(len/90));
+        var t=setInterval(function(){
+          n=Math.min(len, n+step);
+          bubble.innerHTML=mdToHtml(text.slice(0,n));
+          msgs.scrollTop=msgs.scrollHeight;
+          if(n>=len){ clearInterval(t); done&&done(); }
+        }, 18);
+      }
+      function mkCopyBtn(text){
+        var b=document.createElement('button'); b.type='button'; b.className='aic-copy';
+        b.innerHTML='<i class="ti ti-copy"></i><span>Salin</span>';
+        b.addEventListener('click', function(){ HC.copyText(text, 'Jawaban tersalin!'); });
+        return b;
+      }
+      function addMsgTyped(text){
+        var row=document.createElement('div'); row.className='aic-row ai';
+        row.innerHTML='<div class="aic-av"><i class="ti ti-sparkles"></i></div><div class="aic-bub aic-rich"></div>';
+        var bub=row.querySelector('.aic-bub'); msgs.appendChild(row); msgs.scrollTop=msgs.scrollHeight;
+        typeInto(bub, text, function(){ bub.appendChild(mkCopyBtn(text)); renderFollowups(); });
+        return row;
+      }
+      var FOLLOWUPS=['Margin segini sehat gak?','Kenapa HPP-ku segini?','Gimana biar HPP turun?','Harga jualku kemahalan gak?','Belum kehitung biaya apa aja?','Kalau jual di GoFood gimana?'];
+      function renderFollowups(){
+        chips.innerHTML='';
+        var asked=history.filter(function(m){return m.role==='user';}).map(function(m){return m.content;});
+        var pool=FOLLOWUPS.filter(function(q){return asked.indexOf(q)<0;});
+        pool.slice(0,3).forEach(function(q){
+          var b=document.createElement('button'); b.type='button'; b.className='aic-chip'; b.textContent=q;
+          b.addEventListener('click', function(){ ask(q); }); chips.appendChild(b);
+        });
+      }
+      function addMsg(role,text){ var row=document.createElement('div'); row.className='aic-row '+role; if(role==='ai'){ row.innerHTML='<div class="aic-av"><i class="ti ti-sparkles"></i></div><div class="aic-bub aic-rich"></div>'; row.querySelector('.aic-bub').innerHTML=mdToHtml(text); } else { row.innerHTML='<div class="aic-bub"></div>'; row.querySelector('.aic-bub').textContent=text; } msgs.appendChild(row); msgs.scrollTop=msgs.scrollHeight; return row; }
+      function addTyping(){ var row=document.createElement('div'); row.className='aic-row ai'; row.innerHTML='<div class="aic-av"><i class="ti ti-sparkles"></i></div><div class="aic-bub aic-typing"><span></span><span></span><span></span></div>'; msgs.appendChild(row); msgs.scrollTop=msgs.scrollHeight; return row; }
+      function todayKey(){ var d=new Date(); return 'hc-coach-'+d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate(); }
+      function getCount(){ try{ return parseInt(localStorage.getItem(todayKey())||'0',10)||0; }catch(e){ return 0; } }
+      function incCount(){ try{ localStorage.setItem(todayKey(), getCount()+1); }catch(e){} }
+      function refreshLimit(){ var left=Math.max(0,LIMIT-getCount()); limitEl.textContent='Sisa '+left+' pertanyaan gratis hari ini.'; var done=left<=0; input.disabled=done; send.disabled=done; if(done){ input.placeholder='Batas harian tercapai, balik lagi besok ya.'; } }
+      var busy=false;
+      async function ask(text){ text=(text||'').trim(); if(!text||busy)return; if(getCount()>=LIMIT){refreshLimit();return;} busy=true; send.disabled=true; addMsg('user',text); history.push({role:'user',content:text}); input.value=''; chips.innerHTML=''; var typing=addTyping(); incCount();
+        try{ var res=await fetch('/api/coach',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({calcContext:buildContext(),messages:history})}); var data=await res.json().catch(function(){return {error:'Respon tidak valid.'};}); typing.parentNode&&typing.remove(); if(data&&data.reply){ addMsgTyped(data.reply); history.push({role:'assistant',content:data.reply}); } else { addMsg('ai','\u26a0\ufe0f '+((data&&data.error)||'Coach lagi sibuk, coba lagi sebentar ya.')); } }
+        catch(e){ typing.parentNode&&typing.remove(); addMsg('ai','\u26a0\ufe0f Gagal terhubung ke Coach. Coba lagi ya.'); }
+        busy=false; refreshLimit(); if(!input.disabled) input.focus(); }
+      var PRESETS=['Margin segini sehat gak?','Gimana biar HPP turun?','Belum kehitung biaya apa?'];
+      function renderChips(){ chips.innerHTML=''; PRESETS.forEach(function(q){ var b=document.createElement('button'); b.type='button'; b.className='aic-chip'; b.textContent=q; b.addEventListener('click',function(){ask(q);}); chips.appendChild(b); }); }
+      var opened=false;
+      trigger.addEventListener('click', function(){ if(panel.hasAttribute('hidden')){ panel.removeAttribute('hidden'); wrap.classList.add('open'); applyTheme(); renderGround(); refreshLimit(); if(!opened){renderChips();opened=true;} } else { panel.setAttribute('hidden',''); wrap.classList.remove('open'); } });
+      send.addEventListener('click', function(){ ask(input.value); });
+      input.addEventListener('keydown', function(e){ if(e.key==='Enter'){ e.preventDefault(); ask(input.value); } });
+      var bh=$('btnHitung'); if(bh){ bh.addEventListener('click', function(){ setTimeout(function(){ if(!panel.hasAttribute('hidden')) renderGround(); },60); }); }
+    });
+  })();
+</script>
