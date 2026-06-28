@@ -11,7 +11,7 @@
    registrasi di Layout.astro, lalu Purge Everything di Cloudflare.
    ═══════════════════════════════════════════════════════════ */
 
-const CACHE = 'hc-cache-v1';      // ← naikkan angka (v2, v3...) jika ingin paksa refresh total
+const CACHE = 'hc-cache-v2';      // ← naikkan angka (v2, v3...) jika ingin paksa refresh total
 const OFFLINE_FALLBACK = '/';
 
 // Saat install: simpan beranda sebagai fallback offline, aktif langsung
