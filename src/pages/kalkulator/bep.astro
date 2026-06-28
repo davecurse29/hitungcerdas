@@ -241,6 +241,12 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
     📅 Diperbarui <strong>Juni 2026</strong> · Kalkulator edukatif untuk UMKM Indonesia
   </p>
 
+<style>
+  /* mobile: biarkan kolom input/output menyusut agar chart, tabel skenario & panel coach tidak overflow */
+  .calc-input,.calc-output{min-width:0}
+  #bepChart{max-width:100%;overflow:hidden}
+  #scenResult{overflow-x:auto;-webkit-overflow-scrolling:touch}
+</style>
 <style is:global>
   .aic-wrap{margin-top:18px}
   .aic-trigger{width:100%;display:flex;align-items:center;gap:12px;background:#EFF4FF;border:1px solid #C7DBFF;border-radius:14px;padding:13px 15px;cursor:pointer;text-align:left;transition:background .15s;font-family:inherit}
