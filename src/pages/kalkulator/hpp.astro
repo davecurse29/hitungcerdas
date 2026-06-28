@@ -60,12 +60,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         <div class="calc-grid">
           <div class="calc-input">
             <div class="ig-grp">Bahan Baku <span class="ig-grp-hint">(rincian per bahan)</span></div>
-            <div class="ig-scroll">
-              <table class="ig-table">
-                <thead><tr><th>Bahan</th><th>Jumlah</th><th>Satuan</th><th>Harga/satuan</th><th class="r">Subtotal</th><th></th></tr></thead>
-                <tbody id="bahanRows"></tbody>
-              </table>
-            </div>
+            <div class="ig-list" id="bahanRows"></div>
             <button type="button" class="ig-addbtn" id="addBahan"><i class="ti ti-plus"></i> Tambah Bahan</button>
             <div class="ig-subtotal"><span><i class="ti ti-shopping-cart"></i> Subtotal Bahan Baku</span><b id="bahanTotal">Rp 0</b></div>
 
@@ -242,22 +237,26 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
   .ig-grp:first-child{margin-top:0}
   .ig-grp::before{content:'';width:14px;height:2px;border-radius:2px;background:currentColor;opacity:.55}
   .ig-grp-hint{font-weight:500;text-transform:none;letter-spacing:0;color:var(--text-mute,#94A3B8)}
-  .ig-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
-  .ig-table{width:100%;border-collapse:collapse;font-size:13px;min-width:340px}
-  .ig-table thead th{font-size:10px;text-transform:uppercase;letter-spacing:.02em;color:var(--text-mute,#94A3B8);text-align:left;padding:2px 5px 6px;font-weight:600;white-space:nowrap}
-  .ig-table thead th.r{text-align:right}
-  .ig-row td{padding:3px 4px;vertical-align:middle}
-  .ig-row input{width:100%;border:1px solid var(--border,#E2E8F0);border-radius:8px;padding:7px 8px;font-size:13px;font-family:inherit;background:var(--bg,#fff);color:var(--text,#0F172A);outline:none}
-  .ig-row input:focus{border-color:#EA580C}
-  .ig-row input.ig-qty{width:54px;text-align:center;padding:7px 4px}
-  .ig-row input.ig-sat{width:54px}
-  .ig-harga-wrap{display:flex;align-items:center;gap:3px;border:1px solid var(--border,#E2E8F0);border-radius:8px;padding:0 8px;background:var(--bg,#fff)}
-  .ig-harga-wrap:focus-within{border-color:#EA580C}
-  .ig-harga-wrap .ig-rp{font-size:11px;color:var(--text-mute,#94A3B8)}
-  .ig-harga-wrap input{border:0;padding:7px 0;width:84px}
-  td.ig-sub{font-size:12.5px;font-weight:700;color:var(--text,#0F172A);white-space:nowrap;text-align:right}
-  .ig-del{border:0;background:#FEE2E2;color:#DC2626;width:28px;height:28px;border-radius:7px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px}
+  /* allow grid/flex columns to shrink on mobile (prevents horizontal overflow) */
+  .calc-input,.calc-output{min-width:0}
+  .ig-list{display:flex;flex-direction:column;gap:8px}
+  .ig-row{border:1px solid var(--border,#E2E8F0);border-radius:11px;padding:8px;background:var(--bg,#fff)}
+  .ig-row-top{display:flex;gap:7px;align-items:center;margin-bottom:7px}
+  .ig-row-top .ig-nama{flex:1;min-width:0;border:1px solid var(--border,#E2E8F0);border-radius:8px;padding:8px 9px;font-size:13.5px;font-family:inherit;background:var(--bg,#fff);color:var(--text,#0F172A);outline:none}
+  .ig-row-top .ig-nama:focus{border-color:#EA580C}
+  .ig-del{flex-shrink:0;border:0;background:#FEE2E2;color:#DC2626;width:30px;height:30px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px}
   .ig-del:hover{background:#FCA5A5}
+  .ig-row-bot{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+  .ig-row-bot input{border:1px solid var(--border,#E2E8F0);border-radius:8px;padding:7px 8px;font-size:13px;font-family:inherit;background:var(--bg,#fff);color:var(--text,#0F172A);outline:none;min-width:0}
+  .ig-row-bot input:focus{border-color:#EA580C}
+  .ig-qty{width:52px;text-align:center}
+  .ig-sat{width:62px}
+  .ig-mul,.ig-eq{color:var(--text-mute,#94A3B8);font-size:12px;flex-shrink:0}
+  .ig-harga-wrap{display:flex;align-items:center;gap:3px;border:1px solid var(--border,#E2E8F0);border-radius:8px;padding:0 8px;background:var(--bg,#fff);flex:1 1 96px;min-width:96px}
+  .ig-harga-wrap:focus-within{border-color:#EA580C}
+  .ig-harga-wrap .ig-rp{font-size:11px;color:var(--text-mute,#94A3B8);flex-shrink:0}
+  .ig-harga-wrap input{border:0;padding:7px 0;width:100%}
+  .ig-sub{font-size:12.5px;font-weight:700;color:#C2410C;white-space:nowrap;flex-shrink:0}
   .ig-addbtn{margin-top:9px;border:1px dashed #FB923C;background:#FFF7ED;color:#C2410C;border-radius:9px;padding:8px 13px;font-size:12.5px;font-weight:600;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:6px}
   .ig-addbtn:hover{background:#FFEDD5}
   .ig-subtotal{margin-top:11px;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 13px;background:#FFF7ED;border:1px solid #FED7AA;border-radius:11px;font-size:13px;color:#9A3412;font-weight:600}
@@ -427,13 +426,19 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       // ===== Ingredient builder =====
       function addRow(d){
         d = d || {};
-        var tr = document.createElement('tr'); tr.className = 'ig-row';
-        tr.innerHTML = '<td><input class="ig-nama" type="text" placeholder="mis. Tepung"></td>'
-          + '<td><input class="ig-qty" type="number" min="0" step="any" inputmode="decimal"></td>'
-          + '<td><input class="ig-sat" type="text" placeholder="kg"></td>'
-          + '<td><div class="ig-harga-wrap"><span class="ig-rp">Rp</span><input class="ig-harga" type="text" inputmode="numeric"></div></td>'
-          + '<td class="ig-sub">Rp 0</td>'
-          + '<td><button type="button" class="ig-del" aria-label="Hapus"><i class="ti ti-x"></i></button></td>';
+        var tr = document.createElement('div'); tr.className = 'ig-row';
+        tr.innerHTML = '<div class="ig-row-top">'
+          + '<input class="ig-nama" type="text" placeholder="Nama bahan (mis. Tepung)">'
+          + '<button type="button" class="ig-del" aria-label="Hapus bahan"><i class="ti ti-x"></i></button>'
+          + '</div>'
+          + '<div class="ig-row-bot">'
+          + '<input class="ig-qty" type="number" min="0" step="any" inputmode="decimal" placeholder="Jml">'
+          + '<input class="ig-sat" type="text" placeholder="satuan">'
+          + '<span class="ig-mul">\u00d7</span>'
+          + '<div class="ig-harga-wrap"><span class="ig-rp">Rp</span><input class="ig-harga" type="text" inputmode="numeric" placeholder="0"></div>'
+          + '<span class="ig-eq">=</span>'
+          + '<span class="ig-sub">Rp 0</span>'
+          + '</div>';
         $('bahanRows').appendChild(tr);
         tr.querySelector('.ig-nama').value = d.nama || '';
         tr.querySelector('.ig-qty').value = (d.qty != null ? d.qty : 1);
