@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Diagnostik HitungCerdas</title>
+<style>
+  *{box-sizing:border-box}
+  body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;margin:0;padding:16px;background:#0A2540;color:#fff;line-height:1.5}
+  h1{font-size:20px;margin:0 0 4px}
+  .sub{font-size:13px;color:#9DB2CE;margin-bottom:16px}
+  .card{background:#13335C;border:1px solid #1E4475;border-radius:12px;padding:14px;margin-bottom:12px}
+  .ttl{font-size:14px;font-weight:700;margin-bottom:8px}
+  .row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:7px 0;font-size:14px;border-bottom:1px solid rgba(255,255,255,.08)}
+  .row:last-child{border-bottom:0}
+  .ok{color:#34D399;font-weight:700}
+  .bad{color:#F87171;font-weight:700}
+  .wait{color:#FBBF24;font-weight:700}
+  button{width:100%;font-size:17px;font-weight:700;padding:16px;border:0;border-radius:12px;background:#2563EB;color:#fff;margin-top:6px;cursor:pointer}
+  button:active{background:#1E40AF}
+  #tapResult,#readyResult{margin-top:10px;font-size:14px;font-weight:700;color:#9DB2CE}
+  #errbox{background:#7F1D1D;border:1px solid #F87171;border-radius:12px;padding:14px;margin-bottom:12px;display:none}
+  #errbox .ttl{margin-bottom:6px}
+  .small{font-size:12px;color:#9DB2CE;word-break:break-all;margin:3px 0}
+  #copyBtn{background:#059669}
+  #copyBtn:active{background:#047857}
+</style>
+</head>
+<body>
+<h1>🔧 Diagnostik HitungCerdas</h1>
+<div class="sub">Halaman ini menguji kenapa tombol Hitung tidak jalan di HP. Tekan KEDUA tombol tes di bawah, lalu tekan "Salin Hasil" dan kirim ke Claude.</div>
+
+<div id="errbox"><div class="ttl">⚠️ Ada error JavaScript:</div><div id="errtext" class="small"></div></div>
+
+<div class="card">
+  <div class="ttl">Pemeriksaan otomatis</div>
+  <div class="row"><span>1. JavaScript aktif</span><span id="t-js" class="bad">✗ TIDAK</span></div>
+  <div class="row"><span>2. calculator-utils.js (HC) termuat</span><span id="t-hc" class="wait">… cek</span></div>
+  <div class="row"><span>3. HC.fmt berfungsi</span><span id="t-fmt" class="wait">… cek</span></div>
+  <div class="row"><span>4. html2canvas tersedia</span><span id="t-h2c" class="wait">… cek</span></div>
+  <div class="row"><span>5. Layar sentuh terdeteksi</span><span id="t-touch" class="wait">… cek</span></div>
+</div>
+
+<div class="card">
+  <div class="ttl">TES 1 — tombol biasa</div>
+  <button id="btnPlain">TEKAN SAYA (tes 1)</button>
+  <div id="tapResult">Belum ditekan.</div>
+</div>
+
+<div class="card">
+  <div class="ttl">TES 2 — tombol pola kalkulator (pakai HC)</div>
+  <button id="btnReady">HITUNG (tes 2)</button>
+  <div id="readyResult">Belum ditekan.</div>
+</div>
+
+<div class="card">
+  <div class="ttl">Info browser</div>
+  <div class="small" id="ua">UA: -</div>
+  <div class="small" id="vp">Layar: -</div>
+  <div class="small" id="mm">Media: -</div>
+</div>
+
+<button id="copyBtn">📋 Salin Hasil (lalu kirim ke Claude)</button>
+<div id="copyMsg" class="small" style="text-align:center;margin-top:8px"></div>
+
+<script>
+  var state = { js:false, hc:'?', fmt:'?', h2c:'?', touch:'?', tap1:'belum', tap2:'belum', err:[] };
+
+  window.onerror = function(msg, src, line){
+    state.err.push(msg + ' @ ' + String(src||'').split('/').pop() + ':' + line);
+    var b=document.getElementById('errbox'); var t=document.getElementById('errtext');
+    b.style.display='block';
+    t.innerHTML = state.err.join('<br>');
+    return false;
+  };
+
+  function set(id, txt, cls){ var e=document.getElementById(id); e.textContent=txt; e.className=cls; }
+
+  // 1. JS aktif
+  state.js=true; set('t-js','✓ YA','ok');
+
+  // 5. touch + info browser
+  (function(){
+    var touch = ('ontouchstart' in window) || (navigator.maxTouchPoints>0);
+    state.touch = touch ? 'ya' : 'tidak';
+    set('t-touch', touch ? '✓ YA (sentuh)' : '✗ tidak', touch ? 'ok' : 'bad');
+    document.getElementById('ua').textContent = 'UA: ' + navigator.userAgent;
+    document.getElementById('vp').textContent = 'Layar: ' + window.innerWidth + '×' + window.innerHeight + ', ratio ' + window.devicePixelRatio;
+    var hover=false, coarse=false;
+    try{ hover=window.matchMedia('(hover:hover)').matches; coarse=window.matchMedia('(pointer:coarse)').matches; }catch(e){}
+    document.getElementById('mm').textContent = 'hover:hover=' + hover + ' | pointer:coarse=' + coarse;
+    state.mm = 'hover='+hover+',coarse='+coarse;
+  })();
+
+  // 2-4. cek HC
+  var hcDone=false;
+  function checkHC(){
+    if(hcDone) return; hcDone=true;
+    if(window.HC){
+      state.hc='ya'; set('t-hc','✓ YA','ok');
+      try{ var s=HC.fmt(1000); state.fmt='ya ('+s+')'; set('t-fmt','✓ YA ('+s+')','ok'); }
+      catch(err){ state.fmt='error:'+err.message; set('t-fmt','✗ error: '+err.message,'bad'); }
+    } else {
+      state.hc='TIDAK'; set('t-hc','✗ TIDAK ADA','bad');
+      state.fmt='tidak'; set('t-fmt','✗ tidak bisa','bad');
+    }
+    var h2c=!!window.html2canvas; state.h2c = h2c?'ya':'tidak';
+    set('t-h2c', h2c?'✓ ada':'✗ tidak ada', h2c?'ok':'bad');
+  }
+
+  // muat calculator-utils.js sama seperti halaman kalkulator asli
+  var sc=document.createElement('script');
+  sc.src='/js/calculator-utils.js';
+  sc.onload=function(){ checkHC(); };
+  sc.onerror=function(){
+    state.hc='GAGAL DIMUAT';
+    set('t-hc','✗ FILE GAGAL DIMUAT','bad');
+    checkHC();
+  };
+  document.head.appendChild(sc);
+  setTimeout(checkHC, 2500);
+
+  // TES 1: tombol biasa
+  document.getElementById('btnPlain').addEventListener('click', function(){
+    state.tap1='BERHASIL';
+    var r=document.getElementById('tapResult');
+    r.textContent='✓ BERHASIL! Klik tombol biasa terdeteksi.'; r.style.color='#34D399';
+  });
+
+  // TES 2: pola ready()+HC seperti kalkulator
+  (function(){
+    function ready(fn){ if(window.HC){ fn(); } else { setTimeout(function(){ready(fn);},120); } }
+    var attached=false;
+    ready(function(){
+      attached=true;
+      document.getElementById('btnReady').addEventListener('click', function(){
+        state.tap2='BERHASIL';
+        var r=document.getElementById('readyResult');
+        r.textContent='✓ BERHASIL! Tombol pola-kalkulator + HC siap.'; r.style.color='#34D399';
+      });
+    });
+    setTimeout(function(){
+      if(!attached){
+        state.tap2='LISTENER-TAK-TERPASANG';
+        var r=document.getElementById('readyResult');
+        r.textContent='⚠️ Listener TIDAK terpasang (HC tak pernah siap). Inilah sebab tombol Hitung mati.'; r.style.color='#F87171';
+      }
+    }, 3000);
+  })();
+
+  // Salin hasil
+  document.getElementById('copyBtn').addEventListener('click', function(){
+    var txt = 'DIAGNOSTIK HITUNGCERDAS\n'
+      + 'JS aktif: ' + state.js + '\n'
+      + 'HC termuat: ' + state.hc + '\n'
+      + 'HC.fmt: ' + state.fmt + '\n'
+      + 'html2canvas: ' + state.h2c + '\n'
+      + 'Layar sentuh: ' + state.touch + '\n'
+      + 'Media: ' + (state.mm||'-') + '\n'
+      + 'TES 1 (tombol biasa): ' + state.tap1 + '\n'
+      + 'TES 2 (pola kalkulator): ' + state.tap2 + '\n'
+      + 'Error JS: ' + (state.err.length ? state.err.join(' || ') : 'tidak ada') + '\n'
+      + 'UA: ' + navigator.userAgent + '\n'
+      + 'Layar: ' + window.innerWidth + 'x' + window.innerHeight;
+    var msg=document.getElementById('copyMsg');
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(txt).then(function(){ msg.textContent='✓ Tersalin! Tempel (paste) di chat Claude.'; })
+        .catch(function(){ showTextarea(txt, msg); });
+    } else { showTextarea(txt, msg); }
+  });
+  function showTextarea(txt, msg){
+    var ta=document.createElement('textarea'); ta.value=txt;
+    ta.style.cssText='width:100%;height:160px;margin-top:8px;font-size:12px';
+    document.body.appendChild(ta); ta.select();
+    msg.textContent='Salin manual teks di kotak ini lalu kirim ke Claude.';
+  }
+</script>
+</body>
+</html>
