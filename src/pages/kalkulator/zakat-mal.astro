@@ -68,12 +68,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
               <p class="field-hint">Senilai <b id="emasRp" style="color:#B45309">Rp 0</b> (otomatis dari harga emas/gram di atas).</p></div>
 
             <div class="zm-grp">Harta Lain <span class="zm-grp-hint">(tabungan, investasi, dll)</span></div>
-            <div class="zm-scroll">
-              <table class="zm-table">
-                <thead><tr><th>Kategori</th><th>Keterangan</th><th class="r">Nilai</th><th></th></tr></thead>
-                <tbody id="hartaRows"></tbody>
-              </table>
-            </div>
+            <div class="zm-list" id="hartaRows"></div>
             <button type="button" class="zm-addbtn" id="addHarta"><i class="ti ti-plus"></i> Tambah Harta</button>
             <div class="zm-subtotal"><span><i class="ti ti-wallet"></i> Subtotal Harta Lain</span><b id="hartaLainTotal">Rp 0</b></div>
 
@@ -203,20 +198,22 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
   .zm-grp:first-child{margin-top:0}
   .zm-grp::before{content:'';width:14px;height:2px;border-radius:2px;background:currentColor;opacity:.55}
   .zm-grp-hint{font-weight:500;text-transform:none;letter-spacing:0;color:var(--text-mute,#94A3B8)}
-  .zm-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
-  .zm-table{width:100%;border-collapse:collapse;font-size:13px;min-width:330px}
-  .zm-table thead th{font-size:10px;text-transform:uppercase;letter-spacing:.02em;color:var(--text-mute,#94A3B8);text-align:left;padding:2px 5px 6px;font-weight:600;white-space:nowrap}
-  .zm-table thead th.r{text-align:right}
-  .zm-row td{padding:3px 4px;vertical-align:middle}
-  .zm-row select,.zm-row input{width:100%;border:1px solid var(--border,#E2E8F0);border-radius:8px;padding:7px 8px;font-size:12.5px;font-family:inherit;background:var(--bg,#fff);color:var(--text,#0F172A);outline:none}
-  .zm-row select:focus,.zm-row input:focus{border-color:#D97706}
-  .zm-row select.zm-kat{min-width:118px}
-  .zm-nilai-wrap{display:flex;align-items:center;gap:3px;border:1px solid var(--border,#E2E8F0);border-radius:8px;padding:0 8px;background:var(--bg,#fff)}
-  .zm-nilai-wrap:focus-within{border-color:#D97706}
-  .zm-nilai-wrap .zm-rp{font-size:11px;color:var(--text-mute,#94A3B8)}
-  .zm-nilai-wrap input{border:0;padding:7px 0;width:92px;text-align:right}
-  .zm-del{border:0;background:#FEE2E2;color:#DC2626;width:28px;height:28px;border-radius:7px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px}
+  /* allow grid/flex columns to shrink on mobile (prevents horizontal overflow) */
+  .calc-input,.calc-output{min-width:0}
+  .zm-list{display:flex;flex-direction:column;gap:8px}
+  .zm-row{border:1px solid var(--border,#E2E8F0);border-radius:11px;padding:8px;background:var(--bg,#fff)}
+  .zm-row-top{display:flex;gap:7px;align-items:center;margin-bottom:7px}
+  .zm-row-top .zm-kat{flex:1;min-width:0;border:1px solid var(--border,#E2E8F0);border-radius:8px;padding:8px 9px;font-size:13px;font-family:inherit;background:var(--bg,#fff);color:var(--text,#0F172A);outline:none}
+  .zm-row-top .zm-kat:focus{border-color:#D97706}
+  .zm-del{flex-shrink:0;border:0;background:#FEE2E2;color:#DC2626;width:30px;height:30px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px}
   .zm-del:hover{background:#FCA5A5}
+  .zm-row-bot{display:flex;gap:6px;align-items:center}
+  .zm-ket{flex:1;min-width:0;border:1px solid var(--border,#E2E8F0);border-radius:8px;padding:7px 8px;font-size:13px;font-family:inherit;background:var(--bg,#fff);color:var(--text,#0F172A);outline:none}
+  .zm-ket:focus{border-color:#D97706}
+  .zm-nilai-wrap{display:flex;align-items:center;gap:3px;border:1px solid var(--border,#E2E8F0);border-radius:8px;padding:0 8px;background:var(--bg,#fff);flex:1 1 120px;min-width:120px}
+  .zm-nilai-wrap:focus-within{border-color:#D97706}
+  .zm-nilai-wrap .zm-rp{font-size:11px;color:var(--text-mute,#94A3B8);flex-shrink:0}
+  .zm-nilai-wrap input{border:0;padding:7px 0;width:100%;text-align:right}
   .zm-addbtn{margin-top:9px;border:1px dashed #F59E0B;background:#FFFBEB;color:#B45309;border-radius:9px;padding:8px 13px;font-size:12.5px;font-weight:600;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:6px}
   .zm-addbtn:hover{background:#FEF3C7}
   .zm-subtotal{margin-top:11px;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 13px;background:#FFFBEB;border:1px solid #FDE68A;border-radius:11px;font-size:13px;color:#92400E;font-weight:600}
@@ -407,11 +404,15 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       // ===== Harta builder =====
       function addRow(d){
         d = d || {};
-        var tr = document.createElement('tr'); tr.className = 'zm-row';
-        tr.innerHTML = '<td><select class="zm-kat">' + KAT_OPTS + '</select></td>'
-          + '<td><input class="zm-ket" type="text" placeholder="keterangan"></td>'
-          + '<td><div class="zm-nilai-wrap"><span class="zm-rp">Rp</span><input class="zm-nilai" type="text" inputmode="numeric"></div></td>'
-          + '<td><button type="button" class="zm-del" aria-label="Hapus"><i class="ti ti-x"></i></button></td>';
+        var tr = document.createElement('div'); tr.className = 'zm-row';
+        tr.innerHTML = '<div class="zm-row-top">'
+          + '<select class="zm-kat">' + KAT_OPTS + '</select>'
+          + '<button type="button" class="zm-del" aria-label="Hapus harta"><i class="ti ti-x"></i></button>'
+          + '</div>'
+          + '<div class="zm-row-bot">'
+          + '<input class="zm-ket" type="text" placeholder="keterangan (opsional)">'
+          + '<div class="zm-nilai-wrap"><span class="zm-rp">Rp</span><input class="zm-nilai" type="text" inputmode="numeric" placeholder="0"></div>'
+          + '</div>';
         $('hartaRows').appendChild(tr);
         if (d.kat) tr.querySelector('.zm-kat').value = d.kat;
         tr.querySelector('.zm-ket').value = d.ket || '';
