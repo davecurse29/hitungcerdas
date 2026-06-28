@@ -592,7 +592,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
 
         lastCalc = c;
         render(c);
-        HC.history.push('pesangon', {
+        if (HC.history) HC.history.push('pesangon', {
           inputs: HC.history.capture(['status', 'upahPokok', 'tunjTetap', 'umr', 'mkTahun', 'mkBulan', 'alasan', 'sisaCuti', 'pphToggle']),
           summary: (isPkwt ? 'PKWT ' : '') + years + ' th · ' + (isPkwt ? 'kompensasi' : (ALASAN[c.alasanKey] ? ALASAN[c.alasanKey].label : '')),
           metrics: [{ k: 'Bruto', v: HC.fmt(c.bruto) }, { k: 'Bersih', v: HC.fmt(c.bersih) }],
@@ -704,7 +704,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
           '_Estimasi PP 35/2021, bukan nasihat hukum._\nHitung di: https://hitungcerdas.net/kalkulator/pesangon';
       }
 
-      HC.history.render('pesangon', $('histBox'), function () { hitung(); });
+      if (HC.history) HC.history.render('pesangon', $('histBox'), function () { hitung(); });
       $('btnHitung').addEventListener('click', hitung);
       $('btnReset').addEventListener('click', reset);
       $('exportImg').addEventListener('click', function () { var c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToImage(c, 'pesangon-' + Date.now()); });

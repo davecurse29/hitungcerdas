@@ -557,7 +557,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         window.HCHpp = { hppTxt: HC.fmt(hppUnit), totalTxt: HC.fmt(totalBiaya), bahanTxt: HC.fmt(bahan), tklTxt: HC.fmt(tkl), overheadTxt: HC.fmt(overhead), hargaTxt: HC.fmt(hargaJual), untungTxt: HC.fmt(untungUnit), bahan: bahan, tkl: tkl, overhead: overhead, unit: unit, margin: margin, rincian: rincian };
 
         var inputs = { tkl: els.tkl.value, overhead: els.overhead.value, unit: els.unit.value, margin: els.margin.value, _rows: JSON.stringify(rowsData) };
-        HC.history.push('hpp', { inputs: inputs, summary: 'HPP ' + HC.fmt(hppUnit) + '/unit \u00b7 ' + unit + ' unit', metrics: [{ k: 'HPP/unit', v: HC.fmt(hppUnit) }, { k: 'Harga jual', v: HC.fmt(hargaJual) }] });
+        if (HC.history) HC.history.push('hpp', { inputs: inputs, summary: 'HPP ' + HC.fmt(hppUnit) + '/unit \u00b7 ' + unit + ' unit', metrics: [{ k: 'HPP/unit', v: HC.fmt(hppUnit) }, { k: 'Harga jual', v: HC.fmt(hargaJual) }] });
         renderHist();
 
         $('placeholder').style.display = 'none';
@@ -606,7 +606,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       }
 
       function renderHist() {
-        HC.history.render('hpp', $('histBox'), function (e) {
+        if (HC.history) HC.history.render('hpp', $('histBox'), function (e) {
           try { var rows = JSON.parse((e.inputs && e.inputs._rows) || '[]'); if (rows.length) { $('bahanRows').innerHTML = ''; rows.forEach(function(r){ addRow({ nama: r.nama, qty: r.qty, sat: r.sat, harga: r.harga }); }); recalcBahan(); } } catch (err) {}
           hitung();
         });

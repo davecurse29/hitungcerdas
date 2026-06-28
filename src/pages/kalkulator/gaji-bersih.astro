@@ -685,7 +685,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         $('proyeksiBody').innerHTML = html;
 
         lastCalc = { gaji, tunj, tunjVar, ptkpLabel: els.ptkp.options[els.ptkp.selectedIndex].text, useTer, terCat, terRt, pphBulanTahunan, pphBulanTER, ctc, empBpjs, potLain, dplkKaryawan, dplkPerusahaan, dplkKaryawanPct, dplkPerusahaanPct, thrBonus, thrPph, thrNet, thrRate, brutoBulan, bpjsTotal, pphBulan, thp, thpPct };
-        HC.history.push('gaji-bersih', { inputs: HC.history.capture(['gaji','tunj','tunjVar','ptkp','pphMethod','potLain','dplkKaryawan','dplkPerusahaan','thrBonus']), summary: 'Gaji ' + HC.fmt(lastCalc.gaji) + ' \u00b7 ' + lastCalc.ptkpLabel, metrics: [{ k: 'Take-home', v: HC.fmt(lastCalc.thp) }, { k: 'PPh/bln', v: HC.fmt(lastCalc.pphBulan) }] });
+        if (HC.history) HC.history.push('gaji-bersih', { inputs: HC.history.capture(['gaji','tunj','tunjVar','ptkp','pphMethod','potLain','dplkKaryawan','dplkPerusahaan','thrBonus']), summary: 'Gaji ' + HC.fmt(lastCalc.gaji) + ' \u00b7 ' + lastCalc.ptkpLabel, metrics: [{ k: 'Take-home', v: HC.fmt(lastCalc.thp) }, { k: 'PPh/bln', v: HC.fmt(lastCalc.pphBulan) }] });
         renderHist();
         $('placeholder').style.display = 'none';
         $('results').classList.add('show');
@@ -819,7 +819,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       }
 
             function renderHist() {
-        HC.history.render('gaji-bersih', $('histBox'), function () { hitung(); });
+        if (HC.history) HC.history.render('gaji-bersih', $('histBox'), function () { hitung(); });
       }
       renderHist();
       $('btnHitung').addEventListener('click', hitung);

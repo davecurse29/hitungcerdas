@@ -285,7 +285,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         $('roiBars').innerHTML = barsHtml;
 
         lastCalc = { modal, laba, periode, payback, roiBulan, roiTahun, totalLaba, netGain, balikDalamPeriode };
-        HC.history.push('roi-usaha', { inputs: HC.history.capture(['modal','laba','periode']), summary: 'Modal ' + sRp(lastCalc.modal) + ' \u00b7 Laba ' + sRp(lastCalc.laba) + ' \u00b7 ' + lastCalc.periode + ' bln', metrics: [{ k: 'ROI/thn', v: lastCalc.roiTahun.toFixed(1) + '%' }, { k: 'Balik', v: (Math.round(lastCalc.payback * 10) / 10) + ' bln' }] });
+        if (HC.history) HC.history.push('roi-usaha', { inputs: HC.history.capture(['modal','laba','periode']), summary: 'Modal ' + sRp(lastCalc.modal) + ' \u00b7 Laba ' + sRp(lastCalc.laba) + ' \u00b7 ' + lastCalc.periode + ' bln', metrics: [{ k: 'ROI/thn', v: lastCalc.roiTahun.toFixed(1) + '%' }, { k: 'Balik', v: (Math.round(lastCalc.payback * 10) / 10) + ' bln' }] });
         renderHist();
         $('placeholder').style.display = 'none';
         $('results').classList.add('show');
@@ -380,7 +380,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       var _bSR = $('btnScenReset'); if (_bSR) _bSR.addEventListener('click', function () { scenA = null; scenB = null; renderScenario(); HC.toast('Skenario direset', 'info'); });
 
             function renderHist() {
-        HC.history.render('roi-usaha', $('histBox'), function () { hitung(); });
+        if (HC.history) HC.history.render('roi-usaha', $('histBox'), function () { hitung(); });
       }
       renderHist();
       $('btnHitung').addEventListener('click', hitung);

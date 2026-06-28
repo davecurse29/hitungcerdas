@@ -303,7 +303,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         $('monthNote').innerHTML = mNote;
 
         lastCalc = { jenis, isOP, periode, omzetInput, omzetThn, kenaPajak, pphTahun, pphBulan, tarifEf, overLimit: omzetThn > LIMIT, limitPct, firstTax };
-        HC.history.push('pajak-umkm', { inputs: HC.history.capture(['jenis','periode','omzet']), summary: 'Omzet ' + HC.fmt(lastCalc.omzetThn) + '/thn', metrics: [{ k: 'PPh/bln', v: HC.fmt(lastCalc.pphBulan) }, { k: 'PPh/thn', v: HC.fmt(lastCalc.pphTahun) }] });
+        if (HC.history) HC.history.push('pajak-umkm', { inputs: HC.history.capture(['jenis','periode','omzet']), summary: 'Omzet ' + HC.fmt(lastCalc.omzetThn) + '/thn', metrics: [{ k: 'PPh/bln', v: HC.fmt(lastCalc.pphBulan) }, { k: 'PPh/thn', v: HC.fmt(lastCalc.pphTahun) }] });
         renderHist();
         $('placeholder').style.display = 'none';
         $('results').classList.add('show');
@@ -353,7 +353,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       }
 
             function renderHist() {
-        HC.history.render('pajak-umkm', $('histBox'), function () { hitung(); });
+        if (HC.history) HC.history.render('pajak-umkm', $('histBox'), function () { hitung(); });
       }
       renderHist();
       $('btnHitung').addEventListener('click', hitung);

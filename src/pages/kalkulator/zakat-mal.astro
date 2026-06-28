@@ -375,7 +375,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
     ready(function() {
       var $ = function(id){ return document.getElementById(id); };
       var els = { emasGr: $('emasGr'), hutang: $('hutang') };
-      els.emasGr.addEventListener('input', function(){ HC.fmtInput.call(this); updateEmasRp(); });
+      els.emasGr.addEventListener('input', function(e){ HC.fmtInput(e); updateEmasRp(); });
       els.hutang.addEventListener('input', HC.fmtInput);
       $('emasGram').addEventListener('input', updateEmasRp);
       var lastCalc = null;
@@ -512,7 +512,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         };
 
         var inputs = { emasGr: els.emasGr.value, emasGram: $('emasGram').value, hutang: els.hutang.value, _rows: JSON.stringify(rows) };
-        HC.history.push('zakat-mal', { inputs: inputs, summary: (wajib ? ('Zakat ' + HC.fmt(zakat)) : 'Belum nisab') + ' \u00b7 harta ' + HC.fmt(bersih), metrics: [{ k: 'Harta bersih', v: HC.fmt(bersih) }, { k: 'Status', v: wajib ? 'Wajib' : 'Belum' }] });
+        if (HC.history) HC.history.push('zakat-mal', { inputs: inputs, summary: (wajib ? ('Zakat ' + HC.fmt(zakat)) : 'Belum nisab') + ' \u00b7 harta ' + HC.fmt(bersih), metrics: [{ k: 'Harta bersih', v: HC.fmt(bersih) }, { k: 'Status', v: wajib ? 'Wajib' : 'Belum' }] });
         renderHist();
 
         $('placeholder').style.display = 'none';
@@ -561,7 +561,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       }
 
       function renderHist() {
-        HC.history.render('zakat-mal', $('histBox'), function (e) {
+        if (HC.history) HC.history.render('zakat-mal', $('histBox'), function (e) {
           try { var rows = JSON.parse((e.inputs && e.inputs._rows) || '[]'); if (rows.length) { $('hartaRows').innerHTML = ''; rows.forEach(function(r){ addRow({ kat: r.kat, ket: r.ket, nilai: r.nilai }); }); recalcHarta(); } } catch (err) {}
           updateEmasRp(); hitung();
         });

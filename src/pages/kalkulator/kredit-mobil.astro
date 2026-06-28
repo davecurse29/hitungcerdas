@@ -733,7 +733,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
                      usageKey, usageLabel: USAGE_PROFILE[usageKey].label,
                      wilayahKey, wilayahLabel: WILAYAH[wilayahKey].label,
                      tco, useInflasi, skenario };
-        HC.history.push('kredit-mobil', { inputs: HC.history.capture(['harga','dp','bunga','tenor','mobilType','usageProfile','wilayah','inflasiToggle','inflasiSkenario']), summary: 'Harga ' + HC.fmt(lastCalc.harga) + ' \u00b7 DP ' + lastCalc.dpPct + '% \u00b7 ' + lastCalc.tenor + ' bln', metrics: [{ k: 'Cicilan/bln', v: HC.fmt(lastCalc.cicilan) }, { k: 'Total bayar', v: HC.fmt(lastCalc.totalBayar) }] });
+        if (HC.history) HC.history.push('kredit-mobil', { inputs: HC.history.capture(['harga','dp','bunga','tenor','mobilType','usageProfile','wilayah','inflasiToggle','inflasiSkenario']), summary: 'Harga ' + HC.fmt(lastCalc.harga) + ' \u00b7 DP ' + lastCalc.dpPct + '% \u00b7 ' + lastCalc.tenor + ' bln', metrics: [{ k: 'Cicilan/bln', v: HC.fmt(lastCalc.cicilan) }, { k: 'Total bayar', v: HC.fmt(lastCalc.totalBayar) }] });
         renderHist();
         $('placeholder').style.display = 'none';
         $('results').classList.add('show');
@@ -844,7 +844,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       }
 
             function renderHist() {
-        HC.history.render('kredit-mobil', $('histBox'), function () { els.inflasiBox.classList.toggle('active', els.inflasiToggle.checked); hitung(); });
+        if (HC.history) HC.history.render('kredit-mobil', $('histBox'), function () { els.inflasiBox.classList.toggle('active', els.inflasiToggle.checked); hitung(); });
       }
       renderHist();
       $('btnHitung').addEventListener('click', hitung);

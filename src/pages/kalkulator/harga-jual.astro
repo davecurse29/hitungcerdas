@@ -237,7 +237,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
 
         lastCalc = { modal, pack, opex, hpp, marginPct, feePct, harga: hargaRounded, profitNet, fee, marginReal, vol,
                      mpLabel: els.mp.options[els.mp.selectedIndex].text };
-        HC.history.push('harga-jual', { inputs: HC.history.capture(['modal','packaging','opex','margin','marketplace','volume']), summary: 'Modal ' + HC.fmt(lastCalc.modal) + ' \u00b7 margin ' + lastCalc.marginPct + '%', metrics: [{ k: 'Harga jual', v: HC.fmt(lastCalc.harga) }, { k: 'Profit/unit', v: HC.fmt(lastCalc.profitNet) }] });
+        if (HC.history) HC.history.push('harga-jual', { inputs: HC.history.capture(['modal','packaging','opex','margin','marketplace','volume']), summary: 'Modal ' + HC.fmt(lastCalc.modal) + ' \u00b7 margin ' + lastCalc.marginPct + '%', metrics: [{ k: 'Harga jual', v: HC.fmt(lastCalc.harga) }, { k: 'Profit/unit', v: HC.fmt(lastCalc.profitNet) }] });
         renderHist();
         $('placeholder').style.display = 'none';
         $('results').classList.add('show');
@@ -292,7 +292,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       }
 
             function renderHist() {
-        HC.history.render('harga-jual', $('histBox'), function () { hitung(); });
+        if (HC.history) HC.history.render('harga-jual', $('histBox'), function () { hitung(); });
       }
       renderHist();
       $('btnHitung').addEventListener('click', hitung);

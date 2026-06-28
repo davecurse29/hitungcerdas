@@ -495,7 +495,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         }).join('');
 
         lastCalc = { gaji, tunj, bonus, ptkp, ptkpLabel: els.ptkp.options[els.ptkp.selectedIndex].text, useTer, terCat, terRt, pphBulanTahunan, pphBulanTER, bpjsBulan, bruto, neto, pkp, pphBulan, pphTahun, thp };
-        HC.history.push('pph-21', { inputs: HC.history.capture(['gaji','tunjangan','bonus','jenis','ptkp','bpjs','pphMethod']), summary: 'Gaji ' + HC.fmt(lastCalc.gaji) + ' \u00b7 ' + lastCalc.ptkpLabel, metrics: [{ k: 'PPh/bln', v: HC.fmt(lastCalc.pphBulan) }, { k: 'PPh/thn', v: HC.fmt(lastCalc.pphTahun) }] });
+        if (HC.history) HC.history.push('pph-21', { inputs: HC.history.capture(['gaji','tunjangan','bonus','jenis','ptkp','bpjs','pphMethod']), summary: 'Gaji ' + HC.fmt(lastCalc.gaji) + ' \u00b7 ' + lastCalc.ptkpLabel, metrics: [{ k: 'PPh/bln', v: HC.fmt(lastCalc.pphBulan) }, { k: 'PPh/thn', v: HC.fmt(lastCalc.pphTahun) }] });
         renderHist();
         $('placeholder').style.display = 'none';
         $('results').classList.add('show');
@@ -551,7 +551,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       }
 
             function renderHist() {
-        HC.history.render('pph-21', $('histBox'), function () { hitung(); });
+        if (HC.history) HC.history.render('pph-21', $('histBox'), function () { hitung(); });
       }
       renderHist();
       $('btnHitung').addEventListener('click', hitung);

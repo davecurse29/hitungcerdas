@@ -473,7 +473,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         effEl.innerHTML = `💡 APR di atas (${apr.toFixed(0)}%) cuma hitung bunga. Kalau <b>biaya admin ikut dihitung</b>: biaya pinjaman ini <b>${biayaPctPokok.toFixed(1)}% dari pokok untuk ${tenor} hari</b> — setara <b>~${setaraBulan.toFixed(1)}%/bulan</b> atau <b>~${aprEff.toFixed(0)}% efektif/tahun</b> kalau dipinjam berulang. Admin yang "cuma" ${HC.fmt(admin)} jadi mahal banget di tenor pendek. Bandingkan: KTA bank ~16-26%/thn.`;
 
         lastCalc = { pokok, tenor, bungaHarian, admin, gaji, bunga, totalBayar, danaCair, apr, aprEff, setaraBulan, biayaPctPokok };
-        HC.history.push('pinjol-legal', { inputs: HC.history.capture(['pinjaman','tenor','bunga','admin','gaji']), summary: 'Pinjaman ' + HC.fmt(pokok) + ' \u00b7 ' + tenor + ' hari @ ' + bungaHarian + '%/hari', metrics: [{ k: 'Total bayar', v: HC.fmt(totalBayar) }, { k: 'APR/thn', v: apr.toFixed(0) + '%' }] });
+        if (HC.history) HC.history.push('pinjol-legal', { inputs: HC.history.capture(['pinjaman','tenor','bunga','admin','gaji']), summary: 'Pinjaman ' + HC.fmt(pokok) + ' \u00b7 ' + tenor + ' hari @ ' + bungaHarian + '%/hari', metrics: [{ k: 'Total bayar', v: HC.fmt(totalBayar) }, { k: 'APR/thn', v: apr.toFixed(0) + '%' }] });
         renderHist();
         $('placeholder').style.display = 'none';
         $('results').classList.add('show');
@@ -532,7 +532,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         return `⚠️ *Simulasi Pinjol - HitungCerdas*\n\nPinjaman: ${HC.fmt(c.pokok)}\nTenor: ${c.tenor} hari\nBunga: ${c.bungaHarian}%/hari (APR ${c.apr.toFixed(0)}%/thn)\n\n💵 *Total Bayar: ${HC.fmt(c.totalBayar)}*\n📥 Dana Cair: ${HC.fmt(c.danaCair)}\n📊 Total Biaya: ${HC.fmt(c.bunga + c.admin)}\n\n${ojkOk ? '✅ Sesuai aturan OJK 2026' : '❌ Melebihi batas OJK!'}\n\nCek legalitas pinjol: OJK 157\nHitung di: https://hitungcerdas.net/kalkulator/pinjol-legal`;
       }
 
-      function renderHist() { HC.history.render('pinjol-legal', $('histBox'), function () { hitung(); }); }
+      function renderHist() { if (HC.history) HC.history.render('pinjol-legal', $('histBox'), function () { hitung(); }); }
       renderHist();
       $('btnHitung').addEventListener('click', hitung);
       $('btnReset').addEventListener('click', reset);

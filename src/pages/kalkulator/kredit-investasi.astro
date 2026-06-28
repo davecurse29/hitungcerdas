@@ -636,7 +636,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         }
 
         lastCalc = { pokok, tenor, grace, amortTenor, metode, metodeLabel, bunga, provPct, provisi, adm, biayaMuka, danaCair, graceInterestBln, graceInterestTotal, cicilan: result.cicilan, totalBunga, totalBayar, totalBiayaKredit, pel, amortRows };
-        HC.history.push('kredit-investasi', { inputs: HC.history.capture(['plafon','tenor','metode','bunga','provisi','admin','grace']), summary: 'Plafon ' + HC.fmt(lastCalc.pokok) + ' \u00b7 ' + lastCalc.tenor + ' bln @ ' + lastCalc.bunga + '%', metrics: [{ k: 'Cicilan/bln', v: HC.fmt(lastCalc.cicilan) }, { k: 'Total biaya', v: HC.fmt(lastCalc.totalBiayaKredit) }] });
+        if (HC.history) HC.history.push('kredit-investasi', { inputs: HC.history.capture(['plafon','tenor','metode','bunga','provisi','admin','grace']), summary: 'Plafon ' + HC.fmt(lastCalc.pokok) + ' \u00b7 ' + lastCalc.tenor + ' bln @ ' + lastCalc.bunga + '%', metrics: [{ k: 'Cicilan/bln', v: HC.fmt(lastCalc.cicilan) }, { k: 'Total biaya', v: HC.fmt(lastCalc.totalBiayaKredit) }] });
         renderHist();
         $('placeholder').style.display = 'none';
         $('results').classList.add('show');
@@ -711,7 +711,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       }
 
             function renderHist() {
-        HC.history.render('kredit-investasi', $('histBox'), function () { hitung(); });
+        if (HC.history) HC.history.render('kredit-investasi', $('histBox'), function () { hitung(); });
       }
       renderHist();
       $('btnHitung').addEventListener('click', hitung);

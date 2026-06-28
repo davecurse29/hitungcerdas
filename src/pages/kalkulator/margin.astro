@@ -202,7 +202,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         }).join('');
 
         lastCalc = { hpp, harga, fixed, vol, profit, marginPct, markupPct, bep, profitBulan };
-        HC.history.push('margin', { inputs: HC.history.capture(['hpp','harga','fixedCost','volume']), summary: 'HPP ' + HC.fmt(lastCalc.hpp) + ' \u00b7 Harga ' + HC.fmt(lastCalc.harga), metrics: [{ k: 'Margin', v: lastCalc.marginPct.toFixed(1) + '%' }, { k: 'Profit/unit', v: HC.fmt(lastCalc.profit) }] });
+        if (HC.history) HC.history.push('margin', { inputs: HC.history.capture(['hpp','harga','fixedCost','volume']), summary: 'HPP ' + HC.fmt(lastCalc.hpp) + ' \u00b7 Harga ' + HC.fmt(lastCalc.harga), metrics: [{ k: 'Margin', v: lastCalc.marginPct.toFixed(1) + '%' }, { k: 'Profit/unit', v: HC.fmt(lastCalc.profit) }] });
         renderHist();
         $('placeholder').style.display = 'none';
         $('results').classList.add('show');
@@ -256,7 +256,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       }
 
             function renderHist() {
-        HC.history.render('margin', $('histBox'), function () { hitung(); });
+        if (HC.history) HC.history.render('margin', $('histBox'), function () { hitung(); });
       }
       renderHist();
       $('btnHitung').addEventListener('click', hitung);

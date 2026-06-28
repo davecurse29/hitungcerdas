@@ -439,7 +439,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         $('roadmapBody').innerHTML = html;
 
         lastCalc = { statusLabel, pekerjaanLabel, pengeluaran, dananow, nabung, multiplier, target, kurang, progress, bulanTercapai };
-        HC.history.push('dana-darurat', { inputs: HC.history.capture(['status','pekerjaan','pengeluaran','dananow','nabung']), summary: 'Pengeluaran ' + HC.fmt(lastCalc.pengeluaran) + '/bln \u00b7 target ' + lastCalc.multiplier + '\u00d7', metrics: [{ k: 'Target', v: HC.fmt(lastCalc.target) }, { k: 'Kurang', v: HC.fmt(lastCalc.kurang) }] });
+        if (HC.history) HC.history.push('dana-darurat', { inputs: HC.history.capture(['status','pekerjaan','pengeluaran','dananow','nabung']), summary: 'Pengeluaran ' + HC.fmt(lastCalc.pengeluaran) + '/bln \u00b7 target ' + lastCalc.multiplier + '\u00d7', metrics: [{ k: 'Target', v: HC.fmt(lastCalc.target) }, { k: 'Kurang', v: HC.fmt(lastCalc.kurang) }] });
         renderHist();
         $('placeholder').style.display = 'none';
         $('results').classList.add('show');
@@ -493,7 +493,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       }
 
             function renderHist() {
-        HC.history.render('dana-darurat', $('histBox'), function () { hitung(); });
+        if (HC.history) HC.history.render('dana-darurat', $('histBox'), function () { hitung(); });
       }
       renderHist();
       $('btnHitung').addEventListener('click', hitung);

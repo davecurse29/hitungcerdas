@@ -488,7 +488,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         }).join('');
 
         lastCalc = { modal, topup, ret, tahun, fv, totalSetor, untung, useInflasi, skenario, inflasi, realReturn, realFv };
-        HC.history.push('investasi', { inputs: HC.history.capture(['modal','topup','ret','tahun','inflasiToggle','inflasiSkenario']), summary: 'Modal ' + HC.fmt(modal) + ' \u00b7 ' + tahun + ' thn @ ' + ret + '%', metrics: [{ k: 'Hasil', v: HC.fmt(fv) }, { k: 'Untung', v: HC.fmt(untung) }] });
+        if (HC.history) HC.history.push('investasi', { inputs: HC.history.capture(['modal','topup','ret','tahun','inflasiToggle','inflasiSkenario']), summary: 'Modal ' + HC.fmt(modal) + ' \u00b7 ' + tahun + ' thn @ ' + ret + '%', metrics: [{ k: 'Hasil', v: HC.fmt(fv) }, { k: 'Untung', v: HC.fmt(untung) }] });
         renderHist();
         renderPajak();
         $('placeholder').style.display = 'none';
@@ -646,7 +646,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       }
 
             function renderHist() {
-        HC.history.render('investasi', $('histBox'), function () {
+        if (HC.history) HC.history.render('investasi', $('histBox'), function () {
           els.inflasiBox.classList.toggle('active', els.inflasiToggle.checked);
           hitung();
         });
