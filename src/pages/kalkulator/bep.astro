@@ -399,7 +399,10 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
     ready(() => {
       const $ = id => document.getElementById(id);
       const els = { fixed: $('fixed'), harga: $('harga'), variabel: $('variabel'), target: $('target'), proyeksi: $('proyeksi') };
-      [els.fixed, els.harga, els.variabel, els.target].forEach(el => el.addEventListener('input', HC.fmtInput));
+      [els.fixed, els.harga, els.variabel, els.target].forEach(el => { if (el) el.addEventListener('input', HC.fmtInput); });
+      /* [#3 guard] Pasang tombol utama LEBIH DULU: walau init lain error, Hitung tetap hidup */
+      var _bH = $('btnHitung'); if (_bH) _bH.addEventListener('click', hitung);
+      var _bR = $('btnReset'); if (_bR) _bR.addEventListener('click', reset);
 
       let lastCalc = null;
 
@@ -490,7 +493,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         var _mosC = null;
         if (mosData) { if (mosData.aman) _mosC = { aman: true, proyeksi: proyeksi.toLocaleString('id-ID'), mosPct: mosData.mosPct.toFixed(1), labaTxt: HC.fmt(mosData.laba) }; else _mosC = { aman: false, proyeksi: proyeksi.toLocaleString('id-ID'), shortfall: mosData.shortfall.toLocaleString('id-ID'), rugiTxt: HC.fmt(mosData.rugi) }; }
         window.HCBep = { bepUnitTxt: Math.ceil(bepUnit).toLocaleString('id-ID'), bepRupiahTxt: HC.fmt(bepRupiah), mkTxt: HC.fmt(mk), mkRatio: mkRatio.toFixed(1), fixedTxt: HC.fmt(fixed), hargaTxt: HC.fmt(harga), variabelTxt: HC.fmt(variabel), target: targetData ? { labaTxt: HC.fmt(target), unit: targetData.unitTarget.toLocaleString('id-ID') } : null, mos: _mosC };
-        HC.history.push('bep', { inputs: HC.history.capture(['fixed','harga','variabel','target','proyeksi']), summary: 'Tetap ' + sRp(lastCalc.fixed) + ' \u00b7 Hrg ' + sRp(lastCalc.harga) + ' \u00b7 Var ' + sRp(lastCalc.variabel), metrics: [{ k: 'BEP', v: lastCalc.bepUnit.toLocaleString('id-ID') + ' unit' }, { k: 'Omzet', v: HC.fmt(lastCalc.bepRupiah) }] });
+        if (HC.history) HC.history.push('bep', { inputs: HC.history.capture(['fixed','harga','variabel','target','proyeksi']), summary: 'Tetap ' + sRp(lastCalc.fixed) + ' \u00b7 Hrg ' + sRp(lastCalc.harga) + ' \u00b7 Var ' + sRp(lastCalc.variabel), metrics: [{ k: 'BEP', v: lastCalc.bepUnit.toLocaleString('id-ID') + ' unit' }, { k: 'Omzet', v: HC.fmt(lastCalc.bepRupiah) }] });
         renderHist();
         $('placeholder').style.display = 'none';
         $('results').classList.add('show');
@@ -594,11 +597,9 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       var _bSR = $('btnScenReset'); if (_bSR) _bSR.addEventListener('click', function () { scenA = null; scenB = null; renderScenario(); HC.toast('Skenario direset', 'info'); });
 
             function renderHist() {
-        HC.history.render('bep', $('histBox'), function () { hitung(); });
+        if (HC.history) HC.history.render('bep', $('histBox'), function () { hitung(); });
       }
       renderHist();
-      $('btnHitung').addEventListener('click', hitung);
-      $('btnReset').addEventListener('click', reset);
       $('exportImg').addEventListener('click', () => { if (!window.html2canvas) { HC.toast('Fitur simpan gambar belum siap, coba sebentar lagi', 'info'); return; } const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToImage(c, 'bep-' + Date.now()); });
       $('exportWa').addEventListener('click', () => { if (!window.html2canvas) { HC.toast('Fitur simpan gambar belum siap, coba sebentar lagi', 'info'); return; } const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.shareWhatsApp(c, summaryText(), 'bep'); });
       $('exportPdf').addEventListener('click', () => { if (!lastCalc) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToPDF(); });
