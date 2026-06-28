@@ -49,6 +49,40 @@ const _needsCharts = ['/kalkulator/kpr', '/kalkulator/kredit-motor', '/kalkulato
 // ── Kalkulator Terkait (related) ──
 const _slug = _isCalc ? _path.replace(/^\/kalkulator\//, '').replace(/\/$/, '') : '';
 const _related = _isCalc ? getRelatedCalculators(_slug, 4) : [];
+const _calc = _isCalc ? CALCULATORS.find(c => c.slug === _slug) : null;
+const calcSchema = _calc ? {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": _calc.h1 || _calc.shortTitle || _calc.title,
+  "description": _calc.introText || _calc.description,
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Any",
+  "browserRequirements": "Requires JavaScript",
+  "url": `${siteUrl}/kalkulator/${_slug}/`,
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "IDR" },
+  "isAccessibleForFree": true,
+  "inLanguage": "id-ID",
+  "publisher": { "@type": "Organization", "name": "HitungCerdas", "url": siteUrl }
+} : null;
+const _calcExtraArticles: Record<string, Array<{ slug: string; title: string }>> = {
+  'kpr': [{ slug: 'bi-rate-naik-dampak-cicilan', title: 'BI Rate 5,75% & Dampaknya ke Cicilan' }],
+  'kredit-motor': [{ slug: 'bi-rate-naik-dampak-cicilan', title: 'BI Rate 5,75% & Dampaknya ke Cicilan' }],
+  'kredit-mobil': [{ slug: 'bi-rate-naik-dampak-cicilan', title: 'BI Rate 5,75% & Dampaknya ke Cicilan' }],
+  'kta': [{ slug: 'bi-rate-naik-dampak-cicilan', title: 'BI Rate 5,75% & Dampaknya ke Cicilan' }],
+  'kredit-investasi': [{ slug: 'bi-rate-naik-dampak-cicilan', title: 'BI Rate 5,75% & Dampaknya ke Cicilan' }],
+  'pph-21': [{ slug: 'cara-lapor-spt-online-coretax', title: 'Cara Lapor SPT Online via Coretax 2026' }, { slug: 'ump-umr-2026-per-provinsi', title: 'UMP/UMR 2026 per Provinsi' }],
+  'pajak-umkm': [{ slug: 'cara-lapor-spt-online-coretax', title: 'Cara Lapor SPT Online via Coretax 2026' }, { slug: 'ppn-12-persen-2026', title: 'PPN 12% atau 11% di 2026?' }],
+  'invoice-generator': [{ slug: 'cara-membuat-kwitansi', title: 'Cara Membuat Kwitansi yang Sah' }],
+  'zakat-mal': [{ slug: 'investasi-emas-antam-2026', title: 'Harga Emas Antam & Zakat Emas 2026' }],
+  'investasi': [{ slug: 'investasi-emas-antam-2026', title: 'Harga Emas Antam & Cara Investasi Emas' }],
+  'komisi-ojol': [{ slug: 'potongan-gofood-grabfood-shopeefood', title: 'Potongan GoFood, GrabFood & ShopeeFood' }],
+  'harga-jual': [{ slug: 'ppn-12-persen-2026', title: 'PPN 12% atau 11% di 2026?' }],
+  'margin': [{ slug: 'ppn-12-persen-2026', title: 'PPN 12% atau 11% di 2026?' }],
+  'hpp': [{ slug: 'ppn-12-persen-2026', title: 'PPN 12% atau 11% di 2026?' }],
+  'gaji-bersih': [{ slug: 'ump-umr-2026-per-provinsi', title: 'UMP/UMR 2026 per Provinsi' }],
+  'pesangon': [{ slug: 'ump-umr-2026-per-provinsi', title: 'UMP/UMR 2026 per Provinsi' }],
+};
+const _extraArticles = _isCalc ? (_calcExtraArticles[_slug] || []) : [];
 const _CAT_ICON: Record<string, string> = { keuangan: 'coins', bisnis: 'briefcase', islami: 'moon' };
 
 // ── Artikel panduan terkait per kalkulator (internal linking + SEO) ──
@@ -244,7 +278,7 @@ const websiteSchema = {
   />
 
   {/* ── Schema.org JSON-LD ── */}
-  <script type="application/ld+json" set:html={JSON.stringify(jsonLd || defaultJsonLd)} />
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd || calcSchema || defaultJsonLd)} />
 
   {/* ── Organization Schema (sitewide, brand authority signal) ── */}
   <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
@@ -288,6 +322,21 @@ const websiteSchema = {
           <span>Baca panduan lengkap: <strong style="color:var(--navy)">{_article.title}</strong></span>
           <i class="ti ti-arrow-right" style="color:var(--text-mute);flex-shrink:0"></i>
         </a>
+      </div>
+    </section>
+  )}
+
+  {_isCalc && _extraArticles.length > 0 && (
+    <section class="calc-extra-articles" aria-label="Artikel terkait">
+      <div class="wrap" style="text-align:center;padding:8px 0 0">
+        <p style="font-size:.78rem;color:var(--text-mute);margin:0 0 9px;letter-spacing:.05em;font-weight:600">ARTIKEL TERKAIT</p>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:680px;margin:0 auto">
+          {_extraArticles.map(a => (
+            <a href={`/blog/${a.slug}/`} style="display:inline-flex;align-items:center;gap:7px;padding:8px 14px;background:var(--bg-soft);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:.85rem;text-decoration:none;transition:var(--tx)">
+              <i class="ti ti-news" style="color:var(--blue);font-size:16px;flex-shrink:0"></i><span>{a.title}</span>
+            </a>
+          ))}
+        </div>
       </div>
     </section>
   )}
