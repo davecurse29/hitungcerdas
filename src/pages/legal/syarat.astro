@@ -2,6 +2,8 @@
 import Layout from '../../layouts/Layout.astro';
 import AdSlot from '../../components/AdSlot.astro';
 
+import { CALCULATORS } from '../../data/calculators';
+const calcCount = CALCULATORS.length;
 const today = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
 ---
 
@@ -29,7 +31,7 @@ const today = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'l
       <h2>2. Tentang Layanan</h2>
       <p>
         HitungCerdas adalah platform <strong>kalkulator online gratis</strong> yang menyediakan
-        30 tools untuk perhitungan keuangan, bisnis, dan islami. Layanan ini bersifat informasional
+        {calcCount} tools untuk perhitungan keuangan, bisnis, dan islami. Layanan ini bersifat informasional
         dan edukatif, <strong>bukan</strong> nasihat keuangan, pajak, hukum, atau syariah profesional.
       </p>
 

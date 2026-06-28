@@ -4,7 +4,7 @@ import '../styles/global.css';
 import '../styles/enhancements.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { getRelatedCalculators } from '../data/calculators';
+import { getRelatedCalculators, CALCULATORS } from '../data/calculators';
 
 interface Props {
   title: string;
@@ -86,11 +86,12 @@ const _calcArticle: Record<string, { slug: string; title: string }> = {
 };
 const _article = _isCalc ? (_calcArticle[_slug] || null) : null;
 
+const calcCount = CALCULATORS.length;
 const defaultJsonLd = {
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "HitungCerdas",
-  "description": "30 kalkulator keuangan, bisnis, dan islami online gratis untuk masyarakat Indonesia",
+  "description": `${calcCount} kalkulator keuangan, bisnis, dan islami online gratis untuk masyarakat Indonesia`,
   "applicationCategory": "FinanceApplication",
   "operatingSystem": "Any",
   "url": siteUrl,
@@ -131,7 +132,7 @@ const websiteSchema = {
   "name": "HitungCerdas",
   "alternateName": "HitungCerdas.net",
   "url": siteUrl,
-  "description": "30 kalkulator keuangan, bisnis & islami online gratis Indonesia",
+  "description": `${calcCount} kalkulator keuangan, bisnis & islami online gratis Indonesia`,
   "inLanguage": "id-ID",
   "publisher": {
     "@type": "Organization",
@@ -332,7 +333,7 @@ const websiteSchema = {
       <div class="hc-pwa-ic"><i class="ti ti-device-mobile-down"></i></div>
       <div class="hc-pwa-txt">
         <strong>Pasang HitungCerdas</strong>
-        <span id="hc-pwa-sub">Akses cepat 30 kalkulator dari layar HP-mu, bahkan offline.</span>
+        <span id="hc-pwa-sub">Akses cepat {calcCount} kalkulator dari layar HP-mu, bahkan offline.</span>
       </div>
       <div class="hc-pwa-act">
         <button type="button" id="hc-pwa-install" class="hc-pwa-btn">Pasang</button>

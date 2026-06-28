@@ -8,6 +8,8 @@ const breadcrumbs = [
   { name: 'Kebijakan Privasi', url: '/legal/privasi' }
 ];
 
+import { CALCULATORS } from '../../data/calculators';
+const calcCount = CALCULATORS.length;
 const lastUpdated = '9 Juni 2026';
 ---
 
@@ -128,7 +130,7 @@ const lastUpdated = '9 Juni 2026';
         <p>
           HitungCerdas adalah layanan <strong>gratis</strong> yang didukung oleh iklan dari
           <strong>Google AdSense</strong>. Hal ini memungkinkan kami untuk terus menyediakan
-          30 kalkulator gratis tanpa biaya berlangganan.
+          {calcCount} kalkulator gratis tanpa biaya berlangganan.
         </p>
 
         <h3>3.1 Tentang Google AdSense</h3>
