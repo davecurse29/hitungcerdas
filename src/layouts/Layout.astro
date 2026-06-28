@@ -155,6 +155,38 @@ const websiteSchema = {
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 
+  {/* ── Error reporter ringan: lapor error JS sendiri ke /api/log (anti-spam, abaikan noise pihak ketiga) ── */}
+  <script is:inline>
+    (function () {
+      var sent = {};
+      function send(p) {
+        try {
+          var k = (p.m || '') + '|' + (p.s || '') + '|' + (p.l || '');
+          if (sent[k]) return; sent[k] = 1;
+          if (Object.keys(sent).length > 20) return;
+          navigator.sendBeacon('/api/log', JSON.stringify(p));
+        } catch (e) {}
+      }
+      function originOk(s) { return !s || s.indexOf(location.origin) === 0; }
+      window.addEventListener('error', function (e) {
+        if (e.target && e.target !== window && (e.target.src || e.target.href)) {
+          var url = e.target.src || e.target.href;
+          if (originOk(url)) send({ t: 'resource', m: 'Gagal memuat ' + (e.target.tagName || ''), s: url, l: 0, u: location.pathname, ua: navigator.userAgent });
+          return;
+        }
+        var msg = e.message || '';
+        if (/^Script error\.?$/i.test(msg)) return;
+        if (/ResizeObserver loop/i.test(msg)) return;
+        if (!originOk(e.filename)) return;
+        send({ t: 'error', m: msg, s: e.filename || 'inline', l: e.lineno || 0, c: e.colno || 0, u: location.pathname, ua: navigator.userAgent });
+      }, true);
+      window.addEventListener('unhandledrejection', function (e) {
+        var r = e.reason; var msg = (r && r.message) || String(r);
+        send({ t: 'promise', m: msg, s: '', l: 0, u: location.pathname, ua: navigator.userAgent });
+      });
+    })();
+  </script>
+
   {/* ── Title & Description ── */}
   <title>{title}</title>
   <meta name="description" content={description} />
