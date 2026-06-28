@@ -395,7 +395,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
 
 <script is:inline>
   (function() {
-    function ready(fn) { if (window.HC && window.html2canvas) fn(); else setTimeout(() => ready(fn), 100); }
+    function ready(fn) { if (window.HC) fn(); else setTimeout(function(){ ready(fn); }, 100); }
     ready(() => {
       const $ = id => document.getElementById(id);
       const els = { fixed: $('fixed'), harga: $('harga'), variabel: $('variabel'), target: $('target'), proyeksi: $('proyeksi') };
@@ -599,11 +599,11 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       renderHist();
       $('btnHitung').addEventListener('click', hitung);
       $('btnReset').addEventListener('click', reset);
-      $('exportImg').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToImage(c, 'bep-' + Date.now()); });
-      $('exportWa').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.shareWhatsApp(c, summaryText(), 'bep'); });
+      $('exportImg').addEventListener('click', () => { if (!window.html2canvas) { HC.toast('Fitur simpan gambar belum siap, coba sebentar lagi', 'info'); return; } const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToImage(c, 'bep-' + Date.now()); });
+      $('exportWa').addEventListener('click', () => { if (!window.html2canvas) { HC.toast('Fitur simpan gambar belum siap, coba sebentar lagi', 'info'); return; } const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.shareWhatsApp(c, summaryText(), 'bep'); });
       $('exportPdf').addEventListener('click', () => { if (!lastCalc) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToPDF(); });
       $('exportCopy').addEventListener('click', () => { if (!lastCalc) { HC.toast('Hitung dulu', 'error'); return; } HC.copyText(summaryText(), 'Tersalin!'); });
-      $('exportExcel').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToExcel(c, 'bep-' + Date.now()); });
+      $('exportExcel').addEventListener('click', () => { if (!window.html2canvas) { HC.toast('Fitur simpan gambar belum siap, coba sebentar lagi', 'info'); return; } const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToExcel(c, 'bep-' + Date.now()); });
     });
   })();
 </script>
