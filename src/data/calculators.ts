@@ -54,7 +54,7 @@ export const CALCULATORS: CalculatorMeta[] = [
   },
   {
     slug: 'pph-21',
-    related: ['gaji-bersih', 'zakat-penghasilan', 'pajak-umkm'],
+    related: ['gaji-bersih', 'zakat-penghasilan', 'pajak-umkm', 'pesangon'],
     title: 'Kalkulator PPh 21 Karyawan 2026 — UU HPP, PTKP Terbaru',
     shortTitle: 'Kalkulator PPh 21',
     category: 'keuangan',
@@ -80,7 +80,7 @@ export const CALCULATORS: CalculatorMeta[] = [
   },
   {
     slug: 'gaji-bersih',
-    related: ['pph-21', 'dana-darurat', 'investasi'],
+    related: ['pph-21', 'dana-darurat', 'investasi', 'pesangon'],
     title: 'Kalkulator Gaji Bersih (Take Home Pay) — Setelah BPJS & Pajak',
     shortTitle: 'Kalkulator Gaji Bersih',
     category: 'keuangan',
@@ -184,7 +184,7 @@ export const CALCULATORS: CalculatorMeta[] = [
   },
   {
     slug: 'dana-darurat',
-    related: ['investasi', 'gaji-bersih', 'kpr'],
+    related: ['investasi', 'gaji-bersih', 'kpr', 'pesangon'],
     title: 'Kalkulator Dana Darurat 2026 — Hitung Target Ideal & Timeline',
     shortTitle: 'Kalkulator Dana Darurat',
     category: 'keuangan',
