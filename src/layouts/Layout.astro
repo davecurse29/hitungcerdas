@@ -194,6 +194,9 @@ const websiteSchema = {
   {/* ── Error reporter ringan: lapor error JS sendiri ke /api/log (anti-spam, abaikan noise pihak ketiga) ── */}
   <script is:inline>
     (function () {
+      var __ua = navigator.userAgent || '';
+      // Abaikan bot/crawler (meta-externalads, facebookexternalhit, Googlebot, dll.) — bukan pengunjung nyata
+      if (/bot|crawl|spider|slurp|mediapartners|headless|lighthouse|facebookexternalhit|meta-externalads|externalhit|embedly|bingpreview|pingdom|gtmetrix|yandex|baidu|duckduckbot|google-inspectiontool/i.test(__ua)) return;
       var sent = {};
       function send(p) {
         try {
@@ -217,7 +220,9 @@ const websiteSchema = {
         send({ t: 'error', m: msg, s: e.filename || 'inline', l: e.lineno || 0, c: e.colno || 0, u: location.pathname, ua: navigator.userAgent });
       }, true);
       window.addEventListener('unhandledrejection', function (e) {
-        var r = e.reason; var msg = (r && r.message) || String(r);
+        var r = e.reason; var msg = (r && r.message) || (r != null ? String(r) : '');
+        // Abaikan penolakan promise tanpa pesan (noise sinyal-rendah, mis. script pihak ketiga gagal)
+        if (!msg || msg === 'undefined' || msg === 'null') return;
         send({ t: 'promise', m: msg, s: '', l: 0, u: location.pathname, ua: navigator.userAgent });
       });
     })();

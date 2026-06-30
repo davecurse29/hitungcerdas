@@ -48,6 +48,12 @@ export async function onRequestPost(context) {
     const loc = String(data.s || 'inline').slice(0, 160) + ':' + (data.l || 0);
     const ua = String(data.ua || '').slice(0, 140);
 
+    // ── Abaikan bot/crawler & laporan tanpa pesan (noise) ──
+    const reqUa = (request.headers.get('user-agent') || '');
+    const BOT = /bot|crawl|spider|slurp|mediapartners|headless|lighthouse|facebookexternalhit|meta-externalads|externalhit|embedly|bingpreview|pingdom|gtmetrix|yandex|baidu|duckduckbot|google-inspectiontool/i;
+    if (BOT.test(ua) || BOT.test(reqUa)) return new Response(null, { status: 204 });
+    if (!msg || msg === 'undefined' || msg === 'null') return new Response(null, { status: 204 });
+
     // ── Anti-spam: dedupe error sama (pesan+halaman) → maks 1 notifikasi / jam ──
     try {
       const cache = caches.default;
