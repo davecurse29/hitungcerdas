@@ -1,0 +1,400 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import EbookPromo from '../../components/EbookPromo.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import FAQ from '../../components/FAQ.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import CalculatorCard from '../../components/CalculatorCard.astro';
+import { getCalculatorBySlug, getRelatedCalculators } from '../../data/calculators';
+
+const calc = getCalculatorBySlug('paylater')!;
+const related = getRelatedCalculators('paylater', 3);
+
+const faqs = [
+  { question: 'Apa itu paylater (BNPL)?', answer: 'Paylater atau <strong>Buy Now Pay Later (BNPL)</strong> adalah fasilitas beli sekarang bayar nanti — seperti kartu kredit digital. Kamu bisa belanja dan membayarnya belakangan, sekaligus atau dicicil. Di Indonesia, BNPL diatur OJK melalui <strong>POJK 32 Tahun 2025</strong>, dan hanya boleh diselenggarakan bank atau perusahaan pembiayaan berizin.' },
+  { question: 'Apakah bunga 0% berarti gratis?', answer: 'Belum tentu. Bunga 0% hanya berarti tidak ada bunga, <strong>tapi biaya admin, biaya layanan, atau materai bisa tetap ada</strong>. Selalu cek total biaya, bukan hanya bunga. Kalkulator ini menghitung admin terpisah agar kamu lihat total sebenarnya.' },
+  { question: 'Apa bedanya bunga flat dan efektif/anuitas?', answer: 'Pada <strong>bunga flat</strong>, bunga dihitung dari pokok awal dan tetap tiap bulan — umum di paylater. Pada <strong>efektif/anuitas</strong>, bunga dihitung dari sisa pokok yang menyusut, sehingga total bunga biasanya lebih kecil untuk persentase yang sama. Karena itu, "2% flat" tidak sama dengan "2% efektif".' },
+  { question: 'Apa risiko telat bayar paylater?', answer: 'Telat bayar menambah <strong>denda</strong> yang bisa berakumulasi tiap hari, dan riwayatmu dicatat di <strong>SLIK OJK</strong> (dulu BI Checking). Skor kredit yang buruk bisa menyulitkan pengajuan KPR, kredit kendaraan, atau pinjaman lain di masa depan. Sebagai pengaman, total biaya paylater legal dibatasi maksimal 100% dari pokok.' },
+  { question: 'Apakah hasil kalkulator ini sama dengan tagihan aplikasi?', answer: 'Tidak selalu. Ini <strong>simulasi edukatif</strong>. Hasil aktual bergantung pada bunga, biaya admin, promo, denda, dan tanggal jatuh tempo masing-masing penyedia. Selalu cek rincian biaya di aplikasi paylater sebelum menyetujui transaksi.' },
+];
+
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '/#tools' }, { label: calc.shortTitle }];
+---
+
+<Layout title={calc.title} description={calc.metaDescription} keywords={calc.keywords} canonical={`https://hitungcerdas.net/kalkulator/${calc.slug}`}>
+  <section class="calc-hero" style="--cat-color:#DB2777;--cat-color2:#9D174D">
+    <div class="wrap">
+      <Breadcrumb items={bcItems} />
+      <div class="calc-hero-grid">
+        <div class="calc-hero-text">
+          <div class="calc-hero-tag" style="background:#FCE7F3;color:#9D174D"><i class="ti ti-shopping-cart"></i> {calc.categoryLabel}</div>
+          <h1 class="calc-hero-title">{calc.h1}</h1>
+          <p class="calc-hero-sub">{calc.introText}</p>
+          <ul class="calc-hero-benefits">{calc.benefits.map(b => <li><i class="ti ti-check"></i> {b}</li>)}</ul>
+        </div>
+        <div class="calc-hero-illust">
+          <svg viewBox="0 0 200 200" fill="none">
+            <circle cx="100" cy="100" r="85" fill="rgba(255,255,255,.08)"/>
+            <rect x="55" y="74" width="90" height="62" rx="10" fill="#FFF" stroke="#FBBF24" stroke-width="3"/>
+            <rect x="55" y="86" width="90" height="13" fill="#DB2777"/>
+            <rect x="64" y="112" width="34" height="7" rx="3.5" fill="#9D174D" opacity=".6"/>
+            <rect x="120" y="110" width="17" height="11" rx="2.5" fill="#FBBF24"/>
+            <circle cx="100" cy="58" r="13" fill="none" stroke="#FFF" stroke-width="5"/>
+            <path d="M91 58h18" stroke="#FBBF24" stroke-width="4" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="calc-section">
+    <div class="wrap">
+      <div class="calc-card">
+        <div class="calc-card-hdr">
+          <div class="calc-card-hdr-ic" style="background:linear-gradient(135deg,#DB2777 0%,#9D174D 100%)"><i class="ti ti-shopping-cart"></i></div>
+          <div><h2 class="calc-card-title">Kalkulator Paylater (BNPL)</h2><p class="calc-card-sub">Hitung cicilan, total bayar &amp; selisihnya dibanding bayar tunai</p></div>
+        </div>
+
+        <div class="calc-grid">
+          <div class="calc-input">
+            <div class="field-group-label" style="font-weight:700;color:#9D174D;margin:2px 0 6px;font-size:.9rem"><i class="ti ti-shopping-bag"></i> Detail Pembelian</div>
+
+            <div class="field"><label>Harga Barang/Jasa</label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span>
+                <input type="text" id="harga" class="has-prefix" value="1.000.000" inputmode="numeric" /></div></div>
+
+            <div class="field"><label>DP / Bayar di Awal <span class="hint">(opsional)</span></label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span>
+                <input type="text" id="dp" class="has-prefix" value="0" inputmode="numeric" /></div></div>
+
+            <div class="field"><label>Diskon / Voucher Langsung <span class="hint">(opsional)</span></label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span>
+                <input type="text" id="diskon" class="has-prefix" value="0" inputmode="numeric" /></div></div>
+
+            <div class="field-group-label" style="font-weight:700;color:#9D174D;margin:14px 0 6px;font-size:.9rem"><i class="ti ti-calendar-dollar"></i> Skema Cicilan</div>
+
+            <div class="field"><label>Tenor <span class="hint">(lama cicilan)</span></label>
+              <select id="tenor">
+                <option value="1">1 bulan</option>
+                <option value="3">3 bulan</option>
+                <option value="6">6 bulan</option>
+                <option value="12" selected>12 bulan</option>
+                <option value="24">24 bulan</option>
+              </select></div>
+
+            <div class="field"><label>Metode Perhitungan Bunga</label>
+              <select id="metode">
+                <option value="flat" selected>Bunga Flat per Bulan (umum di paylater)</option>
+                <option value="anuitas">Bunga Efektif/Anuitas (cicilan tetap)</option>
+                <option value="promo0">Promo Bunga 0%</option>
+              </select></div>
+
+            <div class="field"><label>Bunga / Margin per Bulan <span class="hint">(%)</span></label>
+              <input type="number" id="bunga" value="2.95" min="0" step="0.05" /></div>
+
+            <div style="display:flex;flex-wrap:wrap;gap:7px;margin:2px 0 12px">
+              <button type="button" class="bunga-chip" data-bunga="promo0" style="font-size:.8rem;padding:7px 12px;border:1px solid #FBCFE8;background:#FDF2F8;color:#9D174D;border-radius:8px;cursor:pointer;font-weight:600">Promo 0%</button>
+              <button type="button" class="bunga-chip" data-bunga="2.95" style="font-size:.8rem;padding:7px 12px;border:1px solid #FBCFE8;background:#FDF2F8;color:#9D174D;border-radius:8px;cursor:pointer;font-weight:600">2,95%/bln</button>
+              <button type="button" class="bunga-chip" data-bunga="5" style="font-size:.8rem;padding:7px 12px;border:1px solid #FBCFE8;background:#FDF2F8;color:#9D174D;border-radius:8px;cursor:pointer;font-weight:600">5%/bln</button>
+            </div>
+
+            <div class="field"><label>Biaya Admin di Awal <span class="hint">(opsional)</span></label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span>
+                <input type="text" id="adminRp" class="has-prefix" value="0" inputmode="numeric" /></div></div>
+
+            <div class="adv-section" style="margin:8px 0 14px">
+              <div class="adv-toggle" style="cursor:pointer;display:flex;align-items:center;justify-content:space-between;padding:11px 13px;background:#FDF2F8;border:1px solid #FBCFE8;border-radius:10px"><span style="font-size:.88rem;font-weight:600;color:#9D174D"><i class="ti ti-plus"></i>&nbsp; Biaya tambahan (ongkir, proteksi, admin %)</span><i class="ti ti-chevron-down chev"></i></div>
+              <div class="adv-content">
+                <div class="field"><label>Admin Awal <span class="hint">(% dari nilai dibiayai)</span></label>
+                  <input type="number" id="adminPct" value="0" min="0" step="0.1" /></div>
+                <div class="field"><label>Ongkir / Pengiriman</label><div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="ongkir" class="has-prefix" value="0" inputmode="numeric" /></div></div>
+                <div class="field"><label>Biaya Proteksi / Asuransi</label><div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="proteksi" class="has-prefix" value="0" inputmode="numeric" /></div></div>
+                <div class="field"><label>Biaya Admin per Cicilan</label><div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="adminCicilan" class="has-prefix" value="0" inputmode="numeric" /></div></div>
+                <div class="field"><label>Biaya Lain (materai, layanan)</label><div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="biayaLain" class="has-prefix" value="0" inputmode="numeric" /></div></div>
+              </div>
+            </div>
+
+            <div class="calc-action-bar">
+              <button type="button" class="btn-hitung" id="btnHitung"><i class="ti ti-calculator"></i> Hitung Cicilan</button>
+              <button type="button" class="btn-reset" id="btnReset"><i class="ti ti-refresh"></i> Reset</button>
+            </div>
+          </div>
+
+          <div class="calc-output">
+            <div class="hist-section" id="histBox" style="display:none"></div>
+
+            <div class="result-placeholder" id="placeholder">
+              <i class="ti ti-shopping-cart result-placeholder-icon"></i>
+              <div class="result-placeholder-title">Simulasi cicilan paylater akan muncul di sini</div>
+              <div class="result-placeholder-desc">Isi harga, tenor, dan bunga, lalu klik <strong>"Hitung Cicilan"</strong>.</div>
+            </div>
+
+            <div class="result-wrapper" id="results">
+              <div class="result-main">
+                <div class="result-label">Cicilan per Bulan</div>
+                <div class="result-value" id="cicilanBln">Rp 0</div>
+                <div class="result-meta"><i class="ti ti-info-circle"></i> <span id="metaInfo">Hasil simulasi</span></div>
+              </div>
+
+              <div class="result-grid">
+                <div class="result-item"><div class="result-item-label">Nilai Dibiayai</div><div class="result-item-value" id="nilaiDibiayai">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">Total Bunga/Margin</div><div class="result-item-value" id="totalBunga">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">Total Biaya &amp; Admin</div><div class="result-item-value" id="totalBiaya">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">Total Bayar</div><div class="result-item-value result-strong" id="totalBayar">Rp 0</div></div>
+              </div>
+
+              <div class="kelayakan-box">
+                <div class="kelayakan-hdr"><i class="ti ti-scale"></i><span>Ringkasan &amp; Catatan Jujur</span></div>
+                <div id="ringkasanBody"></div>
+
+                <div style="margin-top:14px">
+                  <div style="font-size:.82rem;font-weight:700;color:#64748b;margin-bottom:7px">Harga Tunai vs Total Bayar Paylater</div>
+                  <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><span style="width:52px;font-size:.78rem;color:#64748b">Tunai</span><div style="flex:1;background:#f1f5f9;border-radius:6px;height:20px;overflow:hidden"><div id="barTunai" style="height:100%;width:0;background:#94a3b8;border-radius:6px;transition:width .5s"></div></div><b id="barTunaiV" style="min-width:108px;text-align:right;font-size:.82rem">Rp 0</b></div>
+                  <div style="display:flex;align-items:center;gap:8px"><span style="width:52px;font-size:.78rem;color:#64748b">Paylater</span><div style="flex:1;background:#f1f5f9;border-radius:6px;height:20px;overflow:hidden"><div id="barPL" style="height:100%;width:0;background:#DB2777;border-radius:6px;transition:width .5s"></div></div><b id="barPLV" style="min-width:108px;text-align:right;font-size:.82rem;color:#9D174D">Rp 0</b></div>
+                </div>
+
+                <p class="ks-note" style="margin-top:12px;font-size:.8rem;color:#64748b"><i class="ti ti-alert-triangle"></i> Ini <strong>simulasi/estimasi edukatif</strong>. Hasil aktual bergantung kebijakan penyedia (bunga, admin, promo, denda). Selalu cek rincian di aplikasi paylater sebelum setuju. Gunakan hanya jika cicilan sesuai kemampuan bayarmu.</p>
+              </div>
+
+              <div class="export-row">
+                <button type="button" class="export-btn img" id="exportImg"><i class="ti ti-photo-down"></i><span>Save Image</span></button>
+                <button type="button" class="export-btn wa" id="exportWa"><i class="ti ti-brand-whatsapp"></i><span>Share WA</span></button>
+                <button type="button" class="export-btn pdf" id="exportPdf"><i class="ti ti-printer"></i><span>Print/PDF</span></button>
+                <button type="button" class="export-btn copy" id="exportCopy"><i class="ti ti-copy"></i><span>Copy Teks</span></button>
+                <button type="button" class="export-btn" id="exportExcel"><i class="ti ti-file-spreadsheet" style="color:#1D6F42"></i><span style="color:#1D6F42">Excel</span></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <EbookPromo calc="paylater" headline="Lagi atur keuangan biar nggak kejebak cicilan? Mulai dari sini." />
+
+  <section class="content-section">
+    <div class="wrap-text">
+      <h2>Apa Itu Paylater (BNPL)?</h2>
+      <p>Paylater (<strong>Buy Now Pay Later</strong>) memungkinkanmu membeli barang/jasa sekarang dan membayarnya belakangan — sekaligus atau dicicil. Praktis, tapi di balik "cicilan kecil" sering ada bunga, biaya admin, dan denda yang membuat <strong>total bayar lebih besar dari harga tunai</strong>. Di Indonesia, BNPL diatur OJK lewat <strong>POJK 32 Tahun 2025</strong> dan hanya boleh diselenggarakan bank atau perusahaan pembiayaan berizin. Sebelum checkout, cek dulu beban cicilanmu — dan siapkan <a href="/kalkulator/dana-darurat">dana darurat</a> sebagai bantalan.</p>
+
+      <h2>Cara Kerja Cicilan Paylater</h2>
+      <p>Nilai yang dicicil (<strong>nilai dibiayai</strong>) = harga + ongkir + proteksi − diskon − DP. Dari situ, cicilan per bulan dihitung berdasarkan metode bunga (flat, efektif/anuitas, atau promo 0%) ditambah biaya admin. Kalkulator ini menampilkan <strong>cicilan/bulan, total bunga, total biaya, dan total bayar</strong> sekaligus — supaya kamu tahu angka sebenarnya, bukan cuma cicilan bulanannya.</p>
+
+      <h2>Bunga 0% Belum Tentu Gratis</h2>
+      <p>Banyak promo "bunga 0%" tetap memungut <strong>biaya admin atau biaya layanan</strong>. Karena itu kalkulator ini memisahkan bunga dari admin, lalu menghitung <strong>selisihnya dibanding bayar tunai (markup %)</strong>. Sebagai pengaman, OJK menetapkan batas <strong>bunga konsumtif 0,1% per hari (sejak 1 Januari 2026)</strong> dan <strong>Lock Cap 100%</strong> — total pembayaran tidak boleh melebihi dua kali lipat pokok.</p>
+
+      <h2>Pakai Paylater dengan Bijak</h2>
+      <p>Gunakan paylater untuk kebutuhan, bukan keinginan impulsif, dan pastikan total cicilan masih sesuai kemampuan bayar. Telat bayar menambah denda dan tercatat di <strong>SLIK OJK</strong>. Pastikan penyedia terdaftar &amp; diawasi OJK — bedakan dari <a href="/kalkulator/pinjol-legal">pinjol legal vs ilegal</a>. Kalau cicilan sudah telanjur berat, pelajari opsi <a href="/kalkulator/restrukturisasi-kredit">restrukturisasi kredit</a> dan <a href="/kalkulator/kta">bandingkan dengan KTA</a>.</p>
+
+      <div class="cta-box"><h3>Hitung Cicilan Paylatermu</h3><p>Isi harga, tenor, dan bunga, lalu klik "Hitung Cicilan" untuk melihat total bayar &amp; selisihnya dibanding tunai.</p></div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+  <FAQ title="Pertanyaan Seputar Paylater (BNPL)" items={faqs} />
+
+  <section class="section"><div class="wrap">
+    <div class="section-hdr"><div class="section-eyebrow">Kalkulator Lainnya</div><h2 class="section-title">Hitung Juga yang Lain</h2></div>
+    <div class="related-grid">{related.map(c => <CalculatorCard calc={c} />)}</div>
+  </div></section>
+  <p class="hc-method-note" style="text-align:center;font-size:.85rem;color:#64748b;margin:1.2rem auto;max-width:680px;line-height:1.6;padding:0 1rem;">
+    📅 Diperbarui <strong>Juni 2026</strong> · Simulasi memakai rumus bunga flat, efektif/anuitas &amp; promo 0%. Estimasi edukatif — bukan layanan pembiayaan, bukan ajakan berutang. Hasil aktual bergantung kebijakan penyedia. <strong>Sumber:</strong> OJK (POJK 32/2025 tentang BNPL; SE OJK 19/SEOJK.05/2023 untuk batas biaya), sikapiuangmu.ojk.go.id.
+  </p>
+
+  <script is:inline>
+    (function() {
+      function ready(fn) { if (window.HC && window.html2canvas) fn(); else setTimeout(() => ready(fn), 100); }
+      ready(() => {
+        const $ = id => document.getElementById(id);
+        const els = { harga: $('harga'), dp: $('dp'), diskon: $('diskon'), tenor: $('tenor'), metode: $('metode'), bunga: $('bunga'), adminRp: $('adminRp'), adminPct: $('adminPct'), ongkir: $('ongkir'), proteksi: $('proteksi'), adminCicilan: $('adminCicilan'), biayaLain: $('biayaLain') };
+        ['harga','dp','diskon','adminRp','ongkir','proteksi','adminCicilan','biayaLain'].forEach(id => { const el = $(id); if (el) el.addEventListener('input', HC.fmtInput); });
+        document.querySelectorAll('.adv-toggle').forEach(t => t.addEventListener('click', () => t.parentElement.classList.toggle('open')));
+
+        let lastCalc = null;
+
+        // cicilan pokok+bunga per bulan (tanpa admin)
+        function cicilanPB(P, rBln, n, metode) {
+          if (P <= 0 || n <= 0) return 0;
+          if (metode === 'promo0') return P / n;
+          if (metode === 'flat') return P / n + P * (rBln / 100);
+          const i = rBln / 100; // anuitas, bunga bulanan
+          if (i === 0) return P / n;
+          return P * i / (1 - Math.pow(1 + i, -n));
+        }
+
+        function hitung() {
+          const harga = HC.parseRp(els.harga.value);
+          const dp = HC.parseRp(els.dp.value);
+          const diskon = HC.parseRp(els.diskon.value);
+          const n = parseInt(els.tenor.value) || 0;
+          const metode = els.metode.value;
+          let rBln = Math.max(0, parseFloat(els.bunga.value) || 0);
+          if (metode === 'promo0') rBln = 0;
+          const adminRp = HC.parseRp(els.adminRp.value);
+          const adminPct = Math.max(0, parseFloat(els.adminPct.value) || 0);
+          const ongkir = HC.parseRp(els.ongkir.value);
+          const proteksi = HC.parseRp(els.proteksi.value);
+          const adminCicilan = HC.parseRp(els.adminCicilan.value);
+          const biayaLain = HC.parseRp(els.biayaLain.value);
+
+          if (harga <= 0) { HC.toast('Masukkan harga barang dulu', 'error'); return; }
+          const hargaBersih = harga + ongkir + proteksi - diskon;
+          if (hargaBersih <= 0) { HC.toast('Diskon membuat harga jadi 0 atau minus', 'error'); return; }
+          if (dp > hargaBersih) { HC.toast('DP tidak boleh melebihi harga setelah diskon', 'error'); return; }
+          const P = hargaBersih - dp; // nilai dibiayai
+          if (P <= 0) { HC.toast('Tidak ada yang dibiayai (DP menutup seluruh harga)', 'info'); return; }
+          if (n < 1) { HC.toast('Pilih tenor cicilan', 'error'); return; }
+
+          const adminAwal = adminRp + (adminPct / 100) * P;
+          const cicPB = cicilanPB(P, rBln, n, metode);
+          let totalBunga;
+          if (metode === 'promo0') totalBunga = 0;
+          else if (metode === 'flat') totalBunga = P * (rBln / 100) * n;
+          else totalBunga = cicPB * n - P;
+          totalBunga = Math.max(0, totalBunga);
+
+          const cicilanBln = cicPB + adminCicilan;
+          const totalCicilan = cicilanBln * n;
+          const totalBiaya = adminAwal + biayaLain + adminCicilan * n; // semua biaya admin/lain
+          const totalBayar = dp + adminAwal + biayaLain + totalCicilan;
+          const totalPembiayaan = totalBayar - dp; // yang dibayar atas pokok dibiayai
+          const selisih = totalBayar - hargaBersih; // markup nominal vs tunai
+          const markupPct = hargaBersih > 0 ? selisih / hargaBersih * 100 : 0;
+          const bungaHarian = rBln / 30; // %/hari setara
+          const lockCapExceeded = totalPembiayaan > 2 * P + 1;
+
+          if (!isFinite(cicilanBln) || cicilanBln <= 0) { HC.toast('Angka tidak valid, periksa input', 'error'); return; }
+
+          const metodeTxt = metode === 'flat' ? 'Flat' : (metode === 'anuitas' ? 'Efektif/Anuitas' : 'Promo 0%');
+
+          $('cicilanBln').textContent = HC.fmt(cicilanBln);
+          $('metaInfo').innerHTML = n + '\u00d7 cicilan \u00b7 Total bayar <b>' + HC.fmt(totalBayar) + '</b>';
+          $('nilaiDibiayai').textContent = HC.fmt(P);
+          $('totalBunga').textContent = HC.fmt(totalBunga);
+          $('totalBiaya').textContent = HC.fmt(totalBiaya);
+          $('totalBayar').textContent = HC.fmt(totalBayar);
+
+          const maxV = Math.max(hargaBersih, totalBayar) || 1;
+          $('barTunai').style.width = (hargaBersih / maxV * 100) + '%'; $('barTunaiV').textContent = HC.fmt(hargaBersih);
+          $('barPL').style.width = (totalBayar / maxV * 100) + '%'; $('barPLV').textContent = HC.fmt(totalBayar);
+
+          let r = '';
+          if (selisih <= 1) {
+            r += '<div class="kelayakan-status ks-good"><i class="ti ti-circle-check"></i> Tanpa biaya tambahan</div>'
+              + '<p class="ks-note">Total bayarmu <strong>sama dengan harga tunai</strong> (' + HC.fmt(hargaBersih) + '). Promo 0% murni tanpa admin \u2014 aman secara biaya. Tetap pastikan kamu mampu bayar tiap cicilannya.</p>';
+          } else {
+            r += '<div class="kelayakan-status ks-warn"><i class="ti ti-receipt-2"></i> Cicilan kecil \u2260 lebih murah</div>'
+              + '<p class="ks-note">Pakai paylater ini, total bayarmu <strong>' + HC.fmt(totalBayar) + '</strong> \u2014 yaitu <strong>' + HC.fmt(selisih) + ' (markup ' + markupPct.toFixed(1) + '%)</strong> lebih mahal dari harga tunai <strong>' + HC.fmt(hargaBersih) + '</strong>. Cicilan ' + HC.fmt(cicilanBln) + '/bln terlihat ringan, tapi totalnya lebih besar.</p>';
+          }
+          if (metode === 'promo0' && (adminAwal + biayaLain + adminCicilan * n) > 0) {
+            r += '<p class="ks-note" style="margin-top:8px"><i class="ti ti-info-circle"></i> <strong>Bunga 0% bukan berarti gratis</strong> \u2014 masih ada biaya admin/lain ' + HC.fmt(adminAwal + biayaLain + adminCicilan * n) + '.</p>';
+          }
+          // Pengaman OJK
+          if (lockCapExceeded) {
+            r += '<p class="ks-note" style="margin-top:8px;color:#DC2626"><i class="ti ti-alert-circle"></i> <strong>Melebihi Lock Cap 100%:</strong> total bayar atas pokok melampaui <strong>2\u00d7 nilai dibiayai</strong>. Untuk paylater legal, ini tidak diperbolehkan (POJK 32/2025) \u2014 cek ulang biaya/tenor &amp; legalitas penyedia.</p>';
+          } else if (P > 0) {
+            r += '<p class="ks-note" style="margin-top:8px;color:#047857"><i class="ti ti-shield-check"></i> Total bayar masih di bawah <strong>2\u00d7 pokok</strong> (sesuai batas Lock Cap 100% OJK).</p>';
+          }
+          if (bungaHarian > 0.1001) {
+            r += '<p class="ks-note" style="margin-top:8px;color:#DC2626"><i class="ti ti-alert-triangle"></i> Bunga setara <strong>' + bungaHarian.toFixed(3) + '%/hari</strong> \u2014 <strong>melebihi batas 0,1%/hari</strong> (OJK 2026). Pastikan penyedia legal &amp; cek rincian biayanya.</p>';
+          } else if (bungaHarian > 0) {
+            r += '<p class="ks-note" style="margin-top:8px"><i class="ti ti-circle-check" style="color:#047857"></i> Bunga setara <strong>\u2248' + bungaHarian.toFixed(3) + '%/hari</strong> \u2014 di bawah batas 0,1%/hari (OJK 2026).</p>';
+          }
+          r += '<p class="ks-note" style="margin-top:8px"><strong>Rincian:</strong> Nilai dibiayai ' + HC.fmt(P) + ' \u00b7 Bunga ' + HC.fmt(totalBunga) + ' \u00b7 Biaya ' + HC.fmt(totalBiaya) + ' \u00b7 Metode ' + metodeTxt + (metode !== 'promo0' ? ' ' + rBln + '%/bln' : '') + '.</p>';
+          $('ringkasanBody').innerHTML = r;
+
+          lastCalc = { harga, dp, diskon, hargaBersih, P, n, metode, metodeTxt, rBln, adminAwal, biayaLain, adminCicilan, ongkir, proteksi, cicilanBln, totalBunga, totalBiaya, totalCicilan, totalBayar, selisih, markupPct, bungaHarian };
+          if (HC.history) HC.history.push('paylater', {
+            inputs: HC.history.capture(['harga','dp','diskon','tenor','metode','bunga','adminRp','adminPct','ongkir','proteksi','adminCicilan','biayaLain']),
+            summary: HC.fmt(hargaBersih) + ' \u00b7 ' + n + 'bln \u00b7 ' + metodeTxt + (metode !== 'promo0' ? ' ' + rBln + '%' : ''),
+            metrics: [{ k: 'Cicilan/bln', v: HC.fmt(cicilanBln) }, { k: 'Total bayar', v: HC.fmt(totalBayar) }]
+          });
+          renderHist();
+          $('placeholder').style.display = 'none';
+          $('results').classList.add('show');
+          $('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          HC.toast('Simulasi cicilan selesai!');
+        }
+
+        function reset() {
+          els.harga.value = '1.000.000'; els.dp.value = '0'; els.diskon.value = '0';
+          els.tenor.value = '12'; els.metode.value = 'flat'; els.bunga.value = '2.95';
+          els.adminRp.value = '0'; els.adminPct.value = '0'; els.ongkir.value = '0';
+          els.proteksi.value = '0'; els.adminCicilan.value = '0'; els.biayaLain.value = '0';
+          $('placeholder').style.display = ''; $('results').classList.remove('show');
+          lastCalc = null; HC.toast('Form direset', 'info');
+        }
+
+        function bungaPreset(val) {
+          if (val === 'promo0') { els.metode.value = 'promo0'; els.bunga.value = '0'; }
+          else { if (els.metode.value === 'promo0') els.metode.value = 'flat'; els.bunga.value = val; }
+          if (lastCalc) hitung();
+        }
+
+        function buildReport() {
+          if (!lastCalc) return null;
+          const c = lastCalc;
+          const insight = c.selisih <= 1
+            ? 'Promo 0% tanpa biaya: total = harga tunai ' + HC.fmt(c.hargaBersih) + '. Pastikan tetap mampu bayar tiap cicilan.'
+            : 'Total bayar ' + HC.fmt(c.totalBayar) + ' \u2014 ' + HC.fmt(c.selisih) + ' (markup ' + c.markupPct.toFixed(1) + '%) lebih mahal dari tunai. Cicilan kecil belum tentu lebih murah.';
+          const inputs = [
+            { label: '\ud83d\udecd\ufe0f Harga Barang', value: HC.fmt(c.harga) },
+            { label: '\u23f3 Tenor', value: c.n + ' bulan' },
+            { label: '\ud83d\udcc9 Metode', value: c.metodeTxt + (c.metode !== 'promo0' ? ' ' + c.rBln + '%/bln' : '') },
+          ];
+          if (c.dp > 0) inputs.push({ label: '\ud83d\udcb5 DP', value: HC.fmt(c.dp) });
+          if (c.diskon > 0) inputs.push({ label: '\ud83c\udff7\ufe0f Diskon', value: HC.fmt(c.diskon) });
+          const results = [
+            { label: 'Nilai Dibiayai', value: HC.fmt(c.P) },
+            { label: 'Cicilan / Bulan', value: HC.fmt(c.cicilanBln), highlight: true },
+            { label: 'Total Bunga/Margin', value: HC.fmt(c.totalBunga) },
+            { label: 'Total Biaya & Admin', value: HC.fmt(c.totalBiaya) },
+            { label: 'Total Bayar', value: HC.fmt(c.totalBayar), highlight: true },
+            { label: 'Selisih vs Tunai', value: HC.fmt(c.selisih) + ' (' + c.markupPct.toFixed(1) + '%)' },
+          ];
+          return HC.buildReportCard({
+            title: '\ud83d\udecd\ufe0f Simulasi Paylater (BNPL)',
+            color: '#DB2777', color2: '#9D174D',
+            heroLabel: 'Cicilan / Bulan',
+            heroValue: HC.fmt(c.cicilanBln),
+            heroSubtext: c.n + '\u00d7 \u00b7 Total bayar ' + HC.fmt(c.totalBayar),
+            inputs, results, insight, slug: 'paylater',
+          });
+        }
+
+        function summaryText() {
+          if (!lastCalc) return '';
+          const c = lastCalc;
+          let s = '\ud83d\udecd\ufe0f *Simulasi Paylater (BNPL) - HitungCerdas*\n\n'
+            + 'Harga: ' + HC.fmt(c.harga) + '\n'
+            + 'Tenor: ' + c.n + ' bulan\n'
+            + 'Metode: ' + c.metodeTxt + (c.metode !== 'promo0' ? ' ' + c.rBln + '%/bln' : '') + '\n'
+            + 'Nilai dibiayai: ' + HC.fmt(c.P) + '\n\n'
+            + '\ud83d\udcb5 *Cicilan: ' + HC.fmt(c.cicilanBln) + '/bln*\n'
+            + 'Total bunga: ' + HC.fmt(c.totalBunga) + '\n'
+            + 'Total biaya & admin: ' + HC.fmt(c.totalBiaya) + '\n'
+            + '*Total bayar: ' + HC.fmt(c.totalBayar) + '*\n'
+            + 'Selisih vs tunai: ' + HC.fmt(c.selisih) + ' (' + c.markupPct.toFixed(1) + '%)\n'
+            + '\n_Simulasi edukatif, bukan ajakan berutang. Cek rincian di aplikasi penyedia._\n'
+            + 'Hitung: https://hitungcerdas.net/kalkulator/paylater';
+          return s;
+        }
+
+        function renderHist() {
+          if (HC.history) HC.history.render('paylater', $('histBox'), function () { hitung(); });
+        }
+
+        $('btnHitung').addEventListener('click', hitung);
+        $('btnReset').addEventListener('click', reset);
+        document.querySelectorAll('.bunga-chip').forEach(btn => btn.addEventListener('click', () => bungaPreset(btn.getAttribute('data-bunga'))));
+        $('exportImg').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToImage(c, 'paylater-' + Date.now()); });
+        $('exportWa').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.shareWhatsApp(c, summaryText(), 'paylater'); });
+        $('exportPdf').addEventListener('click', () => { if (!lastCalc) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToPDF(); });
+        $('exportCopy').addEventListener('click', () => { if (!lastCalc) { HC.toast('Hitung dulu', 'error'); return; } HC.copyText(summaryText(), 'Tersalin!'); });
+        $('exportExcel').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToExcel(c, 'paylater-' + Date.now()); });
+
+        renderHist();
+      });
+    })();
+  </script>
+</Layout>
