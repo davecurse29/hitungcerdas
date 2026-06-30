@@ -82,6 +82,27 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
             <div class="field"><label>Suku Bunga Baru <span class="hint">(% / tahun)</span></label>
               <input type="number" id="bungaBaru" value="14" min="0" step="0.1" /></div>
 
+            <div class="field-group-label" style="font-weight:700;color:#0369A1;margin:14px 0 6px;font-size:.9rem"><i class="ti ti-receipt-2"></i> Tunggakan, Denda &amp; Grace <span class="hint" style="font-weight:400">(opsional)</span></div>
+
+            <div class="field"><label>Tunggakan <span class="hint">(cicilan tertunggak)</span></label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span>
+                <input type="text" id="tunggakan" class="has-prefix" value="0" inputmode="numeric" /></div></div>
+
+            <div class="field"><label>Denda Keterlambatan</label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span>
+                <input type="text" id="denda" class="has-prefix" value="0" inputmode="numeric" /></div></div>
+
+            <label style="display:flex;align-items:center;gap:10px;padding:11px 13px;background:#F8FAFC;border:1px solid #E2E8F0;border-radius:10px;margin-bottom:10px;cursor:pointer;font-size:.88rem">
+              <input type="checkbox" id="gabungTunggakan" style="width:18px;height:18px;accent-color:#0EA5E9;flex-shrink:0" />
+              <span>Gabungkan tunggakan &amp; denda ke pokok baru</span></label>
+
+            <label style="display:flex;align-items:center;gap:10px;padding:11px 13px;background:#F8FAFC;border:1px solid #E2E8F0;border-radius:10px;margin-bottom:10px;cursor:pointer;font-size:.88rem">
+              <input type="checkbox" id="pakaiGrace" style="width:18px;height:18px;accent-color:#0EA5E9;flex-shrink:0" />
+              <span>Aktifkan grace period (sementara bayar bunga saja)</span></label>
+
+            <div class="field" id="graceField" style="display:none"><label>Lama Grace <span class="hint">(bulan, bayar bunga saja)</span></label>
+              <input type="number" id="graceLama" value="6" min="1" max="36" /></div>
+
             <div class="calc-action-bar">
               <button type="button" class="btn-hitung" id="btnHitung"><i class="ti ti-calculator"></i> Hitung Keringanan</button>
               <button type="button" class="btn-reset" id="btnReset"><i class="ti ti-refresh"></i> Reset</button>
@@ -176,54 +197,73 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
     function ready(fn) { if (window.HC && window.html2canvas) fn(); else setTimeout(() => ready(fn), 100); }
     ready(() => {
       const $ = id => document.getElementById(id);
-      const els = { pokok: $('sisaPokok'), tenor: $('sisaTenor'), bunga: $('bunga'), jenis: $('jenisBunga'), tenorBaru: $('tenorBaru'), bungaBaru: $('bungaBaru') };
-      els.pokok.addEventListener('input', HC.fmtInput);
+      const els = { pokok: $('sisaPokok'), tenor: $('sisaTenor'), bunga: $('bunga'), jenis: $('jenisBunga'), tenorBaru: $('tenorBaru'), bungaBaru: $('bungaBaru'), tunggakan: $('tunggakan'), denda: $('denda'), gabung: $('gabungTunggakan'), grace: $('pakaiGrace'), graceLama: $('graceLama') };
+      [els.pokok, els.tunggakan, els.denda].forEach(el => el.addEventListener('input', HC.fmtInput));
+      els.grace.addEventListener('change', () => { $('graceField').style.display = els.grace.checked ? '' : 'none'; });
 
       const BULAN = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
       let lastCalc = null;
 
       function cicilan(P, rTahun, n, jenis) {
         if (P <= 0 || n <= 0) return 0;
-        if (jenis === 'flat') {
-          const bunga = P * (rTahun / 100) * (n / 12);
-          return (P + bunga) / n;
-        }
+        if (jenis === 'flat') { const bunga = P * (rTahun / 100) * (n / 12); return (P + bunga) / n; }
         const i = rTahun / 12 / 100;
         if (i === 0) return P / n;
         const f = Math.pow(1 + i, n);
         return P * i * f / (f - 1);
       }
-
-      function tglLunas(n) {
-        const d = new Date(); d.setMonth(d.getMonth() + n);
-        return BULAN[d.getMonth()] + ' ' + d.getFullYear();
-      }
+      function tglLunas(n) { const d = new Date(); d.setMonth(d.getMonth() + n); return BULAN[d.getMonth()] + ' ' + d.getFullYear(); }
 
       function hitung() {
+        $('graceField').style.display = els.grace.checked ? '' : 'none';
         const P = HC.parseRp(els.pokok.value);
         const n0 = parseInt(els.tenor.value) || 0;
         const r0 = Math.max(0, parseFloat(els.bunga.value) || 0);
         const jenis = els.jenis.value;
         const n1 = parseInt(els.tenorBaru.value) || 0;
         const r1 = Math.max(0, parseFloat(els.bungaBaru.value) || 0);
+        const tunggakan = HC.parseRp(els.tunggakan.value);
+        const denda = HC.parseRp(els.denda.value);
+        const gabung = els.gabung.checked;
+        const pakaiGrace = els.grace.checked;
+        const graceLama = pakaiGrace ? (parseInt(els.graceLama.value) || 0) : 0;
 
         if (P <= 0) { HC.toast('Masukkan sisa pokok pinjaman dulu', 'error'); return; }
         if (n0 < 1) { HC.toast('Sisa tenor minimal 1 bulan', 'error'); return; }
         if (n1 < 1) { HC.toast('Tenor baru minimal 1 bulan', 'error'); return; }
         if (n1 > 360 || n0 > 360) { HC.toast('Tenor maksimal 360 bulan (30 tahun)', 'error'); return; }
+        if (pakaiGrace && graceLama < 1) { HC.toast('Lama grace minimal 1 bulan', 'error'); return; }
+        if (pakaiGrace && graceLama >= n1) { HC.toast('Lama grace harus lebih pendek dari tenor baru', 'error'); return; }
+
+        const Pbaru = gabung ? (P + tunggakan + denda) : P;
 
         const M0 = cicilan(P, r0, n0, jenis);
-        const M1 = cicilan(P, r1, n1, jenis);
+        const totBayarLama = M0 * n0, bungaLama = totBayarLama - P;
+
+        let M1, cicilanGrace = 0, nAfter = n1, totBayarBaru, bungaBaru;
+        if (graceLama > 0) {
+          nAfter = n1 - graceLama;
+          cicilanGrace = (jenis === 'flat') ? (Pbaru * (r1 / 100) / 12) : (Pbaru * (r1 / 12 / 100));
+          const cicilanAfter = cicilan(Pbaru, r1, nAfter, jenis);
+          M1 = cicilanAfter;
+          const bungaGrace = cicilanGrace * graceLama;
+          const bungaAfter = cicilanAfter * nAfter - Pbaru;
+          bungaBaru = bungaGrace + bungaAfter;
+          totBayarBaru = Pbaru + bungaBaru;
+        } else {
+          M1 = cicilan(Pbaru, r1, n1, jenis);
+          totBayarBaru = M1 * n1;
+          bungaBaru = totBayarBaru - Pbaru;
+        }
         if (!isFinite(M0) || !isFinite(M1) || M1 <= 0) { HC.toast('Angka tidak valid, periksa input', 'error'); return; }
 
-        const totBayarLama = M0 * n0, totBayarBaru = M1 * n1;
-        const bungaLama = totBayarLama - P, bungaBaru = totBayarBaru - P;
-        const deltaM = M0 - M1;            // + = cicilan turun
+        const deltaM = M0 - M1;
         const pct = M0 > 0 ? (deltaM / M0) * 100 : 0;
-        const deltaBunga = bungaBaru - bungaLama; // + = bunga naik
+        const deltaBunga = bungaBaru - bungaLama;
 
         $('cicilanBaru').textContent = HC.fmt(M1);
-        if (deltaM > 0) $('metaInfo').textContent = 'Turun ' + pct.toFixed(1) + '% \u00b7 hemat ' + HC.fmt(deltaM) + '/bulan';
+        if (graceLama > 0) $('metaInfo').innerHTML = 'Selama ' + graceLama + ' bln grace: <b>' + HC.fmt(cicilanGrace) + '</b>/bln (bunga saja), lalu ' + HC.fmt(M1) + '/bln';
+        else if (deltaM > 0) $('metaInfo').textContent = 'Turun ' + pct.toFixed(1) + '% \u00b7 hemat ' + HC.fmt(deltaM) + '/bulan';
         else if (deltaM < 0) $('metaInfo').textContent = 'Naik ' + Math.abs(pct).toFixed(1) + '% (tenor/bunga lebih berat)';
         else $('metaInfo').textContent = 'Cicilan tidak berubah';
 
@@ -234,33 +274,38 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         $('bungaBaruVal').textContent = HC.fmt(bungaBaru);
         $('bungaBaruVal').style.color = deltaBunga > 0 ? 'var(--red,#DC2626)' : 'var(--green-dark,#047857)';
 
-        // Bars
         const maxC = Math.max(M0, M1) || 1, maxB = Math.max(bungaLama, bungaBaru, 1);
         $('barC1').style.width = (M0 / maxC * 100) + '%'; $('barC1v').textContent = HC.fmt(M0);
         $('barC2').style.width = (M1 / maxC * 100) + '%'; $('barC2v').textContent = HC.fmt(M1);
         $('barB1').style.width = (Math.max(bungaLama,0) / maxB * 100) + '%'; $('barB1v').textContent = HC.fmt(bungaLama);
         $('barB2').style.width = (Math.max(bungaBaru,0) / maxB * 100) + '%'; $('barB2v').textContent = HC.fmt(bungaBaru);
 
-        // Ringkasan jujur
         let r = '';
+        if (graceLama > 0) {
+          r += '<div class="kelayakan-status ks-good"><i class="ti ti-player-pause"></i> Ada masa napas (grace)</div>'
+            + '<p class="ks-note">Selama <strong>' + graceLama + ' bulan pertama</strong> kamu cukup bayar <strong>' + HC.fmt(cicilanGrace) + '/bln</strong> (bunga saja), lalu cicilan menjadi <strong>' + HC.fmt(M1) + '/bln</strong> selama ' + nAfter + ' bulan.</p>';
+        }
+        if (gabung && (tunggakan + denda) > 0) {
+          r += '<p class="ks-note"><i class="ti ti-arrow-merge"></i> Tunggakan + denda <strong>' + HC.fmt(tunggakan + denda) + '</strong> digabung ke pokok \u2192 pokok baru <strong>' + HC.fmt(Pbaru) + '</strong>.</p>';
+        }
         if (deltaM > 0 && deltaBunga > 0) {
-          r = '<div class="kelayakan-status ks-good"><i class="ti ti-circle-check"></i> Cicilan lebih ringan</div>'
+          r += '<div class="kelayakan-status ks-good"><i class="ti ti-circle-check"></i> Cicilan lebih ringan</div>'
             + '<p class="ks-note">Cicilanmu turun <strong>' + HC.fmt(deltaM) + '/bulan</strong> (\u2212' + pct.toFixed(1) + '%) \u2014 lebih lega tiap bulan. Tapi karena tenor lebih panjang, <strong>total bunga naik ' + HC.fmt(deltaBunga) + '</strong>. Cocok jika prioritasmu menjaga arus kas bulanan.</p>';
         } else if (deltaM > 0 && deltaBunga <= 0) {
-          r = '<div class="kelayakan-status ks-good"><i class="ti ti-star"></i> Skema paling menguntungkan</div>'
+          r += '<div class="kelayakan-status ks-good"><i class="ti ti-star"></i> Skema paling menguntungkan</div>'
             + '<p class="ks-note">Cicilan turun <strong>' + HC.fmt(deltaM) + '/bulan</strong> <em>dan</em> total bunga juga turun <strong>' + HC.fmt(-deltaBunga) + '</strong>. Jika disetujui, ini opsi terbaik karena keduanya berkurang.</p>';
         } else if (deltaM <= 0) {
-          r = '<div class="kelayakan-status ks-warn"><i class="ti ti-alert-triangle"></i> Cicilan tidak menjadi lebih ringan</div>'
-            + '<p class="ks-note">Dengan target ini cicilanmu tidak turun. Coba <strong>perpanjang tenor</strong> atau <strong>turunkan bunga baru</strong> agar cicilan lebih ringan.</p>';
+          r += '<div class="kelayakan-status ks-warn"><i class="ti ti-alert-triangle"></i> Cicilan tidak menjadi lebih ringan</div>'
+            + '<p class="ks-note">Dengan target ini cicilanmu tidak turun. Coba <strong>perpanjang tenor</strong>, <strong>turunkan bunga</strong>, atau aktifkan <strong>grace period</strong>.</p>';
         }
         r += '<p class="ks-note" style="margin-top:8px"><strong>Total bayar:</strong> ' + HC.fmt(totBayarLama) + ' \u2192 ' + HC.fmt(totBayarBaru)
           + ' \u00b7 <strong>Tenor:</strong> ' + n0 + ' \u2192 ' + n1 + ' bln \u00b7 <strong>Lunas \u00b1</strong> ' + tglLunas(n1) + '.</p>';
         $('ringkasanBody').innerHTML = r;
 
-        lastCalc = { P, n0, r0, jenis, n1, r1, M0, M1, bungaLama, bungaBaru, totBayarLama, totBayarBaru, deltaM, pct, deltaBunga };
+        lastCalc = { P, Pbaru, n0, r0, jenis, n1, r1, tunggakan, denda, gabung, graceLama, cicilanGrace, nAfter, M0, M1, bungaLama, bungaBaru, totBayarLama, totBayarBaru, deltaM, pct, deltaBunga };
         if (HC.history) HC.history.push('restrukturisasi-kredit', {
-          inputs: HC.history.capture(['sisaPokok','sisaTenor','bunga','jenisBunga','tenorBaru','bungaBaru']),
-          summary: HC.fmt(P) + ' \u00b7 ' + n0 + 'bln@' + r0 + '% \u2192 ' + n1 + 'bln@' + r1 + '%',
+          inputs: HC.history.capture(['sisaPokok','sisaTenor','bunga','jenisBunga','tenorBaru','bungaBaru','tunggakan','denda','gabungTunggakan','pakaiGrace','graceLama']),
+          summary: HC.fmt(P) + ' \u00b7 ' + n0 + 'bln@' + r0 + '% \u2192 ' + n1 + 'bln@' + r1 + '%' + (graceLama > 0 ? ' \u00b7 grace ' + graceLama + 'bln' : ''),
           metrics: [{ k: 'Cicilan baru', v: HC.fmt(M1) }, { k: 'Hemat/bln', v: HC.fmt(deltaM) }]
         });
         renderHist();
@@ -273,6 +318,8 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       function reset() {
         els.pokok.value = '50.000.000'; els.tenor.value = '36'; els.bunga.value = '18';
         els.jenis.value = 'anuitas'; els.tenorBaru.value = '60'; els.bungaBaru.value = '14';
+        els.tunggakan.value = '0'; els.denda.value = '0'; els.gabung.checked = false;
+        els.grace.checked = false; els.graceLama.value = '6'; $('graceField').style.display = 'none';
         $('placeholder').style.display = ''; $('results').classList.remove('show');
         lastCalc = null; HC.toast('Form direset', 'info');
       }
@@ -281,54 +328,59 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         if (!lastCalc) return null;
         const c = lastCalc;
         const jenisTxt = c.jenis === 'flat' ? 'Flat' : 'Anuitas/Efektif';
-        const insight = c.deltaM > 0 && c.deltaBunga > 0
+        let insight = c.deltaM > 0 && c.deltaBunga > 0
           ? 'Cicilan turun ' + HC.fmt(c.deltaM) + '/bln (\u2212' + c.pct.toFixed(1) + '%), tapi total bunga naik ' + HC.fmt(c.deltaBunga) + ' karena tenor lebih panjang.'
           : c.deltaM > 0
           ? 'Cicilan turun ' + HC.fmt(c.deltaM) + '/bln dan total bunga turun ' + HC.fmt(-c.deltaBunga) + ' \u2014 skema paling menguntungkan.'
-          : 'Target ini belum meringankan cicilan. Perpanjang tenor atau turunkan bunga.';
+          : 'Target ini belum meringankan cicilan. Perpanjang tenor, turunkan bunga, atau pakai grace.';
+        if (c.graceLama > 0) insight = 'Grace ' + c.graceLama + ' bln (bayar ' + HC.fmt(c.cicilanGrace) + '/bln), lalu ' + HC.fmt(c.M1) + '/bln. ' + insight;
+        const inputs = [
+          { label: '\ud83d\udcb0 Sisa Pokok', value: HC.fmt(c.P) },
+          { label: '\u23f3 Tenor \u2192 Baru', value: c.n0 + ' \u2192 ' + c.n1 + ' bln' },
+          { label: '\ud83d\udcc9 Bunga \u2192 Baru', value: c.r0 + '% \u2192 ' + c.r1 + '%/th' },
+          { label: '\ud83e\uddee Jenis Bunga', value: jenisTxt },
+        ];
+        if (c.gabung && (c.tunggakan + c.denda) > 0) inputs.push({ label: '\u2795 Gabung Tunggakan+Denda', value: HC.fmt(c.tunggakan + c.denda) + ' \u2192 pokok ' + HC.fmt(c.Pbaru) });
+        if (c.graceLama > 0) inputs.push({ label: '\u23f8\ufe0f Grace Period', value: c.graceLama + ' bln (' + HC.fmt(c.cicilanGrace) + '/bln)' });
+        const results = [
+          { label: 'Cicilan Lama', value: HC.fmt(c.M0) },
+          { label: (c.graceLama > 0 ? 'Cicilan Setelah Grace' : 'Cicilan Baru'), value: HC.fmt(c.M1), highlight: true },
+          { label: 'Hemat per Bulan', value: HC.fmt(c.deltaM), highlight: true },
+          { label: 'Total Bunga Lama', value: HC.fmt(c.bungaLama) },
+          { label: 'Total Bunga Baru', value: HC.fmt(c.bungaBaru) },
+          { label: 'Total Bayar Baru', value: HC.fmt(c.totBayarBaru) },
+        ];
         return HC.buildReportCard({
-          title: '🔄 Simulasi Restrukturisasi Kredit',
+          title: '\ud83d\udd04 Simulasi Restrukturisasi Kredit',
           color: '#0EA5E9', color2: '#0369A1',
-          heroLabel: 'Cicilan Baru / Bulan',
+          heroLabel: (c.graceLama > 0 ? 'Cicilan Setelah Grace' : 'Cicilan Baru / Bulan'),
           heroValue: HC.fmt(c.M1),
-          heroSubtext: (c.deltaM >= 0 ? 'Hemat ' + HC.fmt(c.deltaM) + '/bln (\u2212' + c.pct.toFixed(1) + '%)' : 'Naik ' + HC.fmt(-c.deltaM) + '/bln'),
-          inputs: [
-            { label: '💰 Sisa Pokok', value: HC.fmt(c.P) },
-            { label: '⏳ Tenor → Baru', value: c.n0 + ' → ' + c.n1 + ' bln' },
-            { label: '📉 Bunga → Baru', value: c.r0 + '% → ' + c.r1 + '%/th' },
-            { label: '🧮 Jenis Bunga', value: jenisTxt },
-          ],
-          results: [
-            { label: 'Cicilan Lama', value: HC.fmt(c.M0) },
-            { label: 'Cicilan Baru', value: HC.fmt(c.M1), highlight: true },
-            { label: 'Hemat per Bulan', value: HC.fmt(c.deltaM), highlight: true },
-            { label: 'Total Bunga Lama', value: HC.fmt(c.bungaLama) },
-            { label: 'Total Bunga Baru', value: HC.fmt(c.bungaBaru) },
-            { label: 'Total Bayar Baru', value: HC.fmt(c.totBayarBaru) },
-          ],
-          insight, slug: 'restrukturisasi-kredit',
+          heroSubtext: (c.graceLama > 0 ? 'Grace ' + c.graceLama + ' bln: ' + HC.fmt(c.cicilanGrace) + '/bln' : (c.deltaM >= 0 ? 'Hemat ' + HC.fmt(c.deltaM) + '/bln (\u2212' + c.pct.toFixed(1) + '%)' : 'Naik ' + HC.fmt(-c.deltaM) + '/bln')),
+          inputs, results, insight, slug: 'restrukturisasi-kredit',
         });
       }
 
       function summaryText() {
         if (!lastCalc) return '';
         const c = lastCalc;
-        return '🔄 *Simulasi Restrukturisasi Kredit - HitungCerdas*\n\n'
+        let s = '\ud83d\udd04 *Simulasi Restrukturisasi Kredit - HitungCerdas*\n\n'
           + 'Sisa pokok: ' + HC.fmt(c.P) + '\n'
-          + 'Tenor: ' + c.n0 + ' → ' + c.n1 + ' bln\n'
-          + 'Bunga: ' + c.r0 + '% → ' + c.r1 + '%/th\n\n'
-          + '💵 *Cicilan: ' + HC.fmt(c.M0) + ' → ' + HC.fmt(c.M1) + '/bln*\n'
-          + '✅ Hemat: ' + HC.fmt(c.deltaM) + '/bln\n'
-          + '📊 Total bunga: ' + HC.fmt(c.bungaLama) + ' → ' + HC.fmt(c.bungaBaru) + '\n\n'
+          + 'Tenor: ' + c.n0 + ' \u2192 ' + c.n1 + ' bln\n'
+          + 'Bunga: ' + c.r0 + '% \u2192 ' + c.r1 + '%/th\n';
+        if (c.gabung && (c.tunggakan + c.denda) > 0) s += 'Gabung tunggakan+denda: ' + HC.fmt(c.tunggakan + c.denda) + '\n';
+        if (c.graceLama > 0) s += 'Grace: ' + c.graceLama + ' bln (' + HC.fmt(c.cicilanGrace) + '/bln)\n';
+        s += '\n\ud83d\udcb5 *Cicilan: ' + HC.fmt(c.M0) + ' \u2192 ' + HC.fmt(c.M1) + '/bln*\n'
+          + '\u2705 Hemat: ' + HC.fmt(c.deltaM) + '/bln\n'
+          + '\ud83d\udcca Total bunga: ' + HC.fmt(c.bungaLama) + ' \u2192 ' + HC.fmt(c.bungaBaru) + '\n\n'
           + '_Simulasi edukatif, bukan jaminan persetujuan._\n'
           + 'Hitung: https://hitungcerdas.net/kalkulator/restrukturisasi-kredit';
+        return s;
       }
 
       function renderHist() {
         if (HC.history) HC.history.render('restrukturisasi-kredit', $('histBox'), function () { hitung(); });
       }
 
-      // ── Bind tombol utama LEBIH DULU (pola defensif anti-bug HC.history) ──
       $('btnHitung').addEventListener('click', hitung);
       $('btnReset').addEventListener('click', reset);
       $('exportImg').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToImage(c, 'restrukturisasi-' + Date.now()); });
