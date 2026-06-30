@@ -114,6 +114,10 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
               </div>
             </div>
 
+            <div class="field-group-label" style="font-weight:700;color:#9D174D;margin:8px 0 6px;font-size:.9rem"><i class="ti ti-wallet"></i> Cek Kemampuan Bayar <span class="hint" style="font-weight:400">(opsional)</span></div>
+            <div class="field"><label>Penghasilan Bulanan Bersih</label><div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="penghasilan" class="has-prefix" value="0" inputmode="numeric" /></div></div>
+            <div class="field"><label>Cicilan Utang Lain per Bulan <span class="hint">(KPR, KTA, paylater lain)</span></label><div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="cicilanLain" class="has-prefix" value="0" inputmode="numeric" /></div></div>
+
             <div class="adv-section" style="margin:0 0 14px">
               <label style="display:flex;align-items:center;gap:10px;padding:11px 13px;background:#FEF2F2;border:1px solid #FECACA;border-radius:10px;cursor:pointer;font-size:.88rem">
                 <input type="checkbox" id="pakaiDenda" style="width:18px;height:18px;accent-color:#DC2626;flex-shrink:0" />
@@ -230,13 +234,14 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       ready(() => {
         const $ = id => document.getElementById(id);
         const els = { harga: $('harga'), dp: $('dp'), diskon: $('diskon'), tenor: $('tenor'), metode: $('metode'), bunga: $('bunga'), adminRp: $('adminRp'), adminPct: $('adminPct'), ongkir: $('ongkir'), proteksi: $('proteksi'), adminCicilan: $('adminCicilan'), biayaLain: $('biayaLain') };
-        ['harga','dp','diskon','adminRp','ongkir','proteksi','adminCicilan','biayaLain'].forEach(id => { const el = $(id); if (el) el.addEventListener('input', HC.fmtInput); });
+        ['harga','dp','diskon','adminRp','ongkir','proteksi','adminCicilan','biayaLain','penghasilan','cicilanLain'].forEach(id => { const el = $(id); if (el) el.addEventListener('input', HC.fmtInput); });
         document.querySelectorAll('.adv-toggle').forEach(t => t.addEventListener('click', () => t.parentElement.classList.toggle('open')));
         $('pakaiDenda').addEventListener('change', () => { $('dendaFields').style.display = $('pakaiDenda').checked ? '' : 'none'; });
         $('metodeDenda').addEventListener('change', () => { const m = $('metodeDenda').value; $('fDendaPct').style.display = (m === 'tetap') ? 'none' : ''; $('fDendaRp').style.display = (m === 'tetap') ? '' : 'none'; });
         ['dendaRp','dendaMax'].forEach(id => { const el = $(id); if (el) el.addEventListener('input', HC.fmtInput); });
 
         let lastCalc = null;
+        function zonaDTI(ratio) { if (ratio <= 30) return { l: 'aman', c: '#047857', i: 'ti-circle-check' }; if (ratio <= 40) return { l: 'waspada', c: '#B45309', i: 'ti-alert-triangle' }; return { l: 'berat', c: '#DC2626', i: 'ti-alert-circle' }; }
 
         // cicilan pokok+bunga per bulan (tanpa admin)
         function cicilanPB(P, rBln, n, metode) {
@@ -307,6 +312,11 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
             totalDgnDenda = totalBayar + dendaTotal;
           }
 
+          const income = HC.parseRp($('penghasilan').value);
+          const cicilanLain = HC.parseRp($('cicilanLain').value);
+          const dsrBefore = income > 0 ? cicilanLain / income * 100 : 0;
+          const dsrAfter = income > 0 ? (cicilanLain + cicilanBln) / income * 100 : 0;
+
           if (!isFinite(cicilanBln) || cicilanBln <= 0) { HC.toast('Angka tidak valid, periksa input', 'error'); return; }
 
           const metodeTxt = metode === 'flat' ? 'Flat' : (metode === 'anuitas' ? 'Efektif/Anuitas' : 'Promo 0%');
@@ -344,6 +354,10 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
           } else if (bungaHarian > 0) {
             r += '<p class="ks-note" style="margin-top:8px"><i class="ti ti-circle-check" style="color:#047857"></i> Bunga setara <strong>\u2248' + bungaHarian.toFixed(3) + '%/hari</strong> \u2014 di bawah batas 0,1%/hari (OJK 2026).</p>';
           }
+          if (income > 0) {
+            const z = zonaDTI(dsrAfter);
+            r += '<p class="ks-note" style="margin-top:8px"><i class="ti ' + z.i + '" style="color:' + z.c + '"></i> <strong>Rasio cicilan (DSR):</strong> ' + dsrBefore.toFixed(0) + '% \u2192 <strong style="color:' + z.c + '">' + dsrAfter.toFixed(0) + '%</strong> dari penghasilan (zona ' + z.l + '). Cicilan paylater ini ' + (cicilanBln / income * 100).toFixed(0) + '% penghasilanmu \u2014 idealnya total cicilan \u226430% (patokan OJK).</p>';
+          }
           r += '<p class="ks-note" style="margin-top:8px"><strong>Rincian:</strong> Nilai dibiayai ' + HC.fmt(P) + ' \u00b7 Bunga ' + HC.fmt(totalBunga) + ' \u00b7 Biaya ' + HC.fmt(totalBiaya) + ' \u00b7 Metode ' + metodeTxt + (metode !== 'promo0' ? ' ' + rBln + '%/bln' : '') + '.</p>';
           $('ringkasanBody').innerHTML = r;
 
@@ -361,9 +375,9 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
             $('dendaBox').style.display = 'none';
           }
 
-          lastCalc = { harga, dp, diskon, hargaBersih, P, n, metode, metodeTxt, rBln, adminAwal, biayaLain, adminCicilan, ongkir, proteksi, cicilanBln, totalBunga, totalBiaya, totalCicilan, totalBayar, selisih, markupPct, bungaHarian, pakaiDenda, hariTelat, bulanTelat, dendaTotal, totalDgnDenda };
+          lastCalc = { harga, dp, diskon, hargaBersih, P, n, metode, metodeTxt, rBln, adminAwal, biayaLain, adminCicilan, ongkir, proteksi, cicilanBln, totalBunga, totalBiaya, totalCicilan, totalBayar, selisih, markupPct, bungaHarian, pakaiDenda, hariTelat, bulanTelat, dendaTotal, totalDgnDenda, income, cicilanLain, dsrBefore, dsrAfter };
           if (HC.history) HC.history.push('paylater', {
-            inputs: HC.history.capture(['harga','dp','diskon','tenor','metode','bunga','adminRp','adminPct','ongkir','proteksi','adminCicilan','biayaLain','pakaiDenda','hariTelat','metodeDenda','dendaPct','dendaRp','dendaMax']),
+            inputs: HC.history.capture(['harga','dp','diskon','tenor','metode','bunga','adminRp','adminPct','ongkir','proteksi','adminCicilan','biayaLain','pakaiDenda','hariTelat','metodeDenda','dendaPct','dendaRp','dendaMax','penghasilan','cicilanLain']),
             summary: HC.fmt(hargaBersih) + ' \u00b7 ' + n + 'bln \u00b7 ' + metodeTxt + (metode !== 'promo0' ? ' ' + rBln + '%' : ''),
             metrics: [{ k: 'Cicilan/bln', v: HC.fmt(cicilanBln) }, { k: 'Total bayar', v: HC.fmt(totalBayar) }]
           });
@@ -379,6 +393,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
           els.tenor.value = '12'; els.metode.value = 'flat'; els.bunga.value = '2.95';
           els.adminRp.value = '0'; els.adminPct.value = '0'; els.ongkir.value = '0';
           els.proteksi.value = '0'; els.adminCicilan.value = '0'; els.biayaLain.value = '0';
+          $('penghasilan').value = '0'; $('cicilanLain').value = '0';
           $('placeholder').style.display = ''; $('results').classList.remove('show');
           $('pakaiDenda').checked = false; $('dendaFields').style.display = 'none'; $('dendaBox').style.display = 'none';
           $('hariTelat').value = '30'; $('metodeDenda').value = 'pctBulan'; $('dendaPct').value = '5'; $('dendaRp').value = '0'; $('dendaMax').value = '0';
@@ -413,6 +428,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
             { label: 'Total Bayar', value: HC.fmt(c.totalBayar), highlight: true },
             { label: 'Selisih vs Tunai', value: HC.fmt(c.selisih) + ' (' + c.markupPct.toFixed(1) + '%)' },
           ];
+          if (c.income > 0) results.push({ label: 'Rasio Cicilan (DSR)', value: c.dsrBefore.toFixed(0) + '% \u2192 ' + c.dsrAfter.toFixed(0) + '%' });
           if (c.pakaiDenda && c.dendaTotal > 0) {
             results.push({ label: 'Estimasi Denda (telat ' + c.hariTelat + 'h)', value: HC.fmt(c.dendaTotal) });
             results.push({ label: 'Total + Denda', value: HC.fmt(c.totalDgnDenda), highlight: true });
@@ -440,6 +456,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
             + 'Total biaya & admin: ' + HC.fmt(c.totalBiaya) + '\n'
             + '*Total bayar: ' + HC.fmt(c.totalBayar) + '*\n'
             + 'Selisih vs tunai: ' + HC.fmt(c.selisih) + ' (' + c.markupPct.toFixed(1) + '%)\n'
+            + (c.income > 0 ? 'Rasio cicilan (DSR): ' + c.dsrBefore.toFixed(0) + '% \u2192 ' + c.dsrAfter.toFixed(0) + '%\n' : '')
             + (c.pakaiDenda && c.dendaTotal > 0 ? '\n\u26a0\ufe0f Telat ' + c.hariTelat + ' hari: +denda ' + HC.fmt(c.dendaTotal) + ' \u2192 total ' + HC.fmt(c.totalDgnDenda) + '\n' : '')
             + '\n_Simulasi edukatif, bukan ajakan berutang. Cek rincian di aplikasi penyedia._\n'
             + 'Hitung: https://hitungcerdas.net/kalkulator/paylater';
