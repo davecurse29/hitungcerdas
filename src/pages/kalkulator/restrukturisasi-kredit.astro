@@ -56,6 +56,17 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
 
         <div class="calc-grid">
           <div class="calc-input">
+            <div class="adv-section" style="margin-bottom:14px">
+              <div class="adv-toggle" style="cursor:pointer;display:flex;align-items:center;justify-content:space-between;padding:11px 13px;background:#F0F9FF;border:1px solid #BAE6FD;border-radius:10px"><span style="font-size:.88rem;font-weight:600;color:#0369A1"><i class="ti ti-help-circle"></i>&nbsp; Belum tahu sisa pokok? Hitung dari awal</span><i class="ti ti-chevron-down chev"></i></div>
+              <div class="adv-content">
+                <div class="field"><label>Pinjaman Awal</label><div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="hPokokAwal" class="has-prefix" value="100.000.000" inputmode="numeric" /></div></div>
+                <div class="field"><label>Bunga Awal <span class="hint">(%/th)</span></label><input type="number" id="hBungaAwal" value="18" min="0" step="0.1" /></div>
+                <div class="field"><label>Tenor Awal <span class="hint">(bulan)</span></label><input type="number" id="hTenorAwal" value="60" min="1" max="360" /></div>
+                <div class="field"><label>Sudah Dibayar <span class="hint">(bulan)</span></label><input type="number" id="hSudahBayar" value="12" min="0" max="359" /></div>
+                <button type="button" class="btn-reset" id="btnSisaPokok" style="width:100%"><i class="ti ti-arrow-down-circle"></i> Hitung &amp; Isi Sisa Pokok</button>
+                <p class="ks-note" style="font-size:.78rem;color:#64748b;margin-top:8px">Memakai Jenis Bunga yang dipilih di bawah. Hasil otomatis mengisi Sisa Pokok, Tenor &amp; Bunga.</p>
+              </div>
+            </div>
             <div class="field-group-label" style="font-weight:700;color:#0369A1;margin:2px 0 6px;font-size:.9rem"><i class="ti ti-file-dollar"></i> Kondisi Pinjaman Saat Ini</div>
 
             <div class="field"><label>Sisa Pokok Pinjaman</label>
@@ -102,6 +113,16 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
 
             <div class="field" id="graceField" style="display:none"><label>Lama Grace <span class="hint">(bulan, bayar bunga saja)</span></label>
               <input type="number" id="graceLama" value="6" min="1" max="36" /></div>
+
+            <div style="display:flex;flex-wrap:wrap;gap:7px;margin:2px 0 12px">
+              <button type="button" class="preset-chip" data-preset="tenor12" style="font-size:.8rem;padding:7px 12px;border:1px solid #BAE6FD;background:#F0F9FF;color:#0369A1;border-radius:8px;cursor:pointer;font-weight:600">+12 bln tenor</button>
+              <button type="button" class="preset-chip" data-preset="bunga2" style="font-size:.8rem;padding:7px 12px;border:1px solid #BAE6FD;background:#F0F9FF;color:#0369A1;border-radius:8px;cursor:pointer;font-weight:600">&minus;2% bunga</button>
+              <button type="button" class="preset-chip" data-preset="grace6" style="font-size:.8rem;padding:7px 12px;border:1px solid #BAE6FD;background:#F0F9FF;color:#0369A1;border-radius:8px;cursor:pointer;font-weight:600">Grace 6 bln</button>
+              <button type="button" class="preset-chip" data-preset="reset" style="font-size:.8rem;padding:7px 12px;border:1px solid #BAE6FD;background:#F0F9FF;color:#0369A1;border-radius:8px;cursor:pointer;font-weight:600">Skema asli</button>
+            </div>
+
+            <div class="field-group-label" style="font-weight:700;color:#0369A1;margin:8px 0 6px;font-size:.9rem"><i class="ti ti-wallet"></i> Cek Kemampuan Bayar <span class="hint" style="font-weight:400">(opsional)</span></div>
+            <div class="field"><label>Penghasilan Bulanan</label><div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="penghasilan" class="has-prefix" value="0" inputmode="numeric" /></div></div>
 
             <div class="calc-action-bar">
               <button type="button" class="btn-hitung" id="btnHitung"><i class="ti ti-calculator"></i> Hitung Keringanan</button>
@@ -197,9 +218,10 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
     function ready(fn) { if (window.HC && window.html2canvas) fn(); else setTimeout(() => ready(fn), 100); }
     ready(() => {
       const $ = id => document.getElementById(id);
-      const els = { pokok: $('sisaPokok'), tenor: $('sisaTenor'), bunga: $('bunga'), jenis: $('jenisBunga'), tenorBaru: $('tenorBaru'), bungaBaru: $('bungaBaru'), tunggakan: $('tunggakan'), denda: $('denda'), gabung: $('gabungTunggakan'), grace: $('pakaiGrace'), graceLama: $('graceLama') };
-      [els.pokok, els.tunggakan, els.denda].forEach(el => el.addEventListener('input', HC.fmtInput));
+      const els = { pokok: $('sisaPokok'), tenor: $('sisaTenor'), bunga: $('bunga'), jenis: $('jenisBunga'), tenorBaru: $('tenorBaru'), bungaBaru: $('bungaBaru'), tunggakan: $('tunggakan'), denda: $('denda'), gabung: $('gabungTunggakan'), grace: $('pakaiGrace'), graceLama: $('graceLama'), income: $('penghasilan') };
+      [els.pokok, els.tunggakan, els.denda, els.income, $('hPokokAwal')].forEach(el => { if (el) el.addEventListener('input', HC.fmtInput); });
       els.grace.addEventListener('change', () => { $('graceField').style.display = els.grace.checked ? '' : 'none'; });
+      document.querySelectorAll('.adv-toggle').forEach(t => t.addEventListener('click', () => t.parentElement.classList.toggle('open')));
 
       const BULAN = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
       let lastCalc = null;
@@ -213,6 +235,31 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         return P * i * f / (f - 1);
       }
       function tglLunas(n) { const d = new Date(); d.setMonth(d.getMonth() + n); return BULAN[d.getMonth()] + ' ' + d.getFullYear(); }
+      function zonaDTI(ratio) { if (ratio <= 30) return { l: 'aman', c: '#047857', i: 'ti-circle-check' }; if (ratio <= 40) return { l: 'waspada', c: '#B45309', i: 'ti-alert-triangle' }; return { l: 'berat', c: '#DC2626', i: 'ti-alert-circle' }; }
+
+      // ── Helper: hitung sisa pokok dari awal ──
+      function hitungSisaPokok() {
+        const P0 = HC.parseRp($('hPokokAwal').value);
+        const r = Math.max(0, parseFloat($('hBungaAwal').value) || 0);
+        const N = parseInt($('hTenorAwal').value) || 0;
+        const k = parseInt($('hSudahBayar').value) || 0;
+        const jenis = els.jenis.value;
+        if (P0 <= 0 || N < 1) { HC.toast('Isi pinjaman awal & tenor awal dulu', 'error'); return; }
+        if (k < 0 || k >= N) { HC.toast('Sudah dibayar harus antara 0 dan tenor-1', 'error'); return; }
+        const sisaN = N - k;
+        let sisa;
+        if (jenis === 'flat') { sisa = P0 * sisaN / N; }
+        else {
+          const i = r / 12 / 100;
+          if (i === 0) sisa = P0 * sisaN / N;
+          else { const M = cicilan(P0, r, N, 'anuitas'); sisa = M * (1 - Math.pow(1 + i, -sisaN)) / i; }
+        }
+        sisa = Math.max(0, Math.round(sisa));
+        els.pokok.value = sisa.toLocaleString('id-ID');
+        els.tenor.value = sisaN;
+        els.bunga.value = r;
+        HC.toast('Sisa pokok terisi: ' + HC.fmt(sisa));
+      }
 
       function hitung() {
         $('graceField').style.display = els.grace.checked ? '' : 'none';
@@ -227,6 +274,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         const gabung = els.gabung.checked;
         const pakaiGrace = els.grace.checked;
         const graceLama = pakaiGrace ? (parseInt(els.graceLama.value) || 0) : 0;
+        const income = HC.parseRp(els.income.value);
 
         if (P <= 0) { HC.toast('Masukkan sisa pokok pinjaman dulu', 'error'); return; }
         if (n0 < 1) { HC.toast('Sisa tenor minimal 1 bulan', 'error'); return; }
@@ -236,7 +284,6 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         if (pakaiGrace && graceLama >= n1) { HC.toast('Lama grace harus lebih pendek dari tenor baru', 'error'); return; }
 
         const Pbaru = gabung ? (P + tunggakan + denda) : P;
-
         const M0 = cicilan(P, r0, n0, jenis);
         const totBayarLama = M0 * n0, bungaLama = totBayarLama - P;
 
@@ -246,9 +293,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
           cicilanGrace = (jenis === 'flat') ? (Pbaru * (r1 / 100) / 12) : (Pbaru * (r1 / 12 / 100));
           const cicilanAfter = cicilan(Pbaru, r1, nAfter, jenis);
           M1 = cicilanAfter;
-          const bungaGrace = cicilanGrace * graceLama;
-          const bungaAfter = cicilanAfter * nAfter - Pbaru;
-          bungaBaru = bungaGrace + bungaAfter;
+          bungaBaru = (cicilanGrace * graceLama) + (cicilanAfter * nAfter - Pbaru);
           totBayarBaru = Pbaru + bungaBaru;
         } else {
           M1 = cicilan(Pbaru, r1, n1, jenis);
@@ -260,6 +305,8 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         const deltaM = M0 - M1;
         const pct = M0 > 0 ? (deltaM / M0) * 100 : 0;
         const deltaBunga = bungaBaru - bungaLama;
+        const ratioLama = income > 0 ? (M0 / income * 100) : 0;
+        const ratioBaru = income > 0 ? (M1 / income * 100) : 0;
 
         $('cicilanBaru').textContent = HC.fmt(M1);
         if (graceLama > 0) $('metaInfo').innerHTML = 'Selama ' + graceLama + ' bln grace: <b>' + HC.fmt(cicilanGrace) + '</b>/bln (bunga saja), lalu ' + HC.fmt(M1) + '/bln';
@@ -298,13 +345,20 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
           r += '<div class="kelayakan-status ks-warn"><i class="ti ti-alert-triangle"></i> Cicilan tidak menjadi lebih ringan</div>'
             + '<p class="ks-note">Dengan target ini cicilanmu tidak turun. Coba <strong>perpanjang tenor</strong>, <strong>turunkan bunga</strong>, atau aktifkan <strong>grace period</strong>.</p>';
         }
+        if (income > 0) {
+          const z = zonaDTI(ratioBaru);
+          r += '<p class="ks-note" style="margin-top:8px"><i class="ti ' + z.i + '" style="color:' + z.c + '"></i> <strong>Rasio cicilan:</strong> ' + ratioLama.toFixed(0) + '% \u2192 <strong style="color:' + z.c + '">' + ratioBaru.toFixed(0) + '%</strong> dari penghasilan (zona ' + z.l + '). Idealnya \u226430% (patokan OJK).</p>';
+        }
+        if (totBayarBaru > 2 * Pbaru + 1) {
+          r += '<p class="ks-note" style="margin-top:8px;color:#B45309"><i class="ti ti-alert-triangle"></i> Total bayar melebihi <strong>2\u00d7 pokok</strong>. Untuk pinjol, ini melampaui batas biaya 100% (SE OJK 19/2023) \u2014 pertimbangkan tenor lebih pendek atau bunga lebih rendah.</p>';
+        }
         r += '<p class="ks-note" style="margin-top:8px"><strong>Total bayar:</strong> ' + HC.fmt(totBayarLama) + ' \u2192 ' + HC.fmt(totBayarBaru)
           + ' \u00b7 <strong>Tenor:</strong> ' + n0 + ' \u2192 ' + n1 + ' bln \u00b7 <strong>Lunas \u00b1</strong> ' + tglLunas(n1) + '.</p>';
         $('ringkasanBody').innerHTML = r;
 
-        lastCalc = { P, Pbaru, n0, r0, jenis, n1, r1, tunggakan, denda, gabung, graceLama, cicilanGrace, nAfter, M0, M1, bungaLama, bungaBaru, totBayarLama, totBayarBaru, deltaM, pct, deltaBunga };
+        lastCalc = { P, Pbaru, n0, r0, jenis, n1, r1, tunggakan, denda, gabung, graceLama, cicilanGrace, nAfter, M0, M1, bungaLama, bungaBaru, totBayarLama, totBayarBaru, deltaM, pct, deltaBunga, income, ratioLama, ratioBaru };
         if (HC.history) HC.history.push('restrukturisasi-kredit', {
-          inputs: HC.history.capture(['sisaPokok','sisaTenor','bunga','jenisBunga','tenorBaru','bungaBaru','tunggakan','denda','gabungTunggakan','pakaiGrace','graceLama']),
+          inputs: HC.history.capture(['sisaPokok','sisaTenor','bunga','jenisBunga','tenorBaru','bungaBaru','tunggakan','denda','gabungTunggakan','pakaiGrace','graceLama','penghasilan']),
           summary: HC.fmt(P) + ' \u00b7 ' + n0 + 'bln@' + r0 + '% \u2192 ' + n1 + 'bln@' + r1 + '%' + (graceLama > 0 ? ' \u00b7 grace ' + graceLama + 'bln' : ''),
           metrics: [{ k: 'Cicilan baru', v: HC.fmt(M1) }, { k: 'Hemat/bln', v: HC.fmt(deltaM) }]
         });
@@ -315,11 +369,20 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         HC.toast('Simulasi keringanan selesai!');
       }
 
+      function preset(kind) {
+        if (kind === 'tenor12') els.tenorBaru.value = Math.min(360, (parseInt(els.tenorBaru.value) || 0) + 12);
+        else if (kind === 'bunga2') els.bungaBaru.value = Math.max(0, (parseFloat(els.bungaBaru.value) || 0) - 2);
+        else if (kind === 'grace6') { els.grace.checked = true; els.graceLama.value = 6; $('graceField').style.display = ''; }
+        else if (kind === 'reset') { els.tenorBaru.value = els.tenor.value; els.bungaBaru.value = els.bunga.value; els.grace.checked = false; $('graceField').style.display = 'none'; }
+        if (lastCalc) hitung();
+      }
+
       function reset() {
         els.pokok.value = '50.000.000'; els.tenor.value = '36'; els.bunga.value = '18';
         els.jenis.value = 'anuitas'; els.tenorBaru.value = '60'; els.bungaBaru.value = '14';
         els.tunggakan.value = '0'; els.denda.value = '0'; els.gabung.checked = false;
         els.grace.checked = false; els.graceLama.value = '6'; $('graceField').style.display = 'none';
+        els.income.value = '0';
         $('placeholder').style.display = ''; $('results').classList.remove('show');
         lastCalc = null; HC.toast('Form direset', 'info');
       }
@@ -350,6 +413,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
           { label: 'Total Bunga Baru', value: HC.fmt(c.bungaBaru) },
           { label: 'Total Bayar Baru', value: HC.fmt(c.totBayarBaru) },
         ];
+        if (c.income > 0) results.push({ label: 'Rasio Cicilan', value: c.ratioLama.toFixed(0) + '% \u2192 ' + c.ratioBaru.toFixed(0) + '% penghasilan' });
         return HC.buildReportCard({
           title: '\ud83d\udd04 Simulasi Restrukturisasi Kredit',
           color: '#0EA5E9', color2: '#0369A1',
@@ -371,8 +435,9 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         if (c.graceLama > 0) s += 'Grace: ' + c.graceLama + ' bln (' + HC.fmt(c.cicilanGrace) + '/bln)\n';
         s += '\n\ud83d\udcb5 *Cicilan: ' + HC.fmt(c.M0) + ' \u2192 ' + HC.fmt(c.M1) + '/bln*\n'
           + '\u2705 Hemat: ' + HC.fmt(c.deltaM) + '/bln\n'
-          + '\ud83d\udcca Total bunga: ' + HC.fmt(c.bungaLama) + ' \u2192 ' + HC.fmt(c.bungaBaru) + '\n\n'
-          + '_Simulasi edukatif, bukan jaminan persetujuan._\n'
+          + '\ud83d\udcca Total bunga: ' + HC.fmt(c.bungaLama) + ' \u2192 ' + HC.fmt(c.bungaBaru) + '\n';
+        if (c.income > 0) s += '\ud83d\udcca Rasio cicilan: ' + c.ratioLama.toFixed(0) + '% \u2192 ' + c.ratioBaru.toFixed(0) + '% penghasilan\n';
+        s += '\n_Simulasi edukatif, bukan jaminan persetujuan._\n'
           + 'Hitung: https://hitungcerdas.net/kalkulator/restrukturisasi-kredit';
         return s;
       }
@@ -383,6 +448,8 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
 
       $('btnHitung').addEventListener('click', hitung);
       $('btnReset').addEventListener('click', reset);
+      $('btnSisaPokok').addEventListener('click', hitungSisaPokok);
+      document.querySelectorAll('.preset-chip').forEach(btn => btn.addEventListener('click', () => preset(btn.getAttribute('data-preset'))));
       $('exportImg').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToImage(c, 'restrukturisasi-' + Date.now()); });
       $('exportWa').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.shareWhatsApp(c, summaryText(), 'restrukturisasi-kredit'); });
       $('exportPdf').addEventListener('click', () => { if (!lastCalc) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToPDF(); });
