@@ -1,0 +1,343 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import EbookPromo from '../../components/EbookPromo.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import FAQ from '../../components/FAQ.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import CalculatorCard from '../../components/CalculatorCard.astro';
+import { getCalculatorBySlug, getRelatedCalculators } from '../../data/calculators';
+
+const calc = getCalculatorBySlug('restrukturisasi-kredit')!;
+const related = getRelatedCalculators('restrukturisasi-kredit', 3);
+
+const faqs = [
+  { question: 'Apakah restrukturisasi menghapus utang saya?', answer: 'Tidak. Restrukturisasi adalah <strong>penataan ulang skema pembayaran</strong>, bukan penghapusan utang. Pokok pinjaman tetap wajib dibayar — yang berubah adalah tenor, suku bunga, atau adanya masa tunda pokok (grace period), agar cicilan lebih sesuai dengan kemampuanmu.' },
+  { question: 'Kenapa cicilan turun tapi total bunga malah naik?', answer: 'Karena memperpanjang tenor berarti kamu membayar bunga selama <strong>lebih banyak bulan</strong>. Cicilan bulanan jadi lebih ringan, tapi akumulasi bunganya bisa lebih besar. Kalkulator ini sengaja menampilkan kedua angka (cicilan & total bunga) supaya kamu paham trade-off-nya sebelum memutuskan.' },
+  { question: 'Apakah restrukturisasi merusak skor kredit (SLIK OJK)?', answer: 'Tergantung kondisimu saat mengajukan. Restrukturisasi bisa tercatat di SLIK, namun umumnya <strong>tetap lebih baik daripada membiarkan cicilan macet</strong>. Jika kamu disiplin membayar sesuai skema baru, skor kredit bisa pulih bertahap. Ajukan sedini mungkin sebelum status memburuk.' },
+  { question: 'Apakah pinjol ilegal wajib memberi restrukturisasi?', answer: 'Tidak. Mekanisme restrukturisasi resmi hanya berlaku di lembaga keuangan dan pinjol <strong>legal berizin OJK</strong>. Jika kamu terjerat pinjol ilegal, kamu justru berhak melapor ke OJK (Kontak OJK 157 atau aplikasi APPK) untuk menghentikan penagihan.' },
+  { question: 'Berapa lama proses pengajuan restrukturisasi?', answer: 'Umumnya <strong>7–30 hari kerja</strong>, tergantung kebijakan bank/lembaga dan kelengkapan dokumen (KTP, bukti penghasilan/PHK, surat pernyataan kondisi keuangan). Semakin cepat mengajukan dan semakin lengkap dokumen, semakin besar peluang disetujui.' },
+];
+
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '/#tools' }, { label: calc.shortTitle }];
+---
+
+<Layout title={calc.title} description={calc.metaDescription} keywords={calc.keywords} canonical={`https://hitungcerdas.net/kalkulator/${calc.slug}`}>
+  <section class="calc-hero" style="--cat-color:#0EA5E9;--cat-color2:#0369A1">
+    <div class="wrap">
+      <Breadcrumb items={bcItems} />
+      <div class="calc-hero-grid">
+        <div class="calc-hero-text">
+          <div class="calc-hero-tag" style="background:#E0F2FE;color:#0369A1"><i class="ti ti-refresh"></i> {calc.categoryLabel}</div>
+          <h1 class="calc-hero-title">{calc.h1}</h1>
+          <p class="calc-hero-sub">{calc.introText}</p>
+          <ul class="calc-hero-benefits">{calc.benefits.map(b => <li><i class="ti ti-check"></i> {b}</li>)}</ul>
+        </div>
+        <div class="calc-hero-illust">
+          <svg viewBox="0 0 200 200" fill="none">
+            <circle cx="100" cy="100" r="85" fill="rgba(255,255,255,.08)"/>
+            <circle cx="100" cy="100" r="55" fill="#FFF" stroke="#FBBF24" stroke-width="3"/>
+            <path d="M100 78a22 22 0 1 0 21 27" fill="none" stroke="#0EA5E9" stroke-width="6" stroke-linecap="round"/>
+            <path d="M100 70l6 10-12 0z" fill="#0EA5E9"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+
+  <section class="calc-section">
+    <div class="wrap">
+      <div class="calc-card">
+        <div class="calc-card-hdr">
+          <div class="calc-card-hdr-ic" style="background:linear-gradient(135deg,#0EA5E9 0%,#0369A1 100%)"><i class="ti ti-refresh"></i></div>
+          <div><h2 class="calc-card-title">Kalkulator Restrukturisasi Kredit</h2><p class="calc-card-sub">Simulasikan dampak perpanjang tenor &amp; turunkan bunga ke cicilanmu</p></div>
+        </div>
+
+        <div class="calc-grid">
+          <div class="calc-input">
+            <div class="field-group-label" style="font-weight:700;color:#0369A1;margin:2px 0 6px;font-size:.9rem"><i class="ti ti-file-dollar"></i> Kondisi Pinjaman Saat Ini</div>
+
+            <div class="field"><label>Sisa Pokok Pinjaman</label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span>
+                <input type="text" id="sisaPokok" class="has-prefix" value="50.000.000" inputmode="numeric" /></div></div>
+
+            <div class="field"><label>Sisa Tenor <span class="hint">(bulan)</span></label>
+              <input type="number" id="sisaTenor" value="36" min="1" max="360" /></div>
+
+            <div class="field"><label>Suku Bunga Saat Ini <span class="hint">(% / tahun)</span></label>
+              <input type="number" id="bunga" value="18" min="0" step="0.1" /></div>
+
+            <div class="field"><label>Jenis Bunga</label>
+              <select id="jenisBunga">
+                <option value="anuitas">Anuitas / Efektif (cicilan tetap)</option>
+                <option value="flat">Flat (umum di kredit kendaraan)</option>
+              </select></div>
+
+            <div class="field-group-label" style="font-weight:700;color:#0369A1;margin:14px 0 6px;font-size:.9rem"><i class="ti ti-adjustments"></i> Skema Restrukturisasi <span class="hint" style="font-weight:400">(target baru — biarkan sama jika tak diubah)</span></div>
+
+            <div class="field"><label>Tenor Baru <span class="hint">(bulan, perpanjang untuk turunkan cicilan)</span></label>
+              <input type="number" id="tenorBaru" value="60" min="1" max="360" /></div>
+
+            <div class="field"><label>Suku Bunga Baru <span class="hint">(% / tahun)</span></label>
+              <input type="number" id="bungaBaru" value="14" min="0" step="0.1" /></div>
+
+            <div class="calc-action-bar">
+              <button type="button" class="btn-hitung" id="btnHitung"><i class="ti ti-calculator"></i> Hitung Keringanan</button>
+              <button type="button" class="btn-reset" id="btnReset"><i class="ti ti-refresh"></i> Reset</button>
+            </div>
+          </div>
+
+          <div class="calc-output">
+            <div class="hist-section" id="histBox" style="display:none"></div>
+
+            <div class="result-placeholder" id="placeholder">
+              <i class="ti ti-refresh result-placeholder-icon"></i>
+              <div class="result-placeholder-title">Simulasi keringanan akan muncul di sini</div>
+              <div class="result-placeholder-desc">Isi kondisi pinjamanmu &amp; target skema baru, lalu klik <strong>"Hitung Keringanan"</strong>.</div>
+            </div>
+
+            <div class="result-wrapper" id="results">
+              <div class="result-main">
+                <div class="result-label">Cicilan Baru per Bulan</div>
+                <div class="result-value" id="cicilanBaru">Rp 0</div>
+                <div class="result-meta"><i class="ti ti-info-circle"></i> <span id="metaInfo">Hasil simulasi</span></div>
+              </div>
+
+              <div class="result-grid">
+                <div class="result-item"><div class="result-item-label">Cicilan Lama</div><div class="result-item-value" id="cicilanLama">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">Hemat per Bulan</div><div class="result-item-value result-strong" id="hematBulan">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">Total Bunga Lama</div><div class="result-item-value" id="bungaLama">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">Total Bunga Baru</div><div class="result-item-value" id="bungaBaruVal">Rp 0</div></div>
+              </div>
+
+              <div class="kelayakan-box">
+                <div class="kelayakan-hdr"><i class="ti ti-scale"></i><span>Ringkasan &amp; Catatan Jujur</span></div>
+                <div id="ringkasanBody"></div>
+
+                <div style="margin-top:14px">
+                  <div style="font-size:.82rem;font-weight:700;color:#64748b;margin-bottom:7px">Cicilan per Bulan</div>
+                  <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><span style="width:46px;font-size:.78rem;color:#64748b">Lama</span><div style="flex:1;background:#f1f5f9;border-radius:6px;height:20px;overflow:hidden"><div id="barC1" style="height:100%;width:0;background:#94a3b8;border-radius:6px;transition:width .5s"></div></div><b id="barC1v" style="min-width:108px;text-align:right;font-size:.82rem">Rp 0</b></div>
+                  <div style="display:flex;align-items:center;gap:8px"><span style="width:46px;font-size:.78rem;color:#64748b">Baru</span><div style="flex:1;background:#f1f5f9;border-radius:6px;height:20px;overflow:hidden"><div id="barC2" style="height:100%;width:0;background:#0EA5E9;border-radius:6px;transition:width .5s"></div></div><b id="barC2v" style="min-width:108px;text-align:right;font-size:.82rem;color:#0369A1">Rp 0</b></div>
+
+                  <div style="font-size:.82rem;font-weight:700;color:#64748b;margin:14px 0 7px">Total Bunga</div>
+                  <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><span style="width:46px;font-size:.78rem;color:#64748b">Lama</span><div style="flex:1;background:#f1f5f9;border-radius:6px;height:20px;overflow:hidden"><div id="barB1" style="height:100%;width:0;background:#94a3b8;border-radius:6px;transition:width .5s"></div></div><b id="barB1v" style="min-width:108px;text-align:right;font-size:.82rem">Rp 0</b></div>
+                  <div style="display:flex;align-items:center;gap:8px"><span style="width:46px;font-size:.78rem;color:#64748b">Baru</span><div style="flex:1;background:#f1f5f9;border-radius:6px;height:20px;overflow:hidden"><div id="barB2" style="height:100%;width:0;background:#F59E0B;border-radius:6px;transition:width .5s"></div></div><b id="barB2v" style="min-width:108px;text-align:right;font-size:.82rem;color:#B45309">Rp 0</b></div>
+                </div>
+
+                <p class="ks-note" style="margin-top:12px;font-size:.8rem;color:#64748b"><i class="ti ti-alert-triangle"></i> Ini <strong>simulasi/estimasi</strong>. Keputusan &amp; skema final ditentukan bank/pemberi pinjaman setelah asesmen — bukan jaminan disetujui.</p>
+              </div>
+
+              <div class="export-row">
+                <button type="button" class="export-btn img" id="exportImg"><i class="ti ti-photo-down"></i><span>Save Image</span></button>
+                <button type="button" class="export-btn wa" id="exportWa"><i class="ti ti-brand-whatsapp"></i><span>Share WA</span></button>
+                <button type="button" class="export-btn pdf" id="exportPdf"><i class="ti ti-printer"></i><span>Print/PDF</span></button>
+                <button type="button" class="export-btn copy" id="exportCopy"><i class="ti ti-copy"></i><span>Copy Teks</span></button>
+                <button type="button" class="export-btn" id="exportExcel"><i class="ti ti-file-spreadsheet" style="color:#1D6F42"></i><span style="color:#1D6F42">Excel</span></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <EbookPromo calc="restrukturisasi-kredit" headline="Sedang menata ulang keuanganmu? Mulai langkah berikutnya dari sini." />
+
+  <section class="content-section">
+    <div class="wrap-text">
+      <h2>Apa Itu Restrukturisasi Kredit?</h2>
+      <p>Restrukturisasi kredit adalah upaya resmi (sesuai pedoman OJK) untuk meringankan beban cicilan debitur yang sedang kesulitan membayar — misalnya karena PHK, penghasilan menurun, atau usaha melambat. <strong>Bukan penghapusan utang:</strong> pokok tetap wajib dibayar, yang berubah adalah skema pembayarannya. Sebelum mengajukan, pastikan kamu sudah tahu sisa cicilanmu dan punya <a href="/kalkulator/dana-darurat">dana darurat</a> sebagai bantalan. Untuk cek beban cicilan tanpa agunan, lihat juga <a href="/kalkulator/kta">simulasi KTA</a> dan <a href="/kalkulator/pinjol-legal">kalkulator pinjol legal</a>.</p>
+
+      <h2>3 Skema yang Bisa Diajukan</h2>
+      <p><strong>1. Perpanjang tenor</strong> — jangka waktu diperpanjang sehingga cicilan bulanan mengecil. Cocok jika kamu masih punya penghasilan tetap tapi butuh napas. <strong>2. Turunkan suku bunga</strong> — bunga diturunkan sehingga cicilan dan total bunga sama-sama berkurang. <strong>3. Grace period (masa tunda pokok)</strong> — beberapa bulan kamu cukup membayar bunga saja; pokok ditunda. Skema bisa dikombinasikan sesuai kesepakatan dengan pemberi pinjaman.</p>
+
+      <h2>Trade-off yang Wajib Dipahami</h2>
+      <p>Memperpanjang tenor memang membuat cicilan bulanan lebih ringan, <strong>tetapi total bunga yang dibayar bisa lebih besar</strong> karena bunga berjalan lebih lama. Karena itu kalkulator ini selalu menampilkan dua angka — cicilan dan total bunga — agar kamu bisa menimbang: butuh meringankan arus kas bulanan, atau menekan total biaya? Jika bank menyetujui penurunan bunga, itu skema paling menguntungkan karena keduanya turun.</p>
+
+      <div class="cta-box"><h3>Simulasikan Keringananmu</h3><p>Isi sisa pokok, tenor, dan bunga, lalu atur target tenor/bunga baru. Klik "Hitung Keringanan" untuk melihat cicilan baru dan trade-off-nya.</p></div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+  <FAQ title="Pertanyaan Seputar Restrukturisasi Kredit" items={faqs} />
+
+  <section class="section"><div class="wrap">
+    <div class="section-hdr"><div class="section-eyebrow">Kalkulator Lainnya</div><h2 class="section-title">Hitung Juga yang Lain</h2></div>
+    <div class="related-grid">{related.map(c => <CalculatorCard calc={c} />)}</div>
+  </div></section>
+  <p class="hc-method-note" style="text-align:center;font-size:.85rem;color:#64748b;margin:1.2rem auto;max-width:680px;line-height:1.6;padding:0 1rem;">
+    📅 Diperbarui <strong>Juni 2026</strong> · Simulasi memakai rumus anuitas &amp; flat; restrukturisasi mengubah tenor/bunga sesuai pedoman OJK. Estimasi edukatif — keputusan &amp; skema final ada di pemberi pinjaman, bukan jaminan persetujuan. <strong>Sumber:</strong> OJK (POJK 40/POJK.03/2019; SE OJK 19/SEOJK.05/2023 untuk batas biaya pinjol), sikapiuangmu.ojk.go.id.
+  </p>
+</Layout>
+
+<script is:inline>
+  (function() {
+    function ready(fn) { if (window.HC && window.html2canvas) fn(); else setTimeout(() => ready(fn), 100); }
+    ready(() => {
+      const $ = id => document.getElementById(id);
+      const els = { pokok: $('sisaPokok'), tenor: $('sisaTenor'), bunga: $('bunga'), jenis: $('jenisBunga'), tenorBaru: $('tenorBaru'), bungaBaru: $('bungaBaru') };
+      els.pokok.addEventListener('input', HC.fmtInput);
+
+      const BULAN = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+      let lastCalc = null;
+
+      function cicilan(P, rTahun, n, jenis) {
+        if (P <= 0 || n <= 0) return 0;
+        if (jenis === 'flat') {
+          const bunga = P * (rTahun / 100) * (n / 12);
+          return (P + bunga) / n;
+        }
+        const i = rTahun / 12 / 100;
+        if (i === 0) return P / n;
+        const f = Math.pow(1 + i, n);
+        return P * i * f / (f - 1);
+      }
+
+      function tglLunas(n) {
+        const d = new Date(); d.setMonth(d.getMonth() + n);
+        return BULAN[d.getMonth()] + ' ' + d.getFullYear();
+      }
+
+      function hitung() {
+        const P = HC.parseRp(els.pokok.value);
+        const n0 = parseInt(els.tenor.value) || 0;
+        const r0 = Math.max(0, parseFloat(els.bunga.value) || 0);
+        const jenis = els.jenis.value;
+        const n1 = parseInt(els.tenorBaru.value) || 0;
+        const r1 = Math.max(0, parseFloat(els.bungaBaru.value) || 0);
+
+        if (P <= 0) { HC.toast('Masukkan sisa pokok pinjaman dulu', 'error'); return; }
+        if (n0 < 1) { HC.toast('Sisa tenor minimal 1 bulan', 'error'); return; }
+        if (n1 < 1) { HC.toast('Tenor baru minimal 1 bulan', 'error'); return; }
+        if (n1 > 360 || n0 > 360) { HC.toast('Tenor maksimal 360 bulan (30 tahun)', 'error'); return; }
+
+        const M0 = cicilan(P, r0, n0, jenis);
+        const M1 = cicilan(P, r1, n1, jenis);
+        if (!isFinite(M0) || !isFinite(M1) || M1 <= 0) { HC.toast('Angka tidak valid, periksa input', 'error'); return; }
+
+        const totBayarLama = M0 * n0, totBayarBaru = M1 * n1;
+        const bungaLama = totBayarLama - P, bungaBaru = totBayarBaru - P;
+        const deltaM = M0 - M1;            // + = cicilan turun
+        const pct = M0 > 0 ? (deltaM / M0) * 100 : 0;
+        const deltaBunga = bungaBaru - bungaLama; // + = bunga naik
+
+        $('cicilanBaru').textContent = HC.fmt(M1);
+        if (deltaM > 0) $('metaInfo').textContent = 'Turun ' + pct.toFixed(1) + '% \u00b7 hemat ' + HC.fmt(deltaM) + '/bulan';
+        else if (deltaM < 0) $('metaInfo').textContent = 'Naik ' + Math.abs(pct).toFixed(1) + '% (tenor/bunga lebih berat)';
+        else $('metaInfo').textContent = 'Cicilan tidak berubah';
+
+        $('cicilanLama').textContent = HC.fmt(M0);
+        $('hematBulan').textContent = (deltaM >= 0 ? HC.fmt(deltaM) : '+' + HC.fmt(-deltaM));
+        $('hematBulan').style.color = deltaM >= 0 ? 'var(--green-dark,#047857)' : 'var(--red,#DC2626)';
+        $('bungaLama').textContent = HC.fmt(bungaLama);
+        $('bungaBaruVal').textContent = HC.fmt(bungaBaru);
+        $('bungaBaruVal').style.color = deltaBunga > 0 ? 'var(--red,#DC2626)' : 'var(--green-dark,#047857)';
+
+        // Bars
+        const maxC = Math.max(M0, M1) || 1, maxB = Math.max(bungaLama, bungaBaru, 1);
+        $('barC1').style.width = (M0 / maxC * 100) + '%'; $('barC1v').textContent = HC.fmt(M0);
+        $('barC2').style.width = (M1 / maxC * 100) + '%'; $('barC2v').textContent = HC.fmt(M1);
+        $('barB1').style.width = (Math.max(bungaLama,0) / maxB * 100) + '%'; $('barB1v').textContent = HC.fmt(bungaLama);
+        $('barB2').style.width = (Math.max(bungaBaru,0) / maxB * 100) + '%'; $('barB2v').textContent = HC.fmt(bungaBaru);
+
+        // Ringkasan jujur
+        let r = '';
+        if (deltaM > 0 && deltaBunga > 0) {
+          r = '<div class="kelayakan-status ks-good"><i class="ti ti-circle-check"></i> Cicilan lebih ringan</div>'
+            + '<p class="ks-note">Cicilanmu turun <strong>' + HC.fmt(deltaM) + '/bulan</strong> (\u2212' + pct.toFixed(1) + '%) \u2014 lebih lega tiap bulan. Tapi karena tenor lebih panjang, <strong>total bunga naik ' + HC.fmt(deltaBunga) + '</strong>. Cocok jika prioritasmu menjaga arus kas bulanan.</p>';
+        } else if (deltaM > 0 && deltaBunga <= 0) {
+          r = '<div class="kelayakan-status ks-good"><i class="ti ti-star"></i> Skema paling menguntungkan</div>'
+            + '<p class="ks-note">Cicilan turun <strong>' + HC.fmt(deltaM) + '/bulan</strong> <em>dan</em> total bunga juga turun <strong>' + HC.fmt(-deltaBunga) + '</strong>. Jika disetujui, ini opsi terbaik karena keduanya berkurang.</p>';
+        } else if (deltaM <= 0) {
+          r = '<div class="kelayakan-status ks-warn"><i class="ti ti-alert-triangle"></i> Cicilan tidak menjadi lebih ringan</div>'
+            + '<p class="ks-note">Dengan target ini cicilanmu tidak turun. Coba <strong>perpanjang tenor</strong> atau <strong>turunkan bunga baru</strong> agar cicilan lebih ringan.</p>';
+        }
+        r += '<p class="ks-note" style="margin-top:8px"><strong>Total bayar:</strong> ' + HC.fmt(totBayarLama) + ' \u2192 ' + HC.fmt(totBayarBaru)
+          + ' \u00b7 <strong>Tenor:</strong> ' + n0 + ' \u2192 ' + n1 + ' bln \u00b7 <strong>Lunas \u00b1</strong> ' + tglLunas(n1) + '.</p>';
+        $('ringkasanBody').innerHTML = r;
+
+        lastCalc = { P, n0, r0, jenis, n1, r1, M0, M1, bungaLama, bungaBaru, totBayarLama, totBayarBaru, deltaM, pct, deltaBunga };
+        if (HC.history) HC.history.push('restrukturisasi-kredit', {
+          inputs: HC.history.capture(['sisaPokok','sisaTenor','bunga','jenisBunga','tenorBaru','bungaBaru']),
+          summary: HC.fmt(P) + ' \u00b7 ' + n0 + 'bln@' + r0 + '% \u2192 ' + n1 + 'bln@' + r1 + '%',
+          metrics: [{ k: 'Cicilan baru', v: HC.fmt(M1) }, { k: 'Hemat/bln', v: HC.fmt(deltaM) }]
+        });
+        renderHist();
+        $('placeholder').style.display = 'none';
+        $('results').classList.add('show');
+        $('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        HC.toast('Simulasi keringanan selesai!');
+      }
+
+      function reset() {
+        els.pokok.value = '50.000.000'; els.tenor.value = '36'; els.bunga.value = '18';
+        els.jenis.value = 'anuitas'; els.tenorBaru.value = '60'; els.bungaBaru.value = '14';
+        $('placeholder').style.display = ''; $('results').classList.remove('show');
+        lastCalc = null; HC.toast('Form direset', 'info');
+      }
+
+      function buildReport() {
+        if (!lastCalc) return null;
+        const c = lastCalc;
+        const jenisTxt = c.jenis === 'flat' ? 'Flat' : 'Anuitas/Efektif';
+        const insight = c.deltaM > 0 && c.deltaBunga > 0
+          ? 'Cicilan turun ' + HC.fmt(c.deltaM) + '/bln (\u2212' + c.pct.toFixed(1) + '%), tapi total bunga naik ' + HC.fmt(c.deltaBunga) + ' karena tenor lebih panjang.'
+          : c.deltaM > 0
+          ? 'Cicilan turun ' + HC.fmt(c.deltaM) + '/bln dan total bunga turun ' + HC.fmt(-c.deltaBunga) + ' \u2014 skema paling menguntungkan.'
+          : 'Target ini belum meringankan cicilan. Perpanjang tenor atau turunkan bunga.';
+        return HC.buildReportCard({
+          title: '🔄 Simulasi Restrukturisasi Kredit',
+          color: '#0EA5E9', color2: '#0369A1',
+          heroLabel: 'Cicilan Baru / Bulan',
+          heroValue: HC.fmt(c.M1),
+          heroSubtext: (c.deltaM >= 0 ? 'Hemat ' + HC.fmt(c.deltaM) + '/bln (\u2212' + c.pct.toFixed(1) + '%)' : 'Naik ' + HC.fmt(-c.deltaM) + '/bln'),
+          inputs: [
+            { label: '💰 Sisa Pokok', value: HC.fmt(c.P) },
+            { label: '⏳ Tenor → Baru', value: c.n0 + ' → ' + c.n1 + ' bln' },
+            { label: '📉 Bunga → Baru', value: c.r0 + '% → ' + c.r1 + '%/th' },
+            { label: '🧮 Jenis Bunga', value: jenisTxt },
+          ],
+          results: [
+            { label: 'Cicilan Lama', value: HC.fmt(c.M0) },
+            { label: 'Cicilan Baru', value: HC.fmt(c.M1), highlight: true },
+            { label: 'Hemat per Bulan', value: HC.fmt(c.deltaM), highlight: true },
+            { label: 'Total Bunga Lama', value: HC.fmt(c.bungaLama) },
+            { label: 'Total Bunga Baru', value: HC.fmt(c.bungaBaru) },
+            { label: 'Total Bayar Baru', value: HC.fmt(c.totBayarBaru) },
+          ],
+          insight, slug: 'restrukturisasi-kredit',
+        });
+      }
+
+      function summaryText() {
+        if (!lastCalc) return '';
+        const c = lastCalc;
+        return '🔄 *Simulasi Restrukturisasi Kredit - HitungCerdas*\n\n'
+          + 'Sisa pokok: ' + HC.fmt(c.P) + '\n'
+          + 'Tenor: ' + c.n0 + ' → ' + c.n1 + ' bln\n'
+          + 'Bunga: ' + c.r0 + '% → ' + c.r1 + '%/th\n\n'
+          + '💵 *Cicilan: ' + HC.fmt(c.M0) + ' → ' + HC.fmt(c.M1) + '/bln*\n'
+          + '✅ Hemat: ' + HC.fmt(c.deltaM) + '/bln\n'
+          + '📊 Total bunga: ' + HC.fmt(c.bungaLama) + ' → ' + HC.fmt(c.bungaBaru) + '\n\n'
+          + '_Simulasi edukatif, bukan jaminan persetujuan._\n'
+          + 'Hitung: https://hitungcerdas.net/kalkulator/restrukturisasi-kredit';
+      }
+
+      function renderHist() {
+        if (HC.history) HC.history.render('restrukturisasi-kredit', $('histBox'), function () { hitung(); });
+      }
+
+      // ── Bind tombol utama LEBIH DULU (pola defensif anti-bug HC.history) ──
+      $('btnHitung').addEventListener('click', hitung);
+      $('btnReset').addEventListener('click', reset);
+      $('exportImg').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToImage(c, 'restrukturisasi-' + Date.now()); });
+      $('exportWa').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.shareWhatsApp(c, summaryText(), 'restrukturisasi-kredit'); });
+      $('exportPdf').addEventListener('click', () => { if (!lastCalc) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToPDF(); });
+      $('exportCopy').addEventListener('click', () => { if (!lastCalc) { HC.toast('Hitung dulu', 'error'); return; } HC.copyText(summaryText(), 'Tersalin!'); });
+      $('exportExcel').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToExcel(c, 'restrukturisasi-' + Date.now()); });
+
+      renderHist();
+    });
+  })();
+</script>
