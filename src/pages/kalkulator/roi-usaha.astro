@@ -69,6 +69,19 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
               <p class="hint" style="margin-top:6px">Pendapatan dikurangi <strong>semua</strong> biaya (HPP, sewa, gaji, pajak). Bukan omzet.</p>
             </div>
 
+            <div class="adv-section" id="labaHelper">
+              <div class="adv-toggle"><span><i class="ti ti-receipt-2"></i>&nbsp; Bantu hitung laba bersih realistis</span><i class="ti ti-chevron-down chev"></i></div>
+              <div class="adv-content">
+                <p style="font-size:12px;color:var(--text-mute);margin:0 0 10px;line-height:1.5">Isi rincian bulananmu — laba bersih dihitung otomatis, <b>sudah termasuk gaji dirimu &amp; penyusutan alat</b> (dua hal yang paling sering lupa dihitung sehingga ROI terlihat lebih besar dari kenyataan).</p>
+                <div class="field"><label>Omzet / Pendapatan per Bulan</label><div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="omzet" class="has-prefix" value="0" inputmode="numeric" /></div></div>
+                <div class="field"><label>HPP / Modal Barang per Bulan <span class="hint">(bahan baku, kulakan)</span></label><div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="hpp" class="has-prefix" value="0" inputmode="numeric" /></div></div>
+                <div class="field"><label>Biaya Operasional per Bulan <span class="hint">(sewa, listrik, internet, transport)</span></label><div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="opex" class="has-prefix" value="0" inputmode="numeric" /></div></div>
+                <div class="field"><label>Gaji untuk Diri Sendiri <span class="hint">(wajib — bayar dirimu!)</span></label><div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="gajiDiri" class="has-prefix" value="0" inputmode="numeric" /></div></div>
+                <div class="field" style="margin-bottom:6px"><label>Penyusutan Alat per Bulan <span class="hint">(harga alat ÷ umur pakai bulan)</span></label><div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="penyusutan" class="has-prefix" value="0" inputmode="numeric" /></div></div>
+                <div id="labaHelperResult" style="margin-top:6px;padding:10px 12px;border-radius:10px;background:#F0FDF4;border:1px solid #BBF7D0;font-size:12.5px;line-height:1.5;color:#166534;display:none"></div>
+              </div>
+            </div>
+
             <div class="field"><label>Lihat Proyeksi Selama</label>
               <div class="input-wrap"><span class="input-suffix">bulan</span>
                 <input type="number" id="periode" class="has-suffix" value="24" min="1" max="120" step="1" /></div>
@@ -197,6 +210,26 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       const $ = id => document.getElementById(id);
       const els = { modal: $('modal'), laba: $('laba'), periode: $('periode') };
       [els.modal, els.laba].forEach(el => el.addEventListener('input', HC.fmtInput));
+      ['omzet','hpp','opex','gajiDiri','penyusutan'].forEach(id => { const el = $(id); if (el) { el.addEventListener('input', HC.fmtInput); el.addEventListener('input', recomputeLaba); } });
+      function recomputeLaba() {
+        const omzet = HC.parseRp($('omzet').value);
+        const box = $('labaHelperResult');
+        if (omzet <= 0) { box.style.display = 'none'; return; }
+        const hpp = HC.parseRp($('hpp').value), opex = HC.parseRp($('opex').value), gaji = HC.parseRp($('gajiDiri').value), pny = HC.parseRp($('penyusutan').value);
+        const labaRiil = omzet - hpp - opex - gaji - pny;
+        box.style.display = '';
+        if (labaRiil > 0) {
+          els.laba.value = HC.fmtNum(labaRiil);
+          box.style.background = '#F0FDF4'; box.style.borderColor = '#BBF7D0'; box.style.color = '#166534';
+          let msg = '\u2705 Laba bersih riil: <b>' + HC.fmt(labaRiil) + '/bulan</b> \u2014 sudah termasuk gaji dirimu & penyusutan. Nilai ini otomatis dipakai di kolom <b>Laba Bersih per Bulan</b> di atas.';
+          if (gaji <= 0) msg += '<br><span style="color:#B45309">\u26a0\ufe0f Kamu belum mengalokasikan gaji untuk diri sendiri \u2014 tanpa itu, laba (dan ROI) bisa terlihat lebih besar dari kenyataan.</span>';
+          box.innerHTML = msg;
+        } else {
+          els.laba.value = '0';
+          box.style.background = '#FEF2F2'; box.style.borderColor = '#FECACA'; box.style.color = '#991B1B';
+          box.innerHTML = '\u26a0\ufe0f Dengan rincian ini, usaha <b>belum untung</b> (laba bersih \u2264 Rp 0, defisit ' + HC.fmt(Math.abs(labaRiil)) + '/bulan). Perbaiki harga jual, tekan HPP, atau kurangi biaya dulu sebelum menghitung ROI.';
+        }
+      }
 
       let lastCalc = null;
 
@@ -295,6 +328,8 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
 
       function reset() {
         els.modal.value = '50.000.000'; els.laba.value = '2.500.000'; els.periode.value = '24';
+        ['omzet','hpp','opex','gajiDiri','penyusutan'].forEach(id => { const el = $(id); if (el) el.value = '0'; });
+        var _lh = $('labaHelperResult'); if (_lh) _lh.style.display = 'none';
         $('placeholder').style.display = ''; $('results').classList.remove('show');
         scenA = null; scenB = null; var _sr = $('scenResult'); if (_sr) { _sr.style.display = 'none'; _sr.innerHTML = ''; } lastCalc = null; HC.toast('Form direset', 'info');
       }
