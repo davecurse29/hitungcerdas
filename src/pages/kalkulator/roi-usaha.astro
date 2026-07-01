@@ -63,6 +63,19 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
               <p class="hint" style="margin-top:6px">Total investasi awal: alat, renovasi, stok awal, perizinan, dll.</p>
             </div>
 
+            <div class="adv-section" id="modalHelper">
+              <div class="adv-toggle"><span><i class="ti ti-building-store"></i>&nbsp; Bantu hitung modal awal lengkap</span><i class="ti ti-chevron-down chev"></i></div>
+              <div class="adv-content">
+                <p style="font-size:12px;color:var(--text-mute);margin:0 0 10px;line-height:1.5">Rinci komponen modalmu — total dihitung otomatis. Jangan lupa <b>modal kerja/buffer</b> (dana operasional sampai usaha untung), komponen yang paling sering terlewat.</p>
+                <div class="field"><label>Sewa &amp; Renovasi Tempat</label><div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="mSewa" class="has-prefix" value="0" inputmode="numeric" /></div></div>
+                <div class="field"><label>Peralatan &amp; Mesin</label><div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="mAlat" class="has-prefix" value="0" inputmode="numeric" /></div></div>
+                <div class="field"><label>Stok / Bahan Baku Awal</label><div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="mStok" class="has-prefix" value="0" inputmode="numeric" /></div></div>
+                <div class="field"><label>Perizinan &amp; Legalitas <span class="hint">(NIB, sertifikasi, notaris)</span></label><div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="mIzin" class="has-prefix" value="0" inputmode="numeric" /></div></div>
+                <div class="field" style="margin-bottom:6px"><label>Modal Kerja / Buffer <span class="hint">(dana operasional 3–6 bln)</span></label><div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="mKerja" class="has-prefix" value="0" inputmode="numeric" /></div></div>
+                <div id="modalHelperResult" style="margin-top:6px;padding:10px 12px;border-radius:10px;background:#F0FDF4;border:1px solid #BBF7D0;font-size:12.5px;line-height:1.5;color:#166534;display:none"></div>
+              </div>
+            </div>
+
             <div class="field"><label>Laba Bersih per Bulan</label>
               <div class="input-wrap"><span class="input-prefix">Rp</span>
                 <input type="text" id="laba" class="has-prefix" value="2.500.000" inputmode="numeric" /></div>
@@ -211,6 +224,18 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       const els = { modal: $('modal'), laba: $('laba'), periode: $('periode') };
       [els.modal, els.laba].forEach(el => el.addEventListener('input', HC.fmtInput));
       ['omzet','hpp','opex','gajiDiri','penyusutan'].forEach(id => { const el = $(id); if (el) { el.addEventListener('input', HC.fmtInput); el.addEventListener('input', recomputeLaba); } });
+      ['mSewa','mAlat','mStok','mIzin','mKerja'].forEach(id => { const el = $(id); if (el) { el.addEventListener('input', HC.fmtInput); el.addEventListener('input', recomputeModal); } });
+      function recomputeModal() {
+        const sewa = HC.parseRp($('mSewa').value), alat = HC.parseRp($('mAlat').value), stok = HC.parseRp($('mStok').value), izin = HC.parseRp($('mIzin').value), kerja = HC.parseRp($('mKerja').value);
+        const total = sewa + alat + stok + izin + kerja;
+        const box = $('modalHelperResult');
+        if (total <= 0) { box.style.display = 'none'; return; }
+        els.modal.value = HC.fmtNum(total);
+        box.style.display = '';
+        let msg = '\u2705 Total modal awal: <b>' + HC.fmt(total) + '</b> \u2014 otomatis dipakai di kolom <b>Modal Awal Usaha</b> di atas.';
+        if (kerja <= 0) msg += '<br><span style="color:#B45309">\u26a0\ufe0f Kamu belum menyiapkan modal kerja (buffer). Banyak usaha tutup bukan karena rugi, tapi kehabisan kas sebelum untung \u2014 siapkan dana operasional 3\u20136 bulan.</span>';
+        box.innerHTML = msg;
+      }
       function recomputeLaba() {
         const omzet = HC.parseRp($('omzet').value);
         const box = $('labaHelperResult');
@@ -329,6 +354,8 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       function reset() {
         els.modal.value = '50.000.000'; els.laba.value = '2.500.000'; els.periode.value = '24';
         ['omzet','hpp','opex','gajiDiri','penyusutan'].forEach(id => { const el = $(id); if (el) el.value = '0'; });
+        ['mSewa','mAlat','mStok','mIzin','mKerja'].forEach(id => { const el = $(id); if (el) el.value = '0'; });
+        var _mh = $('modalHelperResult'); if (_mh) _mh.style.display = 'none';
         var _lh = $('labaHelperResult'); if (_lh) _lh.style.display = 'none';
         $('placeholder').style.display = ''; $('results').classList.remove('show');
         scenA = null; scenB = null; var _sr = $('scenResult'); if (_sr) { _sr.style.display = 'none'; _sr.innerHTML = ''; } lastCalc = null; HC.toast('Form direset', 'info');
