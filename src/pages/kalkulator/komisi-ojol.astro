@@ -63,7 +63,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
               <label>Platform</label>
               <select id="platform">
                 <option value="gofood" selected>GoFood (20% + Rp 1.000)</option>
-                <option value="grabfood">GrabFood (~30%)</option>
+                <option value="grabfood">GrabFood (20-30%)</option>
                 <option value="shopeefood">ShopeeFood (~20%)</option>
                 <option value="custom">Custom (atur sendiri)</option>
               </select>
@@ -73,6 +73,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
             <div class="field"><label>Harga Jual di Aplikasi <span class="hint">(per pesanan)</span></label>
               <div class="input-wrap"><span class="input-prefix">Rp</span>
                 <input type="text" id="harga" class="has-prefix" value="50.000" inputmode="numeric" /></div>
+              <p class="hint" style="margin-top:6px">Komisi dihitung dari <b>harga jual di app ini</b>, bukan dari HPP/modalmu.</p>
             </div>
 
             <div class="calc-grid-2" style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
@@ -88,8 +89,8 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
 
             <div class="field"><label>PPN atas Komisi <span class="hint">(bukan atas harga makanan)</span></label>
               <div class="input-wrap"><span class="input-suffix">%</span>
-                <input type="number" id="ppn" class="has-suffix" value="11" min="0" max="15" step="0.5" /></div>
-              <p class="hint" style="margin-top:6px">PPN dikenakan dari nilai komisi. Default 11% &mdash; cek tarif terkini di laporan aplikasimu.</p>
+                <input type="number" id="ppn" class="has-suffix" value="12" min="0" max="15" step="0.5" /></div>
+              <p class="hint" style="margin-top:6px">PPN dikenakan atas nilai komisi (bukan harga makanan). Tarif umum 2026 <b>12%</b>; sebagian platform masih efektif 11% &mdash; sesuaikan dengan laporan aplikasimu.</p>
             </div>
 
             <div class="field"><label>Target Uang Bersih <span class="hint">(opsional &mdash; untuk hitung mundur harga)</span></label>
@@ -194,7 +195,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
   </div></section>
 
   <p class="hc-method-note" style="text-align:center;font-size:.85rem;color:#64748b;margin:1.2rem auto;max-width:680px;line-height:1.6;padding:0 1rem;">
-    📅 Diperbarui <strong>Juni 2026</strong> · Estimasi pendapatan bersih setelah potongan komisi platform &amp; biaya operasional (BBM, dll). Estimasi edukatif; tarif &amp; potongan mengikuti kebijakan tiap aplikasi. <strong>Sumber:</strong> <a href="https://www.dephub.go.id/" target="_blank" rel="noopener">Kemenhub</a> &amp; kebijakan platform.
+    📅 Diperbarui <strong>Juli 2026</strong> · Estimasi uang bersih penjual setelah potongan komisi platform + biaya transaksi + PPN atas komisi. Tarif reguler 2026: GoFood 20% + Rp1.000, GrabFood 20-30%, ShopeeFood ~20% (bervariasi per kategori/kota/promo). Estimasi edukatif &mdash; cek tarif riil di laporan aplikasimu.
   </p>
 
 <script is:inline>
