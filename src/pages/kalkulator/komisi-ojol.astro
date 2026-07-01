@@ -76,6 +76,25 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
               <p class="hint" style="margin-top:6px">Komisi dihitung dari <b>harga jual di app ini</b>, bukan dari HPP/modalmu.</p>
             </div>
 
+            <div class="adv-section" id="hppHelper" style="margin-bottom:4px">
+              <button type="button" class="adv-toggle"><i class="ti ti-wand"></i>&nbsp; Bantu tentukan harga dari HPP + margin <i class="ti ti-chevron-down chev"></i></button>
+              <div class="adv-content">
+                <p class="hint" style="margin-bottom:8px">Isi modal per porsi & target untung — kami hitung harga yang harus kamu pasang di app supaya setelah dipotong platform, targetmu tetap tercapai.</p>
+                <div class="calc-grid-2" style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+                  <div class="field"><label>HPP / Modal per Porsi</label>
+                    <div class="input-wrap"><span class="input-prefix">Rp</span>
+                      <input type="text" id="hHpp" class="has-prefix" value="0" inputmode="numeric" /></div>
+                  </div>
+                  <div class="field"><label>Target Untung dari Modal <span class="hint">(markup %)</span></label>
+                    <div class="input-wrap"><span class="input-suffix">%</span>
+                      <input type="number" id="hMarkup" class="has-suffix" value="40" min="0" max="500" step="5" /></div>
+                  </div>
+                </div>
+                <button type="button" id="hApply" class="btn-hitung" style="width:100%;margin-top:2px;padding:9px 12px;font-size:13px"><i class="ti ti-arrow-up-right"></i> Hitung Harga di App</button>
+                <div id="hResult" style="margin-top:10px;font-size:12.5px;line-height:1.6;display:none;padding:11px 13px;border-radius:12px"></div>
+              </div>
+            </div>
+
             <div class="calc-grid-2" style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
               <div class="field"><label>Komisi Platform</label>
                 <div class="input-wrap"><span class="input-suffix">%</span>
@@ -340,6 +359,29 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         return t;
       }
 
+      // ===== Helper: harga app dari HPP + margin =====
+      (function(){
+        var hHpp=$('hHpp'), hMarkup=$('hMarkup'), hApply=$('hApply'), hResult=$('hResult');
+        if(!hApply) return;
+        hHpp.addEventListener('input', HC.fmtInput);
+        function run(){
+          var hpp=HC.parseRp(hHpp.value), markup=parseFloat(hMarkup.value)||0;
+          if(hpp<=0){ HC.toast('Isi HPP/modal per porsi dulu', 'error'); return; }
+          var k=(parseFloat(els.komisi.value)||0)/100, v=(parseFloat(els.ppn.value)||0)/100, b=HC.parseRp(els.biayaTetap.value);
+          var denom=1-k*(1+v);
+          var netTarget=hpp*(1+markup/100), untung=netTarget-hpp;
+          hResult.style.display='block';
+          if(denom<=0){ hResult.style.background='#FEE2E2'; hResult.style.border='1px solid #FCA5A5'; hResult.style.color='#991B1B'; hResult.innerHTML='\u26a0\ufe0f Komisi + PPN terlalu besar (mendekati 100% harga). Target tak bisa dicapai lewat harga app di platform ini.'; return; }
+          var H=(netTarget+b)/denom, Hround=Math.ceil(H/500)*500;
+          els.harga.value=HC.fmtNum(Hround);
+          hitung();
+          hResult.style.background='#F0FDF4'; hResult.style.border='1px solid #BBF7D0'; hResult.style.color='#166534';
+          hResult.innerHTML='Modal <b>'+HC.fmt(hpp)+'</b> + untung <b>'+HC.fmt(untung)+'</b> ('+markup+'%) = target bersih <b>'+HC.fmt(netTarget)+'</b>.<br>\ud83c\udff7\ufe0f Pasang harga di app \u2248 <b>'+HC.fmt(Hround)+'</b> \u2014 sudah diisi ke kolom harga & dihitung di atas.';
+        }
+        hApply.addEventListener('click', run);
+        hMarkup.addEventListener('keydown', function(e){ if(e.key==='Enter'){ e.preventDefault(); run(); } });
+      })();
+      document.querySelectorAll('.adv-toggle').forEach(function(t){ t.addEventListener('click', function(){ t.parentElement.classList.toggle('open'); }); });
       $('btnHitung').addEventListener('click', hitung);
       $('btnReset').addEventListener('click', reset);
       $('exportImg').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToImage(c, 'komisi-ojol-' + Date.now()); });
