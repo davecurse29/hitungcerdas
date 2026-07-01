@@ -102,11 +102,12 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
             </div>
 
             <div class="adv-section" id="rampBlock">
-              <div class="adv-toggle"><span><i class="ti ti-chart-arrows-vertical"></i>&nbsp; Skenario realistis: ramp-up & pertumbuhan</span><i class="ti ti-chevron-down chev"></i></div>
+              <div class="adv-toggle"><span><i class="ti ti-chart-arrows-vertical"></i>&nbsp; Skenario realistis: ramp-up, pertumbuhan & inflasi</span><i class="ti ti-chevron-down chev"></i></div>
               <div class="adv-content">
                 <p style="font-size:12px;color:var(--text-mute);margin:0 0 10px;line-height:1.5">Usaha jarang untung penuh sejak bulan pertama. Atur berapa bulan sampai laba penuh (ramp-up) & perkiraan pertumbuhan laba per tahun — balik modal & proyeksi dihitung ulang lebih realistis.</p>
                 <div class="field"><label>Bulan sampai laba penuh <span class="hint">(ramp-up; 0 = langsung penuh)</span></label><div class="input-wrap"><span class="input-suffix">bulan</span><input type="number" id="rampMonths" class="has-suffix" value="0" min="0" max="36" step="1" /></div></div>
-                <div class="field" style="margin-bottom:6px"><label>Pertumbuhan laba per tahun <span class="hint">(0 = stabil; bisa minus)</span></label><div class="input-wrap"><span class="input-suffix">%</span><input type="number" id="growthPct" class="has-suffix" value="0" min="-50" max="100" step="1" /></div></div>
+                <div class="field"><label>Pertumbuhan laba per tahun <span class="hint">(0 = stabil; bisa minus)</span></label><div class="input-wrap"><span class="input-suffix">%</span><input type="number" id="growthPct" class="has-suffix" value="0" min="-50" max="100" step="1" /></div></div>
+                <div class="field" style="margin-bottom:6px"><label>Tingkat inflasi / diskonto per tahun <span class="hint">(biaya kesempatan uangmu)</span></label><div class="input-wrap"><span class="input-suffix">%</span><input type="number" id="inflasi" class="has-suffix" value="3.5" min="0" max="30" step="0.5" /></div></div>
                 <p style="font-size:11.5px;color:var(--text-mute);margin:2px 0 0;line-height:1.5"><i class="ti ti-bulb"></i> Contoh: warung baru butuh 4–6 bulan sampai ramai, lalu tumbuh ~10%/tahun.</p>
               </div>
             </div>
@@ -143,6 +144,8 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
               <div id="roiInfo" style="margin-top:10px;padding:11px 13px;border-radius:12px;background:#F0FDF4;border:1px solid #BBF7D0;font-size:12.5px;line-height:1.55;color:#166534"></div>
 
               <div id="bandingInfo" style="margin-top:10px;padding:11px 13px;border-radius:12px;background:#F8FAFC;border:1px solid #E2E8F0;font-size:12.5px;line-height:1.55;color:#475569"></div>
+
+              <div id="tvmInfo" style="margin-top:10px;padding:11px 13px;border-radius:12px;background:#F0F9FF;border:1px solid #BAE6FD;font-size:12.5px;line-height:1.6;color:#0C4A6E;display:none"></div>
 
               <div style="margin-top:12px;padding:12px;border:1px solid var(--border);border-radius:12px;background:var(--bg-soft)">
                 <div style="font-size:12.5px;font-weight:700;color:var(--text);margin-bottom:6px"><i class="ti ti-chart-line"></i> Grafik Balik Modal</div>
@@ -298,6 +301,13 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         const roiBulan = laba / modal * 100;
         const roiTahun = roiBulan * 12;
         const netGain = totalLaba - modal;
+        const inflasi = parseFloat(String($('inflasi').value || '0').replace(',', '.')) || 0;
+        const realROI = ((1 + roiTahun / 100) / (1 + inflasi / 100) - 1) * 100;
+        const npvAt = rm => { let sv = -modal; for (let k = 1; k <= periode; k++) sv += mProfit(k) / Math.pow(1 + rm, k); return sv; };
+        const rmDisc = Math.pow(1 + inflasi / 100, 1 / 12) - 1;
+        const npv = npvAt(rmDisc);
+        let irrYear = null;
+        if (netGain > 0) { let lo = 0, hi = 2; for (let it = 0; it < 100; it++) { const mid = (lo + hi) / 2; if (npvAt(mid) > 0) lo = mid; else hi = mid; } irrYear = (Math.pow(1 + (lo + hi) / 2, 12) - 1) * 100; }
 
         $('payback').textContent = balik ? bulanText(payback) : 'Belum balik';
         $('paybackMeta').textContent = balik ? `ROI per tahun ${roiTahun.toFixed(1)}%` : `Modal belum kembali dalam proyeksi (ROI ${roiTahun.toFixed(1)}%/thn saat laba penuh)`;
@@ -317,6 +327,15 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         else if (roiTahun >= 6) banding = `\ud83d\udcca ROI ${roiTahun.toFixed(1)}%/tahun setara reksa dana, tapi usaha butuh tenaga & risiko lebih besar. Pertimbangkan apakah sepadan dibanding investasi pasif.`;
         else banding = `\u26a0\ufe0f ROI ${roiTahun.toFixed(1)}%/tahun tergolong rendah \u2014 di bawah atau setara deposito (~4-6%), padahal usaha berisiko & butuh tenaga. Evaluasi ulang modal, harga jual, atau efisiensi biaya.`;
         $('bandingInfo').innerHTML = banding;
+
+        const _npvOk = npv >= 0;
+        const _irrTxt = irrYear === null ? '\u2264 0%/tahun (modal belum kembali dalam periode)' : (irrYear > 1000 ? '>1.000%/tahun' : irrYear.toFixed(1) + '%/tahun');
+        const _irrBeat = irrYear !== null && irrYear > inflasi;
+        $('tvmInfo').style.display = '';
+        $('tvmInfo').innerHTML = `\ud83d\udcb5 <b>Nilai waktu uang</b> (inflasi/diskonto ${inflasi}%/tahun):<br>`
+          + `\u2022 <b>ROI riil</b>: ${realROI.toFixed(1)}%/tahun \u2014 imbal hasil setelah dikoreksi inflasi (nominal ${roiTahun.toFixed(1)}%).<br>`
+          + `\u2022 <b>NPV proyeksi</b>: ${HC.fmt(npv)} \u2014 ${_npvOk ? 'positif, usaha ini <b>layak</b> dibanding menaruh uang di imbal hasil ' + inflasi + '%.' : 'negatif \u2014 pada tingkat diskonto ini, uangmu <b>lebih baik</b> di tempat lain.'}<br>`
+          + `\u2022 <b>IRR proyeksi</b>: ${_irrTxt}${irrYear !== null ? ' \u2014 ' + (_irrBeat ? 'di atas inflasi \u2705 (usaha mengalahkan nilai waktu uang).' : 'di bawah inflasi \u26a0\ufe0f (secara riil kurang menarik).') : '.'}`;
 
         // ===== Grafik Balik Modal =====
         var xMax = balik ? Math.max(periode, Math.ceil(payback) + 2) : periode;
@@ -363,8 +382,8 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         });
         $('roiBars').innerHTML = barsHtml;
 
-        lastCalc = { modal, laba, periode, payback, roiBulan, roiTahun, totalLaba, netGain, balikDalamPeriode, rampMonths, growthPct, balik, naivePayback };
-        if (HC.history) HC.history.push('roi-usaha', { inputs: HC.history.capture(['modal','laba','periode','rampMonths','growthPct']), summary: 'Modal ' + sRp(lastCalc.modal) + ' \u00b7 Laba ' + sRp(lastCalc.laba) + ' \u00b7 ' + lastCalc.periode + ' bln', metrics: [{ k: 'ROI/thn', v: lastCalc.roiTahun.toFixed(1) + '%' }, { k: 'Balik', v: (Math.round(lastCalc.payback * 10) / 10) + ' bln' }] });
+        lastCalc = { modal, laba, periode, payback, roiBulan, roiTahun, totalLaba, netGain, balikDalamPeriode, rampMonths, growthPct, balik, naivePayback, inflasi, realROI, npv, irrYear };
+        if (HC.history) HC.history.push('roi-usaha', { inputs: HC.history.capture(['modal','laba','periode','rampMonths','growthPct','inflasi']), summary: 'Modal ' + sRp(lastCalc.modal) + ' \u00b7 Laba ' + sRp(lastCalc.laba) + ' \u00b7 ' + lastCalc.periode + ' bln', metrics: [{ k: 'ROI/thn', v: lastCalc.roiTahun.toFixed(1) + '%' }, { k: 'Balik', v: (Math.round(lastCalc.payback * 10) / 10) + ' bln' }] });
         renderHist();
         $('placeholder').style.display = 'none';
         $('results').classList.add('show');
@@ -378,7 +397,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         ['mSewa','mAlat','mStok','mIzin','mKerja'].forEach(id => { const el = $(id); if (el) el.value = '0'; });
         var _mh = $('modalHelperResult'); if (_mh) _mh.style.display = 'none';
         var _lh = $('labaHelperResult'); if (_lh) _lh.style.display = 'none';
-        var _rm = $('rampMonths'); if (_rm) _rm.value = '0'; var _gp = $('growthPct'); if (_gp) _gp.value = '0';
+        var _rm = $('rampMonths'); if (_rm) _rm.value = '0'; var _gp = $('growthPct'); if (_gp) _gp.value = '0'; var _if = $('inflasi'); if (_if) _if.value = '3.5';
         $('placeholder').style.display = ''; $('results').classList.remove('show');
         scenA = null; scenB = null; var _sr = $('scenResult'); if (_sr) { _sr.style.display = 'none'; _sr.innerHTML = ''; } lastCalc = null; HC.toast('Form direset', 'info');
       }
@@ -387,7 +406,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         if (!lastCalc) return null;
         const c = lastCalc;
         const _rampNote = (c.rampMonths > 0 || c.growthPct !== 0) ? `Termasuk ramp-up ${c.rampMonths} bln & pertumbuhan ${c.growthPct}%/thn. ` : 'Asumsi laba konstan. ';
-        const insight = `Modal ${HC.fmt(c.modal)}, laba ${HC.fmt(c.laba)}/bln (saat penuh). ${c.balik ? 'Balik modal ' + bulanText(c.payback) : 'Modal belum kembali dalam proyeksi'}, ROI ${c.roiTahun.toFixed(1)}%/tahun. Dalam ${c.periode} bln total laba ${HC.fmt(c.totalLaba)}. ${_rampNote}Estimasi edukatif, bukan jaminan hasil.`;
+        const insight = `Modal ${HC.fmt(c.modal)}, laba ${HC.fmt(c.laba)}/bln (saat penuh). ${c.balik ? 'Balik modal ' + bulanText(c.payback) : 'Modal belum kembali dalam proyeksi'}, ROI ${c.roiTahun.toFixed(1)}%/tahun. Dalam ${c.periode} bln total laba ${HC.fmt(c.totalLaba)}. ${_rampNote}ROI riil ${c.realROI.toFixed(1)}%/thn, NPV ${HC.fmt(c.npv)} @${c.inflasi}% inflasi. Estimasi edukatif, bukan jaminan hasil.`;
         return HC.buildReportCard({
           title: '\ud83d\udcc8 ROI & Balik Modal Usaha',
           color: '#16A34A', color2: '#15803D',
@@ -404,6 +423,8 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
             { label: 'ROI/tahun', value: c.roiTahun.toFixed(1) + '%', highlight: true },
             { label: 'ROI/bulan', value: c.roiBulan.toFixed(2) + '%' },
             { label: 'Total Laba ' + c.periode + ' bln', value: HC.fmt(c.totalLaba) },
+            { label: 'ROI Riil (stlh inflasi)', value: c.realROI.toFixed(1) + '%' },
+            { label: 'IRR proyeksi', value: c.irrYear === null ? '\u2264 0%' : (c.irrYear > 1000 ? '>1.000%' : c.irrYear.toFixed(1) + '%') },
           ],
           insight, slug: 'roi-usaha',
         });
@@ -412,7 +433,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       function summaryText() {
         if (!lastCalc) return '';
         const c = lastCalc;
-        return `\ud83d\udcc8 *ROI & Balik Modal Usaha - HitungCerdas*\n\nModal awal: ${HC.fmt(c.modal)}\nLaba bersih/bln: ${HC.fmt(c.laba)}\n\n\u23f1\ufe0f *Balik modal: ${c.balik ? bulanText(c.payback) : 'Belum balik'}*\n\ud83d\udcca ROI: ${c.roiTahun.toFixed(1)}%/tahun (${c.roiBulan.toFixed(2)}%/bln)\n\ud83d\udcb0 Total laba ${c.periode} bln: ${HC.fmt(c.totalLaba)}\n\nHitung di: https://hitungcerdas.net/kalkulator/roi-usaha`;
+        return `\ud83d\udcc8 *ROI & Balik Modal Usaha - HitungCerdas*\n\nModal awal: ${HC.fmt(c.modal)}\nLaba bersih/bln: ${HC.fmt(c.laba)}\n\n\u23f1\ufe0f *Balik modal: ${c.balik ? bulanText(c.payback) : 'Belum balik'}*\n\ud83d\udcca ROI: ${c.roiTahun.toFixed(1)}%/tahun (${c.roiBulan.toFixed(2)}%/bln)\n\ud83d\udcb0 Total laba ${c.periode} bln: ${HC.fmt(c.totalLaba)}\n\ud83d\udcb5 ROI riil: ${c.realROI.toFixed(1)}%/thn (stlh inflasi ${c.inflasi}%)\n\ud83d\udcc9 NPV: ${HC.fmt(c.npv)} \u00b7 IRR: ${c.irrYear === null ? "\u22640%" : (c.irrYear > 1000 ? ">1.000%" : c.irrYear.toFixed(1) + "%")}\n\nHitung di: https://hitungcerdas.net/kalkulator/roi-usaha`;
       }
 
       // ===== Skenario A vs B =====
