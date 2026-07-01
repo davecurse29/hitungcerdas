@@ -101,6 +101,16 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
               <p class="hint" style="margin-top:6px">Untuk melihat total laba & ROI dalam periode tertentu.</p>
             </div>
 
+            <div class="adv-section" id="rampBlock">
+              <div class="adv-toggle"><span><i class="ti ti-chart-arrows-vertical"></i>&nbsp; Skenario realistis: ramp-up & pertumbuhan</span><i class="ti ti-chevron-down chev"></i></div>
+              <div class="adv-content">
+                <p style="font-size:12px;color:var(--text-mute);margin:0 0 10px;line-height:1.5">Usaha jarang untung penuh sejak bulan pertama. Atur berapa bulan sampai laba penuh (ramp-up) & perkiraan pertumbuhan laba per tahun — balik modal & proyeksi dihitung ulang lebih realistis.</p>
+                <div class="field"><label>Bulan sampai laba penuh <span class="hint">(ramp-up; 0 = langsung penuh)</span></label><div class="input-wrap"><span class="input-suffix">bulan</span><input type="number" id="rampMonths" class="has-suffix" value="0" min="0" max="36" step="1" /></div></div>
+                <div class="field" style="margin-bottom:6px"><label>Pertumbuhan laba per tahun <span class="hint">(0 = stabil; bisa minus)</span></label><div class="input-wrap"><span class="input-suffix">%</span><input type="number" id="growthPct" class="has-suffix" value="0" min="-50" max="100" step="1" /></div></div>
+                <p style="font-size:11.5px;color:var(--text-mute);margin:2px 0 0;line-height:1.5"><i class="ti ti-bulb"></i> Contoh: warung baru butuh 4–6 bulan sampai ramai, lalu tumbuh ~10%/tahun.</p>
+              </div>
+            </div>
+
             <div class="calc-action-bar">
               <button type="button" class="btn-hitung" id="btnHitung"><i class="ti ti-calculator"></i> Hitung Sekarang</button>
               <button type="button" class="btn-reset" id="btnReset"><i class="ti ti-refresh"></i> Reset</button>
@@ -275,22 +285,32 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         if (laba <= 0) { HC.toast('Masukkan laba bersih per bulan', 'error'); return; }
         if (periode < 1) { HC.toast('Periode minimal 1 bulan', 'error'); return; }
 
-        const payback = modal / laba;
+        const rampMonths = Math.max(0, parseInt($('rampMonths').value) || 0);
+        const growthPct = parseFloat(String($('growthPct').value || '0').replace(',', '.')) || 0;
+        const gRate = growthPct / 100;
+        const mProfit = k => laba * (rampMonths > 0 ? Math.min(1, k / rampMonths) : 1) * Math.pow(1 + gRate, (k - 1) / 12);
+        const CAP = 720;
+        const cumArr = [0];
+        let _cum = 0, _prev = 0, payback = Infinity, totalLaba = laba * periode;
+        for (let k = 1; k <= CAP; k++) { const pm = mProfit(k); _prev = _cum; _cum += pm; cumArr[k] = _cum; if (k === periode) totalLaba = _cum; if (payback === Infinity && pm > 0 && _cum >= modal) payback = (k - 1) + (modal - _prev) / pm; }
+        const balik = isFinite(payback);
+        const naivePayback = modal / laba;
         const roiBulan = laba / modal * 100;
         const roiTahun = roiBulan * 12;
-        const totalLaba = laba * periode;
         const netGain = totalLaba - modal;
 
-        $('payback').textContent = bulanText(payback);
-        $('paybackMeta').textContent = `ROI per tahun ${roiTahun.toFixed(1)}%`;
+        $('payback').textContent = balik ? bulanText(payback) : 'Belum balik';
+        $('paybackMeta').textContent = balik ? `ROI per tahun ${roiTahun.toFixed(1)}%` : `Modal belum kembali dalam proyeksi (ROI ${roiTahun.toFixed(1)}%/thn saat laba penuh)`;
         $('roiBulan').textContent = roiBulan.toFixed(2) + '%';
         $('roiTahun').textContent = roiTahun.toFixed(1) + '%';
         $('totalLaba').textContent = HC.fmt(totalLaba);
         $('netGain').textContent = HC.fmt(netGain);
         $('netGain').style.color = netGain >= 0 ? 'var(--green-dark)' : 'var(--red)';
 
-        const balikDalamPeriode = payback <= periode;
-        $('roiInfo').innerHTML = `\ud83d\udcb0 Modal <b>${HC.fmt(modal)}</b> dengan laba <b>${HC.fmt(laba)}/bulan</b> balik dalam <b>${bulanText(payback)}</b> (ROI <b>${roiTahun.toFixed(1)}%/tahun</b>). Dalam ${periode} bulan, total laba <b>${HC.fmt(totalLaba)}</b> \u2014 ${balikDalamPeriode ? `untung bersih <b>${HC.fmt(netGain)}</b> setelah modal kembali.` : `modal <b>belum kembali</b> (kurang ${HC.fmt(modal - totalLaba)}).`}`;
+        const balikDalamPeriode = balik && payback <= periode;
+        let _roiMsg = `\ud83d\udcb0 Modal <b>${HC.fmt(modal)}</b> dengan laba <b>${HC.fmt(laba)}/bulan</b> (saat penuh) ` + (balik ? `balik dalam <b>${bulanText(payback)}</b>` : `<b>belum balik</b> dalam proyeksi`) + ` (ROI <b>${roiTahun.toFixed(1)}%/tahun</b>). Dalam ${periode} bulan, total laba <b>${HC.fmt(totalLaba)}</b> \u2014 ${balikDalamPeriode ? `untung bersih <b>${HC.fmt(netGain)}</b> setelah modal kembali.` : `modal <b>belum kembali</b> (kurang ${HC.fmt(Math.max(0, modal - totalLaba))}).`}`;
+        if (rampMonths > 0 || growthPct !== 0) { _roiMsg += `<br><span style="color:#B45309">\u2139\ufe0f Sudah memperhitungkan ` + (rampMonths > 0 ? `ramp-up <b>${rampMonths} bulan</b>` : ``) + (rampMonths > 0 && growthPct !== 0 ? ` & ` : ``) + (growthPct !== 0 ? `pertumbuhan laba <b>${growthPct}%/tahun</b>` : ``) + `.` + (rampMonths > 0 && balik ? ` Tanpa ramp-up, balik modal hanya ${bulanText(naivePayback)} \u2014 jadi jangan terlalu optimis.` : ``) + `</span>`; }
+        $('roiInfo').innerHTML = _roiMsg;
 
         let banding;
         if (roiTahun >= 12) banding = `\ud83d\udcca ROI ${roiTahun.toFixed(1)}%/tahun ini di atas imbal hasil instrumen pasif (deposito ~4-6%, reksa dana ~6-12%). Wajar untuk usaha riil karena risikonya lebih besar \u2014 pastikan labanya stabil & berkelanjutan.`;
@@ -299,9 +319,9 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         $('bandingInfo').innerHTML = banding;
 
         // ===== Grafik Balik Modal =====
-        var xMax = Math.max(periode, Math.ceil(payback) + 2);
-        if (xMax < 2) xMax = 2;
-        var cumEnd = laba * xMax;
+        var xMax = balik ? Math.max(periode, Math.ceil(payback) + 2) : periode;
+        if (xMax < 2) xMax = 2; if (xMax > CAP) xMax = CAP;
+        var cumEnd = cumArr[xMax];
         var yMax = Math.max(cumEnd, modal) * 1.05;
         var PL = 46, PR = 306, PT = 14, PB = 150;
         var X = function(m) { return (PL + (m / xMax) * (PR - PL)).toFixed(1); };
@@ -312,10 +332,11 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         svg += '<line x1="' + X(0) + '" y1="' + Y(0) + '" x2="' + X(0) + '" y2="' + PT + '" stroke="#CBD5E1" stroke-width="1"/>';
         // garis modal (abu)
         svg += '<line x1="' + X(0) + '" y1="' + Y(modal) + '" x2="' + X(xMax) + '" y2="' + Y(modal) + '" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="4 3"/>';
-        // garis laba kumulatif (hijau)
-        svg += '<line x1="' + X(0) + '" y1="' + Y(0) + '" x2="' + X(xMax) + '" y2="' + Y(cumEnd) + '" stroke="#16A34A" stroke-width="2"/>';
+        // garis laba kumulatif (kurva bulan-per-bulan)
+        var _pts = ''; for (var _m = 0; _m <= xMax; _m++) { _pts += X(_m) + ',' + Y(cumArr[_m]) + ' '; }
+        svg += '<polyline points="' + _pts.trim() + '" fill="none" stroke="#16A34A" stroke-width="2"/>';
         // titik balik modal
-        if (payback <= xMax) {
+        if (balik && payback <= xMax) {
           svg += '<line x1="' + X(payback) + '" y1="' + Y(0) + '" x2="' + X(payback) + '" y2="' + Y(modal) + '" stroke="#15803D" stroke-width="1" stroke-dasharray="3 3"/>';
           svg += '<circle cx="' + X(payback) + '" cy="' + Y(modal) + '" r="4" fill="#15803D"/>';
           svg += '<text x="' + X(payback) + '" y="' + (PB + 13) + '" font-size="9" fill="#15803D" text-anchor="middle" font-weight="700">balik modal</text>';
@@ -342,8 +363,8 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         });
         $('roiBars').innerHTML = barsHtml;
 
-        lastCalc = { modal, laba, periode, payback, roiBulan, roiTahun, totalLaba, netGain, balikDalamPeriode };
-        if (HC.history) HC.history.push('roi-usaha', { inputs: HC.history.capture(['modal','laba','periode']), summary: 'Modal ' + sRp(lastCalc.modal) + ' \u00b7 Laba ' + sRp(lastCalc.laba) + ' \u00b7 ' + lastCalc.periode + ' bln', metrics: [{ k: 'ROI/thn', v: lastCalc.roiTahun.toFixed(1) + '%' }, { k: 'Balik', v: (Math.round(lastCalc.payback * 10) / 10) + ' bln' }] });
+        lastCalc = { modal, laba, periode, payback, roiBulan, roiTahun, totalLaba, netGain, balikDalamPeriode, rampMonths, growthPct, balik, naivePayback };
+        if (HC.history) HC.history.push('roi-usaha', { inputs: HC.history.capture(['modal','laba','periode','rampMonths','growthPct']), summary: 'Modal ' + sRp(lastCalc.modal) + ' \u00b7 Laba ' + sRp(lastCalc.laba) + ' \u00b7 ' + lastCalc.periode + ' bln', metrics: [{ k: 'ROI/thn', v: lastCalc.roiTahun.toFixed(1) + '%' }, { k: 'Balik', v: (Math.round(lastCalc.payback * 10) / 10) + ' bln' }] });
         renderHist();
         $('placeholder').style.display = 'none';
         $('results').classList.add('show');
@@ -357,6 +378,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         ['mSewa','mAlat','mStok','mIzin','mKerja'].forEach(id => { const el = $(id); if (el) el.value = '0'; });
         var _mh = $('modalHelperResult'); if (_mh) _mh.style.display = 'none';
         var _lh = $('labaHelperResult'); if (_lh) _lh.style.display = 'none';
+        var _rm = $('rampMonths'); if (_rm) _rm.value = '0'; var _gp = $('growthPct'); if (_gp) _gp.value = '0';
         $('placeholder').style.display = ''; $('results').classList.remove('show');
         scenA = null; scenB = null; var _sr = $('scenResult'); if (_sr) { _sr.style.display = 'none'; _sr.innerHTML = ''; } lastCalc = null; HC.toast('Form direset', 'info');
       }
@@ -364,12 +386,13 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       function buildReport() {
         if (!lastCalc) return null;
         const c = lastCalc;
-        const insight = `Modal ${HC.fmt(c.modal)}, laba ${HC.fmt(c.laba)}/bln. Balik modal ${bulanText(c.payback)}, ROI ${c.roiTahun.toFixed(1)}%/tahun. Dalam ${c.periode} bln total laba ${HC.fmt(c.totalLaba)}. Asumsi laba konstan; estimasi edukatif, bukan jaminan hasil.`;
+        const _rampNote = (c.rampMonths > 0 || c.growthPct !== 0) ? `Termasuk ramp-up ${c.rampMonths} bln & pertumbuhan ${c.growthPct}%/thn. ` : 'Asumsi laba konstan. ';
+        const insight = `Modal ${HC.fmt(c.modal)}, laba ${HC.fmt(c.laba)}/bln (saat penuh). ${c.balik ? 'Balik modal ' + bulanText(c.payback) : 'Modal belum kembali dalam proyeksi'}, ROI ${c.roiTahun.toFixed(1)}%/tahun. Dalam ${c.periode} bln total laba ${HC.fmt(c.totalLaba)}. ${_rampNote}Estimasi edukatif, bukan jaminan hasil.`;
         return HC.buildReportCard({
           title: '\ud83d\udcc8 ROI & Balik Modal Usaha',
           color: '#16A34A', color2: '#15803D',
           heroLabel: 'Balik Modal Dalam',
-          heroValue: bulanText(c.payback),
+          heroValue: c.balik ? bulanText(c.payback) : 'Belum balik',
           heroSubtext: `ROI ${c.roiTahun.toFixed(1)}%/tahun`,
           inputs: [
             { label: '\ud83d\udcb5 Modal Awal', value: HC.fmt(c.modal) },
@@ -377,7 +400,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
             { label: '\ud83d\udcc5 Periode Proyeksi', value: c.periode + ' bulan' },
           ],
           results: [
-            { label: 'Balik Modal', value: bulanText(c.payback), highlight: true },
+            { label: 'Balik Modal', value: c.balik ? bulanText(c.payback) : 'Belum balik', highlight: true },
             { label: 'ROI/tahun', value: c.roiTahun.toFixed(1) + '%', highlight: true },
             { label: 'ROI/bulan', value: c.roiBulan.toFixed(2) + '%' },
             { label: 'Total Laba ' + c.periode + ' bln', value: HC.fmt(c.totalLaba) },
@@ -389,7 +412,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       function summaryText() {
         if (!lastCalc) return '';
         const c = lastCalc;
-        return `\ud83d\udcc8 *ROI & Balik Modal Usaha - HitungCerdas*\n\nModal awal: ${HC.fmt(c.modal)}\nLaba bersih/bln: ${HC.fmt(c.laba)}\n\n\u23f1\ufe0f *Balik modal: ${bulanText(c.payback)}*\n\ud83d\udcca ROI: ${c.roiTahun.toFixed(1)}%/tahun (${c.roiBulan.toFixed(2)}%/bln)\n\ud83d\udcb0 Total laba ${c.periode} bln: ${HC.fmt(c.totalLaba)}\n\nHitung di: https://hitungcerdas.net/kalkulator/roi-usaha`;
+        return `\ud83d\udcc8 *ROI & Balik Modal Usaha - HitungCerdas*\n\nModal awal: ${HC.fmt(c.modal)}\nLaba bersih/bln: ${HC.fmt(c.laba)}\n\n\u23f1\ufe0f *Balik modal: ${c.balik ? bulanText(c.payback) : 'Belum balik'}*\n\ud83d\udcca ROI: ${c.roiTahun.toFixed(1)}%/tahun (${c.roiBulan.toFixed(2)}%/bln)\n\ud83d\udcb0 Total laba ${c.periode} bln: ${HC.fmt(c.totalLaba)}\n\nHitung di: https://hitungcerdas.net/kalkulator/roi-usaha`;
       }
 
       // ===== Skenario A vs B =====
