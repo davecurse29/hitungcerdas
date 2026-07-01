@@ -162,6 +162,15 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
                 <p class="hint" style="margin-top:6px">Pembanding: deposito ~5%/thn, reksa dana ~9%/thn (estimasi umum). Usaha riil wajar lebih tinggi karena risikonya juga lebih besar.</p>
               </div>
 
+              <div class="adv-section" id="sensBlock">
+                <div class="adv-toggle"><span><i class="ti ti-adjustments-alt"></i>&nbsp; Analisis sensitivitas (kalau laba meleset?)</span><i class="ti ti-chevron-down chev"></i></div>
+                <div class="adv-content"><div id="sensBox" style="padding-top:4px"></div></div>
+              </div>
+              <div class="adv-section" id="yearBlock">
+                <div class="adv-toggle"><span><i class="ti ti-table"></i>&nbsp; Tabel proyeksi tahunan</span><i class="ti ti-chevron-down chev"></i></div>
+                <div class="adv-content"><div id="yearBox" style="padding-top:4px"></div></div>
+              </div>
+
               <div class="adv-section" id="scenBlock">
                 <div class="adv-toggle"><span><i class="ti ti-columns"></i>&nbsp; Bandingkan Skenario A vs B</span><i class="ti ti-chevron-down chev"></i></div>
                 <div class="adv-content">
@@ -381,6 +390,23 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
             + '<span style="width:50px;flex-shrink:0;text-align:right;font-size:11.5px;font-weight:700;color:' + (b.bold ? '#15803D' : 'var(--text-soft)') + '">' + b.val.toFixed(1) + '%</span></div>';
         });
         $('roiBars').innerHTML = barsHtml;
+
+        // ===== Analisis Sensitivitas =====
+        const metricsFor = (labaX) => { const mp = k => labaX * (rampMonths > 0 ? Math.min(1, k / rampMonths) : 1) * Math.pow(1 + gRate, (k - 1) / 12); let cu = 0, pv = 0, pb = Infinity, tl = 0; for (let k = 1; k <= CAP; k++) { const pm = mp(k); pv = cu; cu += pm; if (k === periode) tl = cu; if (pb === Infinity && pm > 0 && cu >= modal) pb = (k - 1) + (modal - pv) / pm; } return { pb, balik: isFinite(pb), roiT: labaX / modal * 1200 }; };
+        let sensTbl = '<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:11.5px"><thead><tr style="color:var(--text-soft);border-bottom:1px solid var(--border)"><th style="padding:5px 6px;text-align:left">Skenario</th><th style="padding:5px 6px;text-align:right">Laba/bln</th><th style="padding:5px 6px;text-align:right">Balik modal</th><th style="padding:5px 6px;text-align:right">ROI/thn</th></tr></thead><tbody>';
+        [-30, -20, -10, 0, 10].forEach(pct => { const lx = laba * (1 + pct / 100); const m = metricsFor(lx); const isBase = pct === 0; sensTbl += '<tr style="border-bottom:1px solid #f1f5f9' + (isBase ? ';background:#F0FDF4;font-weight:700' : '') + '"><td style="padding:5px 6px">' + (isBase ? 'Sekarang' : (pct > 0 ? '+' : '') + pct + '%') + '</td><td style="padding:5px 6px;text-align:right">' + HC.fmt(lx) + '</td><td style="padding:5px 6px;text-align:right">' + (m.balik ? bulanText(m.pb) : 'Belum balik') + '</td><td style="padding:5px 6px;text-align:right">' + m.roiT.toFixed(1) + '%</td></tr>'; });
+        sensTbl += '</tbody></table></div>';
+        const labaMin = totalLaba > 0 ? modal * laba / totalLaba : 0;
+        sensTbl += '<p class="hint" style="margin-top:8px;line-height:1.5"><i class="ti ti-alert-triangle" style="color:#B45309"></i> Kalau laba turun, balik modal jadi lebih lama. Laba <b>minimum</b> agar tetap balik modal dalam ' + periode + ' bln: <b>' + HC.fmt(labaMin) + '/bln</b>' + (laba >= labaMin ? ' \u2014 laba sekarang masih di atasnya \u2705.' : ' \u2014 laba sekarang <b>di bawahnya</b> \u26a0\ufe0f.') + '</p>';
+        $('sensBox').innerHTML = sensTbl;
+
+        // ===== Tabel Proyeksi Tahunan =====
+        const nYears = Math.min(10, Math.ceil(periode / 12));
+        let yTbl = '<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:11.5px"><thead><tr style="color:var(--text-soft);border-bottom:1px solid var(--border)"><th style="padding:5px 6px;text-align:left">Tahun</th><th style="padding:5px 6px;text-align:right">Laba tahun ini</th><th style="padding:5px 6px;text-align:right">Laba kumulatif</th><th style="padding:5px 6px;text-align:right">vs Modal</th></tr></thead><tbody>';
+        let prevEnd = 0, crossed = false;
+        for (let y = 1; y <= nYears; y++) { const mEnd = Math.min(y * 12, periode); const cumY = cumArr[mEnd]; const yearLaba = cumY - prevEnd; const diff = cumY - modal; const isCross = !crossed && diff >= 0; if (isCross) crossed = true; yTbl += '<tr style="border-bottom:1px solid #f1f5f9' + (isCross ? ';background:#F0FDF4;font-weight:700' : '') + '"><td style="padding:5px 6px">Thn ' + y + (isCross ? ' \u2190 balik modal' : '') + '</td><td style="padding:5px 6px;text-align:right">' + HC.fmt(yearLaba) + '</td><td style="padding:5px 6px;text-align:right">' + HC.fmt(cumY) + '</td><td style="padding:5px 6px;text-align:right;color:' + (diff >= 0 ? '#15803D' : '#B45309') + '">' + (diff >= 0 ? '+' : '') + HC.fmt(diff) + '</td></tr>'; prevEnd = cumY; }
+        yTbl += '</tbody></table></div><p class="hint" style="margin-top:6px">Kolom \u201cvs Modal\u201d: negatif = modal belum kembali; positif = surplus di atas modal.</p>';
+        $('yearBox').innerHTML = yTbl;
 
         lastCalc = { modal, laba, periode, payback, roiBulan, roiTahun, totalLaba, netGain, balikDalamPeriode, rampMonths, growthPct, balik, naivePayback, inflasi, realROI, npv, irrYear };
         if (HC.history) HC.history.push('roi-usaha', { inputs: HC.history.capture(['modal','laba','periode','rampMonths','growthPct','inflasi']), summary: 'Modal ' + sRp(lastCalc.modal) + ' \u00b7 Laba ' + sRp(lastCalc.laba) + ' \u00b7 ' + lastCalc.periode + ' bln', metrics: [{ k: 'ROI/thn', v: lastCalc.roiTahun.toFixed(1) + '%' }, { k: 'Balik', v: (Math.round(lastCalc.payback * 10) / 10) + ' bln' }] });
