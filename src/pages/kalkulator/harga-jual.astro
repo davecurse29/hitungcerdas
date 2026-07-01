@@ -372,9 +372,13 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
   .aic-gauge-bar .z-amber{flex:0 0 20%;background:#FEF3C7}
   .aic-gauge-bar .z-red{flex:0 0 20%;background:#FEE2E2}
   .aic-gauge-lbl{display:flex;font-size:10px;margin-top:5px}
-  .aic-gauge-lbl .g{flex:0 0 60%;color:#059669}
-  .aic-gauge-lbl .a{flex:0 0 20%;text-align:center;color:#D97706;font-weight:600}
-  .aic-gauge-lbl .r{flex:0 0 20%;text-align:right;color:#DC2626}
+  .aic-gauge-lbl>span{flex:1 1 0}
+  .aic-gauge-lbl>span:first-child{text-align:left}
+  .aic-gauge-lbl>span:nth-child(2){text-align:center}
+  .aic-gauge-lbl>span:last-child{text-align:right}
+  .aic-gauge-lbl .g{color:#059669}
+  .aic-gauge-lbl .a{color:#D97706;font-weight:600}
+  .aic-gauge-lbl .r{color:#DC2626}
   .aic-verdict{font-size:12.5px;font-weight:600;margin-top:11px;display:flex;align-items:center;gap:6px}
   .aic-verdict.good{color:#059669}
   .aic-verdict.warn{color:#D97706}
