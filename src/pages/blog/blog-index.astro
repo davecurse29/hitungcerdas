@@ -64,7 +64,7 @@ const articles = [
   <section class="page-hero" style="--cat-color:#2563EB;--cat-color2:#1E40AF">
     <div class="wrap">
       <h1>Blog &amp; Panduan</h1>
-      <p>38 artikel edukasi seputar keuangan, bisnis, pajak, dan ibadah islami untuk masyarakat Indonesia</p>
+      <p>{articles.length} artikel edukasi seputar keuangan, bisnis, pajak, dan ibadah islami untuk masyarakat Indonesia</p>
     </div>
   </section>
 
@@ -72,9 +72,16 @@ const articles = [
 
   <section class="section">
     <div class="wrap">
+      <div class="blog-search">
+        <i class="ti ti-search"></i>
+        <input type="text" id="blogSearch" placeholder="Cari artikel... (mis. KPR, zakat, pajak, pensiun)" autocomplete="off" aria-label="Cari artikel blog" />
+        <button type="button" id="blogSearchClear" aria-label="Bersihkan pencarian" hidden><i class="ti ti-x"></i></button>
+      </div>
+      <p class="blog-search-count" id="blogSearchCount" hidden></p>
+
       <div class="art-grid">
         {articles.map(art => (
-          <a href={`/blog/${art.slug}`} class="art-card" style={`--art-color:${art.color};--art-color2:${art.color2}`}>
+          <a href={`/blog/${art.slug}`} class="art-card" data-search={`${art.title} ${art.excerpt} ${art.category}`.toLowerCase()} style={`--art-color:${art.color};--art-color2:${art.color2}`}>
             <div class="art-img">
               <i class="ti ti-file-text"></i>
             </div>
@@ -88,11 +95,46 @@ const articles = [
           </a>
         ))}
       </div>
+      <div class="blog-noresult" id="blogNoResult" hidden>
+        <i class="ti ti-mood-empty"></i>
+        <p>Tidak ada artikel yang cocok. Coba kata kunci lain.</p>
+      </div>
     </div>
   </section>
 
   <AdSlot format="horizontal" />
 </Layout>
+
+<script is:inline>
+  (function(){
+    var input=document.getElementById('blogSearch');
+    if(!input) return;
+    var cards=[].slice.call(document.querySelectorAll('.art-card'));
+    var noResult=document.getElementById('blogNoResult');
+    var count=document.getElementById('blogSearchCount');
+    var clear=document.getElementById('blogSearchClear');
+    function apply(){
+      var q=(input.value||'').toLowerCase().trim();
+      clear.hidden = q==='';
+      var shown=0;
+      cards.forEach(function(c){
+        var hay=c.getAttribute('data-search')||'';
+        var match = q==='' || hay.indexOf(q)>=0;
+        c.style.display = match ? '' : 'none';
+        if(match) shown++;
+      });
+      if(q===''){ count.hidden=true; noResult.hidden=true; }
+      else {
+        count.hidden=false;
+        count.textContent = shown+' artikel cocok dengan “'+input.value.trim()+'”';
+        noResult.hidden = shown>0;
+      }
+    }
+    input.addEventListener('input', apply);
+    clear.addEventListener('click', function(){ input.value=''; apply(); input.focus(); });
+    try{ var q=new URLSearchParams(location.search).get('q'); if(q){ input.value=q; apply(); } }catch(e){}
+  })();
+</script>
 
 <style>
   .page-hero { background: linear-gradient(135deg, var(--cat-color) 0%, var(--cat-color2) 100%); color: #fff; padding: 56px 0; text-align: center; }
@@ -110,4 +152,17 @@ const articles = [
   .art-excerpt { font-size: 12.5px; color: var(--text-soft); line-height: 1.5; margin: 0; flex: 1; }
   .art-meta { font-size: 11px; color: var(--text-mute); display: flex; align-items: center; gap: 4px; margin-top: 6px; }
   .art-link { font-size: 12px; color: var(--art-color); font-weight: 700; display: inline-flex; align-items: center; gap: 4px; margin-top: 4px; }
+  .blog-search { position: relative; max-width: 560px; margin: 0 auto 12px; }
+  .blog-search > i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--text-mute); font-size: 18px; pointer-events: none; }
+  .blog-search input { width: 100%; padding: 13px 44px; border: 1px solid var(--border); border-radius: 12px; font-size: 14px; font-family: inherit; background: #fff; color: var(--navy); transition: var(--tx); }
+  .blog-search input:focus { outline: none; border-color: #2563EB; box-shadow: 0 0 0 3px rgba(37,99,235,.12); }
+  .blog-search input::placeholder { color: var(--text-mute); }
+  .blog-search button { position: absolute; right: 9px; top: 50%; transform: translateY(-50%); border: none; background: var(--surface-2, #F1F5F9); color: var(--text-soft); width: 28px; height: 28px; border-radius: 8px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; font-size: 14px; }
+  .blog-search button:hover { background: var(--border); }
+  .blog-search-count { text-align: center; font-size: 12.5px; color: var(--text-mute); margin: 0 auto 18px; }
+  .blog-noresult { text-align: center; padding: 44px 20px; color: var(--text-mute); }
+  .blog-noresult i { font-size: 42px; opacity: .45; }
+  .blog-noresult p { margin-top: 10px; font-size: 14px; }
+  :global(html.dark) .blog-search input { background: #0F172A; color: #E2E8F0; }
+  :global(html.dark) .blog-search button { background: #1E293B; }
 </style>
