@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
-  <title>HitungCerdas - 33 Kalkulator Finansial Indonesia</title>
+  <title>HitungCerdas - 34 Kalkulator Finansial Indonesia</title>
   
   <!-- Background gradient effect (solid color for SVG simplicity) -->
   <rect x="0" y="0" width="1200" height="630" fill="#0A2540"/>
@@ -42,7 +42,7 @@
     <text x="0" y="40" font-family="Inter, Poppins, Arial, sans-serif" font-size="32" font-weight="600" fill="#94A3B8" letter-spacing="3">HITUNGCERDAS.NET</text>
     
     <!-- Main headline -->
-    <text x="0" y="120" font-family="Inter, Poppins, Arial, sans-serif" font-size="72" font-weight="800" fill="#fff" letter-spacing="-2">33 Kalkulator</text>
+    <text x="0" y="120" font-family="Inter, Poppins, Arial, sans-serif" font-size="72" font-weight="800" fill="#fff" letter-spacing="-2">34 Kalkulator</text>
     <text x="0" y="190" font-family="Inter, Poppins, Arial, sans-serif" font-size="72" font-weight="800" fill="#F59E0B" letter-spacing="-2">Finansial Indonesia</text>
     
     <!-- Subline -->
