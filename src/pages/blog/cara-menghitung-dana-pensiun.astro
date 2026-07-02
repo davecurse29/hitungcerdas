@@ -1,0 +1,191 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import ArticleSchema from '../../components/ArticleSchema.astro';
+import FAQ from '../../components/FAQ.astro';
+
+const datePublished = '2026-07-02';
+const dateModified = '2026-07-02';
+const today = new Date(datePublished).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'Panduan Dana Pensiun' }];
+
+const faqs = [
+  { question: 'Berapa dana pensiun ideal?', answer: 'Tergantung gaya hidup, usia pensiun, dan lama masa pensiun. Patokan kasar: dana pensiun idealnya cukup membiayai 70-80% pengeluaranmu sekarang (disesuaikan inflasi) selama masa pensiun. Hitung angka spesifikmu dengan <a href="/kalkulator/pensiun">Kalkulator Dana Pensiun</a> yang memakai metode return riil.' },
+  { question: 'Apakah BPJS cukup untuk pensiun?', answer: 'Umumnya tidak cukup kalau hanya mengandalkan BPJS. Jaminan Pensiun (JP) memberi manfaat bulanan tapi dihitung dari upah yang dibatasi (batas upah 2026 Rp 10.547.400), sehingga manfaatnya jauh di bawah kebutuhan hidup kebanyakan orang. Jaminan Hari Tua (JHT) berupa lump sum. Jadikan BPJS pelengkap, bukan satu-satunya sumber.' },
+  { question: 'Apa beda JHT dan JP?', answer: 'JHT (Jaminan Hari Tua) dibayarkan sekaligus (lump sum), umumnya bisa dicairkan mulai usia 56 tahun. JP (Jaminan Pensiun) dibayarkan bulanan jika masa iur minimal 15 tahun; kalau kurang, dibayar sekaligus. Keduanya program BPJS Ketenagakerjaan.' },
+  { question: 'Berapa usia pensiun BPJS di 2026?', answer: 'Usia pensiun program Jaminan Pensiun (JP) BPJS Ketenagakerjaan pada 2026 adalah 59 tahun, dan naik 1 tahun setiap 3 tahun hingga maksimal 65 tahun. Banyak perusahaan menetapkan usia pensiun internal sendiri (mis. 55 tahun), jadi sesuaikan dengan rencanamu.' },
+  { question: 'Apa itu return riil?', answer: 'Return riil = (1 + return investasi) ÷ (1 + inflasi) − 1, yaitu keuntungan investasi setelah dipotong inflasi. Inilah angka yang benar-benar menambah daya belimu. Menghitung dana pensiun dengan return riil membuat targetmu realistis, bukan sekadar angka nominal besar yang menyesatkan.' },
+  { question: 'Bagaimana cara mengejar kekurangan dana pensiun?', answer: 'Ada 5 tuas: (1) tambah setoran bulanan, (2) tunda usia pensiun beberapa tahun, (3) turunkan target gaya hidup pensiun, (4) alokasikan THR/bonus ke investasi pensiun, dan (5) tambah penghasilan pasif. Yang paling berdampak biasanya mulai menabung sedini mungkin agar bunga majemuk bekerja maksimal.' },
+];
+---
+
+<Layout
+  title="Cara Menghitung Dana Pensiun 2026 — Target, Setoran Ideal & Metode Return Riil"
+  description="Panduan lengkap menghitung dana pensiun: metode return riil, dua fase akumulasi-dekumulasi, contoh kasus, kenapa BPJS tak cukup, instrumen investasi, dan 5 cara menutup kekurangan."
+  keywords={['cara menghitung dana pensiun', 'dana pensiun', 'target dana pensiun', 'perencanaan pensiun', 'dana pensiun 2026', 'usia pensiun BPJS', 'return riil']}
+  canonical="https://hitungcerdas.net/blog/cara-menghitung-dana-pensiun"
+  ogType="article"
+>
+  <ArticleSchema
+    headline="Cara Menghitung Dana Pensiun 2026 — Target, Setoran Ideal & Metode Return Riil"
+    description="Panduan lengkap menghitung dana pensiun: metode return riil, dua fase akumulasi-dekumulasi, contoh kasus, kenapa BPJS tak cukup, instrumen investasi, dan 5 cara menutup kekurangan."
+    datePublished={datePublished}
+    dateModified={dateModified}
+    slug="cara-menghitung-dana-pensiun"
+    articleSection="Keuangan"
+    keywords={['cara menghitung dana pensiun', 'dana pensiun', 'target dana pensiun', 'perencanaan pensiun', 'dana pensiun 2026', 'usia pensiun BPJS', 'return riil']}
+    wordCount={950}
+  />
+
+  <section class="article-hero" style="--cat-color:#4F46E5;--cat-color2:#3730A3">
+    <div class="wrap">
+      <Breadcrumb items={bcItems} />
+      <div class="article-tag">PERENCANAAN KEUANGAN</div>
+      <h1>Cara Menghitung Dana Pensiun 2026</h1>
+      <div class="article-meta">
+        <span><i class="ti ti-calendar"></i> {today}</span>
+        <span><i class="ti ti-clock"></i> 8 menit baca</span>
+        <span><i class="ti ti-user"></i> Tim HitungCerdas</span>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+
+  <article class="content-section">
+    <div class="wrap-text">
+      <p class="lead">
+        Banyak orang menabung untuk pensiun tanpa tahu berapa target yang sebenarnya perlu dikumpulkan.
+        Padahal salah hitung bisa fatal: uang yang terasa besar hari ini bisa tergerus inflasi hingga
+        tak cukup 20-30 tahun lagi. Artikel ini mengajarkan cara menghitung dana pensiun secara jujur —
+        memakai <strong>return riil</strong> agar yang dijaga adalah daya beli, bukan sekadar angka nominal.
+      </p>
+
+      <h2>1. Kenapa Harus Menghitung Dana Pensiun?</h2>
+      <p>
+        Ada tiga kenyataan yang membuat perencanaan pensiun tidak bisa ditunda. Pertama, <strong>inflasi</strong>:
+        pengeluaran Rp 8 juta/bulan hari ini bisa menjadi setara Rp 18-20 juta/bulan saat kamu pensiun 29 tahun
+        lagi. Kedua, <strong>usia harapan hidup yang panjang</strong>: kalau pensiun di usia 59 dan hidup sampai
+        80, kamu perlu membiayai 21 tahun tanpa gaji. Ketiga, <strong>BPJS saja tidak cukup</strong> untuk
+        menutup seluruh kebutuhan. Semakin dini kamu mulai, semakin ringan setoran bulanannya berkat bunga majemuk.
+      </p>
+
+      <h2>2. Dua Fase: Akumulasi & Dekumulasi</h2>
+      <p>
+        Perencanaan pensiun bekerja dalam dua fase. <strong>Akumulasi</strong> adalah masa dari sekarang sampai
+        pensiun, ketika tabungan dan investasimu bertumbuh. <strong>Dekumulasi</strong> adalah masa pensiun itu
+        sendiri, ketika dana ditarik untuk biaya hidup. Target dana pensiun adalah jumlah yang harus terkumpul di
+        akhir fase akumulasi agar cukup membiayai seluruh fase dekumulasi.
+      </p>
+
+      <h2>3. Rumus Inti</h2>
+      <p>Lima langkah menghitung dana pensiun:</p>
+      <ul class="info-list">
+        <li><strong>Pengeluaran saat pensiun</strong> = pengeluaran sekarang × % gaya hidup × (1 + inflasi)<sup>tahun ke pensiun</sup></li>
+        <li><strong>Return riil</strong> = (1 + return) ÷ (1 + inflasi) − 1</li>
+        <li><strong>Target dana</strong> = nilai kini (present value) dari kebutuhan tahunan selama masa pensiun, didiskon di return riil</li>
+        <li><strong>Proyeksi dana</strong> = nilai masa depan tabungan sekarang + nilai masa depan setoran bulanan</li>
+        <li><strong>Kekurangan</strong> = target − proyeksi, lalu diubah menjadi setoran ideal per bulan</li>
+      </ul>
+      <p>
+        Memakai return riil penting agar target tidak "palsu besar". Return riil memisahkan pertumbuhan asli dari
+        inflasi, sehingga target yang kamu kejar benar-benar mempertahankan daya beli.
+      </p>
+
+      <h2>4. Contoh Kasus</h2>
+      <p>
+        Andi, 30 tahun, ingin pensiun di usia 59 dan merencanakan dana sampai usia 80. Pengeluarannya kini
+        Rp 8 juta/bulan; ia memperkirakan hanya butuh 75% dari itu saat pensiun. Dengan asumsi return 8%/tahun
+        sebelum pensiun, 5%/tahun saat pensiun, dan inflasi 4%/tahun:
+      </p>
+      <ul class="info-list">
+        <li>Pengeluaran saat pensiun (nominal): sekitar <strong>Rp 18,7 juta/bulan</strong></li>
+        <li>Target dana pensiun: sekitar <strong>Rp 4,25 miliar</strong></li>
+        <li>Dengan menabung Rp 1 juta/bulan, proyeksinya hanya ~Rp 1,36 miliar → <strong>kurang ~Rp 2,9 miliar</strong></li>
+        <li>Setoran ideal agar target tercapai: sekitar <strong>Rp 3,1 juta/bulan</strong></li>
+      </ul>
+      <p>
+        Angka Rp 4,25 miliar terdengar menakutkan, tapi ingat itu nilai masa depan. Dalam daya beli hari ini,
+        setara sekitar Rp 1,36 miliar. Semakin dini Andi mulai atau semakin lama ia menunda pensiun, semakin
+        ringan setorannya.
+      </p>
+
+      <div class="related-tools" style="margin:24px 0;background:linear-gradient(135deg,#EEF2FF,#E0E7FF);border:1px solid #C7D2FE">
+        <h3 style="margin-top:0">🧮 Hitung Angkamu Sendiri</h3>
+        <p style="margin:8px 0 0">Tidak perlu hitung manual. Masukkan usia, pengeluaran, dan asumsimu di <a href="/kalkulator/pensiun"><strong>Kalkulator Dana Pensiun</strong></a> — langsung dapat target, proyeksi, setoran ideal, skor kesiapan, grafik, dan AI Coach.</p>
+      </div>
+
+      <h2>5. Jangan Andalkan BPJS Saja</h2>
+      <p>
+        BPJS Ketenagakerjaan punya dua program yang sering tertukar. <strong>JHT (Jaminan Hari Tua)</strong>
+        dibayarkan sekaligus (lump sum), umumnya cair mulai usia 56. <strong>JP (Jaminan Pensiun)</strong>
+        dibayarkan bulanan bila masa iur minimal 15 tahun. Masalahnya, manfaat JP dihitung dari upah yang dibatasi
+        (batas upah 2026 Rp 10.547.400) sehingga besarannya jauh di bawah kebutuhan kebanyakan orang. Usia pensiun
+        JP 2026 adalah 59 tahun dan naik bertahap hingga 65. Kesimpulannya: jadikan BPJS pelengkap, sisanya kamu
+        tabung dan investasikan sendiri.
+      </p>
+
+      <h2>6. Instrumen untuk Dana Pensiun</h2>
+      <p>Sesuaikan dengan jarak ke pensiun dan profil risikomu:</p>
+      <ul class="info-list">
+        <li><strong>Reksadana saham/campuran</strong> — cocok untuk jangka panjang (>10 tahun), potensi return 6-10%/tahun</li>
+        <li><strong>Saham</strong> — potensi tertinggi tapi butuh pemahaman & disiplin</li>
+        <li><strong>Emas/logam mulia</strong> — pelindung nilai (hedge) terhadap inflasi</li>
+        <li><strong>DPLK (Dana Pensiun Lembaga Keuangan)</strong> — khusus pensiun, ada insentif pajak</li>
+        <li><strong>Obligasi/Sukuk Negara & deposito</strong> — lebih konservatif untuk mendekati masa pensiun</li>
+        <li><strong>Properti sewa</strong> — sumber penghasilan pasif saat pensiun</li>
+      </ul>
+      <p>Kunci pentingnya: <strong>diversifikasi</strong> dan geser ke instrumen lebih konservatif saat mendekati pensiun.</p>
+
+      <h2>7. Lima Cara Menutup Kekurangan</h2>
+      <ul class="tips-list">
+        <li>Naikkan setoran bulanan menuju angka setoran ideal</li>
+        <li>Tunda usia pensiun beberapa tahun (menabung lebih lama, masa pensiun lebih singkat)</li>
+        <li>Turunkan target gaya hidup pensiun secara realistis</li>
+        <li>Alokasikan THR & bonus tahunan ke investasi pensiun</li>
+        <li>Bangun penghasilan pasif (sewa, dividen, usaha) untuk mengurangi kebutuhan dari tabungan</li>
+      </ul>
+
+      <h2>8. Kesalahan Umum</h2>
+      <ul class="info-list">
+        <li>Menghitung target dengan return nominal, lupa memotong inflasi (target jadi terlalu optimistis)</li>
+        <li>Mengandalkan BPJS/JHT saja sebagai sumber pensiun</li>
+        <li>Menunda mulai menabung — kehilangan efek bunga majemuk yang paling berharga</li>
+        <li>Menyimpan dana pensiun di instrumen dengan return di bawah inflasi (daya beli menyusut)</li>
+        <li>Tidak pernah meninjau ulang rencana saat penghasilan atau asumsi berubah</li>
+      </ul>
+
+      <h2>Kesimpulan</h2>
+      <p>
+        Menghitung dana pensiun bukan soal menabung sebanyak-banyaknya, tapi menutup selisih antara kebutuhan
+        masa depan dan yang kamu punya — dengan angka yang jujur lewat return riil. Mulai sedini mungkin,
+        diversifikasi, dan tinjau ulang secara berkala. Waktu adalah aset terbesarmu dalam merencanakan pensiun.
+      </p>
+
+      <div class="info-list" style="background:#F1F5F9;padding:16px;border-radius:12px;margin-top:24px;font-size:13px;color:#64748B">
+        <strong>⚠️ Disclaimer:</strong> Artikel ini bersifat edukatif dan bukan nasihat keuangan atau investasi
+        personal. Angka contoh adalah ilustrasi. Angka BPJS/JP/JHT bersifat estimasi, bukan angka resmi. Untuk
+        perencanaan yang sesuai kondisimu, pertimbangkan konsultasi dengan perencana keuangan bersertifikat.
+      </div>
+    </div>
+  </article>
+
+  <AdSlot format="rectangle" />
+
+  <FAQ title="Pertanyaan Seputar Dana Pensiun" items={faqs} />
+
+  <div class="wrap-text">
+    <div class="related-tools" style="margin-top:24px">
+      <h3>🔗 Kalkulator Terkait</h3>
+      <ul class="info-list">
+        <li><a href="/kalkulator/pensiun">Kalkulator Dana Pensiun</a> — hitung target, setoran ideal & skor kesiapan</li>
+        <li><a href="/kalkulator/investasi">Kalkulator Investasi</a> — proyeksi bunga majemuk untuk dana pensiun</li>
+        <li><a href="/kalkulator/dana-darurat">Kalkulator Dana Darurat</a> — fondasi sebelum investasi pensiun</li>
+        <li><a href="/kalkulator/gaji-bersih">Kalkulator Gaji Bersih</a> — atur porsi menabung dari take-home pay</li>
+      </ul>
+    </div>
+  </div>
+
+  <AdSlot format="horizontal" />
+</Layout>

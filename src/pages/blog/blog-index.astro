@@ -1,0 +1,113 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import AdSlot from '../../components/AdSlot.astro';
+
+const articles = [
+  { slug: 'cara-menghitung-dana-pensiun', title: 'Cara Menghitung Dana Pensiun 2026: Target, Setoran Ideal & Metode Return Riil', category: 'KEUANGAN', readTime: '8 min', color: '#4F46E5', color2: '#3730A3', excerpt: 'Cara menghitung dana pensiun dengan metode return riil: dua fase akumulasi-dekumulasi, contoh kasus target Rp 4,25 M, kenapa BPJS tak cukup, instrumen investasi, dan 5 cara menutup kekurangan.' },
+  { slug: 'cara-hitung-cicilan-denda-paylater-2026', title: 'Cara Menghitung Cicilan & Denda Paylater 2026: Bunga, APR Efektif, Lock Cap & Aturan OJK', category: 'KEUANGAN', readTime: '9 min', color: '#DB2777', color2: '#9D174D', excerpt: 'Cara hitung cicilan paylater (BNPL) 2026: rumus bunga flat vs efektif, jebakan APR, cara hitung denda telat (galbay), plus aturan OJK terbaru — POJK 32/2025, Lock Cap 100%, syarat usia & penghasilan, dan dampak SLIK.' },
+  { slug: 'cara-restrukturisasi-kredit', title: 'Cara Restrukturisasi Kredit 2026: Syarat, Skema, Cara Ajukan & Dampak SLIK', category: 'KEUANGAN', readTime: '9 min', color: '#0EA5E9', color2: '#0369A1', excerpt: 'Panduan restrukturisasi kredit 2026 sesuai OJK (POJK 40/2019): 4 skema (perpanjang tenor, turun bunga, grace period, keringanan denda), syarat & dokumen, cara ajukan ke bank, dampak SLIK, plus aturan khusus pinjol legal.' },
+  { slug: 'cara-membuat-kwitansi', title: 'Cara Membuat Kwitansi yang Sah 2026: Syarat, Meterai & Contoh', category: 'UMKM', readTime: '8 min', color: '#0EA5E9', color2: '#0369A1', excerpt: 'Cara membuat kwitansi pembayaran yang sah sesuai UU 10/2020: komponen wajib, aturan meterai Rp 10.000 untuk transaksi di atas Rp 5 juta, terbilang, plus contoh & cara bikin kwitansi online gratis.' },
+  { slug: 'cara-hitung-pesangon-phk', title: 'Cara Hitung Pesangon PHK 2026 (PP 35/2021): Rumus, Tabel & Contoh Lengkap', category: 'KETENAGAKERJAAN', readTime: '10 min', color: '#0D9488', color2: '#0F766E', excerpt: 'Panduan lengkap hitung pesangon PHK 2026 sesuai PP 35/2021: tabel uang pesangon & UPMK, faktor pengali per alasan PHK (0,5x sampai 2x), UPH, pajak PPh 21 final, plus 3 contoh kasus.' },
+  { slug: 'potongan-gofood-grabfood-shopeefood', title: 'Potongan GoFood, GrabFood & ShopeeFood untuk Merchant 2026 — Berapa Persen?', category: 'UMKM', readTime: '8 min', color: '#D97706', color2: '#B45309', excerpt: 'Berapa persen potongan GoFood (20% + Rp 1.000), GrabFood (~30%), dan ShopeeFood (~20%) untuk penjual 2026? Plus PPN atas komisi dan cara hitung harga jual agar tetap untung.' },
+  { slug: 'bi-rate-naik-dampak-cicilan', title: 'BI Rate Naik 5,75% (Juni 2026): Dampak ke Cicilan KPR, KTA & Kredit', category: 'KEUANGAN', readTime: '9 min', color: '#2563EB', color2: '#1E40AF', excerpt: 'BI Rate naik jadi 5,75% per Juni 2026. Dampaknya ke cicilan KPR floating, KTA & kredit, simulasi kenaikan, plus 6 langkah cerdas menyikapinya.' },
+  { slug: 'ump-umr-2026-per-provinsi', title: 'UMP/UMR 2026 per Provinsi: Daftar Lengkap 38 Provinsi + Cara Hitung Gaji Bersih', category: 'GAJI', readTime: '10 min', color: '#047857', color2: '#065F46', excerpt: 'Daftar lengkap UMP 2026 di 38 provinsi (PP 49/2025). DKI tertinggi Rp 5,72 juta, Jabar terendah Rp 2,31 juta, plus cara hitung gaji bersih dari UMP.' },
+  { slug: 'investasi-emas-antam-2026', title: 'Harga Emas Antam 2026: Cara Investasi Emas + Hitung Zakat Emas (Nisab 85 Gram)', category: 'INVESTASI', readTime: '9 min', color: '#D97706', color2: '#B45309', excerpt: 'Harga emas Antam per 23 Juni 2026 Rp 2,67 juta/gram. Cara investasi emas yang benar, pajak beli/jual, plus cara hitung zakat emas (nisab 85 gram, 2,5%).' },
+  { slug: 'ppn-12-persen-2026', title: 'PPN 12% atau 11% di 2026? Cara Hitung PPN + Daftar Barang Mewah (PMK 131/2024)', category: 'PAJAK', readTime: '8 min', color: '#0891B2', color2: '#0E7490', excerpt: 'Benarkah PPN naik 12% di 2026? Faktanya 12% hanya untuk barang mewah; barang biasa tetap efektif 11% (PMK 131/2024). Rumus, contoh hitung & daftar bebas PPN.' },
+  { slug: 'cara-lapor-spt-online-coretax', title: 'Cara Lapor SPT Tahunan Online via Coretax 2026 — Panduan Lengkap + Atasi Kendala', category: 'PAJAK', readTime: '9 min', color: '#1D4ED8', color2: '#1E3A8A', excerpt: 'Panduan lapor SPT Tahunan online lewat Coretax DJP: aktivasi & login akun, langkah lapor untuk karyawan, atasi kendala bukti potong, batas waktu & denda telat.' },
+  // === KEUANGAN PRIBADI ===
+  { slug: 'cara-menghitung-kpr', title: 'Cara Hitung Cicilan KPR BTN 2026: Simulasi Lengkap + 5 Tips Hemat Ratusan Juta', category: 'KEUANGAN', readTime: '8 min', color: '#2563EB', color2: '#1E40AF', excerpt: 'Rumus anuitas, simulasi KPR BTN Rp 500jt, combo bunga fixed+floating, pelunasan dipercepat, dan bandingkan 6 bank besar Indonesia.' },
+  { slug: 'simulasi-kredit-motor', title: 'Cara Simulasi Kredit Motor 2026 + Total Cost of Ownership (TCO)', category: 'KEUANGAN', readTime: '7 min', color: '#7C3AED', color2: '#5B21B6', excerpt: 'Bunga flat motor, simulasi Honda BeAT 36 bulan, plus TCO 8 komponen — bukan cuma cicilan tapi all-in biaya kepemilikan 5 tahun.' },
+  { slug: 'simulasi-kredit-mobil', title: 'Cara Simulasi Kredit Mobil 2026 + Total Cost of Ownership Lengkap', category: 'KEUANGAN', readTime: '8 min', color: '#0891B2', color2: '#0E7490', excerpt: 'Cicilan Toyota Avanza, TCO 9 komponen 5 tahun mencapai Rp 500+ juta, plus tips kredit mobil cerdas dan asuransi all-risk.' },
+  { slug: 'cara-menghitung-investasi', title: 'Cara Hitung Investasi: Compound Interest & Top-Up Bulanan', category: 'INVESTASI', readTime: '7 min', color: '#10B981', color2: '#047857', excerpt: 'Rumus FV, simulasi reksa dana & saham, dampak inflasi, dan tips investasi pemula dengan top-up bulanan untuk maksimalkan return.' },
+
+  // === KREDIT & PINJAMAN (BARU) ===
+  { slug: 'cara-hitung-dana-darurat', title: 'Cara Hitung Dana Darurat: Berapa Bulan Pengeluaran yang Ideal?', category: 'KEUANGAN', readTime: '7 min', color: '#F59E0B', color2: '#D97706', excerpt: 'Multiplier dana darurat 3-12x pengeluaran sesuai status, di mana simpan dananya, strategi nabung cepat, dan kapan dipakai. Plus contoh kasus single, menikah, freelance.' },
+  { slug: 'cara-menghitung-kta', title: 'Cara Hitung Cicilan KTA 2026: Bandingkan 6 Bank + Flat vs Efektif vs Anuitas', category: 'KEUANGAN', readTime: '8 min', color: '#4F46E5', color2: '#3730A3', excerpt: 'BI Rate naik ke 5,75% Juni 2026, bunga KTA 6 bank (CIMB 0,79% sampai Danamon 1,35% flat/bulan), beda flat-efektif-anuitas, DTI ratio, dan tips approval.' },
+  { slug: 'pinjol-legal-vs-ilegal', title: 'Pinjol Legal vs Ilegal 2026: Aturan OJK Baru, Cek Legalitas & Hak Konsumen', category: 'KEUANGAN', readTime: '8 min', color: '#DC2626', color2: '#991B1B', excerpt: 'OJK 2026: bunga maks 0,1%/hari, Lock Cap 100%, admin maks 4%. Cara cek legalitas pinjol di OJK 157, ciri pinjol ilegal, dan langkah kalau terjerat.' },
+
+  // === PAJAK & GAJI ===
+  { slug: 'cara-menghitung-pph-21', title: 'Cara Hitung PPh 21 Karyawan UU HPP 2026 — Tarif Progresif & PTKP Lengkap', category: 'PAJAK', readTime: '8 min', color: '#DC2626', color2: '#991B1B', excerpt: '5 lapisan tarif progresif, PTKP terbaru, biaya jabatan, plus 3 contoh kasus karyawan gaji Rp 8jt, 15jt, dan 25jt sebulan.' },
+  { slug: 'cara-menghitung-pajak-umkm', title: 'Cara Hitung Pajak UMKM 2026: PPh Final 0,5% & Batas Bebas Rp 500 Juta (PP 20/2026)', category: 'PAJAK', readTime: '9 min', color: '#059669', color2: '#047857', excerpt: 'Aturan PP 20/2026: tarif PPh Final 0,5%, omzet Rp 500 juta pertama bebas pajak, batas Rp 4,8 M, siapa yang berhak, plus contoh hitung & cara bayar.' },
+  { slug: 'cara-menghitung-gaji-bersih', title: 'Cara Hitung Gaji Bersih Take-Home Pay 2026 dengan Mudah', category: 'GAJI', readTime: '6 min', color: '#059669', color2: '#047857', excerpt: 'BPJS Kesehatan + JHT + JP dengan cap terbaru, PPh 21, dan simulasi take-home pay untuk gaji bruto Rp 5jt sampai Rp 25jt.' },
+
+  // === UMKM & BISNIS ===
+  { slug: 'cara-menentukan-harga-jual', title: 'Cara Menentukan Harga Jual Produk UMKM 2026 — Strategi Profitable', category: 'UMKM', readTime: '7 min', color: '#EC4899', color2: '#9D174D', excerpt: '4 strategi pricing: cost-plus, value-based, competitor-based, dan psychological pricing. Plus 3 contoh kasus UMKM Indonesia.' },
+  { slug: 'cara-menghitung-margin', title: 'Cara Hitung Margin Profit & Markup untuk UMKM 2026', category: 'UMKM', readTime: '6 min', color: '#10B981', color2: '#047857', excerpt: 'Beda gross margin vs markup, benchmark per industri, dan tips naikkan net margin sampai 25% untuk bisnis UMKM yang sustainable.' },
+  { slug: 'cara-bikin-invoice-profesional', title: 'Cara Bikin Invoice Profesional untuk UMKM 2026 — Template + Tools Gratis', category: 'UMKM', readTime: '5 min', color: '#0EA5E9', color2: '#0369A1', excerpt: 'Komponen wajib invoice Indonesia, format profesional, PPN/PPh, plus tools gratis untuk generate invoice dalam 2 menit.' },
+  { slug: 'cara-menentukan-nama-bisnis', title: 'Cara Menentukan Nama Bisnis Catchy yang Menjual', category: 'UMKM', readTime: '6 min', color: '#8B5CF6', color2: '#6D28D9', excerpt: '5 formula naming: deskriptif, akronim, founder, abstract, bahasa daerah. Plus checklist cek domain, medsos, dan HKI sebelum dipakai.' },
+  { slug: 'cara-bikin-caption-jualan', title: 'Cara Bikin Caption Jualan Menarik di Marketplace 2026', category: 'MARKETING', readTime: '6 min', color: '#F43F5E', color2: '#9F1239', excerpt: '5 formula caption: AIDA, PAS, 4U, UGC, list. Plus contoh untuk fashion, F&B, jasa, dan tips per platform Instagram/TikTok/Shopee.' },
+
+  // === ISLAMI ===
+  { slug: 'cara-hitung-zakat-fitrah', title: 'Cara Hitung Zakat Fitrah 2026 untuk Keluarga (Beras 2.5 kg/jiwa)', category: 'ZAKAT', readTime: '5 min', color: '#059669', color2: '#047857', excerpt: 'Takaran 2.5 kg beras atau tunai Rp 35-50rb per jiwa, simulasi keluarga 4-6 orang, plus dasar hukum dan ke mana bayar.' },
+  { slug: 'cara-hitung-zakat-mal', title: 'Cara Hitung Zakat Mal 2026: Emas, Tabungan, Investasi (Nisab 85 gr Emas)', category: 'ZAKAT', readTime: '7 min', color: '#D97706', color2: '#92400E', excerpt: 'Nisab 85 gr emas (~Rp 102jt), haul 1 tahun, tarif 2.5%. Simulasi zakat tabungan, saham, reksa dana, dan properti investasi.' },
+  { slug: 'cara-hitung-zakat-penghasilan', title: 'Cara Hitung Zakat Penghasilan 2.5% untuk Karyawan & Profesional', category: 'ZAKAT', readTime: '6 min', color: '#0891B2', color2: '#0E7490', excerpt: 'Nisab tahunan Rp 102jt (Rp 8.5jt/bulan), bruto vs neto, simulasi gaji Rp 10-25jt, dan zakat sebagai pengurang pajak.' },
+  { slug: 'cara-hitung-fidyah-ramadan', title: 'Cara Hitung Fidyah Ramadan 2026 (Hamil, Menyusui, Sakit Permanen)', category: 'IBADAH', readTime: '5 min', color: '#7C3AED', color2: '#5B21B6', excerpt: 'Takaran 1 mud beras (~7.5 ons) per hari, tunai Rp 11rb/hari. Untuk ibu hamil, menyusui, lansia, sakit kronis.' },
+  { slug: 'cara-tabungan-dana-qurban', title: 'Cara Tabungan Dana Qurban 2026: Kambing & Sapi Berapa Nabung/Bulan?', category: 'QURBAN', readTime: '6 min', color: '#047857', color2: '#065F46', excerpt: 'Harga kambing Rp 3-5jt, sapi Rp 18-25jt. Nabung kambing mulai Rp 167rb/bulan, patungan sapi mulai Rp 125rb/bulan.' },
+  { slug: 'panduan-warisan-faraidh', title: 'Cara Hitung Warisan Faraidh Sesuai Hukum Islam — Panduan Lengkap', category: 'FARAIDH', readTime: '9 min', color: '#DC2626', color2: '#991B1B', excerpt: 'Dasar Al-Quran An-Nisa, urutan kewajiban, furudh muqaddarah, dan 3 contoh kasus pembagian warisan istri + anak + orang tua.' },
+  { slug: 'cara-menghitung-dana-haji', title: 'Cara Hitung Dana Haji 10-20 Tahun: Tabungan Bulanan Sampai Berangkat', category: 'HAJI', readTime: '7 min', color: '#6D28D9', color2: '#5B21B6', excerpt: 'BPIH 2026 Rp 50-90jt, masa tunggu 15-30 tahun, simulasi tabungan bulanan, dan instrumen syariah untuk return optimal.' },
+  { slug: 'cara-menghitung-kredit-investasi', title: 'Cara Hitung Cicilan Kredit Investasi 2026 — Bunga, Biaya & Pelunasan', category: 'KEUANGAN', readTime: '8 min', color: '#0D9488', color2: '#0F766E', excerpt: 'Anuitas/efektif/flat, provisi & admin, grace period saat konstruksi, dan simulasi pelunasan sebagian untuk kredit usaha produktif.' },
+  { slug: 'cara-menghitung-hpp', title: 'Cara Hitung HPP (Harga Pokok Produksi) UMKM 2026 — Rumus & Contoh', category: 'UMKM', readTime: '6 min', color: '#EA580C', color2: '#C2410C', excerpt: 'Rumus HPP = bahan baku + tenaga kerja + overhead. Tentukan harga pokok produksi agar harga jual tetap untung, plus contoh UMKM.' },
+  { slug: 'cara-menghitung-bep', title: 'Cara Hitung BEP (Break Even Point) Usaha 2026 — Rumus & Contoh', category: 'UMKM', readTime: '6 min', color: '#4F46E5', color2: '#4338CA', excerpt: 'Titik impas usaha: rumus BEP unit & rupiah, berapa unit harus terjual agar balik modal, plus contoh kasus UMKM.' },
+  { slug: 'cara-menghitung-roi-usaha', title: 'Cara Hitung ROI & Balik Modal Usaha 2026 — Rumus & Contoh', category: 'UMKM', readTime: '10 min', color: '#16A34A', color2: '#15803D', excerpt: 'Panduan lengkap ROI & balik modal: laba jujur (gaji sendiri + penyusutan), modal kerja, ramp-up, ROI riil setelah inflasi, NPV, IRR, dan analisis sensitivitas.' },
+  { slug: 'cara-menghitung-komisi-ojol', title: 'Cara Hitung Komisi GoFood, GrabFood & ShopeeFood 2026 untuk Merchant', category: 'UMKM', readTime: '7 min', color: '#D97706', color2: '#B45309', excerpt: 'Komisi merchant GoFood/GrabFood/ShopeeFood + PPN, dan cara hitung harga jual di aplikasi agar margin tetap aman.' },
+  { slug: 'cara-menghitung-kpr-syariah', title: 'Cara Hitung KPR Syariah Murabahah 2026 — Cicilan Tetap Tanpa Riba', category: 'SYARIAH', readTime: '8 min', color: '#0F766E', color2: '#115E59', excerpt: 'Akad murabahah: margin tetap, cicilan flat tanpa riba. Beda dengan KPR konvensional, simulasi, plus kelebihan & kekurangannya.' },
+  { slug: 'cara-menghitung-bagi-hasil', title: 'Cara Hitung Bagi Hasil Syariah (Mudharabah) 2026 — Nisbah & Contoh', category: 'SYARIAH', readTime: '7 min', color: '#CA8A04', color2: '#A16207', excerpt: 'Mudharabah & nisbah: cara hitung pembagian keuntungan antara pemodal dan pengelola usaha syariah, lengkap contoh.' },
+  { slug: 'cara-menghitung-gadai-syariah', title: 'Cara Hitung Gadai Syariah (Rahn) 2026 — Pinjaman, Mu\'nah & Tebusan', category: 'SYARIAH', readTime: '6 min', color: '#65A30D', color2: '#4D7C0F', excerpt: 'Rahn: pinjaman, biaya pemeliharaan (mu\'nah/ujrah), dan tebusan. Beda dengan gadai konvensional, plus simulasi.' },
+];
+---
+
+<Layout
+  title="Blog & Panduan HitungCerdas — Tips Keuangan, Bisnis, Pajak & Islami 2026"
+  description="38 panduan lengkap perhitungan KPR, KTA, pinjol legal, dana darurat, PPh 21, gaji bersih, UMKM, invoice, marketing, zakat, warisan, haji, dan investasi untuk masyarakat Indonesia."
+  canonical="https://hitungcerdas.net/blog"
+>
+  <section class="page-hero" style="--cat-color:#2563EB;--cat-color2:#1E40AF">
+    <div class="wrap">
+      <h1>Blog &amp; Panduan</h1>
+      <p>38 artikel edukasi seputar keuangan, bisnis, pajak, dan ibadah islami untuk masyarakat Indonesia</p>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+
+  <section class="section">
+    <div class="wrap">
+      <div class="art-grid">
+        {articles.map(art => (
+          <a href={`/blog/${art.slug}`} class="art-card" style={`--art-color:${art.color};--art-color2:${art.color2}`}>
+            <div class="art-img">
+              <i class="ti ti-file-text"></i>
+            </div>
+            <div class="art-body">
+              <div class="art-cat">{art.category}</div>
+              <h3 class="art-title">{art.title}</h3>
+              <p class="art-excerpt">{art.excerpt}</p>
+              <div class="art-meta"><i class="ti ti-clock"></i> {art.readTime} baca</div>
+              <span class="art-link">Baca Selengkapnya <i class="ti ti-arrow-right"></i></span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+</Layout>
+
+<style>
+  .page-hero { background: linear-gradient(135deg, var(--cat-color) 0%, var(--cat-color2) 100%); color: #fff; padding: 56px 0; text-align: center; }
+  .page-hero h1 { color: #fff; margin-bottom: 12px; }
+  .page-hero p { color: rgba(255, 255, 255, .85); font-size: 16px; max-width: 700px; margin: 0 auto; }
+  .art-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px; }
+  .art-card { background: #fff; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; transition: var(--tx); cursor: pointer; text-decoration: none; color: inherit; display: flex; flex-direction: column; }
+  .art-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); border-color: var(--art-color); }
+  .art-img { height: 140px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--art-color), var(--art-color2)); color: #fff; font-size: 60px; position: relative; overflow: hidden; }
+  .art-img::before { content: ''; position: absolute; top: -30%; right: -20%; width: 140px; height: 140px; border-radius: 50%; background: rgba(255, 255, 255, .1); transition: transform .5s; }
+  .art-card:hover .art-img::before { transform: scale(1.2); }
+  .art-body { padding: 18px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+  .art-cat { font-size: 10px; font-weight: 700; color: var(--art-color); letter-spacing: .08em; text-transform: uppercase; }
+  .art-title { font-size: 15px; font-weight: 700; color: var(--navy); line-height: 1.35; letter-spacing: -.01em; margin: 0; font-family: var(--ff-display); }
+  .art-excerpt { font-size: 12.5px; color: var(--text-soft); line-height: 1.5; margin: 0; flex: 1; }
+  .art-meta { font-size: 11px; color: var(--text-mute); display: flex; align-items: center; gap: 4px; margin-top: 6px; }
+  .art-link { font-size: 12px; color: var(--art-color); font-weight: 700; display: inline-flex; align-items: center; gap: 4px; margin-top: 4px; }
+</style>
