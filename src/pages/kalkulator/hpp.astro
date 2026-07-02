@@ -82,6 +82,11 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
                 <input type="number" id="unit" class="has-suffix" value="100" min="1" step="1" /></div>
               <p class="hint" style="margin-top:6px">Berapa unit/porsi yang dihasilkan dari satu kali produksi di atas.</p>
             </div>
+            <div class="field"><label>Faktor Susut / Waste <span class="hint">(opsional)</span></label>
+              <div class="input-wrap"><span class="input-suffix">%</span>
+                <input type="number" id="susut" class="has-suffix" value="0" min="0" max="90" step="1" /></div>
+              <p class="hint" style="margin-top:6px">Persen bahan/produk yang terbuang atau gagal (potongan sayur, adonan sisa, produk rusak). HPP efektif naik karena unit layak jual berkurang.</p>
+            </div>
             <div class="field"><label>Target Margin Keuntungan</label>
               <div class="input-wrap"><span class="input-suffix">% dari harga jual</span>
                 <input type="number" id="margin" class="has-suffix" value="40" min="0" max="90" step="1" /></div>
@@ -417,7 +422,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
     function ready(fn) { if (window.HC && window.html2canvas) fn(); else setTimeout(function(){ ready(fn); }, 100); }
     ready(function() {
       var $ = function(id){ return document.getElementById(id); };
-      var els = { tkl: $('tkl'), overhead: $('overhead'), unit: $('unit'), margin: $('margin') };
+      var els = { tkl: $('tkl'), overhead: $('overhead'), unit: $('unit'), margin: $('margin'), susut: $('susut') };
       [els.tkl, els.overhead].forEach(function(el){ el.addEventListener('input', HC.fmtInput); });
       var lastCalc = null;
 
@@ -503,26 +508,29 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         var overhead = HC.parseRp(els.overhead.value);
         var unit = parseInt(els.unit.value) || 0;
         var margin = parseFloat(els.margin.value) || 0;
+        var susut = parseFloat(els.susut.value) || 0; if (susut < 0) susut = 0; if (susut > 90) { susut = 90; els.susut.value = 90; }
 
         var totalBiaya = bahan + tkl + overhead;
         if (totalBiaya === 0) { HC.toast('Masukkan biaya produksi dulu', 'error'); return; }
         if (unit < 1) { HC.toast('Jumlah unit minimal 1', 'error'); return; }
         if (margin >= 90) { margin = 89; els.margin.value = 89; HC.toast('Margin dibatasi maksimal 89%', 'info'); }
 
-        var hppUnit = totalBiaya / unit;
+        var hppKotor = totalBiaya / unit;
+        var unitBaik = susut > 0 ? unit * (1 - susut / 100) : unit;
+        var hppUnit = unitBaik > 0 ? totalBiaya / unitBaik : hppKotor;
         var hargaJual = margin > 0 ? hppUnit / (1 - margin / 100) : hppUnit;
         var untungUnit = hargaJual - hppUnit;
         var marginReal = hargaJual > 0 ? (untungUnit / hargaJual) * 100 : 0;
 
         $('hppUnit').textContent = HC.fmt(hppUnit);
-        $('hppMeta').textContent = unit + ' unit \u00b7 total biaya ' + HC.fmt(totalBiaya);
+        $('hppMeta').textContent = unit + ' unit' + (susut > 0 ? ' (\u2248' + Math.round(unitBaik) + ' layak jual)' : '') + ' \u00b7 total biaya ' + HC.fmt(totalBiaya);
         $('totalBiaya').textContent = HC.fmt(totalBiaya);
         $('hargaJual').textContent = HC.fmt(hargaJual);
         $('untungUnit').textContent = HC.fmt(untungUnit);
         $('marginOut').textContent = marginReal.toFixed(1) + '%';
 
         var markup = hppUnit > 0 ? (untungUnit / hppUnit) * 100 : 0;
-        $('hppInfo').innerHTML = '\ud83d\udca1 Modal tiap produk <b>' + HC.fmt(hppUnit) + '</b>. Dengan margin ' + margin + '%, jual di <b>' + HC.fmt(hargaJual) + '/unit</b> \u2192 untung <b>' + HC.fmt(untungUnit) + '/unit</b> (markup ' + markup.toFixed(0) + '% dari modal). Harga ini belum dikurangi biaya marketplace/ongkir & operasional (sewa, marketing, admin).';
+        $('hppInfo').innerHTML = '\ud83d\udca1 Modal tiap produk <b>' + HC.fmt(hppUnit) + '</b>. Dengan margin ' + margin + '%, jual di <b>' + HC.fmt(hargaJual) + '/unit</b> \u2192 untung <b>' + HC.fmt(untungUnit) + '/unit</b> (markup ' + markup.toFixed(0) + '% dari modal). Harga ini belum dikurangi biaya marketplace/ongkir & operasional (sewa, marketing, admin).' + (susut > 0 ? ' \u2699\ufe0f Termasuk susut ' + susut + '%: dari ' + unit + ' unit, hanya \u2248' + Math.round(unitBaik) + ' unit layak jual, jadi modal/unit naik dari ' + HC.fmt(hppKotor) + ' ke ' + HC.fmt(hppUnit) + '.' : '');
 
         // Simulasi
         var presets = [15, 20, 25, 30, 40, 50];

@@ -152,6 +152,14 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
                 </div>
               </div>
 
+              <div class="adv-section" id="sensBlock">
+                <div class="adv-toggle"><span><i class="ti ti-adjustments-alt"></i>&nbsp; Analisis Sensitivitas Harga &amp; Biaya</span><i class="ti ti-chevron-down chev"></i></div>
+                <div class="adv-content">
+                  <p style="font-size:12px;color:var(--text-mute);margin:0 0 8px;line-height:1.5">Lihat seberapa sensitif titik impasmu terhadap perubahan kecil harga jual &amp; biaya variabel. Diperbarui otomatis tiap klik "Hitung Sekarang".</p>
+                  <div id="sensBody"></div>
+                </div>
+              </div>
+
               <div class="export-row">
                 <button type="button" class="export-btn img" id="exportImg"><i class="ti ti-photo-down"></i><span>Save Image</span></button>
                 <button type="button" class="export-btn wa" id="exportWa"><i class="ti ti-brand-whatsapp"></i><span>Share WA</span></button>
@@ -238,7 +246,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
   </div></section>
 
   <p class="hc-method-note" style="text-align:center;font-size:.85rem;color:#64748b;margin:1.2rem auto;max-width:680px;line-height:1.6;padding:0 1rem;">
-    📅 Diperbarui <strong>Juni 2026</strong> · Memakai konsep margin kontribusi: BEP (unit) = biaya tetap &divide; (harga jual &minus; biaya variabel per unit). Estimasi edukatif untuk perencanaan usaha. <strong>Sumber:</strong> prinsip akuntansi manajemen.
+    📅 Diperbarui <strong>Juli 2026</strong> · Memakai konsep margin kontribusi: BEP (unit) = biaya tetap &divide; (harga jual &minus; biaya variabel per unit). Estimasi edukatif untuk perencanaan usaha. <strong>Sumber:</strong> prinsip akuntansi manajemen.
   </p>
 
 <style>
@@ -406,6 +414,61 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
 
       let lastCalc = null;
 
+      function renderSens(fixed, harga, variabel) {
+        var body = $('sensBody'); if (!body) return;
+        var mk0 = harga - variabel, bep0 = fixed / mk0;
+        function bepFor(h, v) { var m = h - v; return { m: m, bep: m > 0 ? fixed / m : null }; }
+        var rows = [
+          { label: 'Harga jual \u221210%', h: harga * 0.9, v: variabel },
+          { label: 'Sekarang', h: harga, v: variabel, base: true },
+          { label: 'Harga jual +10%', h: harga * 1.1, v: variabel },
+          { label: 'Biaya variabel +10%', h: harga, v: variabel * 1.1 },
+          { label: 'Biaya variabel \u221210%', h: harga, v: variabel * 0.9 }
+        ];
+        var html = '<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:12px">'
+          + '<thead><tr style="text-align:left;color:var(--text-mute);border-bottom:1px solid var(--border)">'
+          + '<th style="padding:6px 8px;font-weight:600">Skenario</th>'
+          + '<th style="padding:6px 8px;font-weight:600;text-align:right">Margin/unit</th>'
+          + '<th style="padding:6px 8px;font-weight:600;text-align:right">BEP (unit)</th>'
+          + '<th style="padding:6px 8px;font-weight:600;text-align:right">vs Sekarang</th></tr></thead><tbody>';
+        rows.forEach(function (r) {
+          var res = bepFor(r.h, r.v);
+          var mTxt = res.m > 0 ? HC.fmt(res.m) : '<span style="color:#DC2626">' + HC.fmt(res.m) + '</span>';
+          var bepTxt, deltaTxt;
+          if (res.bep === null) {
+            bepTxt = '<span style="color:#DC2626">tak tercapai</span>';
+            deltaTxt = '<span style="color:#DC2626;font-weight:700">\u26a0 rugi/unit</span>';
+          } else {
+            bepTxt = Math.ceil(res.bep).toLocaleString('id-ID');
+            if (r.base) { deltaTxt = '<span style="color:var(--text-mute)">\u2014</span>'; }
+            else {
+              var pct = (res.bep - bep0) / bep0 * 100;
+              var up = pct > 0.05, down = pct < -0.05;
+              var col = up ? '#DC2626' : (down ? '#059669' : 'var(--text-mute)');
+              var arr = up ? '\u25b2' : (down ? '\u25bc' : '');
+              deltaTxt = '<span style="color:' + col + ';font-weight:700">' + arr + ' ' + (pct > 0 ? '+' : '') + pct.toFixed(0) + '%</span>';
+            }
+          }
+          var rowStyle = r.base ? 'background:#EEF2FF;font-weight:700' : '';
+          html += '<tr style="border-bottom:1px solid var(--border);' + rowStyle + '">'
+            + '<td style="padding:7px 8px">' + r.label + '</td>'
+            + '<td style="padding:7px 8px;text-align:right">' + mTxt + '</td>'
+            + '<td style="padding:7px 8px;text-align:right">' + bepTxt + '</td>'
+            + '<td style="padding:7px 8px;text-align:right">' + deltaTxt + '</td></tr>';
+        });
+        html += '</tbody></table></div>';
+        var d10 = bepFor(harga * 0.9, variabel), u10 = bepFor(harga * 1.1, variabel);
+        if (d10.bep !== null && u10.bep !== null) {
+          var pd = (d10.bep - bep0) / bep0 * 100, pu = (u10.bep - bep0) / bep0 * 100;
+          html += '<div style="margin-top:10px;padding:11px 13px;border-radius:12px;background:#FFFBEB;border:1px solid #FDE68A;font-size:12.5px;line-height:1.6;color:#92400E">'
+            + '<i class="ti ti-bulb"></i> Harga jual turun 10% membuat BEP <b>naik +' + pd.toFixed(0) + '%</b>, sedangkan naik 10% hanya menurunkannya ' + Math.abs(pu).toFixed(0) + '%. '
+            + 'Harga jual adalah <b>tuas paling kuat</b> ke titik impasmu \u2014 hati-hati kasih diskon besar, dan naikkan harga sedikit saja bisa mempercepat balik modal.</div>';
+        } else if (d10.bep === null) {
+          html += '<div style="margin-top:10px;padding:11px 13px;border-radius:12px;background:#FEF2F2;border:1px solid #FECACA;font-size:12.5px;line-height:1.6;color:#991B1B">'
+            + '<i class="ti ti-alert-triangle"></i> Marginmu tipis: turun harga 10% saja sudah membuat tiap unit <b>rugi</b> (harga di bawah biaya variabel). Titik impasmu rapuh \u2014 prioritaskan naikkan harga atau tekan biaya variabel.</div>';
+        }
+        body.innerHTML = html;
+      }
       function hitung() {
         const fixed = HC.parseRp(els.fixed.value);
         const harga = HC.parseRp(els.harga.value);
@@ -494,6 +557,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         if (mosData) { if (mosData.aman) _mosC = { aman: true, proyeksi: proyeksi.toLocaleString('id-ID'), mosPct: mosData.mosPct.toFixed(1), labaTxt: HC.fmt(mosData.laba) }; else _mosC = { aman: false, proyeksi: proyeksi.toLocaleString('id-ID'), shortfall: mosData.shortfall.toLocaleString('id-ID'), rugiTxt: HC.fmt(mosData.rugi) }; }
         window.HCBep = { bepUnitTxt: Math.ceil(bepUnit).toLocaleString('id-ID'), bepRupiahTxt: HC.fmt(bepRupiah), mkTxt: HC.fmt(mk), mkRatio: mkRatio.toFixed(1), fixedTxt: HC.fmt(fixed), hargaTxt: HC.fmt(harga), variabelTxt: HC.fmt(variabel), target: targetData ? { labaTxt: HC.fmt(target), unit: targetData.unitTarget.toLocaleString('id-ID') } : null, mos: _mosC };
         if (HC.history) HC.history.push('bep', { inputs: HC.history.capture(['fixed','harga','variabel','target','proyeksi']), summary: 'Tetap ' + sRp(lastCalc.fixed) + ' \u00b7 Hrg ' + sRp(lastCalc.harga) + ' \u00b7 Var ' + sRp(lastCalc.variabel), metrics: [{ k: 'BEP', v: lastCalc.bepUnit.toLocaleString('id-ID') + ' unit' }, { k: 'Omzet', v: HC.fmt(lastCalc.bepRupiah) }] });
+        renderSens(fixed, harga, variabel);
         renderHist();
         $('placeholder').style.display = 'none';
         $('results').classList.add('show');
