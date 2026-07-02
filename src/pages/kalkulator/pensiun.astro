@@ -152,6 +152,40 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
                 <div class="result-item"><div class="result-item-label">Skor Kesiapan</div><div class="result-item-value" id="readiness">0%</div></div>
               </div>
 
+              <div class="adv-section">
+                <div class="adv-toggle"><span><i class="ti ti-chart-area-line"></i>&nbsp; Grafik Gunung Pensiun & Proyeksi Tahunan</span><i class="ti ti-chevron-down chev"></i></div>
+                <div class="adv-content">
+                  <div id="mountainChart" class="mountain-wrap"></div>
+                  <table class="compare-table">
+                    <thead><tr><th>Usia</th><th>Fase</th><th class="right">Proyeksi Saldo</th></tr></thead>
+                    <tbody id="yearlyBody"></tbody>
+                  </table>
+                  <p class="adv-note">Saldo naik selama menabung (akumulasi), memuncak saat pensiun (usia <span id="mtPeakAge">—</span>), lalu menurun karena dipakai (dekumulasi). Ditandai tiap 5 tahun. Nilai nominal masa depan.</p>
+                </div>
+              </div>
+
+              <div class="adv-section">
+                <div class="adv-toggle"><span><i class="ti ti-calendar-stats"></i>&nbsp; Skenario Usia Pensiun</span><i class="ti ti-chevron-down chev"></i></div>
+                <div class="adv-content">
+                  <table class="compare-table">
+                    <thead><tr><th>Pensiun Usia</th><th class="right">Target</th><th class="right">Setoran Ideal</th><th class="right">Kesiapan</th></tr></thead>
+                    <tbody id="skenarioBody"></tbody>
+                  </table>
+                  <p class="adv-note">Menunda pensiun beberapa tahun bisa memangkas setoran bulanan drastis (lebih lama menabung, lebih singkat masa pensiun). Baris ★ = pilihanmu.</p>
+                </div>
+              </div>
+
+              <div class="adv-section">
+                <div class="adv-toggle"><span><i class="ti ti-adjustments-alt"></i>&nbsp; Uji Sensitivitas Asumsi</span><i class="ti ti-chevron-down chev"></i></div>
+                <div class="adv-content">
+                  <table class="compare-table">
+                    <thead><tr><th>Skenario</th><th class="right">Target Dana</th><th class="right">Setoran Ideal/bln</th></tr></thead>
+                    <tbody id="sensBody"></tbody>
+                  </table>
+                  <p class="adv-note">Pensiun sangat sensitif ke asumsi jangka panjang. ▲ merah = butuh setoran lebih besar; ▼ hijau = lebih ringan.</p>
+                </div>
+              </div>
+
               <div class="export-row">
                 <button type="button" class="export-btn img" id="exportImg"><i class="ti ti-photo-down"></i><span>Save Image</span></button>
                 <button type="button" class="export-btn wa" id="exportWa"><i class="ti ti-brand-whatsapp"></i><span>Share WA</span></button>
@@ -212,6 +246,9 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
   html.dark .view-toggle { background:#1E293B; }
   html.dark .view-toggle button.active { background:#0F172A; color:#A5B4FC; }
   html.dark .warn-box { background:rgba(180,120,10,.12); border-color:rgba(251,191,36,.3); color:#FCD34D; }
+  .mountain-wrap { width:100%; margin-bottom:10px; }
+  .mountain-wrap svg { width:100%; height:auto; display:block; border-radius:8px; }
+  .adv-note { font-size:11.5px; color:var(--text-mute); margin-top:8px; line-height:1.5; }
 </style>
 
 <script is:inline>
@@ -231,6 +268,129 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       let viewMode = 'future';
 
       function num(el, def) { var v = parseFloat(String(el.value).replace(',', '.')); return isFinite(v) ? v : def; }
+
+      // ===== V2: sensitivitas, skenario usia, proyeksi tahunan, grafik =====
+      function calcTargetX(pengeluaran, lifestyle, inflasi, returnPensiun, ytr, mp, pensiunBulanan){
+        var inflF=Math.pow(1+inflasi,ytr);
+        var pengP=pengeluaran*lifestyle*inflF;
+        var kebT=Math.max(0,pengP-pensiunBulanan)*12;
+        var rr=(1+returnPensiun)/(1+inflasi)-1;
+        return Math.abs(rr)<1e-9 ? kebT*mp : kebT*(1-Math.pow(1+rr,-mp))/rr;
+      }
+      function calcProyX(tabunganNow, setoranNow, returnPra, ytr){
+        var rMon=returnPra/12, nMon=ytr*12;
+        var fvTab=tabunganNow*Math.pow(1+returnPra,ytr);
+        var fvSet=(setoranNow>0&&rMon>0)?setoranNow*((Math.pow(1+rMon,nMon)-1)/rMon):setoranNow*nMon;
+        return {proyeksi:fvTab+fvSet, fvTab:fvTab, rMon:rMon, nMon:nMon};
+      }
+      function calcSetoranX(target, fvTab, rMon, nMon){
+        var sisa=target-fvTab; if(sisa<=0) return 0;
+        return rMon>0 ? sisa*rMon/(Math.pow(1+rMon,nMon)-1) : sisa/nMon;
+      }
+      function deltaTd(base, val){
+        if(base<=0) return '<td class="right">'+HC.fmt(val)+'</td>';
+        var d=(val-base)/base*100;
+        var col = d>0.5?'#DC2626':(d<-0.5?'#059669':'var(--text-soft)');
+        var arr = d>0.5?'\u25b2':(d<-0.5?'\u25bc':'\u2022');
+        return '<td class="right">'+HC.fmt(val)+' <span style="color:'+col+';font-weight:700;font-size:10.5px">'+arr+Math.abs(d).toFixed(0)+'%</span></td>';
+      }
+      function renderSensitivity(c){
+        var base=c.setoranIdeal;
+        var rows=[
+          {n:'Asumsimu (base)', rp:c.returnPra, rq:c.returnPensiun, inf:c.inflasi, uh:c.usiaHarapan},
+          {n:'Return \u22122%', rp:Math.max(0,c.returnPra-0.02), rq:Math.max(0,c.returnPensiun-0.02), inf:c.inflasi, uh:c.usiaHarapan},
+          {n:'Return +2%', rp:c.returnPra+0.02, rq:c.returnPensiun+0.02, inf:c.inflasi, uh:c.usiaHarapan},
+          {n:'Inflasi +1%', rp:c.returnPra, rq:c.returnPensiun, inf:c.inflasi+0.01, uh:c.usiaHarapan},
+          {n:'Umur +10 thn', rp:c.returnPra, rq:c.returnPensiun, inf:c.inflasi, uh:c.usiaHarapan+10}
+        ];
+        var html='';
+        rows.forEach(function(r,i){
+          var mp=r.uh-c.usiaPensiun;
+          var t=calcTargetX(c.pengeluaran,c.lifestyle,r.inf,r.rq,c.tahunKePensiun,mp,c.pensiunBulanan);
+          var pr=calcProyX(c.tabunganNow,c.setoranNow,r.rp,c.tahunKePensiun);
+          var si=calcSetoranX(t,pr.fvTab,pr.rMon,pr.nMon);
+          html+='<tr'+(i===0?' class="active"':'')+'><td>'+r.n+'</td><td class="right">'+HC.fmt(t)+'</td>'+(i===0?('<td class="right"><b>'+HC.fmt(si)+'</b></td>'):deltaTd(base,si))+'</tr>';
+        });
+        $('sensBody').innerHTML=html;
+      }
+      function renderSkenario(c){
+        var ages=[55,59,65]; if(ages.indexOf(c.usiaPensiun)<0) ages.push(c.usiaPensiun);
+        ages.sort(function(a,b){return a-b;});
+        var html='';
+        ages.forEach(function(age){
+          if(age<=c.usiaNow || age>=c.usiaHarapan) return;
+          var ytr=age-c.usiaNow, mp=c.usiaHarapan-age;
+          var t=calcTargetX(c.pengeluaran,c.lifestyle,c.inflasi,c.returnPensiun,ytr,mp,c.pensiunBulanan);
+          var pr=calcProyX(c.tabunganNow,c.setoranNow,c.returnPra,ytr);
+          var si=calcSetoranX(t,pr.fvTab,pr.rMon,pr.nMon);
+          var rd=t>0?Math.min(999,pr.proyeksi/t*100):0;
+          var mine=age===c.usiaPensiun;
+          html+='<tr'+(mine?' class="active"':'')+'><td>'+(mine?'\u2605 ':'')+age+' thn</td><td class="right">'+HC.fmt(t)+'</td><td class="right">'+HC.fmt(si)+'</td><td class="right" style="font-weight:700;color:'+(rd>=90?'#059669':rd>=50?'#D97706':'#DC2626')+'">'+rd.toFixed(0)+'%</td></tr>';
+        });
+        $('skenarioBody').innerHTML=html;
+      }
+      function buildYearly(c){
+        var arr=[]; var saldo=c.tabunganNow; var setTahun=c.setoranNow*12;
+        for(var usia=c.usiaNow; usia<=c.usiaHarapan; usia++){
+          var phase=usia<c.usiaPensiun?'akum':'pensiun';
+          arr.push({usia:usia, saldo:Math.max(0,saldo), phase:phase});
+          if(usia<c.usiaPensiun){ saldo=saldo*(1+c.returnPra)+setTahun; }
+          else {
+            var yfn=usia-c.usiaNow+1;
+            var pengY=c.pengeluaran*c.lifestyle*Math.pow(1+c.inflasi,yfn);
+            var wd=Math.max(0,(pengY-c.pensiunBulanan))*12;
+            saldo=saldo*(1+c.returnPensiun)-wd; if(saldo<0) saldo=0;
+          }
+        }
+        return arr;
+      }
+      function renderYearly(c, yearly){
+        var html='';
+        yearly.forEach(function(pt){
+          var show=(pt.usia%5===0)||pt.usia===c.usiaPensiun||pt.usia===c.usiaHarapan||pt.usia===c.usiaNow;
+          if(!show) return;
+          var peak=pt.usia===c.usiaPensiun;
+          var fase=pt.phase==='akum'?'Menabung':'Pensiun';
+          html+='<tr'+(peak?' class="active"':'')+'><td>'+(peak?'\u2605 ':'')+pt.usia+' thn</td><td>'+fase+'</td><td class="right">'+HC.fmt(pt.saldo)+'</td></tr>';
+        });
+        $('yearlyBody').innerHTML=html;
+      }
+      function renderMountain(c, yearly){
+        var W=340,H=150,padL=8,padR=8,padT=16,padB=18;
+        var maxS=0; yearly.forEach(function(pt){if(pt.saldo>maxS)maxS=pt.saldo;}); if(maxS<=0)maxS=1;
+        var span=(c.usiaHarapan-c.usiaNow)||1;
+        var xOf=function(u){return padL+(u-c.usiaNow)/span*(W-padL-padR);};
+        var yOf=function(sv){return H-padB-(sv/maxS)*(H-padT-padB);};
+        var line=''; yearly.forEach(function(pt,i){ line+=(i===0?'M':'L')+xOf(pt.usia).toFixed(1)+','+yOf(pt.saldo).toFixed(1)+' '; });
+        var area='M'+xOf(c.usiaNow).toFixed(1)+','+(H-padB)+' '+line.replace(/^M/,'L')+'L'+xOf(c.usiaHarapan).toFixed(1)+','+(H-padB)+' Z';
+        var peakFrac=(c.usiaPensiun-c.usiaNow)/span*100;
+        var px=xOf(c.usiaPensiun);
+        var svg='<svg viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg">'
+          +'<defs><linearGradient id="mtG'+c.usiaPensiun+'" x1="0" y1="0" x2="1" y2="0">'
+          +'<stop offset="0%" stop-color="#10B981" stop-opacity=".8"/>'
+          +'<stop offset="'+peakFrac.toFixed(0)+'%" stop-color="#34D399" stop-opacity=".65"/>'
+          +'<stop offset="'+Math.min(100,peakFrac+1).toFixed(0)+'%" stop-color="#FBBF24" stop-opacity=".6"/>'
+          +'<stop offset="100%" stop-color="#F59E0B" stop-opacity=".5"/>'
+          +'</linearGradient></defs>'
+          +'<path d="'+area+'" fill="url(#mtG'+c.usiaPensiun+')"/>'
+          +'<path d="'+line+'" fill="none" stroke="#4F46E5" stroke-width="2" stroke-linejoin="round"/>'
+          +'<line x1="'+px.toFixed(1)+'" y1="'+padT+'" x2="'+px.toFixed(1)+'" y2="'+(H-padB)+'" stroke="#3730A3" stroke-width="1.1" stroke-dasharray="3 3"/>'
+          +'<text x="'+px.toFixed(1)+'" y="'+(padT-5)+'" text-anchor="middle" font-size="9" font-weight="700" fill="#4F46E5" font-family="Inter">Pensiun '+c.usiaPensiun+'</text>'
+          +'<text x="'+padL+'" y="'+(H-5)+'" font-size="8.5" fill="#94A3B8" font-family="Inter">'+c.usiaNow+' th</text>'
+          +'<text x="'+(W-padR)+'" y="'+(H-5)+'" text-anchor="end" font-size="8.5" fill="#94A3B8" font-family="Inter">'+c.usiaHarapan+' th</text>'
+          +'<text x="'+padL+'" y="'+(padT-5)+'" font-size="8.5" fill="#94A3B8" font-family="Inter">puncak '+HC.fmt(maxS)+'</text>'
+          +'</svg>';
+        $('mountainChart').innerHTML=svg;
+        var pa=$('mtPeakAge'); if(pa) pa.textContent=c.usiaPensiun;
+      }
+      function renderAdv(){
+        var c=lastCalc; if(!c) return;
+        var yearly=buildYearly(c);
+        renderMountain(c, yearly);
+        renderYearly(c, yearly);
+        renderSkenario(c);
+        renderSensitivity(c);
+      }
 
       function hitung() {
         const usiaNow = num(els.usiaNow, 30);
@@ -318,6 +478,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         $('placeholder').style.display = 'none';
         $('results').classList.add('show');
         render();
+        renderAdv();
         $('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         HC.toast('Rencana pensiun berhasil dihitung!');
       }
@@ -405,6 +566,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         if (HC.history) HC.history.render('pensiun', $('histBox'), function () { hitung(); });
       }
       renderHist();
+      document.querySelectorAll('.adv-toggle').forEach(function(t){ t.addEventListener('click', function(){ t.parentElement.classList.toggle('open'); }); });
 
       // view toggle
       $('viewToggle').querySelectorAll('button').forEach(btn => btn.addEventListener('click', () => {
