@@ -1,0 +1,454 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import FAQ from '../../components/FAQ.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import CalculatorCard from '../../components/CalculatorCard.astro';
+import { getCalculatorBySlug, getRelatedCalculators } from '../../data/calculators';
+
+const calc = getCalculatorBySlug('pensiun')!;
+const related = getRelatedCalculators('pensiun', 3);
+
+const faqs = [
+  { question: 'Berapa dana pensiun ideal?', answer: 'Tergantung gaya hidup, usia pensiun, dan berapa lama masa pensiun. Patokan kasar: dana pensiun idealnya cukup membiayai 70-80% pengeluaranmu sekarang (disesuaikan inflasi) selama masa pensiun. Kalkulator ini menghitungnya dengan metode <strong>return riil</strong> (return dikurangi inflasi) agar daya beli tetap terjaga, bukan sekadar angka nominal besar.' },
+  { question: 'Apakah BPJS cukup untuk pensiun?', answer: 'Umumnya <strong>tidak cukup kalau hanya mengandalkan BPJS</strong>. Jaminan Pensiun (JP) BPJS memberi manfaat bulanan tapi nilainya relatif kecil dibanding kebutuhan hidup, dan Jaminan Hari Tua (JHT) sifatnya lump sum sekali cair. Jadikan BPJS sebagai pelengkap, bukan satu-satunya sumber. Sisanya perlu kamu tabung & investasikan sendiri (reksadana, saham, emas, DPLK, properti).' },
+  { question: 'Apa beda JHT dan JP?', answer: '<strong>JHT (Jaminan Hari Tua)</strong> adalah tabungan yang dibayarkan <strong>sekaligus (lump sum)</strong>, umumnya bisa dicairkan mulai usia 56 tahun. <strong>JP (Jaminan Pensiun)</strong> adalah manfaat <strong>bulanan</strong> yang diterima jika masa iur minimal 15 tahun; kalau kurang dari 15 tahun, dibayarkan sekaligus. Keduanya program BPJS Ketenagakerjaan.' },
+  { question: 'Berapa usia pensiun BPJS?', answer: 'Usia pensiun program Jaminan Pensiun (JP) BPJS Ketenagakerjaan pada 2026 adalah <strong>59 tahun</strong>, dan naik 1 tahun setiap 3 tahun hingga maksimal 65 tahun. Namun banyak perusahaan menetapkan usia pensiun internal sendiri (mis. 55 tahun), jadi field usia pensiun di kalkulator ini bisa kamu ubah sesuai rencanamu.' },
+  { question: 'Apa itu inflasi dan return riil?', answer: '<strong>Inflasi</strong> adalah kenaikan harga barang/jasa tiap tahun — membuat Rp 10 juta hari ini tidak sama nilainya dengan 20 tahun lagi. <strong>Return riil</strong> = (1 + return investasi) ÷ (1 + inflasi) − 1, yaitu keuntungan investasi setelah dipotong inflasi. Inilah angka yang benar-benar menambah daya belimu. Kalau return investasi lebih rendah dari inflasi, daya beli danamu justru menyusut.' },
+  { question: 'Bagaimana cara mengejar kekurangan dana pensiun?', answer: 'Ada 5 tuas utama: <strong>(1)</strong> tambah setoran bulanan, <strong>(2)</strong> tunda usia pensiun beberapa tahun, <strong>(3)</strong> turunkan target gaya hidup pensiun, <strong>(4)</strong> alokasikan THR/bonus tahunan ke investasi pensiun, dan <strong>(5)</strong> tambah sumber penghasilan pasif (sewa, dividen, usaha). Yang paling berdampak biasanya kombinasi menabung lebih dini + return investasi yang memadai (efek bunga majemuk).' },
+];
+
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '/#tools' }, { label: calc.shortTitle }];
+---
+
+<Layout title={calc.title} description={calc.metaDescription} keywords={calc.keywords} canonical={`https://hitungcerdas.net/kalkulator/${calc.slug}`}>
+  <section class="calc-hero" style="--cat-color:#4F46E5;--cat-color2:#3730A3">
+    <div class="wrap">
+      <Breadcrumb items={bcItems} />
+      <div class="calc-hero-grid">
+        <div class="calc-hero-text">
+          <div class="calc-hero-tag" style="background:#E0E7FF;color:#3730A3"><i class="ti ti-beach"></i> {calc.categoryLabel}</div>
+          <h1 class="calc-hero-title">{calc.h1}</h1>
+          <p class="calc-hero-sub">{calc.introText}</p>
+          <ul class="calc-hero-benefits">{calc.benefits.map(b => <li><i class="ti ti-check"></i> {b}</li>)}</ul>
+        </div>
+        <div class="calc-hero-illust">
+          <svg viewBox="0 0 200 200" fill="none">
+            <circle cx="100" cy="100" r="85" fill="rgba(255,255,255,.08)"/>
+            <path d="M55 150C55 120 75 105 100 105C125 105 145 120 145 150" fill="#FFF" stroke="#A5B4FC" stroke-width="3" stroke-linejoin="round"/>
+            <circle cx="100" cy="80" r="24" fill="#FFF" stroke="#A5B4FC" stroke-width="3"/>
+            <path d="M40 150H160" stroke="#C7D2FE" stroke-width="4" stroke-linecap="round"/>
+            <path d="M70 128L88 110L100 122L130 92" stroke="#34D399" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            <path d="M130 92H120M130 92V102" stroke="#34D399" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+            <text x="100" y="86" text-anchor="middle" font-size="16" font-weight="900" fill="#4F46E5" font-family="Inter">Rp</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+
+  <section class="calc-section">
+    <div class="wrap">
+      <div class="calc-card">
+        <div class="calc-card-hdr">
+          <div class="calc-card-hdr-ic" style="background:linear-gradient(135deg,#4F46E5 0%,#3730A3 100%)"><i class="ti ti-beach"></i></div>
+          <div><h2 class="calc-card-title">Kalkulator Dana Pensiun</h2><p class="calc-card-sub">Target · proyeksi · setoran ideal · skor kesiapan</p></div>
+        </div>
+
+        <div class="calc-grid">
+          <div class="calc-input">
+            <div class="field-row">
+              <div class="field"><label>Usia Sekarang</label>
+                <div class="input-wrap"><input type="number" id="usiaNow" value="30" min="15" max="80" /><span class="input-suffix">thn</span></div>
+              </div>
+              <div class="field"><label>Usia Pensiun</label>
+                <div class="input-wrap"><input type="number" id="usiaPensiun" value="59" min="40" max="75" /><span class="input-suffix">thn</span></div>
+              </div>
+            </div>
+            <p class="hint" style="margin-top:-4px">Usia pensiun BPJS 2026 = 59 (bisa diubah sesuai rencanamu).</p>
+
+            <div class="field"><label>Usia Harapan Hidup (rencana)</label>
+              <div class="input-wrap"><input type="number" id="usiaHarapan" value="80" min="60" max="100" /><span class="input-suffix">thn</span></div>
+              <p class="hint" style="margin-top:6px">Dana dirancang cukup sampai usia ini.</p>
+            </div>
+
+            <div class="field"><label>Pengeluaran per Bulan Sekarang</label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span>
+                <input type="text" id="pengeluaran" class="has-prefix" value="8.000.000" inputmode="numeric" /></div>
+            </div>
+
+            <div class="field"><label>Gaya Hidup Saat Pensiun</label>
+              <div class="input-wrap"><input type="number" id="lifestyle" value="75" min="30" max="120" /><span class="input-suffix">%</span></div>
+              <p class="hint" style="margin-top:6px">% dari pengeluaran sekarang. Umumnya turun jadi 70-80% (anak mandiri, cicilan lunas).</p>
+            </div>
+
+            <div class="field"><label>Perkiraan Pensiun/Penghasilan Pasif Bulanan <span class="hint">(opsional)</span></label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span>
+                <input type="text" id="pensiunBulanan" class="has-prefix" value="0" inputmode="numeric" /></div>
+              <p class="hint" style="margin-top:6px">Estimasi pemasukan bulanan saat pensiun: BPJS JP, DPLK, pensiun kantor, atau sewa properti. Mengurangi kebutuhan dari tabungan.</p>
+            </div>
+
+            <div class="field"><label>Tabungan/Investasi Pensiun Saat Ini</label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span>
+                <input type="text" id="tabunganNow" class="has-prefix" value="0" inputmode="numeric" /></div>
+            </div>
+
+            <div class="field"><label>Nabung/Setor per Bulan Saat Ini</label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span>
+                <input type="text" id="setoranNow" class="has-prefix" value="1.000.000" inputmode="numeric" /></div>
+            </div>
+
+            <div class="field-row">
+              <div class="field"><label>Return Sebelum Pensiun</label>
+                <div class="input-wrap"><input type="number" id="returnPra" value="8" min="0" max="30" step="0.5" /><span class="input-suffix">%/th</span></div>
+              </div>
+              <div class="field"><label>Return Saat Pensiun</label>
+                <div class="input-wrap"><input type="number" id="returnPensiun" value="5" min="0" max="30" step="0.5" /><span class="input-suffix">%/th</span></div>
+              </div>
+            </div>
+            <p class="hint" style="margin-top:-4px">Sebelum pensiun bisa lebih agresif (reksadana campuran/saham ~6-10%); saat pensiun lebih konservatif (~4-6%).</p>
+
+            <div class="field"><label>Inflasi per Tahun</label>
+              <div class="input-wrap"><input type="number" id="inflasi" value="4" min="0" max="20" step="0.5" /><span class="input-suffix">%/th</span></div>
+            </div>
+
+            <div class="calc-action-bar">
+              <button type="button" class="btn-hitung" id="btnHitung"><i class="ti ti-calculator"></i> Hitung Sekarang</button>
+              <button type="button" class="btn-reset" id="btnReset"><i class="ti ti-refresh"></i> Reset</button>
+            </div>
+          </div>
+
+          <div class="calc-output">
+            <div class="hist-section" id="histBox" style="display:none"></div>
+
+            <div class="result-placeholder" id="placeholder">
+              <i class="ti ti-beach result-placeholder-icon"></i>
+              <div class="result-placeholder-title">Rencana pensiunmu akan muncul di sini</div>
+              <div class="result-placeholder-desc">Isi usia, pengeluaran & tabungan, klik <strong>"Hitung Sekarang"</strong>.</div>
+            </div>
+
+            <div class="result-wrapper" id="results">
+              <div class="view-toggle" id="viewToggle">
+                <button type="button" data-view="future" class="active">Nominal Masa Depan</button>
+                <button type="button" data-view="today">Nilai Hari Ini</button>
+              </div>
+
+              <div class="result-main">
+                <div class="result-label">Setoran Ideal per Bulan</div>
+                <div class="result-value" id="setoranIdeal">Rp 0</div>
+                <div class="result-meta"><i class="ti ti-info-circle"></i> <span id="heroMeta">—</span></div>
+              </div>
+
+              <div class="warn-box" id="warnBox" style="display:none"></div>
+
+              <div class="result-grid">
+                <div class="result-item"><div class="result-item-label">Target Dana Pensiun</div><div class="result-item-value" id="targetDana">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">Proyeksi Dana Kamu</div><div class="result-item-value" id="proyeksiDana">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label" id="gapLabel">Kekurangan</div><div class="result-item-value result-warn" id="kekurangan">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">Pengeluaran/bln Saat Pensiun</div><div class="result-item-value" id="pengeluaranPensiun">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">Dana Cukup Sampai Usia</div><div class="result-item-value" id="cukupSampai">—</div></div>
+                <div class="result-item"><div class="result-item-label">Skor Kesiapan</div><div class="result-item-value" id="readiness">0%</div></div>
+              </div>
+
+              <div class="export-row">
+                <button type="button" class="export-btn img" id="exportImg"><i class="ti ti-photo-down"></i><span>Save Image</span></button>
+                <button type="button" class="export-btn wa" id="exportWa"><i class="ti ti-brand-whatsapp"></i><span>Share WA</span></button>
+                <button type="button" class="export-btn pdf" id="exportPdf"><i class="ti ti-printer"></i><span>Print/PDF</span></button>
+                <button type="button" class="export-btn copy" id="exportCopy"><i class="ti ti-copy"></i><span>Copy Teks</span></button>
+                <button type="button" class="export-btn" id="exportExcel"><i class="ti ti-file-spreadsheet" style="color:#1D6F42"></i><span style="color:#1D6F42">Excel</span></button>
+                <button type="button" class="export-btn link" id="exportLink"><i class="ti ti-link" style="color:#4F46E5"></i><span style="color:#4F46E5">Salin Link</span></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+
+  <section class="calc-content">
+    <div class="wrap prose">
+      <h2>Cara Menghitung Dana Pensiun yang Benar</h2>
+      <p>Merencanakan pensiun bukan soal menabung asal banyak, tapi soal <strong>menutup selisih antara kebutuhan dan yang kamu punya</strong>. Kalkulator ini bekerja dalam dua fase: <strong>akumulasi</strong> (sekarang sampai pensiun, saat dana bertumbuh) dan <strong>dekumulasi</strong> (saat pensiun, ketika dana dipakai). Kuncinya memakai <strong>return riil</strong> agar daya beli — bukan sekadar angka nominal — yang dijaga.</p>
+
+      <h3>Rumus Inti</h3>
+      <p>Pengeluaran saat pensiun = pengeluaran sekarang × % gaya hidup × (1 + inflasi)<sup>tahun ke pensiun</sup>. Return riil = (1 + return) ÷ (1 + inflasi) − 1. Target dana = nilai kini (present value) dari kebutuhan tahunan selama masa pensiun, didiskon di return riil. Proyeksi dana = nilai masa depan tabungan sekarang + nilai masa depan setoran bulanan. Kekurangan = target − proyeksi, lalu diubah balik menjadi setoran ideal per bulan.</p>
+
+      <h3>Jangan Andalkan BPJS Saja</h3>
+      <p>Jaminan Pensiun (JP) BPJS memberi manfaat bulanan, tapi biasanya jauh dari cukup untuk menutup seluruh kebutuhan hidup. Jaminan Hari Tua (JHT) berupa lump sum. Anggap keduanya sebagai pelengkap. Kekuatan terbesarmu adalah <strong>mulai menabung sedini mungkin</strong> supaya bunga majemuk bekerja maksimal, lalu diversifikasi ke reksadana, saham, emas, DPLK, atau properti sewa.</p>
+
+      <div class="cta-box"><h3>Mulai Rencanakan Pensiunmu</h3><p>Isi usia & pengeluaran, lihat target dana pensiun dan berapa idealnya kamu menabung tiap bulan.</p></div>
+    </div>
+  </section>
+
+  <AdSlot format="rectangle" />
+
+  <FAQ title="Pertanyaan Seputar Dana Pensiun" items={faqs} />
+
+  <section class="calc-related">
+    <div class="wrap">
+      <h2 class="calc-related-title">Kalkulator Lainnya</h2>
+      <div class="related-grid">{related.map(c => <CalculatorCard calc={c} />)}</div>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <p class="calc-note">📅 Diperbarui Juli 2026 · Target dana pensiun memakai metode nilai kini (present value) atas return riil = (1+return)÷(1+inflasi)−1. Estimasi edukatif untuk perencanaan, bukan nasihat keuangan atau produk investasi. Angka BPJS/JP/JHT bersifat estimasi, bukan angka resmi. Usia pensiun JP BPJS 2026 = 59 tahun. Sumber: BPJS Ketenagakerjaan, prinsip perencanaan keuangan.</p>
+  </div>
+</Layout>
+
+<style is:global>
+  .field-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .view-toggle { display:flex; gap:4px; padding:4px; background:var(--surface-2,#F1F5F9); border-radius:12px; margin-bottom:14px; }
+  .view-toggle button { flex:1; padding:8px 10px; border:none; background:transparent; border-radius:9px; font-size:12.5px; font-weight:600; color:var(--text-soft,#64748B); cursor:pointer; transition:all .15s; }
+  .view-toggle button.active { background:#fff; color:#4F46E5; box-shadow:0 1px 3px rgba(0,0,0,.08); }
+  .warn-box { background:#FFFBEB; border:1px solid #FDE68A; color:#92400E; border-radius:12px; padding:11px 13px; font-size:12.5px; line-height:1.55; margin-bottom:14px; }
+  .warn-box .warn-item { display:flex; gap:7px; align-items:flex-start; }
+  .warn-box .warn-item + .warn-item { margin-top:6px; }
+  .result-item-value.result-good { color:var(--green-dark,#047857); }
+  html.dark .view-toggle { background:#1E293B; }
+  html.dark .view-toggle button.active { background:#0F172A; color:#A5B4FC; }
+  html.dark .warn-box { background:rgba(180,120,10,.12); border-color:rgba(251,191,36,.3); color:#FCD34D; }
+</style>
+
+<script is:inline>
+  (function() {
+    function ready(fn) { if (window.HC && window.html2canvas) fn(); else setTimeout(() => ready(fn), 100); }
+    ready(() => {
+      const $ = id => document.getElementById(id);
+      const els = {
+        usiaNow: $('usiaNow'), usiaPensiun: $('usiaPensiun'), usiaHarapan: $('usiaHarapan'),
+        pengeluaran: $('pengeluaran'), lifestyle: $('lifestyle'), pensiunBulanan: $('pensiunBulanan'),
+        tabunganNow: $('tabunganNow'), setoranNow: $('setoranNow'),
+        returnPra: $('returnPra'), returnPensiun: $('returnPensiun'), inflasi: $('inflasi')
+      };
+      [els.pengeluaran, els.pensiunBulanan, els.tabunganNow, els.setoranNow].forEach(el => el.addEventListener('input', HC.fmtInput));
+
+      let lastCalc = null;
+      let viewMode = 'future';
+
+      function num(el, def) { var v = parseFloat(String(el.value).replace(',', '.')); return isFinite(v) ? v : def; }
+
+      function hitung() {
+        const usiaNow = num(els.usiaNow, 30);
+        const usiaPensiun = num(els.usiaPensiun, 59);
+        const usiaHarapan = num(els.usiaHarapan, 80);
+        const pengeluaran = HC.parseRp(els.pengeluaran.value);
+        const lifestyle = num(els.lifestyle, 75) / 100;
+        const pensiunBulanan = HC.parseRp(els.pensiunBulanan.value);
+        const tabunganNow = HC.parseRp(els.tabunganNow.value);
+        const setoranNow = HC.parseRp(els.setoranNow.value);
+        const returnPra = num(els.returnPra, 8) / 100;
+        const returnPensiun = num(els.returnPensiun, 5) / 100;
+        const inflasi = num(els.inflasi, 4) / 100;
+
+        // Validasi
+        if (pengeluaran === 0) { HC.toast('Masukkan pengeluaran bulanan dulu', 'error'); return; }
+        if (usiaNow >= usiaPensiun) { HC.toast('Usia sekarang harus lebih kecil dari usia pensiun', 'error'); return; }
+        if (usiaPensiun >= usiaHarapan) { HC.toast('Usia pensiun harus lebih kecil dari usia harapan hidup', 'error'); return; }
+
+        const tahunKePensiun = usiaPensiun - usiaNow;
+        const masaPensiun = usiaHarapan - usiaPensiun;
+        const inflFactor = Math.pow(1 + inflasi, tahunKePensiun);
+
+        const pengeluaranPensiun = pengeluaran * lifestyle * inflFactor; // bulanan, nominal masa depan
+        const kebutuhanBersihBulanan = Math.max(0, pengeluaranPensiun - pensiunBulanan);
+        const kebutuhanTahunan = kebutuhanBersihBulanan * 12;
+        const rr = (1 + returnPensiun) / (1 + inflasi) - 1; // return riil saat pensiun
+
+        // Target dana = PV anuitas kebutuhan tahunan selama masaPensiun @ return riil
+        let targetDana;
+        if (Math.abs(rr) < 1e-9) targetDana = kebutuhanTahunan * masaPensiun;
+        else targetDana = kebutuhanTahunan * (1 - Math.pow(1 + rr, -masaPensiun)) / rr;
+
+        // Proyeksi dana saat pensiun
+        const rMon = returnPra / 12;
+        const nMon = tahunKePensiun * 12;
+        const fvTabungan = tabunganNow * Math.pow(1 + returnPra, tahunKePensiun);
+        const fvSetoran = (setoranNow > 0 && rMon > 0) ? setoranNow * ((Math.pow(1 + rMon, nMon) - 1) / rMon) : setoranNow * nMon;
+        const proyeksiDana = fvTabungan + fvSetoran;
+
+        const kekurangan = targetDana - proyeksiDana; // >0 kurang, <0 surplus
+        const surplus = kekurangan < 0;
+
+        // Setoran ideal per bulan (total) untuk capai target
+        let setoranIdeal;
+        const sisaTarget = targetDana - fvTabungan;
+        if (sisaTarget <= 0) setoranIdeal = 0;
+        else if (rMon > 0) setoranIdeal = sisaTarget * rMon / (Math.pow(1 + rMon, nMon) - 1);
+        else setoranIdeal = sisaTarget / nMon;
+
+        // Dana cukup sampai usia berapa (dekumulasi proyeksi)
+        let cukupSampaiUsia, seumurHidup = false;
+        if (kebutuhanTahunan <= 0) { cukupSampaiUsia = usiaHarapan; seumurHidup = true; }
+        else if (Math.abs(rr) < 1e-9) { cukupSampaiUsia = usiaPensiun + Math.floor(proyeksiDana / kebutuhanTahunan); }
+        else {
+          const ratio = 1 - proyeksiDana * rr / kebutuhanTahunan;
+          if (ratio <= 0) { cukupSampaiUsia = 999; seumurHidup = true; }
+          else cukupSampaiUsia = usiaPensiun + Math.floor(-Math.log(ratio) / Math.log(1 + rr));
+        }
+
+        const readiness = targetDana > 0 ? Math.min(999, proyeksiDana / targetDana * 100) : 0;
+        const status = readiness >= 90 ? 'On track' : readiness >= 50 ? 'Menuju cukup' : 'Perlu dikejar';
+
+        // Warnings
+        const warns = [];
+        if (inflasi >= returnPensiun) warns.push('Inflasi ' + (inflasi * 100).toFixed(1) + '% ≥ return saat pensiun — daya beli dana bisa menyusut. Pertimbangkan instrumen dengan return lebih tinggi atau turunkan asumsi inflasi.');
+        if (masaPensiun > 30) warns.push('Masa pensiun ' + masaPensiun + ' tahun cukup panjang (longevity risk) — target dana jadi besar. Pastikan asumsi return realistis & pertimbangkan anuitas seumur hidup.');
+        if (setoranIdeal > pengeluaran && setoranIdeal > 0) warns.push('Setoran ideal (' + HC.fmt(setoranIdeal) + '/bln) melebihi pengeluaran bulananmu — target mungkin terlalu berat. Pertimbangkan tunda usia pensiun atau turunkan gaya hidup pensiun.');
+
+        lastCalc = {
+          usiaNow, usiaPensiun, usiaHarapan, tahunKePensiun, masaPensiun, inflFactor,
+          pengeluaran, lifestyle, pensiunBulanan, tabunganNow, setoranNow,
+          returnPra, returnPensiun, inflasi,
+          pengeluaranPensiun, targetDana, proyeksiDana, kekurangan, surplus,
+          setoranIdeal, cukupSampaiUsia, seumurHidup, readiness, status, warns
+        };
+
+        if (HC.history) HC.history.push('pensiun', {
+          inputs: HC.history.capture(['usiaNow','usiaPensiun','usiaHarapan','pengeluaran','lifestyle','pensiunBulanan','tabunganNow','setoranNow','returnPra','returnPensiun','inflasi']),
+          summary: 'Pensiun usia ' + usiaPensiun + ' · target ' + HC.fmt(targetDana),
+          metrics: [{ k: 'Setoran ideal', v: HC.fmt(setoranIdeal) + '/bln' }, { k: 'Kesiapan', v: readiness.toFixed(0) + '%' }]
+        });
+        renderHist();
+
+        $('placeholder').style.display = 'none';
+        $('results').classList.add('show');
+        render();
+        $('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        HC.toast('Rencana pensiun berhasil dihitung!');
+      }
+
+      function fvFmt(val) {
+        // format nilai masa depan; kalau viewMode 'today', diskon ke daya beli sekarang
+        if (viewMode === 'today' && lastCalc) return HC.fmt(val / lastCalc.inflFactor);
+        return HC.fmt(val);
+      }
+
+      function render() {
+        const c = lastCalc; if (!c) return;
+        // hero (setoran ideal selalu nominal — keputusan hari ini)
+        $('setoranIdeal').textContent = HC.fmt(c.setoranIdeal) + '/bln';
+        const gapTxt = c.surplus
+          ? 'surplus ' + fvFmt(Math.abs(c.kekurangan))
+          : 'kurang ' + fvFmt(c.kekurangan);
+        $('heroMeta').textContent = 'Pensiun usia ' + c.usiaPensiun + ' (' + c.tahunKePensiun + ' thn lagi) · nabung sekarang ' + HC.fmt(c.setoranNow) + '/bln · ' + gapTxt;
+
+        $('targetDana').textContent = fvFmt(c.targetDana);
+        $('proyeksiDana').textContent = fvFmt(c.proyeksiDana);
+        $('gapLabel').textContent = c.surplus ? 'Surplus' : 'Kekurangan';
+        const kEl = $('kekurangan');
+        kEl.textContent = fvFmt(Math.abs(c.kekurangan));
+        kEl.classList.toggle('result-warn', !c.surplus);
+        kEl.classList.toggle('result-good', c.surplus);
+        $('pengeluaranPensiun').textContent = fvFmt(c.pengeluaranPensiun);
+        $('cukupSampai').textContent = c.seumurHidup ? 'Seumur hidup ✅'
+          : (c.cukupSampaiUsia >= c.usiaHarapan ? ('Usia ' + c.usiaHarapan + '+ ✅') : ('Usia ' + c.cukupSampaiUsia));
+        $('readiness').textContent = Math.min(999, c.readiness).toFixed(0) + '% · ' + c.status;
+
+        const wb = $('warnBox');
+        if (c.warns.length) { wb.style.display = ''; wb.innerHTML = c.warns.map(w => '<div class="warn-item"><i class="ti ti-alert-triangle"></i><span>' + w + '</span></div>').join(''); }
+        else wb.style.display = 'none';
+      }
+
+      function reset() {
+        els.usiaNow.value = '30'; els.usiaPensiun.value = '59'; els.usiaHarapan.value = '80';
+        els.pengeluaran.value = '8.000.000'; els.lifestyle.value = '75'; els.pensiunBulanan.value = '0';
+        els.tabunganNow.value = '0'; els.setoranNow.value = '1.000.000';
+        els.returnPra.value = '8'; els.returnPensiun.value = '5'; els.inflasi.value = '4';
+        $('placeholder').style.display = ''; $('results').classList.remove('show');
+        lastCalc = null; HC.toast('Form direset', 'info');
+      }
+
+      function buildReport() {
+        if (!lastCalc) return null;
+        const c = lastCalc;
+        const insight = c.readiness >= 90
+          ? `🎉 Kesiapan pensiunmu ${c.readiness.toFixed(0)}% — On track! Jaga konsistensi, kelola risiko investasi, dan review tiap tahun.`
+          : c.readiness >= 50
+          ? `Kesiapan ${c.readiness.toFixed(0)}% — menuju cukup. Naikkan setoran ke ${HC.fmt(c.setoranIdeal)}/bln atau tunda pensiun sedikit untuk menutup gap.`
+          : `Kesiapan baru ${c.readiness.toFixed(0)}%. Gap masih besar — mulai naikkan setoran, alokasikan bonus/THR, dan pertimbangkan return investasi yang memadai. Mulai lebih dini = lebih ringan.`;
+        return HC.buildReportCard({
+          title: '🏖️ Rencana Dana Pensiun',
+          color: '#4F46E5', color2: '#3730A3',
+          heroLabel: 'Setoran Ideal per Bulan',
+          heroValue: HC.fmt(c.setoranIdeal) + '/bln',
+          heroSubtext: `Pensiun usia ${c.usiaPensiun} · kesiapan ${c.readiness.toFixed(0)}% (${c.status})`,
+          inputs: [
+            { label: '🎂 Usia', value: c.usiaNow + ' → ' + c.usiaPensiun + ' thn' },
+            { label: '💸 Pengeluaran/bln', value: HC.fmt(c.pengeluaran) },
+            { label: '💰 Tabungan kini', value: HC.fmt(c.tabunganNow) },
+            { label: '📈 Return', value: (c.returnPra*100).toFixed(0) + '% / ' + (c.returnPensiun*100).toFixed(0) + '%' },
+          ],
+          results: [
+            { label: 'Target Dana Pensiun', value: HC.fmt(c.targetDana), highlight: true },
+            { label: 'Proyeksi Dana Kamu', value: HC.fmt(c.proyeksiDana) },
+            { label: c.surplus ? 'Surplus' : 'Kekurangan', value: HC.fmt(Math.abs(c.kekurangan)) },
+            { label: 'Pengeluaran/bln saat pensiun', value: HC.fmt(c.pengeluaranPensiun) },
+            { label: 'Dana cukup sampai usia', value: c.seumurHidup ? 'Seumur hidup' : (c.cukupSampaiUsia >= c.usiaHarapan ? c.usiaHarapan + '+' : String(c.cukupSampaiUsia)) },
+            { label: 'Setoran ideal/bln', value: HC.fmt(c.setoranIdeal), highlight: true },
+          ],
+          insight, slug: 'pensiun',
+        });
+      }
+
+      function summaryText() {
+        if (!lastCalc) return '';
+        const c = lastCalc;
+        return `🏖️ *Dana Pensiun - HitungCerdas*\n\nUsia ${c.usiaNow} → pensiun ${c.usiaPensiun} (${c.tahunKePensiun} thn lagi)\nPengeluaran: ${HC.fmt(c.pengeluaran)}/bln\n\n🎯 *Target dana: ${HC.fmt(c.targetDana)}*\n📊 Proyeksi kamu: ${HC.fmt(c.proyeksiDana)}\n${c.surplus ? '✅ Surplus' : '⚠️ Kurang'}: ${HC.fmt(Math.abs(c.kekurangan))}\n💰 *Setoran ideal: ${HC.fmt(c.setoranIdeal)}/bln*\n🧭 Kesiapan: ${c.readiness.toFixed(0)}% (${c.status})\n\nHitung di: https://hitungcerdas.net/kalkulator/pensiun`;
+      }
+
+      function renderHist() {
+        if (HC.history) HC.history.render('pensiun', $('histBox'), function () { hitung(); });
+      }
+      renderHist();
+
+      // view toggle
+      $('viewToggle').querySelectorAll('button').forEach(btn => btn.addEventListener('click', () => {
+        viewMode = btn.getAttribute('data-view');
+        $('viewToggle').querySelectorAll('button').forEach(b => b.classList.toggle('active', b === btn));
+        render();
+      }));
+
+      $('btnHitung').addEventListener('click', hitung);
+      $('btnReset').addEventListener('click', reset);
+      $('exportImg').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToImage(c, 'pensiun-' + Date.now()); });
+      $('exportWa').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.shareWhatsApp(c, summaryText(), 'pensiun'); });
+      $('exportPdf').addEventListener('click', () => { if (!lastCalc) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToPDF(); });
+      $('exportCopy').addEventListener('click', () => { if (!lastCalc) { HC.toast('Hitung dulu', 'error'); return; } HC.copyText(summaryText(), 'Tersalin!'); });
+      $('exportExcel').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToExcel(c, 'pensiun-' + Date.now()); });
+
+      function buildShareUrl() {
+        var p = new URLSearchParams();
+        p.set('un', els.usiaNow.value); p.set('up', els.usiaPensiun.value); p.set('uh', els.usiaHarapan.value);
+        p.set('pg', String(HC.parseRp(els.pengeluaran.value) || 0));
+        p.set('ls', els.lifestyle.value); p.set('pb', String(HC.parseRp(els.pensiunBulanan.value) || 0));
+        p.set('tb', String(HC.parseRp(els.tabunganNow.value) || 0)); p.set('sn', String(HC.parseRp(els.setoranNow.value) || 0));
+        p.set('ra', els.returnPra.value); p.set('rp', els.returnPensiun.value); p.set('if', els.inflasi.value);
+        return location.origin + location.pathname + '?' + p.toString();
+      }
+      function setNum(el, val) { el.value = val; el.dispatchEvent(new Event('input', { bubbles: true })); }
+      function loadFromUrl() {
+        var q = new URLSearchParams(location.search);
+        if (!q.has('pg')) return false;
+        if (q.has('un')) els.usiaNow.value = q.get('un');
+        if (q.has('up')) els.usiaPensiun.value = q.get('up');
+        if (q.has('uh')) els.usiaHarapan.value = q.get('uh');
+        setNum(els.pengeluaran, q.get('pg'));
+        if (q.has('ls')) els.lifestyle.value = q.get('ls');
+        if (q.has('pb')) setNum(els.pensiunBulanan, q.get('pb'));
+        if (q.has('tb')) setNum(els.tabunganNow, q.get('tb'));
+        if (q.has('sn')) setNum(els.setoranNow, q.get('sn'));
+        if (q.has('ra')) els.returnPra.value = q.get('ra');
+        if (q.has('rp')) els.returnPensiun.value = q.get('rp');
+        if (q.has('if')) els.inflasi.value = q.get('if');
+        return true;
+      }
+      $('exportLink').addEventListener('click', function () { HC.copyText(buildShareUrl(), 'Link tersalin!'); });
+      if (loadFromUrl()) { hitung(); }
+    });
+  })();
+</script>
