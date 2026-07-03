@@ -111,9 +111,13 @@ const faqs = [
         ringan setorannya.
       </p>
 
-      <div class="related-tools" style="margin:24px 0;background:linear-gradient(135deg,#EEF2FF,#E0E7FF);border:1px solid #C7D2FE">
-        <h3 style="margin-top:0">🧮 Hitung Angkamu Sendiri</h3>
-        <p style="margin:8px 0 0">Tidak perlu hitung manual. Masukkan usia, pengeluaran, dan asumsimu di <a href="/kalkulator/pensiun"><strong>Kalkulator Dana Pensiun</strong></a> — langsung dapat target, proyeksi, setoran ideal, skor kesiapan, grafik, dan AI Coach.</p>
+      <div class="pensiun-cta">
+        <div class="pensiun-cta-ic"><i class="ti ti-calculator"></i></div>
+        <div class="pensiun-cta-body">
+          <h3>Hitung Angkamu Sendiri</h3>
+          <p>Tidak perlu hitung manual. Masukkan usia, pengeluaran, dan asumsimu — langsung dapat target, proyeksi, setoran ideal, skor kesiapan, grafik, dan AI Coach.</p>
+          <a href="/kalkulator/pensiun" class="pensiun-cta-btn">Buka Kalkulator Dana Pensiun <i class="ti ti-arrow-right"></i></a>
+        </div>
       </div>
 
       <h2>5. Jangan Andalkan BPJS Saja</h2>
@@ -189,3 +193,17 @@ const faqs = [
 
   <AdSlot format="horizontal" />
 </Layout>
+
+<style>
+  .pensiun-cta { display: flex; gap: 16px; align-items: center; margin: 28px 0; padding: 20px 22px; border-radius: 16px; background: linear-gradient(135deg, #EEF2FF, #E0E7FF); border: 1px solid #C7D2FE; }
+  .pensiun-cta-ic { flex-shrink: 0; width: 48px; height: 48px; border-radius: 13px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #4F46E5, #3730A3); color: #fff; font-size: 24px; box-shadow: 0 4px 12px rgba(79,70,229,.28); }
+  .pensiun-cta-body { flex: 1; min-width: 0; }
+  .pensiun-cta-body h3 { margin: 0 0 6px; font-size: 16px; font-weight: 800; color: #3730A3; font-family: var(--ff-display); }
+  .pensiun-cta-body p { margin: 0 0 13px; font-size: 13.5px; color: #475569; line-height: 1.55; }
+  .pensiun-cta-btn { display: inline-flex; align-items: center; gap: 6px; padding: 10px 18px; border-radius: 10px; background: linear-gradient(135deg, #4F46E5, #3730A3); color: #fff !important; font-size: 13.5px; font-weight: 700; text-decoration: none !important; transition: transform .15s, box-shadow .15s; }
+  .pensiun-cta-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(79,70,229,.32); }
+  @media (max-width: 520px) { .pensiun-cta { flex-direction: column; align-items: flex-start; gap: 12px; } }
+  :global(html.dark) .pensiun-cta, :global([data-theme="dark"]) .pensiun-cta { background: rgba(79,70,229,.13); border-color: rgba(79,70,229,.32); }
+  :global(html.dark) .pensiun-cta-body h3, :global([data-theme="dark"]) .pensiun-cta-body h3 { color: #A5B4FC; }
+  :global(html.dark) .pensiun-cta-body p, :global([data-theme="dark"]) .pensiun-cta-body p { color: #CBD5E1; }
+</style>
