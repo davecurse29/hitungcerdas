@@ -1,0 +1,201 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import ArticleSchema from '../../components/ArticleSchema.astro';
+const datePublished = '2026-07-04';
+const dateModified = '2026-07-04';
+const today = new Date(datePublished).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'Cara Menghitung FIRE' }];
+
+const faqs = [
+  { q: 'Apa itu FIRE?', a: 'FIRE adalah singkatan Financial Independence, Retire Early — kondisi ketika hasil pengembangan aset investasimu sudah cukup untuk membiayai seluruh biaya hidup tanpa harus bekerja. Kamu tetap boleh bekerja, tapi karena pilihan, bukan keharusan.' },
+  { q: 'Berapa dana yang dibutuhkan untuk FIRE?', a: 'Patokannya FIRE Number = pengeluaran tahunan dibagi withdrawal rate. Pada aturan 4%, ini sama dengan pengeluaran tahunan dikali 25. Contoh: pengeluaran Rp 8 juta per bulan (Rp 96 juta per tahun) butuh FIRE Number sekitar Rp 2,4 miliar.' },
+  { q: 'Apa itu aturan 4%?', a: 'Aturan 4% adalah pedoman bahwa kamu bisa menarik sekitar 4% dari portofolio tiap tahun (disesuaikan inflasi) dengan risiko kecil kehabisan dana selama sekitar 30 tahun. Berasal dari riset William Bengen (1994) dan Trinity Study (1998) berbasis pasar Amerika Serikat.' },
+  { q: 'Apakah FIRE sama dengan pensiun dini?', a: 'Berkaitan, tapi tidak persis sama. Pensiun dini fokus pada berhenti bekerja lebih awal; FIRE fokus pada kemandirian finansial — punya aset yang membiayai hidup. Banyak orang yang sudah FIRE tetap produktif, hanya saja tanpa tekanan finansial.' },
+  { q: 'Apakah FIRE cocok untuk orang Indonesia?', a: 'Konsepnya cocok, tapi angkanya perlu disesuaikan. Inflasi Indonesia (sekitar 3-4%) lebih tinggi dari AS, jadi banyak yang memakai withdrawal rate lebih konservatif (3-3,5%) agar lebih aman — konsekuensinya FIRE Number jadi lebih besar.' },
+  { q: 'Bagaimana cara mempercepat FIRE?', a: 'Tuas paling kuat adalah menaikkan savings rate: perbesar selisih penghasilan dan pengeluaran, lalu investasikan. Ini bekerja ganda karena menambah setoran sekaligus menurunkan FIRE Number. Menaikkan penghasilan, menekan pengeluaran, dan menghindari utang konsumtif adalah kuncinya.' },
+  { q: 'Apa bedanya Lean FIRE dan Fat FIRE?', a: 'Lean FIRE adalah kemandirian finansial dengan gaya hidup hemat, sehingga FIRE Number lebih kecil dan lebih cepat tercapai. Fat FIRE adalah kemandirian finansial dengan gaya hidup lebih leluasa/mewah, sehingga FIRE Number lebih besar dan butuh lebih lama.' },
+  { q: 'Apakah hasil kalkulator FIRE pasti akurat?', a: 'Tidak. Hasilnya estimasi berdasarkan asumsi return, inflasi, dan pengeluaran yang bisa berubah. Ada juga risiko urutan return (sequence-of-returns), biaya kesehatan, dan pajak. Anggap hasilnya sebagai peta arah, bukan jaminan, dan tinjau ulang tiap tahun.' },
+];
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map(f => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+---
+<Layout title="Cara Menghitung FIRE: FIRE Number & Usia Bebas Finansial" description="Panduan lengkap cara menghitung FIRE (Financial Independence, Retire Early): rumus FIRE Number, aturan 4%, savings rate, return riil, jenis Lean/Fat/Coast/Barista FIRE, dan contoh untuk Indonesia. Plus kalkulator FIRE gratis." keywords={['kalkulator fire', 'cara menghitung fire', 'financial independence retire early', 'fire number', 'dana bebas finansial', 'pensiun dini', 'bebas finansial', 'aturan 4 persen']} canonical="https://hitungcerdas.net/blog/cara-menghitung-fire" ogType="article">
+  <ArticleSchema
+    headline="Cara Menghitung FIRE: Berapa Dana yang Dibutuhkan untuk Financial Independence?"
+    description="Panduan cara menghitung FIRE Number, aturan 4%, savings rate, dan return riil untuk mencapai kemandirian finansial di Indonesia."
+    datePublished={datePublished}
+    dateModified={dateModified}
+    slug="cara-menghitung-fire"
+    articleSection="Keuangan"
+    keywords={['kalkulator fire', 'cara menghitung fire', 'fire number', 'financial independence', 'pensiun dini', 'aturan 4 persen']}
+    wordCount={1850}
+  />
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema)}></script>
+
+  <section class="article-hero" style="--cat-color:#EA580C;--cat-color2:#C2410C">
+    <div class="wrap"><Breadcrumb items={bcItems} /><div class="article-tag">Keuangan</div>
+      <h1>Cara Menghitung FIRE: Berapa Dana untuk Bebas Finansial?</h1>
+      <div class="article-meta"><span><i class="ti ti-calendar"></i> {today}</span><span><i class="ti ti-clock"></i> 11 menit baca</span><span><i class="ti ti-user"></i> Tim HitungCerdas</span></div>
+    </div>
+  </section>
+  <AdSlot format="horizontal" />
+  <article class="content-section"><div class="wrap-text">
+    <p class="lead">Banyak orang ingin "pensiun dini" atau setidaknya bebas dari tekanan finansial — tapi sedikit yang tahu <strong>angka pasti</strong> yang harus dicapai. FIRE mengubah keinginan itu jadi satu target yang bisa dihitung: FIRE Number. Artikel ini membedah cara menghitungnya dengan benar — dari aturan 4%, return riil, savings rate, sampai jenis-jenis FIRE — lengkap dengan contoh yang relevan untuk Indonesia.</p>
+
+    <h2>1. Apa Itu FIRE?</h2>
+    <p>FIRE adalah singkatan dari <strong>Financial Independence, Retire Early</strong> (Kemandirian Finansial, Pensiun Dini). Intinya: kamu mengumpulkan dan menginvestasikan aset sampai jumlahnya cukup besar, sehingga <strong>hasil pengembangannya saja</strong> sudah bisa membiayai seluruh biaya hidupmu — tanpa harus bekerja lagi. Sejak titik itu, bekerja menjadi pilihan, bukan keharusan.</p>
+    <p>Perlu diluruskan: FIRE bukan berarti berhenti produktif atau bermalas-malasan. Banyak orang yang sudah mencapai FIRE tetap berkarya, membangun usaha, atau menekuni hobi — bedanya, mereka melakukannya karena mau, bukan karena terpaksa demi menyambung hidup. FIRE pada dasarnya adalah tentang <strong>memiliki pilihan finansial</strong>.</p>
+
+    <h2>2. Bedanya FIRE dengan Pensiun Biasa</h2>
+    <p>Pensiun tradisional biasanya mengikuti usia pensiun normal — di Indonesia, usia pensiun program Jaminan Pensiun BPJS Ketenagakerjaan pada 2026 adalah 59 tahun. Fokusnya: berhenti bekerja saat tua dan hidup dari tabungan pensiun serta manfaat BPJS.</p>
+    <p>FIRE mengejar hal yang lebih ambisius: <strong>kemandirian finansial secepat mungkin</strong>, kadang di usia 40-an bahkan 30-an. Kuncinya bukan usia, melainkan seberapa besar dan cepat kamu mengumpulkan aset relatif terhadap pengeluaranmu. Kalau kamu ingin fokus pada pensiun di usia normal, <a href="/kalkulator/pensiun">Kalkulator Pensiun</a> lebih tepat; kalau kamu ingin mengejar bebas finansial lebih dini, FIRE-lah kerangkanya.</p>
+
+    <h2>3. Apa Itu FIRE Number?</h2>
+    <p>FIRE Number adalah <strong>target dana</strong> yang, jika sudah terkumpul dan diinvestasikan, hasilnya cukup menutup pengeluaran hidupmu setiap tahun. Ini angka bintang utara dalam perjalanan FIRE — semua strategi bermuara ke sini.</p>
+    <div class="formula-box">
+      <p><strong>FIRE Number = Pengeluaran Tahunan ÷ Withdrawal Rate</strong></p>
+      <p><strong>Pada withdrawal rate 4% → FIRE Number = Pengeluaran Tahunan × 25</strong></p>
+    </div>
+    <p>Angka "× 25" itu bukan sihir — ia langsung berasal dari aturan 4% (100% ÷ 4% = 25). Semakin kecil withdrawal rate yang kamu pakai (misalnya 3,5%), semakin besar FIRE Number-nya, tapi semakin aman pula portofoliomu dari risiko kehabisan dana.</p>
+
+    <h2>4. Aturan 4%: Dari Mana Asalnya?</h2>
+    <p>Aturan 4% adalah <strong>safe withdrawal rate</strong> — persentase yang secara historis bisa kamu tarik dari portofolio tiap tahun (disesuaikan inflasi) tanpa kehabisan dana selama sekitar 30 tahun. Asalnya dari dua riset klasik: makalah <strong>William Bengen tahun 1994</strong> yang pertama merumuskan angka ini, lalu dipopulerkan oleh <strong>Trinity Study tahun 1998</strong> (tiga profesor Trinity University).</p>
+    <p>Satu hal penting yang sering dilupakan: kedua riset itu <strong>berbasis data pasar Amerika Serikat</strong> yang inflasinya relatif rendah, dan hanya menguji horizon 30 tahun. Untuk Indonesia, ada dua penyesuaian yang bijak:</p>
+    <ul class="info-list">
+      <li><strong>Inflasi kita lebih tinggi.</strong> Inflasi tahunan Indonesia pada Juni 2026 tercatat 3,34% (BPS), dengan sasaran Bank Indonesia 2,5%±1%. Ini lebih tinggi dari asumsi historis AS, sehingga menekan daya tahan portofolio.</li>
+      <li><strong>Pensiun dini butuh horizon lebih panjang.</strong> Kalau kamu FIRE di usia 45, danamu mungkin harus bertahan 40-50 tahun — bukan 30. Karena itu, banyak praktisi FIRE di Indonesia memilih withdrawal rate lebih konservatif, sekitar <strong>3-3,5%</strong>, agar lebih tahan banting.</li>
+    </ul>
+
+    <AdSlot format="horizontal" />
+
+    <h2>5. Contoh Perhitungan FIRE Number</h2>
+    <p>Misalkan pengeluaranmu <strong>Rp 8.000.000 per bulan</strong>, atau Rp 96.000.000 per tahun.</p>
+    <ul class="info-list">
+      <li>FIRE Number (aturan 4%) = Rp 96.000.000 ÷ 4% = <strong>Rp 2,4 miliar</strong></li>
+      <li>Jika lebih konservatif (3,5%) = Rp 96.000.000 ÷ 3,5% ≈ <strong>Rp 2,74 miliar</strong></li>
+    </ul>
+    <p>Contoh lain: pengeluaran <strong>Rp 10.000.000 per bulan</strong> (Rp 120 juta/tahun) → FIRE Number aturan 4% = <strong>Rp 3 miliar</strong>. Angka ini terasa besar, tapi ingat: ia dikumpulkan bertahun-tahun lewat setoran rutin dan bunga majemuk, bukan sekaligus. Dan angka ini masih perlu disesuaikan dengan inflasi, return investasi, serta gaya hidup yang kamu inginkan saat bebas finansial.</p>
+
+    <h2>6. Return Riil: Kenapa Inflasi Wajib Dihitung</h2>
+    <p>Kesalahan umum dalam menghitung FIRE adalah memakai return investasi "mentah" tanpa memperhitungkan inflasi. Padahal yang benar-benar menambah daya belimu adalah <strong>return riil</strong>.</p>
+    <div class="formula-box">
+      <p><strong>Return Riil = ((1 + Return Investasi) ÷ (1 + Inflasi)) − 1</strong></p>
+    </div>
+    <p>Contoh: return investasi 8% dengan inflasi 4% menghasilkan return riil sekitar <strong>3,85%</strong> — bukan 4%. Selisih yang terlihat kecil ini berdampak besar pada horizon belasan tahun. Kalau return investasimu <em>lebih rendah</em> dari inflasi, daya beli asetmu justru menyusut dan FIRE hampir mustahil dikejar. Karena itu diversifikasi ke instrumen dengan potensi return memadai — reksadana saham/campuran, saham, emas, atau surat berharga negara — menjadi penting.</p>
+
+    <h2>7. Savings Rate: Tuas Terkuat Menuju FIRE</h2>
+    <p>Kalau ada satu angka yang paling menentukan seberapa cepat kamu FIRE, itu adalah <strong>savings rate</strong>.</p>
+    <div class="formula-box">
+      <p><strong>Savings Rate = (Penghasilan − Pengeluaran) ÷ Penghasilan × 100%</strong></p>
+    </div>
+    <p>Kenapa ini lebih kuat daripada mengejar return tinggi? Karena savings rate bekerja <strong>dua arah sekaligus</strong>: menaikkannya berarti kamu menyetor lebih banyak, <em>sekaligus</em> pengeluaranmu lebih kecil — yang otomatis <strong>menurunkan FIRE Number</strong>. Dua efek ini menggandakan dampaknya. Seseorang dengan savings rate 50% umumnya mencapai FIRE jauh lebih cepat daripada yang savings rate-nya 15%, meski return investasinya sama.</p>
+
+    <h2>8. Jenis-Jenis FIRE</h2>
+    <p>FIRE bukan satu ukuran untuk semua. Ada beberapa "rasa" tergantung gaya hidup dan strategimu:</p>
+    <table class="fire-table">
+      <thead><tr><th>Jenis</th><th>Ciri</th><th>FIRE Number</th><th>Kecepatan</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Lean FIRE</strong></td><td>Gaya hidup hemat &amp; minimalis</td><td>Lebih kecil</td><td>Paling cepat</td></tr>
+        <tr><td><strong>Normal FIRE</strong></td><td>Gaya hidup seperti sekarang</td><td>Sedang</td><td>Sedang</td></tr>
+        <tr><td><strong>Fat FIRE</strong></td><td>Gaya hidup leluasa/mewah</td><td>Lebih besar</td><td>Paling lama</td></tr>
+        <tr><td><strong>Coast FIRE</strong></td><td>Aset sudah cukup tumbuh sendiri sampai pensiun</td><td>Sudah "aman"</td><td>Berhenti nabung lebih awal</td></tr>
+        <tr><td><strong>Barista FIRE</strong></td><td>Kerja paruh waktu menutup sebagian biaya</td><td>Lebih kecil</td><td>Lebih cepat dari Fat</td></tr>
+      </tbody>
+    </table>
+    <p><strong>Coast FIRE</strong> menarik untuk yang masih muda: begitu asetmu cukup untuk bertumbuh sendiri (lewat bunga majemuk) sampai usia pensiun, kamu tak perlu menyetor penuh lagi — cukup menutup biaya hidup harian. <strong>Barista FIRE</strong> mengandalkan penghasilan sampingan/paruh waktu untuk menutup sebagian pengeluaran, sehingga FIRE Number yang murni dari investasi jadi lebih kecil.</p>
+
+    <AdSlot format="horizontal" />
+
+    <h2>9. Cara Mempercepat FIRE</h2>
+    <ul class="info-list">
+      <li><strong>Naikkan savings rate</strong> — tuas terkuat. Perbesar jarak antara penghasilan dan pengeluaran.</li>
+      <li><strong>Tingkatkan penghasilan</strong> — naik jabatan, skill baru, usaha sampingan, penghasilan pasif.</li>
+      <li><strong>Tekan pengeluaran tidak penting</strong> — terutama biaya rutin besar (cicilan konsumtif, langganan menumpuk).</li>
+      <li><strong>Investasi rutin &amp; disiplin</strong> — manfaatkan bunga majemuk dengan mulai sedini mungkin dan konsisten (strategi <a href="/kalkulator/investasi">Dollar Cost Averaging</a>).</li>
+      <li><strong>Hindari utang konsumtif</strong> — bunga utang menggerus savings rate diam-diam.</li>
+      <li><strong>Amankan dana darurat dulu</strong> — sebelum agresif berinvestasi, siapkan bantalan lewat <a href="/kalkulator/dana-darurat">Kalkulator Dana Darurat</a> agar kamu tak perlu mencairkan investasi saat darurat.</li>
+      <li><strong>Tinjau rencana tiap tahun</strong> — sesuaikan asumsi return, inflasi, dan target seiring perubahan hidup.</li>
+    </ul>
+
+    <h2>10. Risiko dan Batasan FIRE</h2>
+    <p>FIRE adalah kerangka yang kuat, tapi bukan jaminan. Beberapa risiko yang harus kamu sadari:</p>
+    <ul class="info-list">
+      <li><strong>Return tidak pasti.</strong> Pasar naik-turun; risiko urutan return (sequence-of-returns) bisa berbahaya jika pasar jatuh tepat di awal masa FIRE.</li>
+      <li><strong>Inflasi bisa berubah.</strong> Lonjakan inflasi menggerus daya beli dan bisa membuat withdrawal rate 4% terlalu agresif.</li>
+      <li><strong>Biaya kesehatan &amp; kondisi keluarga.</strong> Kebutuhan tak terduga bisa meningkat seiring usia atau perubahan tanggungan.</li>
+      <li><strong>Pajak.</strong> Imbal hasil investasi dan penarikan dana bisa terkena pajak yang mengurangi angka bersihmu.</li>
+    </ul>
+    <p>Karena itu, gunakan asumsi konservatif, uji beberapa skenario, dan anggap FIRE Number sebagai peta arah yang perlu ditinjau berkala — bukan angka mati.</p>
+
+    <div class="cta-box">
+      <h3>🔥 Coba Kalkulator FIRE HitungCerdas</h3>
+      <p>Hitung jalur bebas finansialmu secara menyeluruh:</p>
+      <ul>
+        <li>✅ FIRE Number metode aturan 4% (SWR bisa diubah)</li>
+        <li>✅ Estimasi waktu &amp; usia mencapai bebas finansial</li>
+        <li>✅ Savings rate + progress ke FI + grafik perjalanan</li>
+        <li>✅ Skenario Lean / Normal / Fat FIRE &amp; uji sensitivitas</li>
+        <li>✅ AI Coach: tanya "kapan aku bisa FI & gimana mempercepatnya?"</li>
+      </ul>
+      <p style="margin-top:14px"><a href="/kalkulator/fire" class="btn btn-pri"><i class="ti ti-calculator"></i> Buka Kalkulator FIRE</a></p>
+    </div>
+
+    <h2>Kesimpulan</h2>
+    <p>FIRE bukan sekadar "pensiun dini" — ini tentang memiliki pilihan finansial. Perjalanannya dimulai dari satu angka: FIRE Number, yaitu pengeluaran tahunanmu dibagi withdrawal rate. Pakai asumsi yang jujur (return riil setelah inflasi, withdrawal rate yang aman untuk konteks Indonesia), fokuskan energi pada savings rate sebagai tuas terkuat, lalu tinjau rencanamu tiap tahun. Padukan dengan <a href="/kalkulator/pensiun">perencanaan pensiun</a> dan <a href="/kalkulator/investasi">proyeksi investasi</a> untuk gambaran yang utuh. Mulailah dari menghitung angkamu hari ini.</p>
+
+    <h3>📚 Sumber &amp; Referensi</h3>
+    <ul class="info-list">
+      <li>Bank Indonesia — BI-Rate &amp; sasaran inflasi 2026: <a href="https://www.bi.go.id/id/publikasi/ruang-media/news-release/Pages/sp_2812626.aspx" target="_blank" rel="noopener">bi.go.id</a></li>
+      <li>Badan Pusat Statistik — Inflasi Indonesia (Juni 2026: 3,34%): <a href="https://www.bps.go.id" target="_blank" rel="noopener">bps.go.id</a></li>
+      <li>William Bengen &amp; Trinity Study — asal aturan 4%: <a href="https://en.wikipedia.org/wiki/William_Bengen" target="_blank" rel="noopener">en.wikipedia.org/wiki/William_Bengen</a></li>
+    </ul>
+
+    <h2>Pertanyaan yang Sering Ditanya (FAQ)</h2>
+    {faqs.map(f => (
+      <div class="faq-item">
+        <h3>{f.q}</h3>
+        <p>{f.a}</p>
+      </div>
+    ))}
+
+    <h3>📌 Artikel &amp; Kalkulator Terkait</h3>
+    <ul class="info-list">
+      <li><a href="/kalkulator/fire">Kalkulator FIRE</a> — hitung FIRE Number &amp; usia bebas finansialmu</li>
+      <li><a href="/kalkulator/pensiun">Kalkulator Pensiun</a> · <a href="/blog/cara-menghitung-dana-pensiun">Cara Menghitung Dana Pensiun</a></li>
+      <li><a href="/kalkulator/investasi">Kalkulator Investasi</a> · <a href="/blog/cara-menghitung-investasi">Cara Hitung Investasi &amp; Compound Interest</a></li>
+      <li><a href="/kalkulator/dana-darurat">Kalkulator Dana Darurat</a></li>
+    </ul>
+
+    <p class="article-disclaimer"><em>Artikel &amp; kalkulator ini bersifat edukatif berdasarkan asumsi, bukan nasihat keuangan/investasi atau jaminan hasil. Return, inflasi, pajak, dan kondisi pribadi bisa berubah. Pertimbangkan konsultasi dengan perencana keuangan profesional sebelum mengambil keputusan finansial.</em></p>
+  </div></article>
+  <AdSlot format="horizontal" />
+</Layout>
+<style>
+  .article-hero { background: linear-gradient(135deg, var(--cat-color) 0%, var(--cat-color2) 100%); color: #fff; padding: 20px 0 48px; }
+  .article-hero :global(.breadcrumb-item), .article-hero :global(.breadcrumb-item a) { color: rgba(255, 255, 255, .7); }
+  .article-hero :global(.breadcrumb-item a:hover) { color: var(--gold-soft); }
+  .article-hero :global(.breadcrumb-item span) { color: #fff; }
+  .article-hero :global(.breadcrumb-item i) { color: rgba(255, 255, 255, .4); }
+  .article-tag { display: inline-block; font-size: 11px; font-weight: 700; color: var(--gold-soft); letter-spacing: .1em; text-transform: uppercase; margin: 16px 0 12px; }
+  .article-hero h1 { color: #fff; font-size: clamp(26px, 3.8vw, 42px); margin: 0 0 20px; max-width: 900px; line-height: 1.2; }
+  .article-meta { display: flex; gap: 20px; color: rgba(255, 255, 255, .75); font-size: 13px; flex-wrap: wrap; }
+  .article-meta span { display: inline-flex; align-items: center; gap: 6px; }
+  .lead { font-size: 17px !important; line-height: 1.7 !important; color: var(--text) !important; padding: 20px 24px; background: var(--bg-soft); border-radius: 12px; border-left: 4px solid #EA580C; margin-bottom: 24px !important; }
+  .fire-table { width: 100%; border-collapse: collapse; margin: 18px 0; font-size: 14px; }
+  .fire-table th, .fire-table td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .fire-table thead th { background: var(--bg-soft); font-weight: 700; color: var(--text); }
+  .fire-table tbody tr:last-child td { border-bottom: none; }
+  .faq-item { margin: 14px 0; }
+  .faq-item h3 { margin-bottom: 4px; }
+  .article-disclaimer { font-size: 13px; color: var(--text-mute); margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border); }
+</style>
