@@ -1,0 +1,804 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import FAQ from '../../components/FAQ.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import CalculatorCard from '../../components/CalculatorCard.astro';
+import { getCalculatorBySlug, getRelatedCalculators } from '../../data/calculators';
+
+const calc = getCalculatorBySlug('fire')!;
+const related = getRelatedCalculators('fire', 3);
+
+const faqs = [
+  { question: 'Apa itu FIRE?', answer: 'FIRE = <strong>Financial Independence, Retire Early</strong> (Kemandirian Finansial, Pensiun Dini). Ini kondisi saat nilai investasimu sudah cukup besar sehingga hasil pengembangannya bisa membiayai seluruh biaya hidupmu tanpa harus bekerja. Angka kuncinya disebut <strong>FIRE Number</strong> — target dana yang, jika ditarik ~4% per tahun, cukup menutup pengeluaranmu.' },
+  { question: 'Apa itu aturan 4% dan FIRE Number?', answer: 'Aturan 4% (safe withdrawal rate) berasal dari <strong>Trinity Study</strong>: secara historis, menarik sekitar 4% dari portofolio tiap tahun punya risiko kecil kehabisan dana selama ~30 tahun. Dari sini: <strong>FIRE Number = pengeluaran tahunan ÷ 4% = pengeluaran tahunan × 25</strong>. Jadi kalau pengeluaranmu Rp 8 juta/bulan (Rp 96 juta/tahun), FIRE Number-mu sekitar Rp 2,4 miliar.' },
+  { question: 'Apakah aturan 4% cocok untuk Indonesia?', answer: 'Aturan 4% berbasis data pasar <strong>Amerika Serikat</strong> yang inflasinya rendah. Inflasi Indonesia lebih tinggi (~3,5-4%), jadi banyak perencana memilih SWR lebih konservatif <strong>(3-3,5%)</strong> supaya lebih aman — konsekuensinya FIRE Number jadi lebih besar. Kalkulator ini membiarkan kamu mengatur sendiri angka SWR sesuai selera risikomu.' },
+  { question: 'Kenapa savings rate begitu penting?', answer: 'Karena <strong>savings rate</strong> (porsi penghasilan yang kamu sisihkan) bekerja dua arah sekaligus: makin besar yang kamu investasikan <em>dan</em> makin kecil pengeluaranmu — sehingga FIRE Number-nya ikut mengecil. Menaikkan savings rate biasanya memangkas waktu menuju FI <strong>jauh lebih cepat</strong> daripada sekadar mengejar return investasi yang tinggi.' },
+  { question: 'Apa beda Lean, Normal, dan Fat FIRE?', answer: '<strong>Lean FIRE</strong> = gaya hidup hemat, FIRE Number kecil, tercapai lebih cepat. <strong>Fat FIRE</strong> = gaya hidup lebih mewah, FIRE Number besar, butuh lebih lama. <strong>Normal/Reguler FIRE</strong> ada di antaranya (sesuai pengeluaranmu sekarang). Ada juga <strong>Coast FIRE</strong>: asetmu sudah cukup untuk bertumbuh sendiri sampai usia pensiun tanpa perlu nabung lagi — kamu tinggal menutup biaya hidup harian.' },
+  { question: 'Apa risiko dan keterbatasan FIRE?', answer: 'FIRE adalah <strong>estimasi berbasis asumsi</strong> return & inflasi yang bisa meleset (risiko urutan return/sequence-of-returns, lonjakan inflasi, biaya kesehatan, dll). FI juga bukan berarti berhenti produktif — banyak yang tetap berkarya, hanya saja tanpa tekanan finansial. Anggap hasil kalkulator ini sebagai <strong>peta arah</strong>, bukan jaminan. Ini edukasi, bukan nasihat keuangan atau investasi resmi.' },
+];
+
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '/#tools' }, { label: calc.shortTitle }];
+---
+
+<Layout title={calc.title} description={calc.metaDescription} keywords={calc.keywords} canonical={`https://hitungcerdas.net/kalkulator/${calc.slug}`}>
+  <section class="calc-hero" style="--cat-color:#EA580C;--cat-color2:#C2410C">
+    <div class="wrap">
+      <Breadcrumb items={bcItems} />
+      <div class="calc-hero-grid">
+        <div class="calc-hero-text">
+          <div class="calc-hero-tag" style="background:#FFEDD5;color:#C2410C"><i class="ti ti-flame"></i> {calc.categoryLabel}</div>
+          <h1 class="calc-hero-title">{calc.h1}</h1>
+          <p class="calc-hero-sub">{calc.introText}</p>
+          <ul class="calc-hero-benefits">{calc.benefits.map(b => <li><i class="ti ti-check"></i> {b}</li>)}</ul>
+        </div>
+        <div class="calc-hero-illust">
+          <svg viewBox="0 0 200 200" fill="none">
+            <circle cx="100" cy="100" r="85" fill="rgba(255,255,255,.08)"/>
+            <path d="M40 152H160" stroke="#FED7AA" stroke-width="4" stroke-linecap="round"/>
+            <path d="M55 140L90 106L112 124L148 74" stroke="#FFF" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            <path d="M148 74H134M148 74V88" stroke="#FFF" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M150 58C150 58 160 66 160 76C160 83 156 88 150 88C144 88 140 83 140 76C140 66 150 58 150 58Z" fill="#FDBA74" stroke="#FFF" stroke-width="2.5" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+
+  <section class="calc-section">
+    <div class="wrap">
+      <div class="calc-card">
+        <div class="calc-card-hdr">
+          <div class="calc-card-hdr-ic" style="background:linear-gradient(135deg,#EA580C 0%,#C2410C 100%)"><i class="ti ti-flame"></i></div>
+          <div><h2 class="calc-card-title">Kalkulator FIRE</h2><p class="calc-card-sub">FIRE Number · usia merdeka · savings rate · skenario</p></div>
+        </div>
+
+        <div class="calc-grid">
+          <div class="calc-input">
+            <div class="field"><label>Usia Sekarang</label>
+              <div class="input-wrap"><input type="number" id="usiaNow" value="30" min="15" max="75" /><span class="input-suffix">thn</span></div>
+            </div>
+
+            <div class="field"><label>Penghasilan per Bulan</label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span>
+                <input type="text" id="penghasilan" class="has-prefix" value="15.000.000" inputmode="numeric" /></div>
+            </div>
+
+            <div class="field"><label>Pengeluaran per Bulan</label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span>
+                <input type="text" id="pengeluaran" class="has-prefix" value="8.000.000" inputmode="numeric" /></div>
+              <p class="hint" style="margin-top:6px">Selisih penghasilan − pengeluaran = yang kamu investasikan tiap bulan (savings rate). Pengeluaran juga jadi dasar FIRE Number.</p>
+            </div>
+
+            <div class="field"><label>Dana Investasi Saat Ini</label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span>
+                <input type="text" id="danaInvestasi" class="has-prefix" value="50.000.000" inputmode="numeric" /></div>
+              <p class="hint" style="margin-top:6px">Total aset yang sudah diinvestasikan (reksadana, saham, emas, dll). Bukan dana darurat/tabungan konsumtif.</p>
+            </div>
+
+            <div class="field-row">
+              <div class="field"><label>Return Investasi</label>
+                <div class="input-wrap"><input type="number" id="returnInvest" value="8" min="0" max="30" step="0.5" /><span class="input-suffix">%/th</span></div>
+              </div>
+              <div class="field"><label>Inflasi</label>
+                <div class="input-wrap"><input type="number" id="inflasi" value="4" min="0" max="20" step="0.5" /><span class="input-suffix">%/th</span></div>
+              </div>
+            </div>
+            <p class="hint" style="margin-top:-4px">Return reksadana saham/campuran umumnya ~6-10%/th. Perhitungan pakai <strong>return riil</strong> (return dikurangi inflasi) agar daya beli terjaga.</p>
+
+            <div class="field"><label>Safe Withdrawal Rate (SWR)</label>
+              <div class="input-wrap"><input type="number" id="swr" value="4" min="2" max="8" step="0.25" /><span class="input-suffix">%/th</span></div>
+              <p class="hint" style="margin-top:6px">Persentase yang ditarik dari aset tiap tahun saat sudah FI. Aturan umum <strong>4%</strong> (Trinity Study). Untuk Indonesia yang inflasinya lebih tinggi, <strong>3-3,5%</strong> lebih aman.</p>
+            </div>
+
+            <div class="calc-action-bar">
+              <button type="button" class="btn-hitung" id="btnHitung"><i class="ti ti-calculator"></i> Hitung Sekarang</button>
+              <button type="button" class="btn-reset" id="btnReset"><i class="ti ti-refresh"></i> Reset</button>
+            </div>
+          </div>
+
+          <div class="calc-output">
+            <div class="hist-section" id="histBox" style="display:none"></div>
+
+            <div class="result-placeholder" id="placeholder">
+              <i class="ti ti-flame result-placeholder-icon"></i>
+              <div class="result-placeholder-title">Peta menuju kebebasan finansialmu akan muncul di sini</div>
+              <div class="result-placeholder-desc">Isi penghasilan, pengeluaran & dana investasi, klik <strong>"Hitung Sekarang"</strong>.</div>
+            </div>
+
+            <div class="result-wrapper" id="results">
+              <div class="view-toggle" id="viewToggle">
+                <button type="button" data-view="today" class="active">Nilai Hari Ini</button>
+                <button type="button" data-view="future">Nominal Masa Depan</button>
+              </div>
+
+              <div class="result-main">
+                <div class="result-label">Waktu Menuju Kebebasan Finansial</div>
+                <div class="result-value" id="heroYears">—</div>
+                <div class="result-meta"><i class="ti ti-info-circle"></i> <span id="heroMeta">—</span></div>
+              </div>
+
+              <div class="warn-box" id="warnBox" style="display:none"></div>
+
+              <div class="result-grid">
+                <div class="result-item"><div class="result-item-label">FIRE Number (Target)</div><div class="result-item-value" id="fireNumber">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">Usia Merdeka Finansial</div><div class="result-item-value" id="usiaFI">—</div></div>
+                <div class="result-item"><div class="result-item-label">Savings Rate</div><div class="result-item-value" id="savingsRate">0%</div></div>
+                <div class="result-item"><div class="result-item-label">Progress ke FI</div><div class="result-item-value" id="progressFI">0%</div></div>
+                <div class="result-item"><div class="result-item-label">Investasi per Bulan</div><div class="result-item-value" id="setoranBln">Rp 0</div></div>
+                <div class="result-item"><div class="result-item-label">Penghasilan Pasif/bln di FI</div><div class="result-item-value" id="pasifBln">Rp 0</div></div>
+              </div>
+
+              <div class="adv-section">
+                <div class="adv-toggle"><span><i class="ti ti-chart-area-line"></i>&nbsp; Grafik Perjalanan Menuju FI</span><i class="ti ti-chevron-down chev"></i></div>
+                <div class="adv-content">
+                  <div id="fireChart" class="mountain-wrap"></div>
+                  <table class="compare-table">
+                    <thead><tr><th>Usia</th><th class="right">Proyeksi Aset</th><th class="right">% FIRE</th></tr></thead>
+                    <tbody id="yearlyBody"></tbody>
+                  </table>
+                  <p class="adv-note">Aset menanjak berkat setoran rutin + bunga majemuk, sampai menyentuh garis FIRE Number (titik ★ = merdeka finansial). Ditandai tiap 5 tahun. Nilai riil (daya beli hari ini).</p>
+                </div>
+              </div>
+
+              <div class="adv-section">
+                <div class="adv-toggle"><span><i class="ti ti-versions"></i>&nbsp; Skenario Lean / Normal / Fat FIRE</span><i class="ti ti-chevron-down chev"></i></div>
+                <div class="adv-content">
+                  <table class="compare-table">
+                    <thead><tr><th>Jenis</th><th class="right">Pengeluaran/bln</th><th class="right">FIRE Number</th><th class="right">Menuju FI</th></tr></thead>
+                    <tbody id="skenarioBody"></tbody>
+                  </table>
+                  <p class="adv-note">Lean = gaya hidup hemat (target kecil, cepat). Fat = gaya hidup mewah (target besar, lama). Baris ★ = pilihanmu sekarang.</p>
+                </div>
+              </div>
+
+              <div class="adv-section">
+                <div class="adv-toggle"><span><i class="ti ti-adjustments-alt"></i>&nbsp; Uji Sensitivitas Asumsi</span><i class="ti ti-chevron-down chev"></i></div>
+                <div class="adv-content">
+                  <table class="compare-table">
+                    <thead><tr><th>Skenario</th><th class="right">FIRE Number</th><th class="right">Menuju FI</th></tr></thead>
+                    <tbody id="sensBody"></tbody>
+                  </table>
+                  <p class="adv-note">FIRE sangat sensitif ke savings rate & asumsi return. ▼ hijau = FI lebih cepat; ▲ merah = lebih lama.</p>
+                </div>
+              </div>
+
+              <div class="export-row">
+                <button type="button" class="export-btn img" id="exportImg"><i class="ti ti-photo-down"></i><span>Save Image</span></button>
+                <button type="button" class="export-btn wa" id="exportWa"><i class="ti ti-brand-whatsapp"></i><span>Share WA</span></button>
+                <button type="button" class="export-btn pdf" id="exportPdf"><i class="ti ti-printer"></i><span>Print/PDF</span></button>
+                <button type="button" class="export-btn copy" id="exportCopy"><i class="ti ti-copy"></i><span>Copy Teks</span></button>
+                <button type="button" class="export-btn" id="exportExcel"><i class="ti ti-file-spreadsheet" style="color:#1D6F42"></i><span style="color:#1D6F42">Excel</span></button>
+                <button type="button" class="export-btn link" id="exportLink"><i class="ti ti-link" style="color:#EA580C"></i><span style="color:#EA580C">Salin Link</span></button>
+              </div>
+              <!-- ===== AI COACH FIRE ===== -->
+              <div class="aic-wrap" id="aicWrap">
+                <button type="button" class="aic-trigger" id="aicTrigger">
+                  <span class="aic-trigger-ic"><i class="ti ti-sparkles"></i></span>
+                  <span class="aic-trigger-txt">
+                    <strong>Tanya AI Coach</strong>
+                    <small>Kapan aku bisa merdeka finansial? Tanya di sini</small>
+                  </span>
+                  <i class="ti ti-chevron-down aic-trigger-arr"></i>
+                </button>
+                <div class="aic-panel" id="aicPanel" hidden>
+                  <div class="aic-head">
+                    <span class="aic-head-ic"><i class="ti ti-sparkles"></i></span>
+                    <div class="aic-head-tt">
+                      <strong>AI Coach FIRE</strong>
+                      <small>Bantu pahami jalur kebebasan finansialmu</small>
+                    </div>
+                    <span class="aic-badge">BETA</span>
+                  </div>
+                  <div class="aic-ground" id="aicGround"></div>
+                  <div class="aic-msgs" id="aicMsgs"></div>
+                  <div class="aic-chips" id="aicChips"></div>
+                  <div class="aic-input">
+                    <input type="text" id="aicText" placeholder="Tanya soal FIRE & savings rate..." maxlength="600" autocomplete="off" />
+                    <button type="button" id="aicSend" aria-label="Kirim"><i class="ti ti-arrow-up"></i></button>
+                  </div>
+                  <div class="aic-disc">
+                    <i class="ti ti-info-circle"></i>
+                    <span>Penjelasan edukatif berbasis hitunganmu, bukan nasihat keuangan/investasi resmi.</span>
+                  </div>
+                  <div class="aic-limit" id="aicLimit"></div>
+                </div>
+              </div>
+              <!-- ===== /AI COACH ===== -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="horizontal" />
+
+  <section class="calc-content">
+    <div class="wrap prose">
+      <h2>Cara Menghitung FIRE Number & Waktu Menuju Kebebasan Finansial</h2>
+      <p><strong>FIRE (Financial Independence, Retire Early)</strong> adalah kondisi ketika hasil investasimu sanggup membiayai hidupmu tanpa harus bekerja. Kalkulator ini bekerja dalam dua langkah: pertama menghitung <strong>FIRE Number</strong> (target dana), lalu memproyeksikan <strong>berapa tahun lagi</strong> asetmu mencapainya berdasarkan tabungan rutin dan return investasi — semuanya memakai <strong>return riil</strong> agar daya beli terjaga, bukan sekadar angka nominal besar.</p>
+
+      <h3>Rumus Inti</h3>
+      <p>FIRE Number = pengeluaran tahunan ÷ Safe Withdrawal Rate. Pada SWR 4%, ini sama dengan pengeluaran tahunan × 25. Return riil = (1 + return) ÷ (1 + inflasi) − 1. Waktu menuju FI dihitung dengan mencari kapan nilai masa depan dana investasi sekarang + setoran bulanan (di return riil) menyamai FIRE Number. Savings rate = (penghasilan − pengeluaran) ÷ penghasilan.</p>
+
+      <h3>Savings Rate Adalah Tuas Terkuat</h3>
+      <p>Dalam FIRE, menaikkan <strong>savings rate</strong> memangkas waktu menuju kebebasan finansial jauh lebih cepat daripada mengejar return tinggi — karena ia menambah setoran <em>sekaligus</em> menurunkan pengeluaran (yang otomatis mengecilkan FIRE Number). Diversifikasi ke reksadana, saham, emas, atau properti membantu, tapi kebiasaan menabung yang tinggi dan konsisten sejak dini adalah mesin utamanya.</p>
+
+      <div class="cta-box"><h3>Hitung Jalur FIRE-mu</h3><p>Isi penghasilan & pengeluaran, lihat FIRE Number-mu dan di usia berapa kamu bisa merdeka secara finansial.</p></div>
+    </div>
+  </section>
+
+  <AdSlot format="rectangle" />
+
+  <FAQ title="Pertanyaan Seputar FIRE" items={faqs} />
+
+  <section class="calc-related">
+    <div class="wrap">
+      <h2 class="calc-related-title">Kalkulator Lainnya</h2>
+      <div class="related-grid">{related.map(c => <CalculatorCard calc={c} />)}</div>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <p class="calc-note">📅 Diperbarui Juli 2026 · FIRE Number memakai aturan Safe Withdrawal Rate (default 4% dari Trinity Study). Waktu menuju FI dihitung dengan metode return riil = (1+return)÷(1+inflasi)−1. Estimasi edukatif untuk perencanaan, bukan nasihat keuangan atau produk investasi. Aturan 4% berbasis pasar AS — untuk Indonesia yang inflasinya lebih tinggi, SWR 3-3,5% lebih konservatif. Sumber: Trinity Study, prinsip perencanaan keuangan.</p>
+  </div>
+</Layout>
+
+<style is:global>
+  .field-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .view-toggle { display:flex; gap:4px; padding:4px; background:var(--surface-2,#F1F5F9); border-radius:12px; margin-bottom:14px; }
+  .view-toggle button { flex:1; padding:8px 10px; border:none; background:transparent; border-radius:9px; font-size:12.5px; font-weight:600; color:var(--text-soft,#64748B); cursor:pointer; transition:all .15s; }
+  .view-toggle button.active { background:#fff; color:#EA580C; box-shadow:0 1px 3px rgba(0,0,0,.08); }
+  .warn-box { background:#FFFBEB; border:1px solid #FDE68A; color:#92400E; border-radius:12px; padding:11px 13px; font-size:12.5px; line-height:1.55; margin-bottom:14px; }
+  .warn-box .warn-item { display:flex; gap:7px; align-items:flex-start; }
+  .warn-box .warn-item + .warn-item { margin-top:6px; }
+  .result-item-value.result-good { color:var(--green-dark,#047857); }
+  html.dark .view-toggle { background:#1E293B; }
+  html.dark .view-toggle button.active { background:#0F172A; color:#FDBA74; }
+  html.dark .warn-box { background:rgba(180,120,10,.12); border-color:rgba(251,191,36,.3); color:#FCD34D; }
+  .mountain-wrap { width:100%; margin-bottom:10px; }
+  .mountain-wrap svg { width:100%; height:auto; display:block; border-radius:8px; }
+  .adv-note { font-size:11.5px; color:var(--text-mute); margin-top:8px; line-height:1.5; }
+</style>
+
+<script is:inline>
+  (function() {
+    function ready(fn) { if (window.HC && window.html2canvas) fn(); else setTimeout(() => ready(fn), 100); }
+    ready(() => {
+      const $ = id => document.getElementById(id);
+      const els = {
+        usiaNow: $('usiaNow'), penghasilan: $('penghasilan'), pengeluaran: $('pengeluaran'),
+        danaInvestasi: $('danaInvestasi'), returnInvest: $('returnInvest'), inflasi: $('inflasi'), swr: $('swr')
+      };
+      [els.penghasilan, els.pengeluaran, els.danaInvestasi].forEach(el => el.addEventListener('input', HC.fmtInput));
+
+      let lastCalc = null;
+      let viewMode = 'today';
+
+      function num(el, def) { var v = parseFloat(String(el.value).replace(',', '.')); return isFinite(v) ? v : def; }
+
+      // ===== Inti FIRE =====
+      function realRate(r, inf){ return (1 + r) / (1 + inf) - 1; }
+      function fireNumberOf(pengeluaranBln, swr){ return swr > 0 ? (pengeluaranBln * 12) / swr : Infinity; }
+
+      // Tahun untuk mencapai target (dalam terma riil). Return Infinity jika tak tercapai.
+      function yearsToReach(target, principal, monthlyContrib, annualRealRate){
+        if (principal >= target) return 0;
+        var rMon = annualRealRate / 12;
+        if (Math.abs(rMon) < 1e-9) {
+          if (monthlyContrib <= 0) return Infinity;
+          return (target - principal) / monthlyContrib / 12;
+        }
+        var cOverR = monthlyContrib / rMon;
+        var numer = target + cOverR;
+        var denom = principal + cOverR;
+        if (denom <= 0 || numer <= 0) return Infinity;
+        var x = numer / denom;
+        var base = 1 + rMon;
+        if (x <= 0 || base <= 0) return Infinity;
+        var nMonths = Math.log(x) / Math.log(base);
+        if (!isFinite(nMonths) || nMonths < 0) return Infinity;
+        return nMonths / 12;
+      }
+      function reachableY(y){ return isFinite(y) && y >= 0 && y <= 80; }
+
+      function fmtYr(y){
+        if (!reachableY(y)) return '80+ thn';
+        if (y <= 0.04) return '0 thn';
+        var a = Math.floor(y); var b = Math.round((y - a) * 12);
+        if (b === 12) { a += 1; b = 0; }
+        return a + ' thn' + (b > 0 ? ' ' + b + ' bln' : '');
+      }
+      function fmtYrShort(y){ return reachableY(y) ? (y <= 0.04 ? '0' : y.toFixed(1)) + ' thn' : '80+ thn'; }
+
+      // ===== V2: skenario, sensitivitas, proyeksi tahunan, grafik =====
+      function buildAssetYears(c){
+        var arr = []; var saldo = c.danaInvestasi; var setTahun = c.setoran * 12; var rr = c.rr;
+        var cap = c.reachable ? Math.min(80, Math.ceil(c.yearsToFI) + 2) : 45;
+        arr.push({ year: 0, usia: c.usiaNow, saldo: Math.max(0, saldo) });
+        for (var y = 1; y <= cap; y++) {
+          saldo = saldo * (1 + rr) + setTahun; if (saldo < 0) saldo = 0;
+          arr.push({ year: y, usia: c.usiaNow + y, saldo: saldo });
+          if (c.reachable && saldo >= c.fireNumber) break;
+        }
+        return arr;
+      }
+      function renderYearly(c, yearly){
+        var fiYear = c.reachable ? Math.round(c.yearsToFI) : -1;
+        var html = '';
+        yearly.forEach(function(pt){
+          var isFi = c.reachable && pt.usia === (c.usiaNow + fiYear);
+          var show = (pt.year % 5 === 0) || pt.year === 0 || isFi || pt.year === yearly[yearly.length - 1].year;
+          if (!show) return;
+          var pct = c.fireNumber > 0 ? Math.min(999, pt.saldo / c.fireNumber * 100) : 0;
+          html += '<tr' + (isFi ? ' class="active"' : '') + '><td>' + (isFi ? '\u2605 ' : '') + pt.usia + ' thn</td><td class="right">' + HC.fmt(pt.saldo) + '</td><td class="right">' + pct.toFixed(0) + '%</td></tr>';
+        });
+        $('yearlyBody').innerHTML = html;
+      }
+      function renderFireChart(c, yearly){
+        var W = 340, H = 150, padL = 8, padR = 8, padT = 16, padB = 18;
+        var lastYear = yearly[yearly.length - 1].year || 1;
+        var maxS = c.fireNumber; yearly.forEach(function(pt){ if (pt.saldo > maxS) maxS = pt.saldo; }); if (maxS <= 0) maxS = 1;
+        var xOf = function(yr){ return padL + (yr / lastYear) * (W - padL - padR); };
+        var yOf = function(sv){ return H - padB - (sv / maxS) * (H - padT - padB); };
+        var line = ''; yearly.forEach(function(pt, i){ line += (i === 0 ? 'M' : 'L') + xOf(pt.year).toFixed(1) + ',' + yOf(pt.saldo).toFixed(1) + ' '; });
+        var area = 'M' + xOf(0).toFixed(1) + ',' + (H - padB) + ' ' + line.replace(/^M/, 'L') + 'L' + xOf(lastYear).toFixed(1) + ',' + (H - padB) + ' Z';
+        var yFire = yOf(c.fireNumber);
+        var fiX = c.reachable ? xOf(Math.min(lastYear, c.yearsToFI)) : null;
+        var svg = '<svg viewBox="0 0 ' + W + ' ' + H + '" xmlns="http://www.w3.org/2000/svg">'
+          + '<defs><linearGradient id="fireG" x1="0" y1="1" x2="0" y2="0">'
+          + '<stop offset="0%" stop-color="#F59E0B" stop-opacity=".12"/>'
+          + '<stop offset="100%" stop-color="#EA580C" stop-opacity=".55"/>'
+          + '</linearGradient></defs>'
+          + '<path d="' + area + '" fill="url(#fireG)"/>'
+          + '<path d="' + line + '" fill="none" stroke="#EA580C" stroke-width="2.2" stroke-linejoin="round"/>'
+          + '<line x1="' + padL + '" y1="' + yFire.toFixed(1) + '" x2="' + (W - padR) + '" y2="' + yFire.toFixed(1) + '" stroke="#C2410C" stroke-width="1.1" stroke-dasharray="4 3"/>'
+          + '<text x="' + (W - padR) + '" y="' + (yFire - 4).toFixed(1) + '" text-anchor="end" font-size="8.5" font-weight="700" fill="#C2410C" font-family="Inter">FIRE ' + HC.fmt(c.fireNumber) + '</text>';
+        if (fiX !== null) {
+          svg += '<line x1="' + fiX.toFixed(1) + '" y1="' + padT + '" x2="' + fiX.toFixed(1) + '" y2="' + (H - padB) + '" stroke="#9A3412" stroke-width="1.1" stroke-dasharray="3 3"/>'
+            + '<circle cx="' + fiX.toFixed(1) + '" cy="' + yFire.toFixed(1) + '" r="3.4" fill="#EA580C" stroke="#fff" stroke-width="1.5"/>'
+            + '<text x="' + fiX.toFixed(1) + '" y="' + (padT - 5) + '" text-anchor="middle" font-size="9" font-weight="700" fill="#EA580C" font-family="Inter">FI usia ' + (c.usiaNow + Math.round(c.yearsToFI)) + '</text>';
+        }
+        svg += '<text x="' + padL + '" y="' + (H - 5) + '" font-size="8.5" fill="#94A3B8" font-family="Inter">' + c.usiaNow + ' th</text>'
+          + '<text x="' + (W - padR) + '" y="' + (H - 5) + '" text-anchor="end" font-size="8.5" fill="#94A3B8" font-family="Inter">' + (c.usiaNow + lastYear) + ' th</text>'
+          + '</svg>';
+        $('fireChart').innerHTML = svg;
+      }
+      function deltaYr(baseY, y){
+        if (!reachableY(y)) return '<td class="right">80+ thn</td>';
+        if (!reachableY(baseY)) return '<td class="right">' + fmtYrShort(y) + '</td>';
+        var d = y - baseY;
+        var col = d > 0.15 ? '#DC2626' : (d < -0.15 ? '#059669' : 'var(--text-soft)');
+        var arr = d > 0.15 ? '\u25b2' : (d < -0.15 ? '\u25bc' : '\u2022');
+        return '<td class="right">' + fmtYrShort(y) + ' <span style="color:' + col + ';font-weight:700;font-size:10.5px">' + arr + Math.abs(d).toFixed(1) + '</span></td>';
+      }
+      function renderSkenario(c){
+        var types = [
+          { n: 'Lean FIRE', mult: 0.7 },
+          { n: 'Normal (kamu)', mult: 1.0, mine: true },
+          { n: 'Fat FIRE', mult: 1.5 }
+        ];
+        var html = '';
+        types.forEach(function(t){
+          var peng = c.pengeluaran * t.mult;
+          var fn = fireNumberOf(peng, c.swr);
+          var yrs = yearsToReach(fn, c.danaInvestasi, c.setoran, c.rr);
+          var usiaFi = reachableY(yrs) ? (c.usiaNow + Math.round(yrs)) + ' thn' : '—';
+          html += '<tr' + (t.mine ? ' class="active"' : '') + '><td>' + (t.mine ? '\u2605 ' : '') + t.n + '</td><td class="right">' + HC.fmt(peng) + '</td><td class="right">' + HC.fmt(fn) + '</td><td class="right">' + fmtYrShort(yrs) + '<br><span style="font-size:10px;color:var(--text-mute)">' + usiaFi + '</span></td></tr>';
+        });
+        $('skenarioBody').innerHTML = html;
+      }
+      function renderSensitivity(c){
+        var baseY = c.yearsToFI;
+        var rows = [
+          { n: 'Asumsimu (base)', ri: c.returnInvest, sw: c.swr, set: c.setoran },
+          { n: 'Return \u22122%', ri: Math.max(0, c.returnInvest - 0.02), sw: c.swr, set: c.setoran },
+          { n: 'Return +2%', ri: c.returnInvest + 0.02, sw: c.swr, set: c.setoran },
+          { n: 'Setoran +20%', ri: c.returnInvest, sw: c.swr, set: c.setoran * 1.2 },
+          { n: 'SWR 3,5% (aman)', ri: c.returnInvest, sw: 0.035, set: c.setoran }
+        ];
+        var html = '';
+        rows.forEach(function(r, i){
+          var rr = realRate(r.ri, c.inflasi);
+          var fn = fireNumberOf(c.pengeluaran, r.sw);
+          var yrs = yearsToReach(fn, c.danaInvestasi, r.set, rr);
+          html += '<tr' + (i === 0 ? ' class="active"' : '') + '><td>' + r.n + '</td><td class="right">' + HC.fmt(fn) + '</td>' + (i === 0 ? ('<td class="right"><b>' + fmtYrShort(yrs) + '</b></td>') : deltaYr(baseY, yrs)) + '</tr>';
+        });
+        $('sensBody').innerHTML = html;
+      }
+      function renderAdv(){
+        var c = lastCalc; if (!c) return;
+        var yearly = buildAssetYears(c);
+        renderFireChart(c, yearly);
+        renderYearly(c, yearly);
+        renderSkenario(c);
+        renderSensitivity(c);
+      }
+
+      function hitung() {
+        const usiaNow = num(els.usiaNow, 30);
+        const penghasilan = HC.parseRp(els.penghasilan.value);
+        const pengeluaran = HC.parseRp(els.pengeluaran.value);
+        const danaInvestasi = HC.parseRp(els.danaInvestasi.value);
+        const returnInvest = num(els.returnInvest, 8) / 100;
+        const inflasi = num(els.inflasi, 4) / 100;
+        const swr = num(els.swr, 4) / 100;
+
+        if (penghasilan === 0) { HC.toast('Masukkan penghasilan bulanan dulu', 'error'); return; }
+        if (pengeluaran === 0) { HC.toast('Masukkan pengeluaran bulanan dulu', 'error'); return; }
+        if (swr <= 0) { HC.toast('SWR harus lebih dari 0', 'error'); return; }
+
+        const setoran = Math.max(0, penghasilan - pengeluaran);
+        const savingsRate = penghasilan > 0 ? (penghasilan - pengeluaran) / penghasilan * 100 : 0;
+        const rr = realRate(returnInvest, inflasi);
+        const fireNumber = fireNumberOf(pengeluaran, swr); // today's money (riil)
+        const yearsToFI = yearsToReach(fireNumber, danaInvestasi, setoran, rr);
+        const reachable = reachableY(yearsToFI);
+        const usiaFI = reachable ? usiaNow + Math.round(yearsToFI) : null;
+        const progress = fireNumber > 0 ? Math.min(999, danaInvestasi / fireNumber * 100) : 0;
+        const inflFactorFI = reachable ? Math.pow(1 + inflasi, yearsToFI) : 1;
+        const pasifBulanan = fireNumber * swr / 12; // today's money (= pengeluaran)
+
+        const warns = [];
+        if (setoran <= 0) warns.push('Pengeluaranmu \u2265 penghasilan — belum ada surplus untuk diinvestasikan, jadi FI belum bisa dikejar. Fokus dulu naikkan penghasilan atau tekan pengeluaran.');
+        else if (savingsRate < 20) warns.push('Savings rate ' + savingsRate.toFixed(0) + '% tergolong rendah. Di FIRE, savings rate adalah tuas terkuat: menaikkannya memangkas waktu ke FI jauh lebih cepat daripada mengejar return tinggi.');
+        if (inflasi >= returnInvest) warns.push('Inflasi ' + (inflasi * 100).toFixed(1) + '% \u2265 return investasi — secara riil asetmu tidak bertumbuh, FI sangat sulit dicapai. Pertimbangkan instrumen dengan potensi return lebih tinggi.');
+        if (swr > 0.045) warns.push('SWR ' + (swr * 100).toFixed(2) + '% cukup agresif. Aturan 4% berbasis pasar AS; untuk Indonesia yang inflasinya lebih tinggi, 3-3,5% lebih aman (FIRE Number lebih besar, tapi risiko kehabisan dana lebih kecil).');
+        if (!reachable && setoran > 0) warns.push('Dengan asumsi sekarang, FI belum tercapai dalam rentang wajar (80 tahun). Coba naikkan setoran/return, turunkan pengeluaran, atau sesuaikan SWR.');
+
+        lastCalc = {
+          usiaNow, penghasilan, pengeluaran, danaInvestasi, returnInvest, inflasi, swr,
+          setoran, savingsRate, rr, fireNumber, yearsToFI, reachable, usiaFI,
+          progress, inflFactorFI, pasifBulanan, warns
+        };
+
+        if (HC.history) HC.history.push('fire', {
+          inputs: HC.history.capture(['usiaNow', 'penghasilan', 'pengeluaran', 'danaInvestasi', 'returnInvest', 'inflasi', 'swr']),
+          summary: 'FIRE ' + (reachable ? 'di usia ' + usiaFI : 'target ' + HC.fmt(fireNumber)),
+          metrics: [{ k: 'FIRE Number', v: HC.fmt(fireNumber) }, { k: 'Savings rate', v: savingsRate.toFixed(0) + '%' }]
+        });
+        renderHist();
+
+        $('placeholder').style.display = 'none';
+        $('results').classList.add('show');
+        render();
+        renderAdv();
+        $('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        HC.toast('Jalur FIRE berhasil dihitung!');
+      }
+
+      function fvFmt(val) {
+        if (viewMode === 'future' && lastCalc && lastCalc.reachable) return HC.fmt(val * lastCalc.inflFactorFI);
+        return HC.fmt(val);
+      }
+
+      function render() {
+        const c = lastCalc; if (!c) return;
+        $('heroYears').textContent = c.reachable ? fmtYr(c.yearsToFI) : 'Belum tercapai';
+        $('heroMeta').textContent = c.reachable
+          ? ('FI di usia ' + c.usiaFI + ' \u00b7 savings rate ' + c.savingsRate.toFixed(0) + '% \u00b7 FIRE Number ' + fvFmt(c.fireNumber))
+          : ('Belum tercapai dengan asumsi ini \u00b7 savings rate ' + c.savingsRate.toFixed(0) + '%');
+
+        $('fireNumber').textContent = fvFmt(c.fireNumber);
+        $('usiaFI').textContent = c.reachable ? ('Usia ' + c.usiaFI) : '—';
+        const sr = $('savingsRate');
+        sr.textContent = c.savingsRate.toFixed(0) + '%';
+        sr.classList.toggle('result-good', c.savingsRate >= 50);
+        sr.classList.toggle('result-warn', c.savingsRate < 20);
+        $('progressFI').textContent = Math.min(999, c.progress).toFixed(0) + '%';
+        $('setoranBln').textContent = HC.fmt(c.setoran) + '/bln';
+        $('pasifBln').textContent = fvFmt(c.pasifBulanan) + '/bln';
+
+        const wb = $('warnBox');
+        if (c.warns.length) { wb.style.display = ''; wb.innerHTML = c.warns.map(w => '<div class="warn-item"><i class="ti ti-alert-triangle"></i><span>' + w + '</span></div>').join(''); }
+        else wb.style.display = 'none';
+      }
+
+      function reset() {
+        els.usiaNow.value = '30'; els.penghasilan.value = '15.000.000'; els.pengeluaran.value = '8.000.000';
+        els.danaInvestasi.value = '50.000.000'; els.returnInvest.value = '8'; els.inflasi.value = '4'; els.swr.value = '4';
+        $('placeholder').style.display = ''; $('results').classList.remove('show');
+        lastCalc = null; HC.toast('Form direset', 'info');
+      }
+
+      function buildReport() {
+        if (!lastCalc) return null;
+        const c = lastCalc;
+        const insight = c.setoran <= 0
+          ? `Pengeluaran ≥ penghasilan, jadi FI belum bisa dikejar. Ciptakan surplus dulu — naikkan penghasilan atau tekan pengeluaran, lalu investasikan selisihnya.`
+          : c.savingsRate >= 50
+          ? `🔥 Savings rate ${c.savingsRate.toFixed(0)}% — agresif! Dengan disiplin ini kamu bisa FI ${c.reachable ? 'di usia ' + c.usiaFI : 'lebih cepat'}. Jaga konsistensi & diversifikasi.`
+          : c.savingsRate >= 20
+          ? `Savings rate ${c.savingsRate.toFixed(0)}% sudah sehat. Menaikkannya sedikit lagi memangkas waktu ke FI ${c.reachable ? '(kini di usia ' + c.usiaFI + ')' : ''} lebih cepat daripada mengejar return.`
+          : `Savings rate baru ${c.savingsRate.toFixed(0)}%. Ini tuas terkuatmu — fokus tekan pengeluaran & naikkan penghasilan agar surplus investasimu bertambah.`;
+        return HC.buildReportCard({
+          title: '🔥 Rencana FIRE (Kebebasan Finansial)',
+          color: '#EA580C', color2: '#C2410C',
+          heroLabel: 'Waktu Menuju Kebebasan Finansial',
+          heroValue: c.reachable ? fmtYr(c.yearsToFI) : 'Belum tercapai',
+          heroSubtext: c.reachable ? `FI di usia ${c.usiaFI} · savings rate ${c.savingsRate.toFixed(0)}%` : `Savings rate ${c.savingsRate.toFixed(0)}%`,
+          inputs: [
+            { label: '🎂 Usia', value: c.usiaNow + ' thn' },
+            { label: '💵 Penghasilan/bln', value: HC.fmt(c.penghasilan) },
+            { label: '💸 Pengeluaran/bln', value: HC.fmt(c.pengeluaran) },
+            { label: '📈 Return / SWR', value: (c.returnInvest * 100).toFixed(0) + '% / ' + (c.swr * 100).toFixed(1) + '%' },
+          ],
+          results: [
+            { label: 'FIRE Number (Target)', value: HC.fmt(c.fireNumber), highlight: true },
+            { label: 'Usia Merdeka Finansial', value: c.reachable ? String(c.usiaFI) : '—' },
+            { label: 'Savings Rate', value: c.savingsRate.toFixed(0) + '%' },
+            { label: 'Progress ke FI', value: Math.min(999, c.progress).toFixed(0) + '%' },
+            { label: 'Investasi/bln', value: HC.fmt(c.setoran) },
+            { label: 'Penghasilan pasif/bln di FI', value: HC.fmt(c.pasifBulanan), highlight: true },
+          ],
+          insight, slug: 'fire',
+        });
+      }
+
+      function summaryText() {
+        if (!lastCalc) return '';
+        const c = lastCalc;
+        return `🔥 *FIRE - HitungCerdas*\n\nUsia ${c.usiaNow} · penghasilan ${HC.fmt(c.penghasilan)}/bln\nPengeluaran: ${HC.fmt(c.pengeluaran)}/bln\n\n🎯 *FIRE Number: ${HC.fmt(c.fireNumber)}*\n⏳ Menuju FI: ${c.reachable ? fmtYr(c.yearsToFI) + ' (usia ' + c.usiaFI + ')' : 'belum tercapai'}\n💪 Savings rate: ${c.savingsRate.toFixed(0)}%\n📊 Progress: ${Math.min(999, c.progress).toFixed(0)}%\n\nHitung di: https://hitungcerdas.net/kalkulator/fire`;
+      }
+
+      function renderHist() {
+        if (HC.history) HC.history.render('fire', $('histBox'), function () { hitung(); });
+      }
+      renderHist();
+      document.querySelectorAll('.adv-toggle').forEach(function(t){ t.addEventListener('click', function(){ t.parentElement.classList.toggle('open'); }); });
+
+      $('viewToggle').querySelectorAll('button').forEach(btn => btn.addEventListener('click', () => {
+        viewMode = btn.getAttribute('data-view');
+        $('viewToggle').querySelectorAll('button').forEach(b => b.classList.toggle('active', b === btn));
+        render();
+      }));
+
+      $('btnHitung').addEventListener('click', hitung);
+      $('btnReset').addEventListener('click', reset);
+      $('exportImg').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToImage(c, 'fire-' + Date.now()); });
+      $('exportWa').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.shareWhatsApp(c, summaryText(), 'fire'); });
+      $('exportPdf').addEventListener('click', () => { if (!lastCalc) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToPDF(); });
+      $('exportCopy').addEventListener('click', () => { if (!lastCalc) { HC.toast('Hitung dulu', 'error'); return; } HC.copyText(summaryText(), 'Tersalin!'); });
+      $('exportExcel').addEventListener('click', () => { const c = buildReport(); if (!c) { HC.toast('Hitung dulu', 'error'); return; } HC.exportToExcel(c, 'fire-' + Date.now()); });
+
+      function buildShareUrl() {
+        var p = new URLSearchParams();
+        p.set('un', els.usiaNow.value);
+        p.set('ph', String(HC.parseRp(els.penghasilan.value) || 0));
+        p.set('pg', String(HC.parseRp(els.pengeluaran.value) || 0));
+        p.set('di', String(HC.parseRp(els.danaInvestasi.value) || 0));
+        p.set('ri', els.returnInvest.value); p.set('if', els.inflasi.value); p.set('sw', els.swr.value);
+        return location.origin + location.pathname + '?' + p.toString();
+      }
+      function setNum(el, val) { el.value = val; el.dispatchEvent(new Event('input', { bubbles: true })); }
+      function loadFromUrl() {
+        var q = new URLSearchParams(location.search);
+        if (!q.has('pg')) return false;
+        if (q.has('un')) els.usiaNow.value = q.get('un');
+        if (q.has('ph')) setNum(els.penghasilan, q.get('ph'));
+        setNum(els.pengeluaran, q.get('pg'));
+        if (q.has('di')) setNum(els.danaInvestasi, q.get('di'));
+        if (q.has('ri')) els.returnInvest.value = q.get('ri');
+        if (q.has('if')) els.inflasi.value = q.get('if');
+        if (q.has('sw')) els.swr.value = q.get('sw');
+        return true;
+      }
+      $('exportLink').addEventListener('click', function () { HC.copyText(buildShareUrl(), 'Link tersalin!'); });
+      if (loadFromUrl()) { hitung(); }
+    });
+  })();
+</script>
+<style is:global>
+  .aic-wrap{margin-top:18px}
+  .aic-trigger{width:100%;display:flex;align-items:center;gap:12px;background:#FFF1E6;border:1px solid #FDBA74;border-radius:14px;padding:13px 15px;cursor:pointer;text-align:left;transition:background .15s;font-family:inherit}
+  .aic-trigger:hover{background:#FFEDD5}
+  .aic-trigger-ic{width:36px;height:36px;flex-shrink:0;border-radius:50%;background:#EA580C;color:#fff;display:flex;align-items:center;justify-content:center;font-size:19px}
+  .aic-trigger-txt{flex:1;display:flex;flex-direction:column;line-height:1.25}
+  .aic-trigger-txt strong{font-size:14px;color:#0A2540}
+  .aic-trigger-txt small{font-size:12px;color:#64748B}
+  .aic-trigger-arr{font-size:18px;color:#64748B;transition:transform .2s}
+  .aic-wrap.open .aic-trigger-arr{transform:rotate(180deg)}
+
+  .aic-panel{margin-top:10px;background:#fff;border:1px solid #E5EAF1;border-radius:16px;overflow:hidden;animation:aicIn .2s ease}
+  @keyframes aicIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+  .aic-head{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid #E5EAF1}
+  .aic-head-ic{width:30px;height:30px;border-radius:50%;background:#FFF1E6;color:#EA580C;display:flex;align-items:center;justify-content:center;font-size:16px}
+  .aic-head-tt{flex:1;display:flex;flex-direction:column;line-height:1.2}
+  .aic-head-tt strong{font-size:14px;color:#0A2540}
+  .aic-head-tt small{font-size:11px;color:#64748B}
+  .aic-badge{font-size:10px;font-weight:700;background:#FFF1E6;color:#EA580C;padding:2px 8px;border-radius:8px}
+
+  .aic-ground{padding:12px 14px;border-bottom:1px solid #E5EAF1;background:#F8FAFC}
+  .aic-ctx{font-size:12px;color:#475569;margin-bottom:10px}
+  .aic-ctx b{color:#0A2540;font-weight:700}
+  .aic-gauge{position:relative;padding-top:19px}
+  .aic-gauge-mark{position:absolute;top:0;z-index:3}
+  .aic-gauge-mark span{display:block;font-size:10px;font-weight:700;background:#0A2540;color:#fff;padding:1px 7px;border-radius:9px;white-space:nowrap;transform:translateX(-50%)}
+  .aic-gauge-mark::after{content:"";position:absolute;left:0;top:15px;width:2px;height:15px;background:#0A2540}
+  .aic-gauge-bar{display:flex;height:10px;border-radius:5px;overflow:hidden}
+  .aic-gauge-bar .z-green{flex:0 0 50%;background:#D1FAE5}
+  .aic-gauge-bar .z-amber{flex:0 0 30%;background:#FEF3C7}
+  .aic-gauge-bar .z-red{flex:0 0 20%;background:#FEE2E2}
+  .aic-gauge-lbl{display:flex;font-size:10px;margin-top:5px}
+  .aic-gauge-lbl>span{flex:1 1 0}
+  .aic-gauge-lbl>span:first-child{text-align:left}
+  .aic-gauge-lbl>span:nth-child(2){text-align:center}
+  .aic-gauge-lbl>span:last-child{text-align:right}
+  .aic-gauge-lbl .g{color:#059669}
+  .aic-gauge-lbl .a{color:#D97706;font-weight:600}
+  .aic-gauge-lbl .r{color:#DC2626}
+  .aic-verdict{font-size:12.5px;font-weight:600;margin-top:11px;display:flex;align-items:center;gap:6px}
+  .aic-verdict.good{color:#059669}
+  .aic-verdict.warn{color:#D97706}
+  .aic-verdict.bad{color:#DC2626}
+  .aic-nogauge{font-size:11px;color:#94A3B8;padding:4px 0}
+
+  .aic-msgs{padding:12px 14px;display:flex;flex-direction:column;gap:10px;max-height:320px;overflow-y:auto}
+  .aic-msgs:empty{display:none}
+  .aic-row{display:flex;gap:8px;align-items:flex-start}
+  .aic-row.user{justify-content:flex-end}
+  .aic-av{width:24px;height:24px;flex-shrink:0;border-radius:50%;background:#FFF1E6;color:#EA580C;display:flex;align-items:center;justify-content:center;font-size:13px}
+  .aic-bub{max-width:82%;font-size:13px;line-height:1.55;border-radius:13px;padding:9px 12px;white-space:pre-wrap;word-wrap:break-word;overflow-wrap:anywhere}
+  .aic-row.ai .aic-bub{background:#F1F5F9;color:#0A2540}
+  .aic-row.user .aic-bub{background:#EA580C;color:#fff}
+  .aic-bub.aic-rich{white-space:normal}
+  .aic-bub.aic-rich p{margin:0 0 7px}
+  .aic-bub.aic-rich p:last-child{margin-bottom:0}
+  .aic-bub.aic-rich p.aic-h{font-weight:700;margin:10px 0 5px}
+  .aic-bub.aic-rich p.aic-h:first-child{margin-top:0}
+  .aic-bub.aic-rich strong{font-weight:700}
+  .aic-bub.aic-rich em{font-style:italic}
+  .aic-bub.aic-rich code{background:rgba(0,0,0,.06);padding:1px 5px;border-radius:4px;font-size:12px}
+  .aic-bub.aic-rich .aic-li{display:flex;gap:7px;margin:4px 0;align-items:flex-start}
+  .aic-bub.aic-rich .aic-li:first-child{margin-top:0}
+  .aic-bub.aic-rich .aic-mk{flex-shrink:0;color:#EA580C;font-weight:700;min-width:15px}
+  .aic-typing span{display:inline-block;width:6px;height:6px;border-radius:50%;background:#94A3B8;margin:0 1px;animation:aicblink 1.2s infinite}
+  .aic-typing span:nth-child(2){animation-delay:.2s}
+  .aic-typing span:nth-child(3){animation-delay:.4s}
+  @keyframes aicblink{0%,60%,100%{opacity:.3}30%{opacity:1}}
+  @keyframes aicIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .aic-row{animation:aicIn .25s ease both}
+  .aic-copy{margin-top:8px;display:inline-flex;align-items:center;gap:5px;font-size:11px;color:#64748B;background:#fff;border:1px solid #E2E8F0;border-radius:7px;padding:3px 9px;cursor:pointer;transition:all .15s}
+  .aic-copy:hover{color:#C2410C;border-color:#C2410C;background:#FFF1E6}
+  .aic-copy i{font-size:13px}
+
+  .aic-chips{display:flex;flex-wrap:wrap;gap:6px;padding:0 14px 12px}
+  .aic-chips:empty{display:none}
+  .aic-chip{font-size:11px;background:#FFF1E6;color:#C2410C;border:1px solid #FDBA74;border-radius:14px;padding:6px 11px;cursor:pointer;font-family:inherit}
+  .aic-chip:hover{background:#FFEDD5}
+
+  .aic-input{display:flex;align-items:center;gap:8px;padding:10px 12px;border-top:1px solid #E5EAF1}
+  .aic-input input{flex:1;border:1px solid #E5EAF1;border-radius:18px;padding:9px 14px;font-size:13px;background:#F8FAFC;color:#0A2540;outline:none;font-family:inherit}
+  .aic-input input:focus{border-color:#EA580C}
+  .aic-input button{width:34px;height:34px;flex-shrink:0;border:0;border-radius:50%;background:#EA580C;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:17px}
+  .aic-input button:disabled{background:#CBD5E1;cursor:not-allowed}
+
+  .aic-disc{display:flex;gap:6px;align-items:flex-start;padding:8px 14px;font-size:10.5px;color:#94A3B8;line-height:1.45;border-top:1px solid #F1F5F9}
+  .aic-disc i{margin-top:1px}
+  .aic-limit{padding:0 14px 10px;font-size:11px;color:#64748B}
+
+  /* ===== DARK MODE (mandiri, via .aic-dark) ===== */
+  .aic-dark .aic-trigger{background:#2A1810;border-color:#5A3418}
+  .aic-dark .aic-trigger:hover{background:#341E12}
+  .aic-dark .aic-trigger-txt strong{color:#E8EEF6}
+  .aic-dark .aic-trigger-txt small{color:#93A4B8}
+  .aic-dark .aic-trigger-arr{color:#93A4B8}
+  .aic-dark .aic-panel{background:#0E1A2B;border-color:#243A56}
+  .aic-dark .aic-head{border-color:#243A56}
+  .aic-dark .aic-head-ic{background:#2A1810;color:#FDBA74}
+  .aic-dark .aic-head-tt strong{color:#E8EEF6}
+  .aic-dark .aic-head-tt small{color:#93A4B8}
+  .aic-dark .aic-badge{background:#2A1810;color:#FDBA74}
+  .aic-dark .aic-ground{background:#122036;border-color:#243A56}
+  .aic-dark .aic-ctx{color:#A9B7C9}
+  .aic-dark .aic-ctx b{color:#E8EEF6}
+  .aic-dark .aic-gauge-mark span{background:#E8EEF6;color:#0E1A2B}
+  .aic-dark .aic-gauge-mark::after{background:#E8EEF6}
+  .aic-dark .aic-gauge-bar .z-green{background:rgba(16,185,129,.24)}
+  .aic-dark .aic-gauge-bar .z-amber{background:rgba(245,158,11,.24)}
+  .aic-dark .aic-gauge-bar .z-red{background:rgba(239,68,68,.24)}
+  .aic-dark .aic-gauge-lbl .g{color:#34D399}
+  .aic-dark .aic-gauge-lbl .a{color:#FBBF24}
+  .aic-dark .aic-gauge-lbl .r{color:#F87171}
+  .aic-dark .aic-verdict.good{color:#34D399}
+  .aic-dark .aic-verdict.warn{color:#FBBF24}
+  .aic-dark .aic-verdict.bad{color:#F87171}
+  .aic-dark .aic-av{background:#2A1810;color:#FDBA74}
+  .aic-dark .aic-row.ai .aic-bub{background:#1B2C44;color:#E8EEF6}
+  .aic-dark .aic-bub.aic-rich .aic-mk{color:#FDBA74}
+  .aic-dark .aic-bub.aic-rich code{background:rgba(255,255,255,.1)}
+  .aic-dark .aic-chip{background:rgba(234,88,12,.16);color:#FDBA74;border-color:#5A3418}
+  .aic-dark .aic-chip:hover{background:rgba(234,88,12,.26)}
+  .aic-dark .aic-input{border-color:#243A56}
+  .aic-dark .aic-input input{background:#16263B;border-color:#2A445F;color:#E8EEF6}
+  .aic-dark .aic-input input:focus{border-color:#FB923C}
+  .aic-dark .aic-disc{color:#7E8DA1;border-color:#1B2C44}
+  .aic-dark .aic-limit{color:#93A4B8}
+</style>
+<script is:inline>
+  (function(){
+    var LIMIT = 10;
+    function ready(fn){ if(window.HC){ fn(); } else { setTimeout(function(){ready(fn);},120); } }
+    function $(id){ return document.getElementById(id); }
+    ready(function(){
+      var wrap=$('aicWrap'); if(!wrap) return;
+      var trigger=$('aicTrigger'), panel=$('aicPanel'), ground=$('aicGround'), msgs=$('aicMsgs'), chips=$('aicChips');
+      var input=$('aicText'), send=$('aicSend'), limitEl=$('aicLimit'); var history=[];
+      function isDark(){ var de=document.documentElement; return de.classList.contains('dark')||de.getAttribute('data-theme')==='dark'||(function(){try{return localStorage.getItem('hc-theme')==='dark';}catch(e){return false;}})(); }
+      function applyTheme(){ wrap.classList.toggle('aic-dark', isDark()); }
+      applyTheme();
+      try{ new MutationObserver(applyTheme).observe(document.documentElement,{attributes:true,attributeFilter:['class','data-theme']}); }catch(e){}
+      window.addEventListener('storage', function(e){ if(e.key==='hc-theme') applyTheme(); });
+      function esc(t){ return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+      function readData(){
+        var v=function(id){ return ((($(id)||{}).textContent)||'').trim(); };
+        var val=function(id){ return ($(id)||{}).value||''; };
+        var srTxt=v('savingsRate');
+        var sr=parseFloat(srTxt); if(!isFinite(sr)) sr=null;
+        return {
+          heroYears:v('heroYears'), fireNumber:v('fireNumber'), usiaFI:v('usiaFI'),
+          savingsRate:sr, progressFI:v('progressFI'), setoranBln:v('setoranBln'), pasifBln:v('pasifBln'),
+          usiaNow:val('usiaNow'), penghasilan:val('penghasilan'), pengeluaran:val('pengeluaran'),
+          danaInvestasi:val('danaInvestasi'), returnInvest:val('returnInvest'), inflasi:val('inflasi'), swr:val('swr'),
+          hasResult:(sr!=null)
+        };
+      }
+
+      function renderGround(){
+        var d=readData();
+        var ctx='<div class="aic-ctx"><i class="ti ti-flame"></i> FIRE'+(d.savingsRate!=null?' \u00b7 Savings rate <b>'+d.savingsRate.toFixed(0)+'%</b>':'')+'</div>';
+        if(d.savingsRate==null){ ground.innerHTML=ctx+'<div class="aic-nogauge">Klik "Hitung Sekarang" dulu untuk lihat savings rate & jalur FIRE-mu.</div>'; return; }
+        var sr=Math.max(0,Math.min(d.savingsRate,100)); var pos=sr;
+        var vc=d.savingsRate>=50?'good':(d.savingsRate>=20?'warn':'bad');
+        var vi=d.savingsRate>=50?'ti-circle-check':(d.savingsRate>=20?'ti-alert-triangle':'ti-alert-circle');
+        var vt=d.savingsRate>=50?'Agresif \u2014 kamu ngebut menuju FI':(d.savingsRate>=20?'Sehat \u2014 tinggal digenjot sedikit':'Masih rendah \u2014 ini tuas terkuatmu');
+        ground.innerHTML=ctx
+          +'<div class="aic-gauge"><div class="aic-gauge-mark" style="left:'+pos.toFixed(1)+'%"><span>kamu \u00b7 '+d.savingsRate.toFixed(0)+'%</span></div>'
+          +'<div class="aic-gauge-bar"><div class="z-red" style="flex:20"></div><div class="z-amber" style="flex:30"></div><div class="z-green" style="flex:50"></div></div>'
+          +'<div class="aic-gauge-lbl"><span class="r">Lambat</span><span class="a">Sehat</span><span class="g">Agresif</span></div></div>'
+          +'<div class="aic-verdict '+vc+'"><i class="ti '+vi+'"></i> '+vt+'</div>';
+      }
+
+      function buildContext(){
+        var d=readData();
+        var p=[
+          'Kalkulator: FIRE (Financial Independence, Retire Early) \u2014 kemandirian finansial & pensiun dini.',
+          'Input: usia sekarang '+d.usiaNow+', penghasilan Rp '+d.penghasilan+'/bln, pengeluaran Rp '+d.pengeluaran+'/bln, dana investasi kini Rp '+d.danaInvestasi+', return investasi '+d.returnInvest+'%/th, inflasi '+d.inflasi+'%/th, safe withdrawal rate (SWR) '+d.swr+'%.',
+          'Hasil: FIRE Number (target) '+d.fireNumber+', waktu menuju FI '+d.heroYears+', usia merdeka finansial '+d.usiaFI+', savings rate '+(d.savingsRate!=null?d.savingsRate.toFixed(0)+'%':'-')+', progress ke FI '+d.progressFI+', investasi per bulan '+d.setoranBln+', penghasilan pasif per bulan saat FI '+d.pasifBln+'.',
+          'Acuan untuk jawabanmu: FIRE Number = pengeluaran tahunan \u00f7 SWR (pada SWR 4% = pengeluaran tahunan \u00d7 25). SWR/aturan 4% berasal dari Trinity Study (basis pasar AS, inflasi rendah). Untuk Indonesia yang inflasinya lebih tinggi (~3,5-4%), SWR 3-3,5% lebih aman (FIRE Number jadi lebih besar). Waktu menuju FI dihitung dengan RETURN RIIL = (1+return)\u00f7(1+inflasi)\u22121 agar daya beli terjaga. SAVINGS RATE = (penghasilan\u2212pengeluaran)\u00f7penghasilan dan merupakan TUAS TERKUAT: menaikkannya memangkas waktu ke FI jauh lebih cepat daripada mengejar return tinggi, karena menambah setoran sekaligus menurunkan FIRE Number. Jenis FIRE: Lean (hemat, target kecil, cepat), Fat (mewah, target besar, lama), Coast (aset sudah cukup tumbuh sendiri sampai pensiun tanpa nabung lagi), Barista (kerja paruh waktu menutup sebagian biaya). Risiko: sequence-of-returns, inflasi, biaya kesehatan \u2014 semua ini estimasi, bukan jaminan. Diversifikasi (reksadana, saham, emas, properti) & mulai sedini mungkin (bunga majemuk) sangat membantu. Pakai sapaan "kamu", jawab ringkas & hangat, JANGAN mengarang angka di luar data. Ini edukasi, bukan nasihat keuangan/investasi resmi.'
+        ];
+        return p.filter(Boolean).join('\n');
+      }
+
+      function mdInline(t){ t=t.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>'); t=t.replace(/__([^_]+)__/g,'<strong>$1</strong>'); t=t.replace(/(^|[\s(])\*([^*\n]+)\*(?=[\s).,!?:;]|$)/g,'$1<em>$2</em>'); t=t.replace(/`([^`]+)`/g,'<code>$1</code>'); return t; }
+      function mdToHtml(raw){ var lines=String(raw).replace(/\r/g,'').split('\n'); var out=[]; for(var i=0;i<lines.length;i++){ var t=lines[i].trim(); if(t==='')continue; if(/^([-*_]\s*){3,}$/.test(t))continue; var h=t.match(/^#{1,6}\s+(.*)$/); if(h){out.push('<p class="aic-h">'+mdInline(esc(h[1]))+'</p>');continue;} var bl=t.match(/^[-*\u2022]\s+(.*)$/); if(bl){out.push('<div class="aic-li"><span class="aic-mk">\u2022</span><span>'+mdInline(esc(bl[1]))+'</span></div>');continue;} var nn=t.match(/^(\d+)[.)]\s+(.*)$/); if(nn){out.push('<div class="aic-li"><span class="aic-mk">'+nn[1]+'.</span><span>'+mdInline(esc(nn[2]))+'</span></div>');continue;} out.push('<p>'+mdInline(esc(t))+'</p>'); } return out.join('')||('<p>'+mdInline(esc(String(raw)))+'</p>'); }
+      function typeInto(bubble, text, done){ var n=0, len=text.length, step=Math.max(2, Math.round(len/90)); var t=setInterval(function(){ n=Math.min(len, n+step); bubble.innerHTML=mdToHtml(text.slice(0,n)); msgs.scrollTop=msgs.scrollHeight; if(n>=len){ clearInterval(t); done&&done(); } }, 18); }
+      function mkCopyBtn(text){ var b=document.createElement('button'); b.type='button'; b.className='aic-copy'; b.innerHTML='<i class="ti ti-copy"></i><span>Salin</span>'; b.addEventListener('click', function(){ HC.copyText(text, 'Jawaban tersalin!'); }); return b; }
+      function addMsgTyped(text){ var row=document.createElement('div'); row.className='aic-row ai'; row.innerHTML='<div class="aic-av"><i class="ti ti-sparkles"></i></div><div class="aic-bub aic-rich"></div>'; var bub=row.querySelector('.aic-bub'); msgs.appendChild(row); msgs.scrollTop=msgs.scrollHeight; typeInto(bub, text, function(){ bub.appendChild(mkCopyBtn(text)); renderFollowups(); }); return row; }
+      var FOLLOWUPS=['Kapan aku bisa FI?','Gimana cara mempercepat FI?','Aturan 4% aman gak buat Indonesia?','Savings rate ku udah bagus belum?','Beda Lean & Fat FIRE apa?','Kenapa FIRE Number-nya sebesar itu?','Coast FIRE itu apa?','Mulai investasi dari mana?'];
+      function renderFollowups(){ chips.innerHTML=''; var asked=history.filter(function(m){return m.role==='user';}).map(function(m){return m.content;}); var pool=FOLLOWUPS.filter(function(q){return asked.indexOf(q)<0;}); pool.slice(0,3).forEach(function(q){ var b=document.createElement('button'); b.type='button'; b.className='aic-chip'; b.textContent=q; b.addEventListener('click', function(){ ask(q); }); chips.appendChild(b); }); }
+      function addMsg(role,text){ var row=document.createElement('div'); row.className='aic-row '+role; if(role==='ai'){ row.innerHTML='<div class="aic-av"><i class="ti ti-sparkles"></i></div><div class="aic-bub aic-rich"></div>'; row.querySelector('.aic-bub').innerHTML=mdToHtml(text); } else { row.innerHTML='<div class="aic-bub"></div>'; row.querySelector('.aic-bub').textContent=text; } msgs.appendChild(row); msgs.scrollTop=msgs.scrollHeight; return row; }
+      function addTyping(){ var row=document.createElement('div'); row.className='aic-row ai'; row.innerHTML='<div class="aic-av"><i class="ti ti-sparkles"></i></div><div class="aic-bub aic-typing"><span></span><span></span><span></span></div>'; msgs.appendChild(row); msgs.scrollTop=msgs.scrollHeight; return row; }
+      function todayKey(){ var d=new Date(); return 'hc-coach-'+d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate(); }
+      function getCount(){ try{ return parseInt(localStorage.getItem(todayKey())||'0',10)||0; }catch(e){ return 0; } }
+      function incCount(){ try{ localStorage.setItem(todayKey(), getCount()+1); }catch(e){} }
+      function refreshLimit(){ var left=Math.max(0,LIMIT-getCount()); limitEl.textContent='Sisa '+left+' pertanyaan gratis hari ini.'; var done=left<=0; input.disabled=done; send.disabled=done; if(done){ input.placeholder='Batas harian tercapai, balik lagi besok ya.'; } }
+      var busy=false;
+      async function ask(text){ text=(text||'').trim(); if(!text||busy)return; if(getCount()>=LIMIT){refreshLimit();return;} busy=true; send.disabled=true; addMsg('user',text); history.push({role:'user',content:text}); input.value=''; chips.innerHTML=''; var typing=addTyping(); incCount();
+        try{ var res=await fetch('/api/coach',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({calcContext:buildContext(),messages:history})}); var data=await res.json().catch(function(){return {error:'Respon tidak valid.'};}); typing.parentNode&&typing.remove(); if(data&&data.reply){ addMsgTyped(data.reply); history.push({role:'assistant',content:data.reply}); } else { addMsg('ai','\u26a0\ufe0f '+((data&&data.error)||'Coach lagi sibuk, coba lagi sebentar ya.')); } }
+        catch(e){ typing.parentNode&&typing.remove(); addMsg('ai','\u26a0\ufe0f Gagal terhubung ke Coach. Coba lagi ya.'); }
+        busy=false; refreshLimit(); if(!input.disabled) input.focus(); }
+      var PRESETS=['Kapan aku bisa FI?','Gimana cara mempercepat FI?','Savings rate ku udah bagus belum?'];
+      function renderChips(){ chips.innerHTML=''; PRESETS.forEach(function(q){ var b=document.createElement('button'); b.type='button'; b.className='aic-chip'; b.textContent=q; b.addEventListener('click',function(){ask(q);}); chips.appendChild(b); }); }
+      var opened=false;
+      trigger.addEventListener('click', function(){ if(panel.hasAttribute('hidden')){ panel.removeAttribute('hidden'); wrap.classList.add('open'); applyTheme(); renderGround(); refreshLimit(); if(!opened){renderChips();opened=true;} } else { panel.setAttribute('hidden',''); wrap.classList.remove('open'); } });
+      send.addEventListener('click', function(){ ask(input.value); });
+      input.addEventListener('keydown', function(e){ if(e.key==='Enter'){ e.preventDefault(); ask(input.value); } });
+      var bh=$('btnHitung'); if(bh){ bh.addEventListener('click', function(){ setTimeout(function(){ if(!panel.hasAttribute('hidden')) renderGround(); },800); }); }
+    });
+  })();
+</script>
