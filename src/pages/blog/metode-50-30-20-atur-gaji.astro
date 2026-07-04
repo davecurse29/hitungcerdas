@@ -1,0 +1,159 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import ArticleSchema from '../../components/ArticleSchema.astro';
+const datePublished = '2026-07-04';
+const dateModified = '2026-07-04';
+const today = new Date(datePublished).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'Metode 50/30/20' }];
+
+const faqs = [
+  { q: 'Apa itu metode 50/30/20?', a: 'Metode 50/30/20 adalah cara mengatur anggaran dengan membagi penghasilan bersih (take-home pay) menjadi tiga: 50% untuk kebutuhan pokok, 30% untuk keinginan, dan 20% untuk tabungan & investasi. Tujuannya menyederhanakan pengelolaan uang tanpa harus mencatat tiap pos secara rumit.' },
+  { q: 'Persentase 50/30/20 dihitung dari gaji kotor atau bersih?', a: 'Dari penghasilan bersih (take-home pay) — yaitu gaji yang benar-benar masuk rekening setelah dipotong pajak PPh 21 dan iuran BPJS. Menghitung dari gaji kotor bisa membuat alokasimu terlalu besar dari uang yang sebenarnya kamu terima.' },
+  { q: 'Bagaimana kalau 50% tidak cukup untuk kebutuhan?', a: 'Wajar, terutama bagi yang berpenghasilan UMR atau tinggal di kota besar. Kamu bisa memakai rasio yang lebih realistis dulu, seperti 60/20/20 atau 70/20/10, lalu perlahan geser ke 50/30/20 seiring penghasilan naik atau pengeluaran ditekan. Yang penting porsi tabungan tidak nol.' },
+  { q: 'Ke mana sebaiknya alokasi 20% ditaruh?', a: 'Urutan aman: amankan dana darurat lebih dulu (3-6x pengeluaran bulanan), lalu lunasi utang berbunga tinggi, baru masuk ke investasi jangka panjang seperti reksadana, saham, atau emas. Kalau dana darurat sudah aman, 20% ini adalah mesin utama menuju kebebasan finansial.' },
+  { q: 'Apakah cicilan utang masuk kategori kebutuhan (50%)?', a: 'Ya, cicilan wajib seperti KPR atau kredit kendaraan masuk ke porsi 50% kebutuhan. Idealnya total seluruh cicilan tidak melebihi 30-35% dari penghasilan agar arus kasmu tetap sehat.' },
+  { q: 'Apakah metode 50/30/20 cocok untuk semua orang?', a: 'Ini titik awal yang bagus karena sederhana, tapi bukan aturan kaku. Sesuaikan dengan kondisimu — anak kos, keluarga muda, atau freelancer punya struktur pengeluaran berbeda. Prinsip intinya tetap: dahulukan kebutuhan, batasi keinginan, dan selalu sisihkan untuk masa depan.' },
+];
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+};
+---
+<Layout title="Metode 50/30/20: Cara Atur Gaji biar Cukup & Tetap Nabung" description="Panduan metode 50/30/20 untuk mengatur gaji: 50% kebutuhan, 30% keinginan, 20% tabungan & investasi. Contoh perhitungan gaji Rp 6-10 juta, variasi untuk UMR, dan cara menerapkannya di Indonesia." keywords={['metode 50 30 20', 'cara atur gaji', 'budgeting gaji', 'cara mengatur keuangan', 'alokasi gaji bulanan', 'cara nabung dari gaji']} canonical="https://hitungcerdas.net/blog/metode-50-30-20-atur-gaji" ogType="article">
+  <ArticleSchema
+    headline="Metode 50/30/20: Cara Atur Gaji biar Cukup & Tetap Bisa Nabung"
+    description="Panduan metode 50/30/20 untuk mengatur gaji: 50% kebutuhan, 30% keinginan, 20% tabungan & investasi, dengan contoh untuk Indonesia."
+    datePublished={datePublished}
+    dateModified={dateModified}
+    slug="metode-50-30-20-atur-gaji"
+    articleSection="Keuangan"
+    keywords={['metode 50 30 20', 'cara atur gaji', 'budgeting gaji', 'alokasi gaji bulanan']}
+    wordCount={1550}
+  />
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema)}></script>
+
+  <section class="article-hero" style="--cat-color:#059669;--cat-color2:#047857">
+    <div class="wrap"><Breadcrumb items={bcItems} /><div class="article-tag">Keuangan</div>
+      <h1>Metode 50/30/20: Cara Atur Gaji biar Cukup & Tetap Nabung</h1>
+      <div class="article-meta"><span><i class="ti ti-calendar"></i> {today}</span><span><i class="ti ti-clock"></i> 9 menit baca</span><span><i class="ti ti-user"></i> Tim HitungCerdas</span></div>
+    </div>
+  </section>
+  <AdSlot format="horizontal" />
+  <article class="content-section"><div class="wrap-text">
+    <p class="lead">Gajian tanggal 25, tapi tanggal 10 sudah "puasa"? Kamu tidak sendirian. Menurut Survei Nasional Literasi dan Inklusi Keuangan (SNLIK) 2025 dari OJK dan BPS, indeks literasi keuangan Indonesia baru 66,46% — artinya sekitar 1 dari 3 orang belum benar-benar melek mengelola uang. Metode 50/30/20 adalah salah satu cara paling sederhana untuk membalik keadaan itu: satu aturan mudah, tanpa spreadsheet rumit.</p>
+
+    <h2>1. Kenapa Gaji Sering Habis Tanpa Jejak?</h2>
+    <p>Masalahnya jarang soal "kurang besar" — lebih sering soal <strong>tidak ada alokasi</strong>. Tanpa rencana, uang mengalir ke mana pun yang paling menggoda: jajan, langganan yang menumpuk, checkout marketplace. Metode 50/30/20 menyelesaikan ini dengan memberi setiap rupiah "tugas" sejak awal bulan, sebelum sempat menguap.</p>
+
+    <h2>2. Apa Itu Metode 50/30/20?</h2>
+    <p>Metode 50/30/20 dipopulerkan oleh Senator AS Elizabeth Warren. Prinsipnya: bagi <strong>penghasilan bersih</strong> (take-home pay, setelah pajak & BPJS) ke dalam tiga kantong.</p>
+    <div class="formula-box">
+      <p><strong>50% → Kebutuhan (Needs)</strong></p>
+      <p><strong>30% → Keinginan (Wants)</strong></p>
+      <p><strong>20% → Tabungan & Investasi (Savings)</strong></p>
+    </div>
+    <p>Kuncinya memakai angka <strong>bersih</strong>, bukan gaji kotor. Kalau belum tahu take-home pay-mu setelah potongan, hitung dulu di <a href="/kalkulator/gaji-bersih">Kalkulator Gaji Bersih</a>.</p>
+
+    <h2>3. Rincian Tiga Kantong</h2>
+    <ul class="info-list">
+      <li><strong>50% Kebutuhan.</strong> Pengeluaran yang tak bisa dihindari: sewa/kontrakan, makan pokok, listrik & air, transportasi kerja, internet, dan <strong>cicilan wajib</strong> (KPR, kredit kendaraan). Kalau porsi ini bengkak, biasanya di sinilah akar masalahnya.</li>
+      <li><strong>30% Keinginan.</strong> Hal yang membuat hidup nyaman tapi bisa ditunda: nongkrong, langganan streaming, gadget baru, liburan, hobi. Batas 30% menjaga gaya hidup tetap terkendali tanpa membuatmu merasa "dihukum".</li>
+      <li><strong>20% Tabungan & Investasi.</strong> Bayar "dirimu di masa depan": dana darurat, investasi, dan pelunasan utang berbunga tinggi. Idealnya porsi ini <strong>dipindahkan otomatis</strong> di awal bulan (autodebet), bukan menunggu sisa di akhir bulan.</li>
+    </ul>
+
+    <AdSlot format="horizontal" />
+
+    <h2>4. Contoh Perhitungan</h2>
+    <p>Misalkan take-home pay-mu <strong>Rp 6.000.000/bulan</strong>:</p>
+    <ul class="info-list">
+      <li>50% Kebutuhan = <strong>Rp 3.000.000</strong></li>
+      <li>30% Keinginan = <strong>Rp 1.800.000</strong></li>
+      <li>20% Tabungan & investasi = <strong>Rp 1.200.000</strong></li>
+    </ul>
+    <p>Untuk gaji <strong>Rp 10.000.000</strong>: kebutuhan Rp 5 juta, keinginan Rp 3 juta, dan tabungan-investasi <strong>Rp 2 juta</strong> per bulan. Rp 2 juta/bulan yang diinvestasikan konsisten adalah fondasi kuat menuju tujuan besar seperti dana pensiun atau kebebasan finansial.</p>
+
+    <h2>5. Cara Menerapkan Langkah demi Langkah</h2>
+    <ul class="info-list">
+      <li><strong>Hitung penghasilan bersih.</strong> Pakai angka yang benar-benar masuk rekening.</li>
+      <li><strong>Pisahkan rekening.</strong> Idealnya punya rekening terpisah untuk tabungan/investasi agar 20% tidak tercampur belanja.</li>
+      <li><strong>Otomatiskan.</strong> Atur autodebet 20% ke rekening/instrumen investasi di tanggal gajian.</li>
+      <li><strong>Pantau keinginan.</strong> Porsi 30% paling mudah "bocor" — pantau mingguan, bukan hanya akhir bulan.</li>
+      <li><strong>Evaluasi tiap bulan.</strong> Geser rasio bila perlu; yang penting arahnya konsisten.</li>
+    </ul>
+
+    <h2>6. Kalau 50/30/20 Terasa Berat</h2>
+    <p>Bagi yang berpenghasilan UMR atau tinggal di kota mahal, 50% untuk kebutuhan sering tidak realistis. Tidak apa-apa — pakai versi yang lebih longgar dulu, lalu perbaiki bertahap:</p>
+    <ul class="info-list">
+      <li><strong>60/20/20</strong> — kebutuhan lebih besar, tabungan tetap dijaga.</li>
+      <li><strong>70/20/10</strong> — untuk yang benar-benar ketat; yang penting <strong>porsi tabungan tidak nol</strong>.</li>
+    </ul>
+    <p>Prinsipnya bukan angka pastinya, melainkan disiplin menyisihkan lebih dulu. Seiring penghasilan naik, dorong porsi tabungan-investasi mendekati (atau melewati) 20%.</p>
+
+    <h2>7. Ke Mana "20%" Sebaiknya Mengalir?</h2>
+    <p>Urutan yang aman:</p>
+    <ul class="info-list">
+      <li><strong>Dana darurat dulu</strong> — targetkan 3-6x pengeluaran bulanan. Hitung targetmu di <a href="/kalkulator/dana-darurat">Kalkulator Dana Darurat</a>.</li>
+      <li><strong>Lunasi utang mahal</strong> — bunga pinjol/paylater/kartu kredit bisa menggerus lebih cepat daripada imbal hasil investasi.</li>
+      <li><strong>Investasi jangka panjang</strong> — reksadana, saham, emas, atau SBN. Lihat proyeksinya di <a href="/kalkulator/investasi">Kalkulator Investasi</a>, dan kalau kamu mengincar bebas finansial lebih cepat, hitung targetnya di <a href="/kalkulator/fire">Kalkulator FIRE</a>.</li>
+    </ul>
+
+    <h2>8. Kesalahan Umum</h2>
+    <ul class="info-list">
+      <li><strong>Menabung dari sisa.</strong> Kalau menunggu sisa akhir bulan, biasanya nihil. Sisihkan di awal.</li>
+      <li><strong>Menghitung dari gaji kotor.</strong> Alokasi jadi terlalu besar dari uang yang sebenarnya diterima.</li>
+      <li><strong>Cicilan menumpuk di porsi kebutuhan.</strong> Jaga total cicilan ≤ 30-35% penghasilan agar tetap sehat.</li>
+      <li><strong>Terlalu kaku.</strong> 50/30/20 adalah panduan, bukan hukum. Sesuaikan, tapi jangan hilangkan porsi menabung.</li>
+    </ul>
+
+    <div class="cta-box">
+      <h3>💰 Mulai dari Take-Home Pay yang Akurat</h3>
+      <p>Sebelum membagi 50/30/20, tahu dulu angka bersihmu:</p>
+      <ul>
+        <li>✅ Hitung gaji bersih setelah BPJS & PPh 21</li>
+        <li>✅ Lihat target dana darurat idealmu</li>
+        <li>✅ Proyeksikan pertumbuhan investasi bulanan</li>
+      </ul>
+      <p style="margin-top:14px"><a href="/kalkulator/gaji-bersih" class="btn btn-pri"><i class="ti ti-calculator"></i> Buka Kalkulator Gaji Bersih</a></p>
+    </div>
+
+    <h2>Kesimpulan</h2>
+    <p>Metode 50/30/20 bekerja bukan karena angkanya ajaib, tapi karena ia memaksamu <strong>memberi tujuan pada setiap rupiah sejak awal</strong>. Mulai dari penghasilan bersih, dahulukan kebutuhan, batasi keinginan, dan otomatiskan tabungan. Kalau versi standar terasa berat, pakai rasio yang lebih realistis dulu — yang penting arahnya konsisten. Padukan dengan <a href="/kalkulator/dana-darurat">dana darurat</a> dan <a href="/kalkulator/investasi">investasi rutin</a>, dan gaji bulananmu berubah dari "numpang lewat" menjadi mesin pembangun masa depan.</p>
+
+    <h3>📚 Sumber &amp; Referensi</h3>
+    <ul class="info-list">
+      <li>OJK &amp; BPS — Survei Nasional Literasi dan Inklusi Keuangan (SNLIK) 2025: <a href="https://ojk.go.id/id/berita-dan-kegiatan/siaran-pers/Pages/OJK-dan-BPS-Umumkan-Hasil-Survei-Nasional-Literasi-Dan-Inklusi-Keuangan-SNLIK-Tahun-2025.aspx" target="_blank" rel="noopener">ojk.go.id</a></li>
+    </ul>
+
+    <h2>Pertanyaan yang Sering Ditanya (FAQ)</h2>
+    {faqs.map(f => (<div class="faq-item"><h3>{f.q}</h3><p>{f.a}</p></div>))}
+
+    <h3>📌 Kalkulator &amp; Artikel Terkait</h3>
+    <ul class="info-list">
+      <li><a href="/kalkulator/gaji-bersih">Kalkulator Gaji Bersih</a> · <a href="/blog/cara-menghitung-gaji-bersih">Cara Hitung Gaji Bersih</a></li>
+      <li><a href="/kalkulator/dana-darurat">Kalkulator Dana Darurat</a> · <a href="/blog/cara-hitung-dana-darurat">Cara Hitung Dana Darurat</a></li>
+      <li><a href="/kalkulator/investasi">Kalkulator Investasi</a> · <a href="/kalkulator/fire">Kalkulator FIRE</a></li>
+    </ul>
+
+    <p class="article-disclaimer"><em>Artikel ini bersifat edukatif, bukan nasihat keuangan/investasi. Sesuaikan dengan kondisi pribadimu dan pertimbangkan konsultasi dengan perencana keuangan profesional.</em></p>
+  </div></article>
+  <AdSlot format="horizontal" />
+</Layout>
+<style>
+  .article-hero { background: linear-gradient(135deg, var(--cat-color) 0%, var(--cat-color2) 100%); color: #fff; padding: 20px 0 48px; }
+  .article-hero :global(.breadcrumb-item), .article-hero :global(.breadcrumb-item a) { color: rgba(255, 255, 255, .7); }
+  .article-hero :global(.breadcrumb-item a:hover) { color: var(--gold-soft); }
+  .article-hero :global(.breadcrumb-item span) { color: #fff; }
+  .article-hero :global(.breadcrumb-item i) { color: rgba(255, 255, 255, .4); }
+  .article-tag { display: inline-block; font-size: 11px; font-weight: 700; color: var(--gold-soft); letter-spacing: .1em; text-transform: uppercase; margin: 16px 0 12px; }
+  .article-hero h1 { color: #fff; font-size: clamp(26px, 3.8vw, 42px); margin: 0 0 20px; max-width: 900px; line-height: 1.2; }
+  .article-meta { display: flex; gap: 20px; color: rgba(255, 255, 255, .75); font-size: 13px; flex-wrap: wrap; }
+  .article-meta span { display: inline-flex; align-items: center; gap: 6px; }
+  .lead { font-size: 17px !important; line-height: 1.7 !important; color: var(--text) !important; padding: 20px 24px; background: var(--bg-soft); border-radius: 12px; border-left: 4px solid #059669; margin-bottom: 24px !important; }
+  .faq-item { margin: 14px 0; }
+  .faq-item h3 { margin-bottom: 4px; }
+  .article-disclaimer { font-size: 13px; color: var(--text-mute); margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border); }
+</style>

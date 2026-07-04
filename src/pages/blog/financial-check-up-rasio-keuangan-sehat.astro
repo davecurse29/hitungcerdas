@@ -1,0 +1,132 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import ArticleSchema from '../../components/ArticleSchema.astro';
+const datePublished = '2026-07-04';
+const dateModified = '2026-07-04';
+const today = new Date(datePublished).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'Financial Check-up' }];
+
+const faqs = [
+  { q: 'Apa itu financial check-up?', a: 'Financial check-up adalah pemeriksaan berkala atas kondisi keuanganmu, mirip medical check-up untuk tubuh. Caranya dengan menghitung beberapa rasio keuangan pribadi — seperti rasio dana darurat, cicilan, dan menabung — lalu membandingkannya dengan patokan ideal untuk melihat mana yang sehat dan mana yang perlu diperbaiki.' },
+  { q: 'Seberapa sering sebaiknya melakukan financial check-up?', a: 'Idealnya minimal sekali setahun, atau setiap ada perubahan besar seperti naik gaji, menikah, punya anak, pindah kerja, atau mengambil cicilan baru. Pemeriksaan rutin membantu mendeteksi masalah lebih awal sebelum membesar.' },
+  { q: 'Berapa rasio cicilan utang yang sehat?', a: 'Total seluruh cicilan bulanan (KPR, kendaraan, KTA, paylater) sebaiknya tidak melebihi 30-35% dari penghasilan bersih bulanan. Di atas angka itu, arus kasmu rentan dan sulit menabung.' },
+  { q: 'Berapa idealnya dana darurat?', a: 'Umumnya 3-6x pengeluaran bulanan untuk karyawan tetap, dan bisa 9-12x untuk pekerja lepas atau yang penghasilannya tidak tetap. Dana ini disimpan di instrumen likuid seperti tabungan atau reksadana pasar uang.' },
+  { q: 'Apa itu kekayaan bersih (net worth)?', a: 'Kekayaan bersih = total aset dikurangi total utang. Angka ini menunjukkan "posisi" keuanganmu yang sebenarnya. Yang sehat adalah net worth yang positif dan cenderung bertumbuh dari tahun ke tahun.' },
+  { q: 'Rasio mana yang paling penting untuk pemula?', a: 'Mulai dari tiga: rasio dana darurat (bantalan keamanan), rasio cicilan (jangan sampai kelebihan utang), dan rasio menabung (mesin masa depan). Tiga ini paling cepat memberi gambaran apakah keuanganmu sehat atau butuh perhatian.' },
+];
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+};
+---
+<Layout title="Financial Check-up: 7 Rasio Keuangan Sehat & Cara Ceknya" description="Cara melakukan financial check-up dengan 7 rasio keuangan pribadi: dana darurat, menabung, cicilan (DSR), utang terhadap aset, kekayaan bersih, aset investasi, dan kebebasan finansial. Lengkap dengan patokan ideal." keywords={['financial check up', 'rasio keuangan pribadi', 'kesehatan keuangan', 'cek keuangan sehat', 'debt service ratio', 'rasio dana darurat']} canonical="https://hitungcerdas.net/blog/financial-check-up-rasio-keuangan-sehat" ogType="article">
+  <ArticleSchema
+    headline="Financial Check-up: 7 Rasio Keuangan Sehat & Cara Ceknya"
+    description="Cara financial check-up dengan 7 rasio keuangan pribadi dan patokan idealnya untuk menilai kesehatan keuanganmu."
+    datePublished={datePublished}
+    dateModified={dateModified}
+    slug="financial-check-up-rasio-keuangan-sehat"
+    articleSection="Keuangan"
+    keywords={['financial check up', 'rasio keuangan pribadi', 'kesehatan keuangan', 'debt service ratio']}
+    wordCount={1650}
+  />
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema)}></script>
+
+  <section class="article-hero" style="--cat-color:#4F46E5;--cat-color2:#3730A3">
+    <div class="wrap"><Breadcrumb items={bcItems} /><div class="article-tag">Keuangan</div>
+      <h1>Financial Check-up: 7 Rasio Keuangan Sehat & Cara Ceknya</h1>
+      <div class="article-meta"><span><i class="ti ti-calendar"></i> {today}</span><span><i class="ti ti-clock"></i> 10 menit baca</span><span><i class="ti ti-user"></i> Tim HitungCerdas</span></div>
+    </div>
+  </section>
+  <AdSlot format="horizontal" />
+  <article class="content-section"><div class="wrap-text">
+    <p class="lead">Tubuh butuh medical check-up, keuangan juga. Banyak orang merasa "baik-baik saja" secara finansial padahal sebenarnya rapuh — atau sebaliknya, cemas berlebihan padahal kondisinya sehat. Cara mengetahui yang sebenarnya: hitung rasio keuanganmu. Ini penting mengingat indeks literasi keuangan Indonesia baru 66,46% menurut SNLIK 2025 (OJK-BPS) — masih banyak yang belum pernah benar-benar "menimbang" kondisi keuangannya.</p>
+
+    <h2>Apa Itu Financial Check-up?</h2>
+    <p>Financial check-up adalah pemeriksaan berkala atas kesehatan keuanganmu lewat sejumlah <strong>rasio</strong> — angka sederhana yang membandingkan dua hal (misalnya cicilan vs penghasilan) dan dibandingkan dengan patokan ideal. Lakukan minimal setahun sekali, atau setiap ada perubahan besar (naik gaji, menikah, punya anak, ambil cicilan). Berikut 7 rasio yang paling berguna.</p>
+
+    <h2>1. Rasio Dana Darurat</h2>
+    <div class="formula-box"><p><strong>Aset Likuid ÷ Pengeluaran Bulanan</strong></p></div>
+    <p>Menunjukkan berapa bulan kamu bisa bertahan tanpa pemasukan. <strong>Ideal: 3-6x</strong> pengeluaran bulanan (9-12x untuk pekerja lepas/penghasilan tidak tetap). Ini bantalan pertama sebelum berinvestasi. Hitung targetmu di <a href="/kalkulator/dana-darurat">Kalkulator Dana Darurat</a>.</p>
+
+    <h2>2. Rasio Menabung &amp; Investasi</h2>
+    <div class="formula-box"><p><strong>(Tabungan + Investasi) ÷ Penghasilan Bersih</strong></p></div>
+    <p>Berapa persen penghasilan yang benar-benar kamu sisihkan. <strong>Ideal: minimal 10%, lebih baik ≥20%.</strong> Semakin tinggi, semakin cepat kamu membangun aset. Rasio ini adalah "mesin" utama masa depan finansialmu.</p>
+
+    <h2>3. Rasio Cicilan Utang (Debt Service Ratio)</h2>
+    <div class="formula-box"><p><strong>Total Cicilan Bulanan ÷ Penghasilan Bersih</strong></p></div>
+    <p>Menjumlahkan semua cicilan (KPR, kendaraan, KTA, paylater). <strong>Ideal: maksimal 30-35%.</strong> Di atas itu, arus kas tercekik dan sulit menabung. Kalau kelebihan, pertimbangkan <a href="/kalkulator/restrukturisasi-kredit">restrukturisasi</a> atau melunasi utang termahal lebih dulu.</p>
+
+    <AdSlot format="horizontal" />
+
+    <h2>4. Rasio Utang terhadap Aset</h2>
+    <div class="formula-box"><p><strong>Total Utang ÷ Total Aset</strong></p></div>
+    <p>Menunjukkan seberapa besar hartamu yang sebenarnya masih "milik" pihak lain. <strong>Ideal: di bawah 50%.</strong> Rasio tinggi berarti posisimu rentan bila nilai aset turun atau pemasukan terganggu.</p>
+
+    <h2>5. Rasio Kekayaan Bersih (Net Worth)</h2>
+    <div class="formula-box"><p><strong>Total Aset − Total Utang</strong></p></div>
+    <p>Ini "skor akhir" kondisi keuanganmu. <strong>Sehat = positif dan bertumbuh</strong> dari tahun ke tahun. Kalau net worth negatif (utang lebih besar dari aset), prioritas utamamu adalah mengurangi utang. Catat angka ini tiap tahun untuk melihat trennya.</p>
+
+    <h2>6. Rasio Aset Investasi</h2>
+    <div class="formula-box"><p><strong>Aset Investasi ÷ Total Aset</strong></p></div>
+    <p>Berapa banyak asetmu yang "bekerja" menghasilkan (reksadana, saham, emas, properti sewa) dibanding aset diam (kendaraan, gadget). Rasio ini sebaiknya <strong>naik seiring bertambahnya usia</strong> — makin dekat pensiun, makin besar porsi aset produktif. Proyeksikan pertumbuhannya di <a href="/kalkulator/investasi">Kalkulator Investasi</a>.</p>
+
+    <h2>7. Rasio Kebebasan Finansial</h2>
+    <div class="formula-box"><p><strong>Penghasilan Pasif ÷ Pengeluaran Bulanan</strong></p></div>
+    <p>Seberapa dekat kamu ke titik ketika hasil aset menutup seluruh biaya hidup. <strong>100% = merdeka finansial</strong> (kamu bebas berhenti bekerja bila mau). Sebagian besar orang mulai dari angka kecil, dan itu wajar — yang penting trennya naik. Hitung target &amp; usianya di <a href="/kalkulator/fire">Kalkulator FIRE</a>.</p>
+
+    <h2>Cara Membaca Hasilnya</h2>
+    <p>Jangan panik kalau ada rasio yang "merah". Financial check-up gunanya justru untuk menemukan titik perbaikan. Urutkan prioritas: amankan dana darurat dulu, turunkan rasio cicilan bila kelebihan, lalu naikkan rasio menabung. Perbaikan kecil yang konsisten jauh lebih berdampak daripada perubahan drastis yang tak bertahan lama.</p>
+
+    <div class="cta-box">
+      <h3>🩺 Mulai Check-up dari Fondasinya</h3>
+      <p>Tiga rasio pertama paling cepat memberi gambaran:</p>
+      <ul>
+        <li>✅ Cek target dana darurat idealmu</li>
+        <li>✅ Hitung penghasilan bersih untuk basis semua rasio</li>
+        <li>✅ Proyeksikan investasi &amp; kebebasan finansial</li>
+      </ul>
+      <p style="margin-top:14px"><a href="/kalkulator/dana-darurat" class="btn btn-pri"><i class="ti ti-calculator"></i> Buka Kalkulator Dana Darurat</a></p>
+    </div>
+
+    <h2>Kesimpulan</h2>
+    <p>Financial check-up mengubah perasaan "kayaknya aman" menjadi <strong>angka yang jelas</strong>. Dengan tujuh rasio ini — dana darurat, menabung, cicilan, utang terhadap aset, kekayaan bersih, aset investasi, dan kebebasan finansial — kamu bisa tahu persis mana yang sehat dan mana yang perlu diperbaiki. Lakukan minimal setahun sekali, catat trennya, dan perbaiki satu per satu. Mulai dari <a href="/kalkulator/dana-darurat">dana darurat</a>, <a href="/kalkulator/gaji-bersih">penghasilan bersih</a>, dan <a href="/kalkulator/investasi">investasi rutin</a>.</p>
+
+    <h3>📚 Sumber &amp; Referensi</h3>
+    <ul class="info-list">
+      <li>OJK &amp; BPS — Survei Nasional Literasi dan Inklusi Keuangan (SNLIK) 2025: <a href="https://ojk.go.id/id/berita-dan-kegiatan/siaran-pers/Pages/OJK-dan-BPS-Umumkan-Hasil-Survei-Nasional-Literasi-Dan-Inklusi-Keuangan-SNLIK-Tahun-2025.aspx" target="_blank" rel="noopener">ojk.go.id</a></li>
+    </ul>
+
+    <h2>Pertanyaan yang Sering Ditanya (FAQ)</h2>
+    {faqs.map(f => (<div class="faq-item"><h3>{f.q}</h3><p>{f.a}</p></div>))}
+
+    <h3>📌 Kalkulator &amp; Artikel Terkait</h3>
+    <ul class="info-list">
+      <li><a href="/kalkulator/dana-darurat">Kalkulator Dana Darurat</a> · <a href="/blog/cara-hitung-dana-darurat">Cara Hitung Dana Darurat</a></li>
+      <li><a href="/kalkulator/gaji-bersih">Kalkulator Gaji Bersih</a> · <a href="/blog/metode-50-30-20-atur-gaji">Metode 50/30/20 Atur Gaji</a></li>
+      <li><a href="/kalkulator/investasi">Kalkulator Investasi</a> · <a href="/kalkulator/fire">Kalkulator FIRE</a></li>
+    </ul>
+
+    <p class="article-disclaimer"><em>Artikel ini bersifat edukatif, bukan nasihat keuangan/investasi. Patokan rasio bersifat umum dan bisa berbeda sesuai kondisi pribadi. Pertimbangkan konsultasi dengan perencana keuangan profesional.</em></p>
+  </div></article>
+  <AdSlot format="horizontal" />
+</Layout>
+<style>
+  .article-hero { background: linear-gradient(135deg, var(--cat-color) 0%, var(--cat-color2) 100%); color: #fff; padding: 20px 0 48px; }
+  .article-hero :global(.breadcrumb-item), .article-hero :global(.breadcrumb-item a) { color: rgba(255, 255, 255, .7); }
+  .article-hero :global(.breadcrumb-item a:hover) { color: var(--gold-soft); }
+  .article-hero :global(.breadcrumb-item span) { color: #fff; }
+  .article-hero :global(.breadcrumb-item i) { color: rgba(255, 255, 255, .4); }
+  .article-tag { display: inline-block; font-size: 11px; font-weight: 700; color: var(--gold-soft); letter-spacing: .1em; text-transform: uppercase; margin: 16px 0 12px; }
+  .article-hero h1 { color: #fff; font-size: clamp(26px, 3.8vw, 42px); margin: 0 0 20px; max-width: 900px; line-height: 1.2; }
+  .article-meta { display: flex; gap: 20px; color: rgba(255, 255, 255, .75); font-size: 13px; flex-wrap: wrap; }
+  .article-meta span { display: inline-flex; align-items: center; gap: 6px; }
+  .lead { font-size: 17px !important; line-height: 1.7 !important; color: var(--text) !important; padding: 20px 24px; background: var(--bg-soft); border-radius: 12px; border-left: 4px solid #4F46E5; margin-bottom: 24px !important; }
+  .faq-item { margin: 14px 0; }
+  .faq-item h3 { margin-bottom: 4px; }
+  .article-disclaimer { font-size: 13px; color: var(--text-mute); margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border); }
+</style>
