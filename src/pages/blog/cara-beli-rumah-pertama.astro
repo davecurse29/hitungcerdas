@@ -1,0 +1,165 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import ArticleSchema from '../../components/ArticleSchema.astro';
+const datePublished = '2026-07-04';
+const dateModified = '2026-07-04';
+const today = new Date(datePublished).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Blog', href: '/blog' }, { label: 'Beli Rumah Pertama' }];
+
+const faqs = [
+  { q: 'Berapa DP untuk beli rumah pertama?', a: 'Untuk KPR komersial, DP umumnya 10-20% dari harga rumah. Untuk KPR subsidi FLPP, DP jauh lebih ringan — mulai dari 1% saja, bahkan sebagian developer menawarkan promo DP kecil. Selain DP, siapkan juga dana untuk biaya akad, BPHTB, dan notaris (sekitar Rp 5-15 juta).' },
+  { q: 'Apa itu KPR subsidi FLPP?', a: 'FLPP (Fasilitas Likuiditas Pembiayaan Perumahan) adalah KPR bersubsidi pemerintah yang dikelola BP Tapera untuk Masyarakat Berpenghasilan Rendah. Fiturnya: bunga tetap 5% sepanjang tenor (hingga 20 tahun), DP mulai 1%, dan bebas PPN — jauh lebih ringan dari KPR komersial yang bunganya bisa 10-13%.' },
+  { q: 'Berapa batas penghasilan untuk rumah subsidi FLPP 2026?', a: 'Untuk rumah tapak subsidi, batas penghasilan umumnya sekitar Rp 8 juta per bulan (mengacu ketentuan MBR pada Permen PKP terbaru). Ketentuan bisa berbeda untuk rumah susun atau pasangan suami-istri. Selalu cek update resmi di BP Tapera atau bank penyalur.' },
+  { q: 'Berapa harga maksimal rumah subsidi FLPP 2026?', a: 'Harga maksimal berbeda per zona wilayah, mulai sekitar Rp 166 juta (Jawa & Sumatera) hingga Rp 240 juta (Papua). Harga sudah termasuk bangunan dan tanah serta bebas PPN. Angka ini batas maksimal; developer bisa menawarkan lebih rendah.' },
+  { q: 'Bagaimana cara mendaftar KPR subsidi FLPP?', a: 'Unduh aplikasi SiKasep dari pemerintah, lengkapi profil dan dokumen, lalu pilih rumah dari developer resmi yang bermitra. BP Tapera memverifikasi kelayakan, lalu pengajuan diproses bank penyalur (BTN, BRI, BNI, Mandiri, BPD, dan lainnya). Pastikan riwayat SLIK lancar dan dokumen lengkap.' },
+  { q: 'Berapa idealnya cicilan KPR terhadap gaji?', a: 'Idealnya total cicilan (termasuk KPR) tidak melebihi 30-35% dari penghasilan bersih bulanan. Di atas itu, arus kas rentan dan sulit menabung atau berinvestasi. Simulasikan dulu sebelum akad agar cicilan benar-benar sesuai kemampuanmu.' },
+];
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+};
+---
+<Layout title="Cara Beli Rumah Pertama 2026: DP, KPR & Subsidi FLPP" description="Panduan cara beli rumah pertama 2026: cek kesiapan finansial, hitung DP & biaya tersembunyi, pilih KPR komersial vs subsidi FLPP (bunga 5%, DP 1%), KPR syariah, dan strategi nabung DP. Lengkap untuk keluarga muda." keywords={['cara beli rumah pertama', 'kpr subsidi flpp 2026', 'nabung dp rumah', 'rumah subsidi', 'cara ambil kpr', 'beli rumah keluarga muda']} canonical="https://hitungcerdas.net/blog/cara-beli-rumah-pertama" ogType="article">
+  <ArticleSchema
+    headline="Cara Beli Rumah Pertama 2026: Nabung DP, Pilih KPR & Subsidi FLPP"
+    description="Panduan beli rumah pertama 2026: kesiapan finansial, DP & biaya tersembunyi, KPR komersial vs subsidi FLPP, dan strategi nabung DP."
+    datePublished={datePublished}
+    dateModified={dateModified}
+    slug="cara-beli-rumah-pertama"
+    articleSection="Keuangan"
+    keywords={['cara beli rumah pertama', 'kpr subsidi flpp 2026', 'nabung dp rumah', 'rumah subsidi']}
+    wordCount={1750}
+  />
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema)}></script>
+
+  <section class="article-hero" style="--cat-color:#2563EB;--cat-color2:#1E40AF">
+    <div class="wrap"><Breadcrumb items={bcItems} /><div class="article-tag">Keuangan</div>
+      <h1>Cara Beli Rumah Pertama 2026: DP, KPR & Subsidi FLPP</h1>
+      <div class="article-meta"><span><i class="ti ti-calendar"></i> {today}</span><span><i class="ti ti-clock"></i> 11 menit baca</span><span><i class="ti ti-user"></i> Tim HitungCerdas</span></div>
+    </div>
+  </section>
+  <AdSlot format="horizontal" />
+  <article class="content-section"><div class="wrap-text">
+    <p class="lead">Punya rumah sendiri masih jadi impian besar — tapi harga properti naik lebih cepat daripada gaji, dan banyak orang bingung mulai dari mana. Kabar baiknya, di 2026 ada jalur yang realistis, terutama lewat KPR subsidi. Artikel ini memandu langkah demi langkah: dari mengecek kesiapan finansial, menghitung DP dan biaya tersembunyi, sampai memilih antara KPR komersial dan subsidi FLPP.</p>
+
+    <h2>Langkah 0: Cek Kesiapan Finansial Dulu</h2>
+    <p>Sebelum berburu rumah, pastikan fondasimu kuat. Tiga hal yang wajib beres:</p>
+    <ul class="info-list">
+      <li><strong>Rasio cicilan sehat.</strong> Total cicilan (termasuk calon KPR) sebaiknya ≤ 30-35% penghasilan bersih. Di atas itu, bank cenderung menolak dan hidupmu jadi tercekik.</li>
+      <li><strong>Riwayat SLIK/BI Checking bersih.</strong> Tunggakan kartu kredit, paylater, atau pinjol bisa menggagalkan pengajuan. Cek dan bereskan dulu.</li>
+      <li><strong>Dana darurat aman.</strong> Jangan pakai seluruh tabungan untuk DP. Sisakan <a href="/kalkulator/dana-darurat">dana darurat</a> agar tetap bertahan saat ada kejadian tak terduga.</li>
+    </ul>
+
+    <h2>Hitung DP &amp; Biaya Tersembunyi</h2>
+    <p>Kesalahan pemula: mengira cukup menyiapkan DP saja. Padahal ada beberapa pos di luar DP:</p>
+    <ul class="info-list">
+      <li><strong>DP (uang muka).</strong> KPR komersial umumnya 10-20% harga rumah; KPR subsidi FLPP mulai 1%.</li>
+      <li><strong>Biaya akad &amp; provisi bank.</strong> Administrasi, appraisal, asuransi jiwa &amp; kebakaran.</li>
+      <li><strong>BPHTB &amp; biaya notaris/AJB.</strong> Pajak pembeli dan pengurusan legal.</li>
+      <li><strong>Dana masuk rumah.</strong> Perabot dasar, renovasi kecil, pindahan.</li>
+    </ul>
+    <p>Siapkan cadangan <strong>Rp 5-15 juta di luar DP</strong> untuk pos-pos ini agar tidak kelabakan saat akad.</p>
+
+    <AdSlot format="horizontal" />
+
+    <h2>Pilih Jalur: KPR Komersial vs Subsidi FLPP</h2>
+    <table class="cmp-table">
+      <thead><tr><th>Aspek</th><th>KPR Komersial</th><th>KPR Subsidi FLPP</th></tr></thead>
+      <tbody>
+        <tr><td>Bunga</td><td>Floating ~10–13%</td><td>Tetap 5% sampai lunas</td></tr>
+        <tr><td>DP</td><td>10–20%</td><td>Mulai 1%</td></tr>
+        <tr><td>Harga rumah</td><td>Bebas</td><td>Maks ±Rp 166–240 juta (per zona)</td></tr>
+        <tr><td>Penghasilan</td><td>Bebas</td><td>Maks ±Rp 8 juta/bln (MBR)</td></tr>
+        <tr><td>PPN</td><td>Kena</td><td>Bebas PPN</td></tr>
+        <tr><td>Tenor</td><td>s.d. 20–30 tahun</td><td>s.d. 20 tahun</td></tr>
+      </tbody>
+    </table>
+
+    <h2>KPR Subsidi FLPP 2026: Rumah Pertama Ringan</h2>
+    <p>FLPP (Fasilitas Likuiditas Pembiayaan Perumahan) dikelola <strong>BP Tapera</strong> bersama Kementerian Perumahan untuk Masyarakat Berpenghasilan Rendah (MBR). Keunggulan utamanya <strong>bunga tetap 5% sampai lunas</strong> — cicilan tidak berubah meski suku bunga pasar naik. Poin penting 2026:</p>
+    <ul class="info-list">
+      <li><strong>DP mulai 1%</strong> + ada Subsidi Bantuan Uang Muka (SBUM).</li>
+      <li><strong>Harga maksimal per zona</strong> — mulai ±Rp 166 juta (Jawa &amp; Sumatera) hingga ±Rp 240 juta (Papua), sudah termasuk tanah &amp; bangunan, bebas PPN.</li>
+      <li><strong>Penghasilan maksimal ±Rp 8 juta/bulan</strong> (rumah tapak; ketentuan bisa berbeda untuk rusun/pasangan sesuai Permen PKP terbaru).</li>
+      <li><strong>Syarat:</strong> WNI, usia min 21 atau sudah menikah, belum punya rumah, belum pernah terima subsidi, NPWP &amp; SPT, SLIK lancar, dan terdaftar sebagai peserta Tapera.</li>
+      <li><strong>Cara daftar:</strong> lewat aplikasi <strong>SiKasep</strong>, pilih developer resmi, lalu diproses bank penyalur (BTN, BRI, BNI, Mandiri, BPD, dan lainnya).</li>
+      <li><strong>Kuota terbatas &amp; cepat habis</strong> — ajukan sedini mungkin di awal tahun anggaran.</li>
+    </ul>
+    <p>Simulasikan cicilannya dulu di <a href="/kalkulator/kpr">Kalkulator KPR</a> sebelum memutuskan.</p>
+
+    <h2>Opsi Syariah: KPR Murabahah</h2>
+    <p>Kalau kamu ingin tanpa bunga (riba), ada KPR syariah dengan akad <strong>murabahah</strong> — margin disepakati di awal dan cicilan tetap (flat) sampai lunas, tanpa floating. Hitung simulasinya di <a href="/kalkulator/kpr-syariah">Kalkulator KPR Syariah</a>.</p>
+
+    <h2>Strategi Nabung DP</h2>
+    <ul class="info-list">
+      <li><strong>Pisahkan rekening khusus DP</strong> agar tidak tercampur belanja harian.</li>
+      <li><strong>Sesuaikan instrumen dengan jangka waktu.</strong> Kalau target 1-3 tahun, pakai instrumen stabil (deposito, reksadana pasar uang/pendapatan tetap) — jangan taruh dana DP di saham yang fluktuatif. Pelajari di <a href="/blog/reksadana-untuk-pemula">panduan reksadana pemula</a>.</li>
+      <li><strong>Otomatiskan setoran</strong> tiap gajian, dan alokasikan bonus/THR ke pos DP.</li>
+      <li><strong>Jangan korbankan dana darurat</strong> demi mempercepat DP.</li>
+    </ul>
+
+    <h2>Kesalahan Umum</h2>
+    <ul class="info-list">
+      <li><strong>Ambil cicilan terlalu pas dengan gaji.</strong> Sisakan ruang untuk dana darurat &amp; investasi.</li>
+      <li><strong>Lupa biaya di luar DP.</strong> Akad bisa batal kalau dana akad kurang.</li>
+      <li><strong>Tergiur promo tanpa cek total.</strong> Bandingkan cicilan &amp; total pembayaran, bukan hanya DP kecil.</li>
+      <li><strong>Menambah utang baru menjelang pengajuan.</strong> Ini menaikkan rasio cicilan &amp; risiko ditolak.</li>
+    </ul>
+
+    <div class="cta-box">
+      <h3>🏠 Simulasikan Cicilan Rumahmu</h3>
+      <p>Sebelum akad, ketahui angka pastinya:</p>
+      <ul>
+        <li>✅ Simulasi cicilan KPR (bunga, tenor, DP)</li>
+        <li>✅ Bandingkan KPR komersial vs syariah</li>
+        <li>✅ Pastikan cicilan ≤ 30-35% penghasilan &amp; dana darurat aman</li>
+      </ul>
+      <p style="margin-top:14px"><a href="/kalkulator/kpr" class="btn btn-pri"><i class="ti ti-calculator"></i> Buka Kalkulator KPR</a></p>
+    </div>
+
+    <h2>Kesimpulan</h2>
+    <p>Beli rumah pertama bukan soal keberuntungan, tapi persiapan. Bereskan dulu fondasi finansial (rasio cicilan, SLIK, dana darurat), hitung DP <em>plus</em> biaya tersembunyi, lalu pilih jalur yang sesuai — KPR subsidi FLPP sangat layak dilirik keluarga muda karena bunga 5% flat dan DP ringan. Nabung DP dengan instrumen yang sesuai jangka waktu, dan pastikan cicilan tetap sehat. Simulasikan di <a href="/kalkulator/kpr">Kalkulator KPR</a> dan <a href="/kalkulator/kpr-syariah">KPR Syariah</a> sebelum menandatangani apa pun.</p>
+
+    <h3>📚 Sumber &amp; Referensi</h3>
+    <ul class="info-list">
+      <li>BP Tapera — Program &amp; syarat KPR FLPP: <a href="https://tapera.go.id" target="_blank" rel="noopener">tapera.go.id</a></li>
+      <li>SiKasep — Sistem Informasi KPR Subsidi Perumahan: <a href="https://sikasep.pu.go.id" target="_blank" rel="noopener">sikasep.pu.go.id</a></li>
+    </ul>
+
+    <h2>Pertanyaan yang Sering Ditanya (FAQ)</h2>
+    {faqs.map(f => (<div class="faq-item"><h3>{f.q}</h3><p>{f.a}</p></div>))}
+
+    <h3>📌 Kalkulator &amp; Artikel Terkait</h3>
+    <ul class="info-list">
+      <li><a href="/kalkulator/kpr">Kalkulator KPR</a> · <a href="/blog/cara-menghitung-kpr">Cara Hitung Cicilan KPR</a></li>
+      <li><a href="/kalkulator/kpr-syariah">Kalkulator KPR Syariah</a> · <a href="/blog/cara-menghitung-kpr-syariah">Cara Hitung KPR Syariah</a></li>
+      <li><a href="/kalkulator/dana-darurat">Kalkulator Dana Darurat</a> · <a href="/blog/reksadana-untuk-pemula">Reksadana untuk Pemula</a></li>
+    </ul>
+
+    <p class="article-disclaimer"><em>Artikel ini bersifat edukatif, bukan nasihat keuangan. Ketentuan FLPP (harga, penghasilan, kuota, syarat) mengikuti kebijakan pemerintah/BP Tapera yang berlaku dan dapat berubah — selalu konfirmasi ke bank penyalur resmi sebelum transaksi.</em></p>
+  </div></article>
+  <AdSlot format="horizontal" />
+</Layout>
+<style>
+  .article-hero { background: linear-gradient(135deg, var(--cat-color) 0%, var(--cat-color2) 100%); color: #fff; padding: 20px 0 48px; }
+  .article-hero :global(.breadcrumb-item), .article-hero :global(.breadcrumb-item a) { color: rgba(255, 255, 255, .7); }
+  .article-hero :global(.breadcrumb-item a:hover) { color: var(--gold-soft); }
+  .article-hero :global(.breadcrumb-item span) { color: #fff; }
+  .article-hero :global(.breadcrumb-item i) { color: rgba(255, 255, 255, .4); }
+  .article-tag { display: inline-block; font-size: 11px; font-weight: 700; color: var(--gold-soft); letter-spacing: .1em; text-transform: uppercase; margin: 16px 0 12px; }
+  .article-hero h1 { color: #fff; font-size: clamp(26px, 3.8vw, 42px); margin: 0 0 20px; max-width: 900px; line-height: 1.2; }
+  .article-meta { display: flex; gap: 20px; color: rgba(255, 255, 255, .75); font-size: 13px; flex-wrap: wrap; }
+  .article-meta span { display: inline-flex; align-items: center; gap: 6px; }
+  .lead { font-size: 17px !important; line-height: 1.7 !important; color: var(--text) !important; padding: 20px 24px; background: var(--bg-soft); border-radius: 12px; border-left: 4px solid #2563EB; margin-bottom: 24px !important; }
+  .cmp-table { width: 100%; border-collapse: collapse; margin: 18px 0; font-size: 14px; }
+  .cmp-table th, .cmp-table td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .cmp-table thead th { background: var(--bg-soft); font-weight: 700; color: var(--text); }
+  .cmp-table tbody tr:last-child td { border-bottom: none; }
+  .faq-item { margin: 14px 0; }
+  .faq-item h3 { margin-bottom: 4px; }
+  .article-disclaimer { font-size: 13px; color: var(--text-mute); margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border); }
+</style>
