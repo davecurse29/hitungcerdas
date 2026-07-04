@@ -5,7 +5,7 @@ import sitemap from '@astrojs/sitemap';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://hitungcerdas.net',
-  trailingSlash: 'always',
+  trailingSlash: 'never',
   integrations: [
     sitemap({
       changefreq: 'weekly',
@@ -15,6 +15,7 @@ export default defineConfig({
     }),
   ],
   build: {
+    format: 'file',
     inlineStylesheets: 'auto',
   },
   compressHTML: true,
