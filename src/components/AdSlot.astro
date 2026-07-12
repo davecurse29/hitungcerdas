@@ -1,5 +1,7 @@
 ---
-// Reusable AdSense slot component
+// Reusable AdSense slot — AdSense-compliant, tidak menyisakan kotak kosong.
+// Slot mengkerut ke 0 & label "Iklan" disembunyikan saat unit TIDAK terisi
+// (termasuk selama masa review). Label + ruang hanya muncul saat iklan benar-benar tayang.
 // Usage: <AdSlot format="horizontal" />
 
 interface Props {
@@ -14,14 +16,15 @@ const {
   showLabel = true,
 } = Astro.props;
 
+// TANPA min-height: unit yang belum terisi tidak memesan ruang kosong.
 const formatStyles: Record<string, string> = {
-  horizontal: 'display:block;min-height:90px;width:100%;max-width:728px',
+  horizontal: 'display:block;width:100%;max-width:728px',
   rectangle: 'display:inline-block;width:336px;height:280px;max-width:100%',
-  auto: 'display:block;min-height:100px',
+  auto: 'display:block',
 };
 ---
 
-<div class={`ad-strip ${className}`}>
+<div class={`ad-strip ${className}`} data-showlabel={showLabel ? '1' : '0'}>
   <div class="ad-strip-inner">
     {showLabel && <span class="ad-lbl">Iklan</span>}
     <ins
@@ -35,12 +38,47 @@ const formatStyles: Record<string, string> = {
   </div>
 </div>
 
+<style>
+  /* Sembunyikan unit iklan yang tidak terisi (Google: data-ad-status="unfilled") */
+  .ad-strip :global(ins.adsbygoogle[data-ad-status="unfilled"]) { display: none !important; }
+
+  /* Saat BELUM terisi: strip tak memesan ruang & label disembunyikan (tak ada kotak kosong) */
+  .ad-strip:not(.is-filled) {
+    min-height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: none !important;
+    border: none !important;
+  }
+  .ad-strip:not(.is-filled) .ad-lbl { display: none !important; }
+</style>
+
 <script is:inline>
-  (function() {
+  (function () {
+    var s = document.currentScript;
+    var strip = s ? s.previousElementSibling : null;
+    while (strip && !(strip.classList && strip.classList.contains('ad-strip'))) {
+      strip = strip.previousElementSibling;
+    }
+    if (!strip) return;
+    var ins = strip.querySelector('ins.adsbygoogle');
+    if (!ins) return;
+
     try {
       (window.adsbygoogle = window.adsbygoogle || []).push({});
-    } catch (e) {
-      // AdSense not ready yet, will retry
+    } catch (e) {}
+
+    function sync() {
+      var status = ins.getAttribute('data-ad-status');
+      if (status === 'filled') {
+        strip.classList.add('is-filled');     // tampilkan label + ruang iklan
+      } else if (status === 'unfilled') {
+        strip.classList.remove('is-filled');   // tetap mengkerut, tanpa kotak kosong
+      }
     }
+
+    var obs = new MutationObserver(sync);
+    obs.observe(ins, { attributes: true, attributeFilter: ['data-ad-status'] });
+    setTimeout(sync, 3000); // fallback bila status telat/ tak di-set
   })();
 </script>
