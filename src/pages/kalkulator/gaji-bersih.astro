@@ -10,7 +10,7 @@ const calc = getCalculatorBySlug('gaji-bersih')!;
 const related = getRelatedCalculators('gaji-bersih', 3);
 
 const faqs = [
-  { question: 'Apa itu gaji bersih (take-home pay)?', answer: 'Gaji bersih = uang yang benar-benar masuk rekeningmu setelah semua potongan: BPJS Kesehatan (1%), BPJS JHT (2%), BPJS JP (1%), PPh 21 progresif, dan potongan internal (koperasi, cicilan). Biasanya 70-85% dari gaji bruto.' },
+  { question: 'Apa itu gaji bersih (take-home pay)?', answer: 'Gaji bersih = uang yang benar-benar masuk rekeningmu setelah semua potongan: BPJS Kesehatan (1%), BPJS JHT (2%), BPJS JP (1%), PPh 21, dan potongan internal (koperasi, cicilan). Berdasarkan simulasi kalkulator ini untuk status TK/0, take-home pay umumnya <strong>90-95% dari bruto</strong> pada gaji Rp 5-15 juta, lalu menurun seiring naiknya tarif pajak &mdash; sekitar 87% di gaji Rp 25 juta dan 80% di Rp 50 juta.' },
   { question: 'Berapa total potongan BPJS karyawan?', answer: 'Total potongan BPJS karyawan = 4% gaji: <strong>BPJS Kesehatan 1%</strong> (maks Rp 120rb/bln, batas ceiling Rp 12jt), <strong>JHT 2%</strong>, <strong>JP 1%</strong> (maks Rp 110.863/bln, batas ceiling Rp 11,08jt). Perusahaan tambah ~9% dari sisinya untuk JKK, JKM, BPJS Kes.' },
   { question: 'Bagaimana alokasi 50/30/20 yang tepat?', answer: 'Aturan emas alokasi take-home pay: <strong>50% kebutuhan</strong> (sewa/cicilan, listrik, transport, makan), <strong>30% keinginan</strong> (hiburan, hobi, makan di luar), <strong>20% tabungan & investasi</strong> (dana darurat, reksadana, emas).' },
   { question: 'Apakah lembur dan komisi kena PPh?', answer: 'YA, lembur dan komisi termasuk objek PPh 21. Hitungnya ditambahkan ke bruto setahun. Tarifnya progresif sama seperti gaji pokok. Komisi yang besar bisa bikin loncat ke lapisan tarif berikutnya.' },
@@ -316,14 +316,6 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
   </section>
   <!-- ===== /BANDINGKAN TAWARAN KERJA ===== -->
 
-  <section class="content-section">
-    <div class="wrap-text">
-      <h2>Cara Menghitung Gaji Bersih Karyawan</h2>
-      <p>Gaji bersih (take-home pay) = gaji bruto - BPJS Kesehatan 1% - JHT 2% - JP 1% - PPh 21 progresif - potongan lain. Untuk gaji bruto Rp 9,5jt, THP biasanya sekitar Rp 8,8jt (93%). Mau tahu rincian potongan pajaknya? Hitung terpisah di <a href="/kalkulator/pph-21">kalkulator PPh 21</a>. Penghasilanmu sudah capai nisab? Cek juga <a href="/kalkulator/zakat-penghasilan">zakat penghasilan</a>.</p>
-      <div class="cta-box"><h3>Coba Sekarang</h3><p>Isi data gaji & potongan, klik "Hitung Sekarang" untuk simulasi lengkap dengan alokasi 50/30/20.</p></div>
-    </div>
-  </section>
-
   <section class="content-section dh-sec" id="dasar-perhitungan">
     <div class="wrap-text">
       <h2>Dasar Perhitungan Gaji Bersih</h2>
@@ -400,6 +392,8 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         <li><strong>"THR dipotong pajak lebih besar."</strong> Bukan karena tarif THR berbeda, tapi karena THR menambah total penghasilan tahunanmu sehingga bisa mendorong ke lapisan tarif lebih tinggi.</li>
         <li><strong>"Iuran JHT &amp; JP itu hangus."</strong> Justru sebaliknya &mdash; keduanya tersimpan atas namamu (JHT bisa dicairkan, JP jadi manfaat pensiun bulanan), dan sekaligus menjadi pengurang penghasilan dalam perhitungan pajak tahunan.</li>
       </ul>
+
+      <p class="dh-next">Ingin mendalami satu komponen? Hitung rincian pajakmu di <a href="/kalkulator/pph-21">Kalkulator PPh 21</a>, atau cek kewajiban <a href="/kalkulator/zakat-penghasilan">zakat penghasilan</a> bila penghasilan setahunmu sudah mencapai nisab.</p>
 
       <h3>Sumber Resmi</h3>
       <ul class="dh-list dh-src">
@@ -1045,7 +1039,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
           (d.dplkPerusahaanPct && d.dplkPerusahaanPct!=='0')?('Iuran DPLK perusahaan: '+d.dplkPerusahaanPct+'% dari gaji pokok ('+d.dplkPerusahaanTxt+'/bln) \u2014 ditanggung kantor, di luar gaji karyawan & bukan objek PPh 21 saat disetor.'):'',
           (d.thrBonus && d.thrBonus!=='0')?('THR/Bonus tahunan: Rp '+d.thrBonus+'. PPh atas THR/bonus: '+d.thrPphTxt+' (tarif efektif '+d.thrRateTxt+'). THR/bonus bersih: '+d.thrNetTxt+'. Catatan: THR/bonus = penghasilan tidak teratur, pajaknya = selisih PPh setahun dengan vs tanpa THR (jadi tarif efektifnya bisa lebih tinggi dari gaji bulanan), diterima sekali & terpisah dari take-home bulanan. Sejak 2024 potongan riil pakai TER di bulan THR lalu dikoreksi Desember.'):'',
           'Take-home pay (gaji bersih) per bulan: '+d.thpTxt+(pct!=null?(' ('+pct.toFixed(1)+'% dari bruto)'):'')+'.',
-          'Acuan: alokasi sehat 50% kebutuhan, 30% keinginan, 20% tabungan/investasi. Take-home pay umumnya 70-85% dari bruto. Iuran pensiun (DPLK/JHT/JP) yang dibayar karyawan adalah pengurang penghasilan bruto untuk PPh 21.'
+          'Acuan: alokasi sehat 50% kebutuhan, 30% keinginan, 20% tabungan/investasi. Take-home pay (TK/0) umumnya 90-95% dari bruto untuk gaji Rp 5-15jt, sekitar 87% di Rp 25jt, dan 80% di Rp 50jt \u2014 makin tinggi gaji makin besar porsi PPh. Pakai angka acuan ini, jangan rentang lain. Iuran pensiun (DPLK/JHT/JP) yang dibayar karyawan adalah pengurang penghasilan bruto untuk PPh 21.'
         ];
         return p.filter(Boolean).join('\n');
       }
