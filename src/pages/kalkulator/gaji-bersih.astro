@@ -324,6 +324,116 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
     </div>
   </section>
 
+  <section class="content-section dh-sec" id="dasar-perhitungan">
+    <div class="wrap-text">
+      <h2>Dasar Perhitungan Gaji Bersih</h2>
+      <p class="dh-lead">Bagian ini membuka "kotak hitam" kalkulator di atas: rumus persis yang dipakai, dasar hukum tiap potongan, dua batas atas yang sering terlewat, dan contoh kasus lengkap langkah demi langkah. Semua angka di sini identik dengan yang dihitung kalkulator ini.</p>
+
+      <h3>1. Rumus Inti</h3>
+      <div class="dh-formula">
+        <strong>Gaji Bersih (THP) = Bruto &minus; Iuran BPJS Karyawan &minus; PPh 21 &minus; Potongan Lain &minus; Iuran DPLK Karyawan</strong>
+      </div>
+      <p><strong>Bruto</strong> = gaji pokok + tunjangan tetap + tunjangan variabel (lembur, komisi, insentif). Iuran BPJS sisi <em>perusahaan</em> tidak memotong gajimu &mdash; itu biaya perusahaan, bukan potongan karyawan. Karena itu THP selalu dihitung dari sisi karyawan saja.</p>
+
+      <h3>2. Potongan BPJS &amp; Dasar Hukumnya</h3>
+      <p>Total iuran BPJS yang dipotong dari gaji karyawan adalah <strong>4% dari upah</strong> (1% Kesehatan + 2% JHT + 1% JP) &mdash; dengan catatan dua di antaranya dibatasi plafon:</p>
+      <div class="dh-scroll">
+        <table class="dh-table">
+          <thead>
+            <tr><th>Program</th><th>Karyawan</th><th>Perusahaan</th><th>Batas Upah</th><th>Dasar Hukum</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>BPJS Kesehatan</strong></td><td>1%</td><td>4%</td><td>Rp 12.000.000</td><td>Perpres 64/2020</td></tr>
+            <tr><td><strong>JHT</strong> (Jaminan Hari Tua)</td><td>2%</td><td>3,7%</td><td>&mdash;</td><td>PP 46/2015</td></tr>
+            <tr><td><strong>JP</strong> (Jaminan Pensiun)</td><td>1%</td><td>2%</td><td>Rp 11.086.300</td><td>PP 45/2015</td></tr>
+            <tr><td><strong>JKK</strong> (Kecelakaan Kerja)</td><td>&mdash;</td><td>0,24%&ndash;1,74%</td><td>&mdash;</td><td>PP 44/2015</td></tr>
+            <tr><td><strong>JKM</strong> (Jaminan Kematian)</td><td>&mdash;</td><td>0,3%</td><td>&mdash;</td><td>PP 44/2015</td></tr>
+            <tr><td><strong>JKP</strong> (Kehilangan Pekerjaan)</td><td>&mdash;</td><td>rekomposisi iuran</td><td>&mdash;</td><td>PP 37/2021</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="dh-note">Tarif JKK berbeda-beda mengikuti tingkat risiko lingkungan kerja perusahaan. JKP tidak memotong gaji karyawan.</p>
+
+      <h3>3. Dua Batas Atas yang Sering Terlewat</h3>
+      <p>Inilah bagian yang paling sering salah dihitung manual &mdash; dan alasan potongan BPJS-mu <em>tidak</em> naik terus seiring gaji:</p>
+      <ul class="dh-list">
+        <li><strong>BPJS Kesehatan &mdash; plafon upah Rp 12 juta.</strong> Berapa pun gajimu, iuran karyawan berhenti di <strong>1% &times; Rp 12 juta = Rp 120.000/bulan</strong>.</li>
+        <li><strong>Jaminan Pensiun &mdash; plafon upah Rp 11.086.300 (berlaku sejak Maret 2026).</strong> Iuran karyawan maksimal <strong>1% &times; Rp 11.086.300 = Rp 110.863/bulan</strong>.</li>
+      </ul>
+      <p>Plafon JP disesuaikan tiap tahun mengikuti pertumbuhan ekonomi, sesuai mekanisme PP 45/2015. Untuk 2026, BPJS Ketenagakerjaan menetapkannya lewat Surat Edaran No. B/1226/022026 (25 Februari 2026), naik dari Rp 10.547.400 yang berlaku sejak Maret 2025:</p>
+      <div class="dh-formula dh-formula-sm">
+        Rp 10.547.400 &times; (1 + 5,11%) &asymp; <strong>Rp 11.086.300</strong>
+        <span class="dh-formula-cap">5,11% = pertumbuhan PDB Indonesia 2025</span>
+      </div>
+      <p>Efeknya untuk pekerja bergaji di atas plafon: potongan JP naik tipis dari maksimal Rp 105.474 menjadi <strong>Rp 110.863</strong> per bulan.</p>
+
+      <h3>4. PPh 21: Dua Metode, Dua Hasil Berbeda</h3>
+      <p>Kalkulator ini menyediakan dua metode karena keduanya sama-sama dipakai di dunia nyata:</p>
+      <ul class="dh-list">
+        <li><strong>TER Bulanan (PP 58/2023)</strong> &mdash; yang dipakai perusahaan untuk potongan bulanan Januari&ndash;November. Caranya sederhana: <em>bruto sebulan &times; tarif TER</em>. Tarif diambil dari tabel resmi sesuai kategori PTKP-mu: <strong>A</strong> (TK/0, TK/1, K/0), <strong>B</strong> (TK/2, TK/3, K/1, K/2), atau <strong>C</strong> (K/3).</li>
+        <li><strong>Tahunan Pasal 17 (UU HPP 7/2021)</strong> &mdash; perhitungan "sebenarnya" setahun penuh, yang dipakai untuk koreksi di masa pajak Desember dan pelaporan SPT. Tarif progresif 5% / 15% / 25% / 30% / 35%, setelah dikurangi biaya jabatan (5% bruto, maks Rp 6 juta/tahun), iuran yang dibayar karyawan, dan PTKP.</li>
+      </ul>
+      <p>Karena TER hanyalah <em>pendekatan</em> pemotongan bulanan, hasilnya bisa sedikit berbeda dari perhitungan tahunan &mdash; selisihnya dikoreksi otomatis di Desember. Itu sebabnya potongan pajakmu di bulan terakhir sering terasa berbeda.</p>
+
+      <h3>5. Contoh Kasus: Gaji Rp 15 Juta, Status TK/0</h3>
+      <p>Contoh ini sengaja memakai gaji di atas <em>kedua</em> plafon, supaya efek batas atas terlihat jelas:</p>
+      <div class="dh-scroll">
+        <table class="dh-table dh-table-calc">
+          <thead><tr><th>Langkah</th><th>Perhitungan</th><th class="dh-num">Hasil</th></tr></thead>
+          <tbody>
+            <tr><td>Bruto sebulan</td><td>Gaji pokok</td><td class="dh-num">Rp 15.000.000</td></tr>
+            <tr><td>BPJS Kesehatan</td><td>1% &times; 15 jt = Rp 150.000 &rarr; <strong>kena plafon</strong></td><td class="dh-num">&minus; Rp 120.000</td></tr>
+            <tr><td>JHT</td><td>2% &times; 15 jt (tanpa plafon)</td><td class="dh-num">&minus; Rp 300.000</td></tr>
+            <tr><td>JP</td><td>1% &times; 15 jt = Rp 150.000 &rarr; <strong>kena plafon</strong></td><td class="dh-num">&minus; Rp 110.863</td></tr>
+            <tr class="dh-sub"><td colspan="2">Total iuran BPJS karyawan</td><td class="dh-num">&minus; Rp 530.863</td></tr>
+            <tr><td>PPh 21 (TER)</td><td>Kategori A, bruto Rp 15 jt &rarr; tarif <strong>6%</strong> &times; 15 jt</td><td class="dh-num">&minus; Rp 900.000</td></tr>
+            <tr class="dh-total"><td colspan="2"><strong>Gaji Bersih (THP)</strong></td><td class="dh-num"><strong>Rp 13.569.137</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Take-home pay = <strong>90,5% dari bruto</strong>. Perhatikan: tanpa plafon, potongan BPJS-nya akan menjadi Rp 600.000 &mdash; jadi kedua batas atas itu menghemat <strong>Rp 69.137/bulan</strong> (sekitar Rp 830 ribu setahun).</p>
+      <p class="dh-note">Sebagai pembanding, dengan metode <strong>tahunan Pasal 17</strong> hasilnya &plusmn; Rp 920.000/bulan &mdash; sedikit lebih tinggi dari TER. Selisih inilah yang dikoreksi di Desember.</p>
+
+      <h3>6. Tiga Hal yang Sering Salah Dipahami</h3>
+      <ul class="dh-list">
+        <li><strong>"Potongan BPJS saya 9%."</strong> Tidak. Yang memotong gajimu hanya <strong>4%</strong>; sisanya (JKK, JKM, dan porsi perusahaan) dibayar pemberi kerja di luar gajimu.</li>
+        <li><strong>"THR dipotong pajak lebih besar."</strong> Bukan karena tarif THR berbeda, tapi karena THR menambah total penghasilan tahunanmu sehingga bisa mendorong ke lapisan tarif lebih tinggi.</li>
+        <li><strong>"Iuran JHT &amp; JP itu hangus."</strong> Justru sebaliknya &mdash; keduanya tersimpan atas namamu (JHT bisa dicairkan, JP jadi manfaat pensiun bulanan), dan sekaligus menjadi pengurang penghasilan dalam perhitungan pajak tahunan.</li>
+      </ul>
+
+      <h3>Sumber Resmi</h3>
+      <ul class="dh-list dh-src">
+        <li>Direktorat Jenderal Pajak &mdash; UU HPP &amp; tarif PPh 21: <a href="https://www.pajak.go.id/" target="_blank" rel="noopener">pajak.go.id</a></li>
+        <li>BPJS Ketenagakerjaan &mdash; iuran JHT, JP, JKK, JKM &amp; batas upah JP: <a href="https://www.bpjsketenagakerjaan.go.id/" target="_blank" rel="noopener">bpjsketenagakerjaan.go.id</a></li>
+        <li>BPJS Kesehatan &mdash; iuran &amp; batas upah (Perpres 64/2020): <a href="https://www.bpjs-kesehatan.go.id/" target="_blank" rel="noopener">bpjs-kesehatan.go.id</a></li>
+      </ul>
+      <p class="dh-disc"><em>Hasil kalkulator bersifat estimasi edukatif dan bukan slip gaji resmi. Kebijakan tunjangan, potongan internal, dan skema pajak tiap perusahaan bisa berbeda &mdash; konfirmasikan dengan HRD atau konsultan pajak untuk keputusan penting.</em></p>
+    </div>
+  </section>
+
+<style>
+  .dh-sec { padding-top: 0; }
+  .dh-sec h3 { margin: 28px 0 10px; font-size: 1.05rem; }
+  .dh-lead { padding: 16px 20px; background: var(--bg-soft, #F1F5F9); border-left: 4px solid #059669; border-radius: 10px; margin-bottom: 20px; }
+  .dh-formula { background: #ECFDF5; border: 1px solid #A7F3D0; border-radius: 10px; padding: 16px 18px; margin: 14px 0; text-align: center; line-height: 1.7; }
+  .dh-formula-sm { font-size: .95rem; }
+  .dh-formula-cap { display: block; margin-top: 6px; font-size: .78rem; color: #64748b; }
+  .dh-scroll { overflow-x: auto; margin: 14px 0; -webkit-overflow-scrolling: touch; }
+  .dh-table { width: 100%; border-collapse: collapse; font-size: .88rem; min-width: 460px; }
+  .dh-table th, .dh-table td { text-align: left; padding: 9px 11px; border-bottom: 1px solid #e2e8f0; vertical-align: top; }
+  .dh-table thead th { background: #F1F5F9; font-weight: 700; }
+  .dh-table tbody tr:last-child td { border-bottom: none; }
+  .dh-num { text-align: right; white-space: nowrap; }
+  .dh-table-calc .dh-sub td { background: #F8FAFC; font-weight: 600; }
+  .dh-table-calc .dh-total td { background: #ECFDF5; font-size: .95rem; border-top: 2px solid #A7F3D0; }
+  .dh-list { margin: 12px 0; padding-left: 20px; }
+  .dh-list li { margin: 8px 0; line-height: 1.65; }
+  .dh-src { font-size: .9rem; }
+  .dh-note { font-size: .86rem; color: #64748b; line-height: 1.6; }
+  .dh-disc { font-size: .82rem; color: #64748b; margin-top: 20px; padding-top: 14px; border-top: 1px solid #e2e8f0; line-height: 1.6; }
+  @media (max-width: 640px) { .dh-table { font-size: .82rem; } }
+</style>
+
   <AdSlot format="horizontal" />
   <FAQ title="Pertanyaan Seputar Gaji Bersih" items={faqs} />
 
