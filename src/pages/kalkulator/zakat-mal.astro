@@ -12,7 +12,8 @@ const related = getRelatedCalculators('zakat-mal', 3);
 const faqs = [
   { question: 'Beda zakat mal & fitrah?', answer: '<strong>Mal</strong>: zakat harta yang capai nisab & haul 1 tahun, tarif 2,5%. <strong>Fitrah</strong>: zakat jiwa di Ramadhan, 2,5kg beras/jiwa, tidak ada nisab.' },
   { question: 'Harta apa wajib dizakati?', answer: 'Uang tunai, tabungan, emas/perak, investasi (saham, reksadana, crypto), piutang, aset usaha, properti investasi. TIDAK: rumah tinggal, kendaraan pribadi, perabotan, pakaian.' },
-  { question: 'Nisab & haul?', answer: '<strong>Nisab</strong> = 85 gr emas. Nilai rupiahnya mengikuti harga emas terkini — sekitar Rp 205-230jt, tergantung acuan (spot emas dunia atau harga Antam yang lebih tinggi). Kalkulator ini menghitung nisab otomatis dari harga emas yang dipakai. <strong>Haul</strong> = harta dimiliki min 1 tahun. Praktis: tetapkan tanggal patokan (misal Ramadhan) untuk hitung setahun sekali.' },
+  { question: 'Nisab & haul?', answer: '<strong>Nisab</strong> = 85 gr emas. Nilai rupiahnya <strong>mengikuti harga emas saat zakat ditunaikan</strong> — BAZNAS menyebut acuan harga <em>buy back</em> emas pada hari itu. Kisarannya sekitar Rp 195-230jt tergantung acuan yang dipakai (spot emas dunia lebih rendah; harga jual Antam lebih tinggi karena ada premi cetak). Kalkulator ini menghitung nisab otomatis dari harga emas yang kamu pakai, dan angkanya bisa kamu sesuaikan. <strong>Haul</strong> = harta dimiliki min 1 tahun. Praktis: tetapkan tanggal patokan (misal Ramadhan) untuk hitung setahun sekali.' },
+  { question: 'Kenapa nisab zakat mal beda dengan zakat penghasilan?', answer: 'Karena BAZNAS memakai <strong>dua acuan berbeda</strong> untuk dua jenis zakat yang berbeda. Untuk <strong>zakat penghasilan</strong>, SK Ketua BAZNAS No. 15/2026 menetapkan angka tetap setahun: Rp 91.681.728 — memakai 85 gram emas <strong>14 karat</strong> dari rata-rata harga emas 2025. Untuk <strong>zakat mal/emas</strong>, acuannya 85 gram emas mengikuti <strong>harga emas saat zakat ditunaikan</strong>, sehingga nilainya lebih tinggi dan berubah-ubah. Keduanya sama-sama sah dan sama-sama dari BAZNAS — bedanya bukan kesalahan hitung, melainkan metodologi yang memang berbeda. Catatan: Komisi Fatwa MUI masih mengkaji acuan emas 14 karat tersebut.' },
   { question: 'Hutang mengurangi zakat?', answer: 'YA, hutang jatuh tempo 12 bulan ke depan kurangi harta. Rumus: Zakat = (Harta - Hutang Jangka Pendek) x 2,5%, jika setelahnya masih di atas nisab.' },
   { question: 'Kapan bayar?', answer: 'Saat haul terpenuhi (harta dimiliki 1 tahun). Praktis: tetapkan tanggal patokan tahunan, hitung total harta, bayar 2,5%. Banyak Muslim Indonesia bayar di Ramadhan.' },
 ];
@@ -176,7 +177,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
   <section class="content-section">
     <div class="wrap-text">
       <h2>Cara Menghitung Zakat Mal yang Benar</h2>
-      <p>Zakat mal wajib bagi Muslim yang hartanya capai nisab (85 gr emas — sekitar Rp 205-230jt mengikuti harga emas terkini, tergantung acuan spot emas dunia atau harga Antam) dan sudah dimiliki min 1 tahun. Tarif 2,5% dari harta bersih (setelah dikurangi hutang jatuh tempo). Punya penghasilan rutin? Hitung juga <a href="/kalkulator/zakat-penghasilan">zakat penghasilan</a>. Menjelang Idul Fitri, jangan lupa <a href="/kalkulator/zakat-fitrah">zakat fitrah</a>.</p>
+      <p>Zakat mal wajib bagi Muslim yang hartanya capai nisab (85 gr emas — mengikuti harga emas saat zakat ditunaikan, sekitar Rp 195-230jt tergantung acuan spot dunia atau harga Antam) dan sudah dimiliki min 1 tahun. <strong>Catatan:</strong> nisab ini berbeda dengan nisab <a href="/kalkulator/zakat-penghasilan">zakat penghasilan</a> (Rp 91.681.728/tahun per SK BAZNAS 15/2026) karena BAZNAS memakai acuan emas yang berbeda untuk keduanya — bukan salah hitung. Tarif 2,5% dari harta bersih (setelah dikurangi hutang jatuh tempo). Punya penghasilan rutin? Hitung juga <a href="/kalkulator/zakat-penghasilan">zakat penghasilan</a>. Menjelang Idul Fitri, jangan lupa <a href="/kalkulator/zakat-fitrah">zakat fitrah</a>.</p>
       <div class="cta-box"><h3>Tunaikan Zakat Mal Anda</h3><p>Hitung total harta, kurangi hutang, lalu bayar 2,5% via BAZNAS atau lembaga zakat resmi.</p></div>
     </div>
   </section>
@@ -189,7 +190,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
     <div class="related-grid">{related.map(c => <CalculatorCard calc={c} />)}</div>
   </div></section>
   <p class="hc-method-note" style="text-align:center;font-size:.85rem;color:#64748b;margin:1.2rem auto;max-width:680px;line-height:1.6;padding:0 1rem;">
-    📅 Diperbarui <strong>Juni 2026</strong> · Zakat mal = 2,5% dari harta yang mencapai nisab (setara 85 gram emas) &amp; telah dimiliki 1 tahun (haul). Estimasi edukatif; salurkan via lembaga resmi. <strong>Sumber:</strong> <a href="https://baznas.go.id/" target="_blank" rel="noopener">BAZNAS</a>.
+    📅 Diperbarui <strong>Juli 2026</strong> · Zakat mal = 2,5% dari harta yang mencapai nisab (85 gram emas, mengikuti harga emas saat ditunaikan — acuan <em>buy back</em> menurut BAZNAS) &amp; telah dimiliki 1 tahun (haul). Berbeda dengan nisab zakat penghasilan (SK BAZNAS 15/2026) yang memakai emas 14 karat. Estimasi edukatif; salurkan via lembaga resmi. <strong>Sumber:</strong> <a href="https://baznas.go.id/" target="_blank" rel="noopener">BAZNAS</a>.
   </p>
 </Layout>
 
@@ -581,7 +582,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
               if (note) {
                 var t = '';
                 if (d.ts) { try { t = ' \u00b7 update ' + new Date(d.ts * 1000).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' }); } catch (e) {} }
-                note.innerHTML = 'Harga emas 24k <strong>live</strong> (spot dunia): Rp ' + fmtId(d.pricePerGram24k) + '/gram' + t + '. Bisa kamu edit \u2014 sebagian ulama pakai harga <strong>Antam</strong> (lebih tinggi, ada premi cetak) sebagai acuan nisab.';
+                note.innerHTML = 'Harga emas 24k <strong>live</strong> (spot dunia): Rp ' + fmtId(d.pricePerGram24k) + '/gram' + t + '. Bisa kamu edit \u2014 BAZNAS menyebut acuan harga <strong>buy back</strong> pada hari zakat ditunaikan, sedangkan sebagian ulama pakai harga jual <strong>Antam</strong> (lebih tinggi, ada premi cetak).';
                 note.style.color = '#047857';
               }
               if (lastCalc) hitung();
@@ -642,6 +643,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         else lines.push('Status: BELUM wajib zakat, kurang '+d.selisihTxt+' dari nisab.');
         if(d.cats && d.cats.length) lines.push('Rincian harta: '+d.cats.map(function(c){return c.label+' '+c.valTxt;}).join(', ')+'.');
         lines.push('KONTEKS EDUKATIF: Harta yang dihitung zakat mal mencakup uang tunai, tabungan, deposito, emas & perak, saham & reksadana (pakai nilai pasar), piutang yang diharapkan kembali, dan barang dagangan (nilai jual) \u2014 dikurangi hutang jatuh tempo. TIDAK termasuk rumah yang ditinggali, kendaraan pribadi, dan alat kerja. Nisab bisa memakai acuan 85 gram emas ATAU 595 gram perak; nisab perak nilainya jauh lebih rendah sehingga lebih banyak orang menjadi wajib \u2014 sebagian ulama menganjurkan acuan perak untuk zakat uang agar lebih memihak penerima. Zakat mal berbeda dari zakat penghasilan: zakat mal atas harta yang mengendap 1 haul, zakat penghasilan atas pemasukan (sebagian menunaikan tiap bulan) \u2014 hindari menghitung ganda atas harta yang sama.');
+        lines.push('BEDA NISAB (penting, sering ditanya): Nisab zakat MAL di kalkulator ini = 85 gram emas x harga emas terkini (BAZNAS: acuan harga buy back saat zakat ditunaikan), sehingga nilainya besar dan berubah-ubah. Sedangkan nisab zakat PENGHASILAN 2026 ditetapkan tetap Rp 91.681.728/tahun (Rp 7.640.144/bulan) lewat SK Ketua BAZNAS No. 15/2026 memakai emas 14 karat rata-rata harga 2025. Jadi keduanya memang BERBEDA dan sama-sama sah \u2014 itu bukan salah hitung, melainkan metodologi BAZNAS yang berbeda untuk dua jenis zakat. Komisi Fatwa MUI masih mengkaji acuan 14 karat tersebut. Jelaskan ini dengan tenang bila pengguna bingung kenapa angkanya beda.');
         lines.push('ATURAN UNTUKMU (AI): Gunakan HANYA angka di atas, jangan mengarang. Jelaskan konsep nisab, haul (kepemilikan harta 1 tahun penuh adalah syarat wajib, dan pengguna sendiri yang memastikan ini), tarif 2,5%, serta harta apa yang wajib dan tidak (TIDAK termasuk rumah tinggal, kendaraan pribadi, dan menurut sebagian ulama perhiasan emas yang dipakai sehari-hari). Bila wajib, anjurkan menunaikan via BAZNAS atau Lembaga Amil Zakat (LAZ) resmi. Ini edukasi, BUKAN fatwa. Untuk kasus rumit (mis. zakat saham trading, properti) sarankan konsultasi ke amil/ustadz. Jangan menjawab di luar topik zakat dan harta.');
         return lines.join('\n');
       }
