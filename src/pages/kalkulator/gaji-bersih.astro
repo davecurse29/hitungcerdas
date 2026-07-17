@@ -170,7 +170,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
                 <div class="adv-toggle"><span><i class="ti ti-moon-stars"></i>&nbsp; Zakat Penghasilan (2,5%)</span><i class="ti ti-chevron-down chev"></i></div>
                 <div class="adv-content">
                   <div id="zakatBody"></div>
-                  <p style="font-size:11.5px;color:var(--text-mute);margin-top:8px;line-height:1.5">💡 Zakat penghasilan = 2,5% dari penghasilan bruto bila setahun mencapai nisab (85 gr emas). Dibayar via lembaga resmi (mis. BAZNAS) bisa jadi <strong>pengurang PKP</strong>. Nisab pakai harga emas terkini.</p>
+                  <p style="font-size:11.5px;color:var(--text-mute);margin-top:8px;line-height:1.5">💡 Zakat penghasilan = 2,5% dari penghasilan bruto bila setahun mencapai nisab. Nisab 2026 = <strong>Rp 91.681.728/tahun</strong> per SK Ketua BAZNAS No. 15/2026. Dibayar via lembaga resmi (mis. BAZNAS) bisa jadi <strong>pengurang PKP</strong>.</p>
                 </div>
               </div>
 
@@ -639,12 +639,10 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       // Expose mesin take-home murni untuk fitur "Bandingkan Tawaran Kerja" (single source of truth).
       try { window.HCGaji = { coreThp: coreThp }; } catch (e) {}
 
-      // Harga emas live (untuk nisab zakat penghasilan). Fallback spot 24k ~Rp 2,4jt/gram.
-      let goldPerGram = 2400000;
-      fetch('/api/gold', { headers: { 'accept': 'application/json' } })
-        .then(r => r.json())
-        .then(d => { if (d && d.ok && d.pricePerGram24k > 0) goldPerGram = d.pricePerGram24k; })
-        .catch(() => {});
+      // Nisab zakat penghasilan 2026 — SK Ketua BAZNAS No. 15/2026 (21 Feb 2026):
+      // 85 gram emas 14 karat (rata-rata harga emas 2025) = Rp 91.681.728/tahun (Rp 7.640.144/bulan).
+      // PERBARUI TIAP TAHUN saat BAZNAS menerbitkan SK nisab baru (biasanya Februari).
+      const NISAB_BAZNAS_2026 = 91681728;
 
       let lastCalc = null;
 
@@ -743,16 +741,16 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
           + `<tr class="active"><td><strong>Total Biaya Perusahaan</strong></td><td class="right"><strong>${HC.fmt(ctc)}</strong></td></tr>`;
         $('ctcRatio').textContent = `${(thp / ctc * 100).toFixed(0)}%`;
 
-        // ===== Zakat penghasilan (2,5%) — nisab 85 gr emas (harga emas live) =====
+        // ===== Zakat penghasilan (2,5%) — nisab resmi BAZNAS 2026 =====
         const brutoSetahun = brutoBulan * 12 + thrBonus;
-        const nisabTahun = 85 * goldPerGram;
+        const nisabTahun = NISAB_BAZNAS_2026;
         const wajibZakat = brutoSetahun >= nisabTahun;
         const zakatBulan = brutoBulan * 0.025;
         const zakatTahun = brutoSetahun * 0.025;
         $('zakatBody').innerHTML =
           `<div class="result-grid">`
           + `<div class="result-item"><div class="result-item-label">Bruto / Tahun</div><div class="result-item-value">${HC.fmt(brutoSetahun)}</div></div>`
-          + `<div class="result-item"><div class="result-item-label">Nisab (85gr emas)</div><div class="result-item-value">${HC.fmt(nisabTahun)}</div></div>`
+          + `<div class="result-item"><div class="result-item-label">Nisab 2026 (BAZNAS)</div><div class="result-item-value">${HC.fmt(nisabTahun)}</div></div>`
           + `<div class="result-item"><div class="result-item-label">Zakat 2,5% / Bulan</div><div class="result-item-value result-strong">${wajibZakat ? HC.fmt(zakatBulan) : '—'}</div></div>`
           + `<div class="result-item"><div class="result-item-label">Zakat 2,5% / Tahun</div><div class="result-item-value">${wajibZakat ? HC.fmt(zakatTahun) : '—'}</div></div>`
           + `</div>`
