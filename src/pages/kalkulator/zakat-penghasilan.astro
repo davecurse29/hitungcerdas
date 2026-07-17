@@ -11,7 +11,7 @@ const related = getRelatedCalculators('zakat-penghasilan', 3);
 
 const faqs = [
   { question: 'Apa itu zakat penghasilan?', answer: 'Zakat dari gaji/honor profesi yang capai nisab. Tarif 2,5%. Dasar: QS Adz-Dzariyat 19, Fatwa MUI 3/2003, Peraturan BAZNAS 1/2018.' },
-  { question: 'Berapa nisab 2026?', answer: '<strong>85 gram emas</strong> per tahun. Dengan harga emas Antam ~Rp 2,7jt/gram (Juni 2026): nisab = <strong>~Rp 229,5jt/tahun</strong> atau <strong>~Rp 19,1jt/bulan</strong>. Karena harga emas naik tinggi beberapa tahun terakhir, nisab ikut naik — sesuaikan input harga emas dengan harga terkini saat menghitung.' },
+  { question: 'Berapa nisab 2026?', answer: 'Menurut <strong>SK Ketua BAZNAS No. 15 Tahun 2026</strong> (21 Februari 2026), nisab zakat pendapatan &amp; jasa tahun 2026 senilai 85 gram emas = <strong>Rp 91.681.728/tahun</strong>, atau <strong>Rp 7.640.144/bulan</strong> bila ditunaikan tiap bulan. BAZNAS memakai acuan emas <strong>14 karat</strong> (kadar 58,33%–62,49%) dari rata-rata harga emas sepanjang 2025 — kewenangan ini bersandar pada PMA No. 31/2019 yang tidak mengatur jenis karat secara spesifik. Catatan: sebagian ulama memakai emas murni 24 karat, sehingga nisab versi tersebut jauh lebih tinggi.' },
   { question: 'Bruto atau neto?', answer: 'BAZNAS RI: bruto (lebih hati-hati). Sebagian ulama: neto setelah biaya pokok. Hasilnya tidak terlalu berbeda — Rp 10jt × 2,5% = Rp 250rb.' },
   { question: 'Bulanan atau setahun?', answer: 'Keduanya sah. Mayoritas Muslim Indonesia: per bulan (lebih terstruktur, auto-debet ke lembaga zakat resmi).' },
   { question: 'Zakat kurangi PPh 21?', answer: 'YA! Sesuai PMK 254/PMK.03/2010, zakat via lembaga resmi (BAZNAS, LAZ Kemenag) jadi <strong>pengurang PKP</strong>. Simpan bukti untuk SPT Tahunan.' },
@@ -60,9 +60,9 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
               <p class="field-hint">Gaji + tunjangan + bonus (rata-rata)</p></div>
             <div class="field"><label>Penghasilan Lain/Bulan <span class="hint">(freelance, dividen)</span></label>
               <div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="lain" class="has-prefix" placeholder="0" inputmode="numeric" /></div></div>
-            <div class="field"><label>Harga Emas per Gram</label>
-              <div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="emas" class="has-prefix" value="2.700.000" inputmode="numeric" /></div>
-              <p class="field-hint">🔄 Acuan Antam ~Rp 2,7jt/gram (per Juni 2026). Harga emas berubah harian — cek harga hari ini di logammulia.com lalu sesuaikan.</p></div>
+            <div class="field"><label>Nisab Setahun <span class="hint">(acuan BAZNAS 2026)</span></label>
+              <div class="input-wrap"><span class="input-prefix">Rp</span><input type="text" id="nisabInput" class="has-prefix" value="91.681.728" inputmode="numeric" /></div>
+              <p class="field-hint">📋 <strong>SK Ketua BAZNAS No. 15/2026</strong>: nisab zakat pendapatan &amp; jasa 2026 = 85 gram emas <strong>14 karat</strong> (kadar 58,33%&ndash;62,49%, rata-rata harga emas 2025) = <strong>Rp 91.681.728/tahun</strong> atau Rp 7.640.144/bulan. Sebagian ulama memakai emas murni 24 karat sehingga nisabnya lebih tinggi &mdash; silakan ubah angka ini bila mengikuti pendapat tersebut.</p></div>
 
             <div class="calc-action-bar">
               <button type="button" class="btn-hitung" id="btnHitung"><i class="ti ti-calculator"></i> Hitung Sekarang</button>
@@ -74,7 +74,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
             <div class="result-placeholder" id="placeholder">
               <i class="ti ti-coin result-placeholder-icon"></i>
               <div class="result-placeholder-title">Hasil akan muncul di sini</div>
-              <div class="result-placeholder-desc">Isi penghasilan bulanan & harga emas, lalu klik <strong>"Hitung Sekarang"</strong>.</div>
+              <div class="result-placeholder-desc">Isi penghasilan bulanan, lalu klik <strong>"Hitung Sekarang"</strong>.</div>
             </div>
 
             <div class="result-wrapper" id="results">
@@ -146,7 +146,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
   <section class="content-section">
     <div class="wrap-text">
       <h2>Panduan Lengkap Zakat Penghasilan</h2>
-      <p>Zakat profesi/penghasilan = <strong>2,5% dari penghasilan</strong> jika setahun mencapai nisab 85 gram emas (~Rp 229,5jt dengan harga emas Juni 2026 ~Rp 2,7jt/gram). Bayar via lembaga zakat resmi BAZNAS/LAZ Kemenag — bisa <strong>kurangi PPh 21</strong> per PMK 254/2010. Hitung pajakmu di <a href="/kalkulator/pph-21">kalkulator PPh 21</a>. Punya harta/tabungan yang sudah capai nisab? Hitung juga <a href="/kalkulator/zakat-mal">zakat mal</a>.</p>
+      <p>Zakat profesi/penghasilan = <strong>2,5% dari penghasilan</strong> jika penghasilan setahun mencapai nisab. Untuk 2026, BAZNAS menetapkan nisab <strong>Rp 91.681.728/tahun</strong> (Rp 7.640.144/bulan) lewat SK Ketua BAZNAS No. 15/2026. Bayar via lembaga zakat resmi BAZNAS/LAZ Kemenag — bisa <strong>kurangi PPh 21</strong> per PMK 254/2010. Hitung pajakmu di <a href="/kalkulator/pph-21">kalkulator PPh 21</a>. Punya harta/tabungan yang sudah capai nisab? Hitung juga <a href="/kalkulator/zakat-mal">zakat mal</a>.</p>
       <div class="cta-box"><h3>Tunaikan Zakat Penghasilan</h3><p>Cek apakah penghasilanmu capai nisab, lalu hitung zakat 2,5% wajib.</p></div>
     </div>
   </section>
@@ -159,7 +159,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
     <div class="related-grid">{related.map(c => <CalculatorCard calc={c} />)}</div>
   </div></section>
   <p class="hc-method-note" style="text-align:center;font-size:.85rem;color:#64748b;margin:1.2rem auto;max-width:680px;line-height:1.6;padding:0 1rem;">
-    📅 Diperbarui <strong>Juni 2026</strong> · Zakat penghasilan = 2,5% dari penghasilan bila mencapai nisab (setara 85 gram emas/tahun). Estimasi edukatif. <strong>Sumber:</strong> <a href="https://baznas.go.id/" target="_blank" rel="noopener">BAZNAS</a> &amp; Fatwa MUI No. 3/2003.
+    📅 Diperbarui <strong>Juli 2026</strong> · Zakat penghasilan = 2,5% dari penghasilan bila setahun mencapai nisab <strong>Rp 91.681.728</strong> (SK Ketua BAZNAS No. 15/2026 — 85 gram emas 14 karat, rata-rata harga 2025). Estimasi edukatif, bukan fatwa. <strong>Sumber:</strong> <a href="https://baznas.go.id/zakatpenghasilan" target="_blank" rel="noopener">BAZNAS</a>, PMA No. 31/2019 &amp; Fatwa MUI No. 3/2003.
   </p>
 </Layout>
 
@@ -168,18 +168,18 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
     function ready(fn) { if (window.HC && window.html2canvas) fn(); else setTimeout(() => ready(fn), 100); }
     ready(() => {
       const $ = id => document.getElementById(id);
-      const els = { p: $('penghasilan'), l: $('lain'), e: $('emas') };
+      const els = { p: $('penghasilan'), l: $('lain'), n: $('nisabInput') };
       Object.values(els).forEach(el => el.addEventListener('input', HC.fmtInput));
 
       let lastCalc = null;
 
       function hitung() {
-        const p = HC.parseRp(els.p.value), l = HC.parseRp(els.l.value), e = HC.parseRp(els.e.value);
+        const p = HC.parseRp(els.p.value), l = HC.parseRp(els.l.value), nisab = HC.parseRp(els.n.value);
         if (p === 0) { HC.toast('Masukkan penghasilan', 'error'); return; }
+        if (nisab <= 0) { HC.toast('Nisab tidak boleh kosong', 'error'); return; }
 
         const totalBulan = p + l;
         const brutoTahun = totalBulan * 12;
-        const nisab = e * 85;
         const wajib = brutoTahun >= nisab;
         const zakatTahun = wajib ? brutoTahun * 0.025 : 0;
         const zakatBulan = zakatTahun / 12;
@@ -198,7 +198,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
           $s.innerHTML = `<div class="kelayakan-status ks-warn"><i class="ti ti-info-circle"></i> Belum Wajib Zakat</div><p class="ks-note">Masih ${HC.fmt(lack)} di bawah nisab. Disunnahkan sedekah/infaq.</p>`;
         }
 
-        lastCalc = { p, l, e, totalBulan, brutoTahun, nisab, wajib, zakatTahun, zakatBulan };
+        lastCalc = { p, l, totalBulan, brutoTahun, nisab, wajib, zakatTahun, zakatBulan };
         $('placeholder').style.display = 'none';
         $('results').classList.add('show');
         $('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -206,7 +206,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
       }
 
       function reset() {
-        els.p.value = '10.000.000'; els.l.value = ''; els.e.value = '2.700.000';
+        els.p.value = '10.000.000'; els.l.value = ''; els.n.value = '91.681.728';
         $('placeholder').style.display = ''; $('results').classList.remove('show');
         lastCalc = null; HC.toast('Form direset', 'info');
       }
@@ -222,11 +222,11 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
           inputs: [
             { label: '💰 Penghasilan/bulan', value: HC.fmt(c.p) },
             { label: '💵 Penghasilan lain', value: HC.fmt(c.l) },
-            { label: '🪙 Harga Emas/gram', value: HC.fmt(c.e) },
+            { label: '📋 Nisab setahun', value: HC.fmt(c.nisab) },
           ],
           results: [
             { label: 'Penghasilan Setahun', value: HC.fmt(c.brutoTahun) },
-            { label: 'Nisab 85gr Emas', value: HC.fmt(c.nisab) },
+            { label: 'Nisab Setahun', value: HC.fmt(c.nisab) },
             { label: 'Status', value: c.wajib ? '✅ Wajib Zakat' : '⏸️ Belum Nisab', highlight: c.wajib },
             { label: 'Zakat/Bulan', value: HC.fmt(c.zakatBulan), highlight: c.wajib },
             { label: 'Zakat/Tahun', value: HC.fmt(c.zakatTahun) },
@@ -402,7 +402,7 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
           nisab:nisab, nisabTxt:(window.HC?HC.fmt(nisab):nisab),
           wajib:(nisab>0 && brutoTahun>=nisab),
           zakatBulanTxt:zb, zakatTahunTxt:zt,
-          penghasilan:($('penghasilan')||{}).value||'', lain:($('lain')||{}).value||'', emas:($('emas')||{}).value||''
+          penghasilan:($('penghasilan')||{}).value||'', lain:($('lain')||{}).value||'', nisabInput:($('nisabInput')||{}).value||''
         };
       }
 
@@ -422,9 +422,9 @@ const bcItems = [{ label: 'Beranda', href: '/' }, { label: 'Kalkulator', href: '
         var d=readData();
         var p=[
           'Kalkulator: Zakat Penghasilan (zakat profesi) \u2014 2,5% dari penghasilan bila mencapai nishab.',
-          'Input: penghasilan pokok Rp '+d.penghasilan+'/bulan'+(d.lain&&d.lain!=='0'?(', penghasilan lain Rp '+d.lain+'/bulan'):'')+', harga emas Rp '+d.emas+'/gram.',
+          'Input: penghasilan pokok Rp '+d.penghasilan+'/bulan'+(d.lain&&d.lain!=='0'?(', penghasilan lain Rp '+d.lain+'/bulan'):'')+', nisab setahun yang dipakai Rp '+d.nisabInput+'.',
           'Hasil: penghasilan setahun '+d.brutoTahunTxt+', nishab (85 gram emas/tahun) '+d.nisabTxt+', status '+(d.wajib?'WAJIB zakat':'BELUM wajib')+', zakat '+(d.wajib?(d.zakatBulanTxt+'/bulan atau '+d.zakatTahunTxt+'/tahun'):'Rp 0 (belum capai nishab)')+'.',
-          'Acuan untuk jawabanmu: Zakat penghasilan (zakat profesi) = 2,5% dari penghasilan, wajib bila penghasilan SETAHUN mencapai nishab senilai 85 gram emas (mengikuti harga emas terkini; nishab per bulan = nishab tahunan \u00f7 12). Boleh ditunaikan tiap bulan (2,5% dari penghasilan bulan itu) atau sekali setahun \u2014 keduanya sah. Ada perbedaan pendapat ulama soal dasar penghitungan: sebagian dari penghasilan BRUTO (kotor), sebagian dari NETO setelah dikurangi kebutuhan pokok/hutang \u2014 sampaikan kedua pandangan secara adil, jangan memaksakan satu. THR, bonus, dan pendapatan tidak rutin umumnya ikut dihitung saat diterima. Beda dengan zakat mal: zakat penghasilan atas pemasukan rutin, zakat mal atas harta yang sudah mengendap 1 haul \u2014 jangan menghitung ganda atas uang yang sama. Salurkan via BAZNAS atau Lembaga Amil Zakat (LAZ) resmi. Ini edukasi, BUKAN fatwa; untuk kasus spesifik sarankan bertanya ke amil/ustadz. Pakai sapaan "kamu", jawab ringkas & hangat, dan JANGAN mengarang angka di luar data di atas.'
+          'Acuan untuk jawabanmu: Zakat penghasilan (zakat profesi) = 2,5% dari penghasilan, wajib bila penghasilan SETAHUN mencapai nishab. Nishab resmi 2026 = Rp 91.681.728/tahun (Rp 7.640.144/bulan) per SK Ketua BAZNAS No. 15/2026, memakai acuan 85 gram emas 14 karat dari rata-rata harga emas 2025; nishab per bulan = nishab tahunan \u00f7 12. Sebagian ulama memakai emas murni 24 karat sehingga nishabnya lebih tinggi \u2014 sebutkan bila relevan. Boleh ditunaikan tiap bulan (2,5% dari penghasilan bulan itu) atau sekali setahun \u2014 keduanya sah. Ada perbedaan pendapat ulama soal dasar penghitungan: sebagian dari penghasilan BRUTO (kotor), sebagian dari NETO setelah dikurangi kebutuhan pokok/hutang \u2014 sampaikan kedua pandangan secara adil, jangan memaksakan satu. THR, bonus, dan pendapatan tidak rutin umumnya ikut dihitung saat diterima. Beda dengan zakat mal: zakat penghasilan atas pemasukan rutin, zakat mal atas harta yang sudah mengendap 1 haul \u2014 jangan menghitung ganda atas uang yang sama. Salurkan via BAZNAS atau Lembaga Amil Zakat (LAZ) resmi. Ini edukasi, BUKAN fatwa; untuk kasus spesifik sarankan bertanya ke amil/ustadz. Pakai sapaan "kamu", jawab ringkas & hangat, dan JANGAN mengarang angka di luar data di atas.'
         ];
         return p.filter(Boolean).join('\n');
       }
